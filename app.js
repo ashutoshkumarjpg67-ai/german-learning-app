@@ -298,7 +298,7 @@ function sectionCard(icon, title, desc, status, route) {
 /* ================= Learn (level list) ================= */
 function viewLearn() {
   let h = '<p class="kicker">Learn</p><h1>Choose your level</h1>' +
-    '<p class="lead">A1 is fully complete. A2–C1 have full lessons for the first 3 chapters of each level, plus the full syllabus, core words and grammar for the rest. Honest progress is shown on every level.</p>';
+    '<p class="lead">A1, A2 and B1 are fully complete. B2–C1 have full lessons for the first 3 chapters of each level, plus the full syllabus, core words and grammar for the rest. Honest progress is shown on every level.</p>';
   LEVELS.forEach(lv => {
     const p = levelProgress(lv.id);
     h += '<div class="card level-card" onclick="go(\'level/' + lv.id + '\')" style="cursor:pointer">' +
