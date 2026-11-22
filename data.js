@@ -12,10 +12,10 @@ const LEVELS = [
     desc:'From zero: letters and sounds, numbers, greetings, introductions, people, city, food, time, home, work, health, weather and travel — in tiny 2–4 minute topics.',
     goal:'You can introduce yourself, ask simple questions and handle everyday situations.',
     vocab:'~510 words', hours:'80–200 hours', book:'Netzwerk neu A1' },
-  { id:'A2', name:'A2 — Elementary', tag:'3 full chapters', status:'partial', full:3, total:12,
-    desc:'Talk about the past, family, shopping, travel and health in simple sentences.',
+  { id:'A2', name:'A2 — Elementary', tag:'Complete', status:'complete', full:12, total:12,
+    desc:'Talk about the past, family, shopping, travel and health — in tiny 2–4 minute topics.',
     goal:'You can talk about your past and plans, and handle routine tasks.',
-    vocab:'~1,000–1,600 words', hours:'150–400 hours total', book:'Netzwerk neu A2' },
+    vocab:'~878 words', hours:'150–400 hours total', book:'Netzwerk neu A2' },
   { id:'B1', name:'B1 — Intermediate', tag:'Visa level · 3 full chapters', status:'partial', full:3, total:12,
     desc:'The level you need for the Ausbildung visa. Opinions, plans, reasons — in connected sentences.',
     goal:'You can deal with most situations in Germany and explain your opinions.',
@@ -10413,359 +10413,10162 @@ const MOCK_A1 = {
 
 /* ================= A2 ================= */
 
+const MOCK_A2 = {
+  title:'A2 Mock Test',
+  time:1200,
+  questions:[
+    {q:'Fill in: "Ich habe Deutsch ___."', options:['gelernt', 'lernen', 'lernte', 'gelernen'], answer:0,
+     why:'Perfekt: haben + Partizip II. lernen → gelernt.'},
+    {q:'What is the Partizip II of "essen"?', options:['gegessen', 'geessen', 'essend', 'gegesset'], answer:0,
+     why:'essen → gegessen. "Ich habe Pizza gegessen."'},
+    {q:'Fill in: "___ schmeckt die Suppe."', options:['Ich', 'Mir', 'Mich', 'Mein'], answer:1,
+     why:'Dative: "Mir schmeckt die Suppe." — to me.'},
+    {q:'Fill in: "Ich möchte mit ___ Auto fahren."', options:['der', 'den', 'dem', 'das'], answer:2,
+     why:'"mit" always takes the dative: mit dem Auto.'},
+    {q:'Fill in: "Ich ___ in Italien."', options:['bin', 'war', 'hatte', 'habe'], answer:1,
+     why:'Stories use "war": "Ich war in Italien."'},
+    {q:'What is the past of "haben" for "wir"?', options:['wir haben', 'wir hatten', 'wir waren', 'wir haben gehabt'], answer:1,
+     why:'haben → hatten: "Wir hatten ein schönes Hotel."'},
+    {q:'What is the superlative of "billig"?', options:['billiger', 'am billigsten', 'billigster', 'mehr billig'], answer:1,
+     why:'Superlative: am billigsten — "Das ist die billigste Jacke."'},
+    {q:'Fill in: "Ich möchte ein ___ Kleid." (red)', options:['rote', 'rotes', 'roter', 'rot'], answer:1,
+     why:'"ein" + neuter noun takes -es: ein rotes Kleid.'},
+    {q:'Fill in: "Das Bild hängt ___ Wand."', options:['an der', 'an die', 'an dem', 'in der'], answer:0,
+     why:'"Wo?" → dative: an der Wand.'},
+    {q:'Fill in: "Ich hänge das Bild ___ Wand."', options:['an der', 'an die', 'an dem', 'in der'], answer:1,
+     why:'"Wohin?" → accusative: an die Wand.'},
+    {q:'Fill in: "Ich ___ letzte Nacht nicht schlafen." (could)', options:['kann', 'konnte', 'können', 'gekonnt'], answer:1,
+     why:'können → konnte. "Ich konnte nicht schlafen."'},
+    {q:'Fill in: "Ich fühle ___ nicht gut."', options:['mich', 'dich', 'sich', 'mir'], answer:0,
+     why:'Reflexive for "ich" is "mich": Ich fühle mich nicht gut.'},
+    {q:'Fill in: "Ich lerne Deutsch, ___ ich in Deutschland arbeiten will."', options:['dass', 'weil', 'wenn', 'als'], answer:1,
+     why:'"weil" = because. The verb "will" goes to the end.'},
+    {q:'Fill in: "Ich weiß, ___ du Deutsch lernst."', options:['weil', 'dass', 'wenn', 'als'], answer:1,
+     why:'"dass" = that. "Ich weiß, dass du Deutsch lernst."'},
+    {q:'Fill in: "Ich habe Lust, Fußball ___ spielen."', options:['zu', 'nach', 'um', 'mit'], answer:0,
+     why:'"Lust haben" takes "zu" + infinitive: Lust zu spielen.'},
+    {q:'Fill in: "Ich bin nach Berlin ___."', options:['gefahren', 'gefahr', 'gefahren ist', 'fahren'], answer:0,
+     why:'Movement → "sein" + Partizip II: Ich bin gefahren.'},
+    {q:'What is the Partizip II of "ankommen"?', options:['angekommen', 'geankommen', 'ankommt', 'angekomm'], answer:0,
+     why:'Separable verbs put "ge-" in the middle: an-ge-kommen.'},
+    {q:'Fill in: "Ich lese die Nachrichten ___ Internet."', options:['in der', 'im', 'am', 'auf dem'], answer:1,
+     why:'"im Internet" — learn it as a fixed phrase.'},
+    {q:'Fill in: "___ Woche habe ich Geburtstag gefeiert."', options:['Nächste', 'Letzte', 'Diese', 'Jede'], answer:1,
+     why:'letzte Woche = last week. nächste Woche = next week.'},
+    {q:'Fill in: "___ ich klein war, wohnte ich in einem Dorf."', options:['Wenn', 'Als', 'Weil', 'Dass'], answer:1,
+     why:'"als" = when, one past event: "Als ich klein war ..."'}
+  ]
+};
+
 CHAPTERS['A2-1'] = {
-  id:'A2-1', n:1, level:'A2', title:'Family & My Weekend', time:'9 min',
+  id:'A2-1',
+  n:1,
+  level:'A2',
+  title:'Family & My Weekend',
+  time:'17 min',
   concept:'Talk about the past: what you did last weekend.',
   dialogue:[
-    {who:'A', de:'Was hast du am Wochenende gemacht?', en:'What did you do at the weekend?', ph:'vahs hahst doo ahm VOKH-en-en-de geh-MAHKHT'},
-    {who:'B', de:'Ich habe meine Familie besucht. Wir haben zusammen gegessen.', en:'I visited my family. We ate together.', ph:'ish HAH-be MAI-ne fah-MEE-lee-e beh-ZOOKHT. veer HAH-ben tsoo-ZAH-men geh-GES-sen'},
-    {who:'A', de:'Was habt ihr gegessen?', en:'What did you eat?', ph:'vahs hahpt eer geh-GES-sen'},
-    {who:'B', de:'Wir haben Pizza gegessen und einen Film gesehen.', en:'We ate pizza and watched a film.', ph:'veer HAH-ben PEET-sah geh-GES-sen oont AI-nen film geh-ZAY-en'},
-    {who:'A', de:'Das klingt gut! Ich habe zu Hause gearbeitet.', en:'That sounds good! I worked at home.', ph:'dahs klingt goot! ish HAH-be tsoo HOW-ze geh-AHR-bai-tet'},
-    {who:'B', de:'Nächstes Wochenende gehen wir zusammen ins Kino.', en:'Next weekend we go to the cinema together.', ph:'NEKHS-tes VOKH-en-en-de GAY-en veer tsoo-ZAH-men ins KEE-no'},
+    {
+      who:'A',
+      de:'Was hast du am Wochenende gemacht?',
+      en:'What did you do at the weekend?',
+      ph:'vahs hahst doo ahm VOKH-en-en-de geh-MAHKHT'
+    },
+    {
+      who:'B',
+      de:'Ich habe meine Familie besucht. Wir haben zusammen gegessen.',
+      en:'I visited my family. We ate together.',
+      ph:'ish HAH-be MAI-ne fah-MEE-lee-e beh-ZOOKHT. veer HAH-ben tsoo-ZAH-men geh-GES-sen'
+    },
+    {
+      who:'A',
+      de:'Was habt ihr gegessen?',
+      en:'What did you eat?',
+      ph:'vahs hahpt eer geh-GES-sen'
+    },
+    {
+      who:'B',
+      de:'Wir haben Pizza gegessen und einen Film gesehen.',
+      en:'We ate pizza and watched a film.',
+      ph:'veer HAH-ben PEET-sah geh-GES-sen oont AI-nen film geh-ZAY-en'
+    },
+    {
+      who:'A',
+      de:'Das klingt gut! Ich habe zu Hause gearbeitet.',
+      en:'That sounds good! I worked at home.',
+      ph:'dahs klingt goot! ish HAH-be tsoo HOW-ze geh-AHR-bai-tet'
+    },
+    {
+      who:'B',
+      de:'Nächstes Wochenende gehen wir zusammen ins Kino.',
+      en:'Next weekend we go to the cinema together.',
+      ph:'NEKHS-tes VOKH-en-en-de GAY-en veer tsoo-ZAH-men ins KEE-no'
+    }
   ],
   vocab:[
-    {de:'Vater', art:'der', pl:'Väter', en:'father', ph:'FAH-ter'},
-    {de:'Mutter', art:'die', pl:'Mütter', en:'mother', ph:'MOOT-ter'},
-    {de:'Bruder', art:'der', pl:'Brüder', en:'brother', ph:'BROO-der'},
-    {de:'Schwester', art:'die', pl:'Schwestern', en:'sister', ph:'SHVES-ter'},
-    {de:'Sohn', art:'der', pl:'Söhne', en:'son', ph:'zohn'},
-    {de:'Tochter', art:'die', pl:'Töchter', en:'daughter', ph:'TOKH-ter'},
-    {de:'Großvater', art:'der', pl:'Großväter', en:'grandfather', ph:'GROHSS-fah-ter'},
-    {de:'Großmutter', art:'die', pl:'Großmütter', en:'grandmother', ph:'GROHSS-moot-ter'},
-    {de:'Wochenende', art:'das', pl:'Wochenenden', en:'weekend', ph:'VOKH-en-en-de'},
-    {de:'gemacht', art:'', pl:'', en:'done (past of machen)', ph:'geh-MAHKHT'},
-    {de:'besucht', art:'', pl:'', en:'visited (past of besuchen)', ph:'beh-ZOOKHT'},
-    {de:'gegessen', art:'', pl:'', en:'eaten (past of essen)', ph:'geh-GES-sen'},
-    {de:'gesehen', art:'', pl:'', en:'seen (past of sehen)', ph:'geh-ZAY-en'},
-    {de:'gearbeitet', art:'', pl:'', en:'worked (past of arbeiten)', ph:'geh-AHR-bai-tet'},
-    {de:'gekocht', art:'', pl:'', en:'cooked (past of kochen)', ph:'geh-KOKHT'},
-    {de:'gespielt', art:'', pl:'', en:'played (past of spielen)', ph:'geh-SHPEELT'},
-    {de:'gestern', art:'', pl:'', en:'yesterday', ph:'GES-tern'},
-    {de:'zu Hause', art:'', pl:'', en:'at home', ph:'tsoo HOW-ze'},
+    {
+      de:'Vater',
+      art:'der',
+      pl:'Väter',
+      en:'father',
+      ph:'FAH-ter'
+    },
+    {
+      de:'Mutter',
+      art:'die',
+      pl:'Mütter',
+      en:'mother',
+      ph:'MOOT-ter'
+    },
+    {
+      de:'Bruder',
+      art:'der',
+      pl:'Brüder',
+      en:'brother',
+      ph:'BROO-der'
+    },
+    {
+      de:'Schwester',
+      art:'die',
+      pl:'Schwestern',
+      en:'sister',
+      ph:'SHVES-ter'
+    },
+    {
+      de:'Sohn',
+      art:'der',
+      pl:'Söhne',
+      en:'son',
+      ph:'zohn'
+    },
+    {
+      de:'Tochter',
+      art:'die',
+      pl:'Töchter',
+      en:'daughter',
+      ph:'TOKH-ter'
+    },
+    {
+      de:'Großvater',
+      art:'der',
+      pl:'Großväter',
+      en:'grandfather',
+      ph:'GROHSS-fah-ter'
+    },
+    {
+      de:'Großmutter',
+      art:'die',
+      pl:'Großmütter',
+      en:'grandmother',
+      ph:'GROHSS-moot-ter'
+    },
+    {
+      de:'Wochenende',
+      art:'das',
+      pl:'Wochenenden',
+      en:'weekend',
+      ph:'VOKH-en-en-de'
+    },
+    {
+      de:'gemacht',
+      art:'',
+      pl:'',
+      en:'done (past of machen)',
+      ph:'geh-MAHKHT'
+    },
+    {
+      de:'besucht',
+      art:'',
+      pl:'',
+      en:'visited (past of besuchen)',
+      ph:'beh-ZOOKHT'
+    },
+    {
+      de:'gegessen',
+      art:'',
+      pl:'',
+      en:'eaten (past of essen)',
+      ph:'geh-GES-sen'
+    },
+    {
+      de:'gesehen',
+      art:'',
+      pl:'',
+      en:'seen (past of sehen)',
+      ph:'geh-ZAY-en'
+    },
+    {
+      de:'gearbeitet',
+      art:'',
+      pl:'',
+      en:'worked (past of arbeiten)',
+      ph:'geh-AHR-bai-tet'
+    },
+    {
+      de:'gekocht',
+      art:'',
+      pl:'',
+      en:'cooked (past of kochen)',
+      ph:'geh-KOKHT'
+    },
+    {
+      de:'gespielt',
+      art:'',
+      pl:'',
+      en:'played (past of spielen)',
+      ph:'geh-SHPEELT'
+    },
+    {
+      de:'gestern',
+      art:'',
+      pl:'',
+      en:'yesterday',
+      ph:'GES-tern'
+    },
+    {
+      de:'zu Hause',
+      art:'',
+      pl:'',
+      en:'at home',
+      ph:'tsoo HOW-ze'
+    },
+    {
+      de:'Onkel',
+      art:'der',
+      pl:'Onkel',
+      en:'uncle',
+      ph:'ON-kel'
+    },
+    {
+      de:'Tante',
+      art:'die',
+      pl:'Tanten',
+      en:'aunt',
+      ph:'TAHN-te'
+    },
+    {
+      de:'Cousin',
+      art:'der',
+      pl:'Cousins',
+      en:'cousin (male)',
+      ph:'koo-ZAN'
+    },
+    {
+      de:'Cousine',
+      art:'die',
+      pl:'Cousinen',
+      en:'cousin (female)',
+      ph:'koo-ZEE-ne'
+    },
+    {
+      de:'Baby',
+      art:'das',
+      pl:'Babys',
+      en:'baby',
+      ph:'BAY-bee'
+    },
+    {
+      de:'Familie',
+      art:'die',
+      pl:'Familien',
+      en:'family',
+      ph:'fah-MEE-lee-e'
+    },
+    {
+      de:'heiraten',
+      art:'',
+      pl:'',
+      en:'to marry, to get married',
+      ph:'HAI-rah-ten'
+    },
+    {
+      de:'geboren',
+      art:'',
+      pl:'',
+      en:'born',
+      ph:'ge-BOH-ren'
+    },
+    {
+      de:'eingeladen',
+      art:'',
+      pl:'',
+      en:'invited (past of einladen)',
+      ph:'INE-ge-lah-den'
+    },
+    {
+      de:'Party',
+      art:'die',
+      pl:'Partys',
+      en:'party',
+      ph:'PAHR-tee'
+    },
+    {
+      de:'Geschenk',
+      art:'das',
+      pl:'Geschenke',
+      en:'gift, present',
+      ph:'ge-SHENK'
+    },
+    {
+      de:'grillen',
+      art:'',
+      pl:'',
+      en:'to barbecue, to grill',
+      ph:'GRIL-len'
+    },
+    {
+      de:'spazieren',
+      art:'',
+      pl:'',
+      en:'to go for a walk',
+      ph:'shpah-TSEE-ren'
+    },
+    {
+      de:'fernsehen',
+      art:'',
+      pl:'',
+      en:'to watch TV',
+      ph:'FAIRN-zay-en'
+    },
+    {
+      de:'aufstehen',
+      art:'',
+      pl:'',
+      en:'to get up',
+      ph:'OWF-shtay-en'
+    },
+    {
+      de:'schlafen',
+      art:'',
+      pl:'',
+      en:'to sleep',
+      ph:'SHLAH-fen'
+    },
+    {
+      de:'lesen',
+      art:'',
+      pl:'',
+      en:'to read',
+      ph:'LAY-zen'
+    },
+    {
+      de:'backen',
+      art:'',
+      pl:'',
+      en:'to bake',
+      ph:'BAH-ken'
+    },
+    {
+      de:'putzen',
+      art:'',
+      pl:'',
+      en:'to clean',
+      ph:'POOT-sen'
+    },
+    {
+      de:'einkaufen',
+      art:'',
+      pl:'',
+      en:'to go shopping',
+      ph:'INE-kow-fen'
+    },
+    {
+      de:'helfen',
+      art:'',
+      pl:'',
+      en:'to help',
+      ph:'HEL-fen'
+    },
+    {
+      de:'gelernt',
+      art:'',
+      pl:'',
+      en:'learned (past of lernen)',
+      ph:'ge-LAIRNT'
+    }
   ],
   grammar:{
     title:'Perfekt — talking about the past',
     plain:'To talk about the past, German uses the Perfekt: "haben" + a past form called "Partizip II". For regular verbs: ge- + stem + -t → gelernt, gearbeitet, gekocht. The Partizip II goes to the END of the sentence.',
     rule:'Ich habe gelernt. Du hast gelernt. Er hat gelernt. Wir haben gelernt. · Some verbs have no "ge-": besuchen → besucht, fotografieren → fotografiert.',
     examples:[
-      {de:'Ich habe gestern viel gelernt.', en:'I learned a lot yesterday.', ph:'ish HAH-be GES-tern feel geh-LERNT'},
-      {de:'Wir haben Pizza gegessen.', en:'We ate pizza.', ph:'veer HAH-ben PEET-sah geh-GES-sen'},
-      {de:'Ich habe meine Familie besucht.', en:'I visited my family.', ph:'ish HAH-be MAI-ne fah-MEE-lee-e beh-ZOOKHT'},
-    ],
+      {
+        de:'Ich habe gestern viel gelernt.',
+        en:'I learned a lot yesterday.',
+        ph:'ish HAH-be GES-tern feel geh-LERNT'
+      },
+      {
+        de:'Wir haben Pizza gegessen.',
+        en:'We ate pizza.',
+        ph:'veer HAH-ben PEET-sah geh-GES-sen'
+      },
+      {
+        de:'Ich habe meine Familie besucht.',
+        en:'I visited my family.',
+        ph:'ish HAH-be MAI-ne fah-MEE-lee-e beh-ZOOKHT'
+      }
+    ]
   },
   quiz:[
-    {q:'Fill in: "Ich habe Deutsch ___."', options:['gelernt','lernen','lernte','lernt'], answer:0,
+    {q:'Fill in: "Ich habe Deutsch ___."', options:['gelernt', 'lernen', 'lernte', 'lernt'], answer:0,
      why:'Perfekt = haben + Partizip II. lernen → gelernt: "Ich habe Deutsch gelernt."'},
-    {q:'Fill in: "Ich habe einen Film ___."', options:['sehen','gesehen','geseht','sehe'], answer:1,
+    {q:'Fill in: "Ich habe einen Film ___."', options:['sehen', 'gesehen', 'geseht', 'sehe'], answer:1,
      why:'sehen → gesehen. "Ich habe einen Film gesehen" = I watched a film.'},
-    {q:'What does "Was hast du gemacht?" mean?', options:['What are you doing?','What did you do?','What will you do?','What do you make?'], answer:1,
+    {q:'What does "Was hast du gemacht?" mean?', options:['What are you doing?', 'What did you do?', 'What will you do?', 'What do you make?'], answer:1,
      why:'"gemacht" is the past of "machen". "Was hast du gemacht?" = What did you do?'},
-    {q:'What is the Partizip II of "besuchen"?', options:['besucht','gebesucht','besuchen','besuchte'], answer:0,
+    {q:'What is the Partizip II of "besuchen"?', options:['besucht', 'gebesucht', 'besuchen', 'besuchte'], answer:0,
      why:'Verbs with "be-" have NO "ge-": besuchen → besucht.'},
-    {q:'Fill in: "Wir haben zusammen ___."', options:['essen','gegessen','geessen','isst'], answer:1,
-     why:'essen → gegessen. "Wir haben zusammen gegessen" = We ate together.'},
+    {q:'Fill in: "Wir haben zusammen ___."', options:['essen', 'gegessen', 'geessen', 'isst'], answer:1,
+     why:'essen → gegessen. "Wir haben zusammen gegessen" = We ate together.'}
   ],
-  speak:{ prompt:'Tell about your weekend out loud in 3 sentences: "Am Wochenende habe ich ... Ich habe ... gegessen/gespielt."',
-    model:'Am Wochenende habe ich meine Familie besucht. Wir haben zusammen gegessen. Ich habe einen Film gesehen.' },
+  speak:{
+    prompt:'Tell about your weekend out loud in 3 sentences: "Am Wochenende habe ich ... Ich habe ... gegessen/gespielt."',
+    model:[
+      'Am Wochenende habe ich meine Familie besucht.',
+      'Wir haben zusammen gegessen.',
+      'Ich habe einen Film gesehen.'
+    ]
+  },
   recap:[
     'Perfekt = haben + Partizip II (at the END).',
     'Regular: ge- + stem + -t → gelernt, gearbeitet, gekocht.',
     'No "ge-" for be-/ver-/er- verbs: besucht, verkauft, erzählt.',
-    'Family: der Vater, die Mutter, der Bruder, die Schwester.',
+    'Family: der Vater, die Mutter, der Bruder, die Schwester.'
   ],
   tip:'Memory tip: learn the Partizip II WITH the verb — "lernen, gelernt", "essen, gegessen". Always as a pair.',
   extra:[
-    {q:'Say "I learned a lot yesterday."', a:'Ich habe gestern viel gelernt.'},
-    {q:'Say "We watched a film."', a:'Wir haben einen Film gesehen.'},
-    {q:'What is the Partizip II of "kochen"?', a:'gekocht — "Ich habe gekocht."'},
+    {
+      q:'Say "I learned a lot yesterday."',
+      a:'Ich habe gestern viel gelernt.'
+    },
+    {
+      q:'Say "We watched a film."',
+      a:'Wir haben einen Film gesehen.'
+    },
+    {
+      q:'What is the Partizip II of "kochen"?',
+      a:'gekocht — "Ich habe gekocht."'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Family words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Vater',
+          art:'der',
+          pl:'Väter',
+          en:'father',
+          ph:'FAH-ter'
+        },
+        {
+          de:'Mutter',
+          art:'die',
+          pl:'Mütter',
+          en:'mother',
+          ph:'MOOT-ter'
+        },
+        {
+          de:'Bruder',
+          art:'der',
+          pl:'Brüder',
+          en:'brother',
+          ph:'BROO-der'
+        },
+        {
+          de:'Schwester',
+          art:'die',
+          pl:'Schwestern',
+          en:'sister',
+          ph:'SHVES-ter'
+        },
+        {
+          de:'Sohn',
+          art:'der',
+          pl:'Söhne',
+          en:'son',
+          ph:'zohn'
+        },
+        {
+          de:'Tochter',
+          art:'die',
+          pl:'Töchter',
+          en:'daughter',
+          ph:'TOKH-ter'
+        },
+        {
+          de:'Großvater',
+          art:'der',
+          pl:'Großväter',
+          en:'grandfather',
+          ph:'GROHSS-fah-ter'
+        },
+        {
+          de:'Großmutter',
+          art:'die',
+          pl:'Großmütter',
+          en:'grandmother',
+          ph:'GROHSS-moot-ter'
+        },
+        {
+          de:'Wochenende',
+          art:'das',
+          pl:'Wochenenden',
+          en:'weekend',
+          ph:'VOKH-en-en-de'
+        },
+        {
+          de:'gemacht',
+          art:'',
+          pl:'',
+          en:'done (past of machen)',
+          ph:'geh-MAHKHT'
+        },
+        {
+          de:'besucht',
+          art:'',
+          pl:'',
+          en:'visited (past of besuchen)',
+          ph:'beh-ZOOKHT'
+        },
+        {
+          de:'gegessen',
+          art:'',
+          pl:'',
+          en:'eaten (past of essen)',
+          ph:'geh-GES-sen'
+        },
+        {
+          de:'gesehen',
+          art:'',
+          pl:'',
+          en:'seen (past of sehen)',
+          ph:'geh-ZAY-en'
+        },
+        {
+          de:'gearbeitet',
+          art:'',
+          pl:'',
+          en:'worked (past of arbeiten)',
+          ph:'geh-AHR-bai-tet'
+        },
+        {
+          de:'gekocht',
+          art:'',
+          pl:'',
+          en:'cooked (past of kochen)',
+          ph:'geh-KOKHT'
+        },
+        {
+          de:'gespielt',
+          art:'',
+          pl:'',
+          en:'played (past of spielen)',
+          ph:'geh-SHPEELT'
+        },
+        {
+          de:'gestern',
+          art:'',
+          pl:'',
+          en:'yesterday',
+          ph:'GES-tern'
+        },
+        {
+          de:'zu Hause',
+          art:'',
+          pl:'',
+          en:'at home',
+          ph:'tsoo HOW-ze'
+        },
+        {
+          de:'Onkel',
+          art:'der',
+          pl:'Onkel',
+          en:'uncle',
+          ph:'ON-kel'
+        },
+        {
+          de:'Tante',
+          art:'die',
+          pl:'Tanten',
+          en:'aunt',
+          ph:'TAHN-te'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Family & weekend words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Cousin',
+          art:'der',
+          pl:'Cousins',
+          en:'cousin (male)',
+          ph:'koo-ZAN'
+        },
+        {
+          de:'Cousine',
+          art:'die',
+          pl:'Cousinen',
+          en:'cousin (female)',
+          ph:'koo-ZEE-ne'
+        },
+        {
+          de:'Baby',
+          art:'das',
+          pl:'Babys',
+          en:'baby',
+          ph:'BAY-bee'
+        },
+        {
+          de:'Familie',
+          art:'die',
+          pl:'Familien',
+          en:'family',
+          ph:'fah-MEE-lee-e'
+        },
+        {
+          de:'heiraten',
+          art:'',
+          pl:'',
+          en:'to marry, to get married',
+          ph:'HAI-rah-ten'
+        },
+        {
+          de:'geboren',
+          art:'',
+          pl:'',
+          en:'born',
+          ph:'ge-BOH-ren'
+        },
+        {
+          de:'eingeladen',
+          art:'',
+          pl:'',
+          en:'invited (past of einladen)',
+          ph:'INE-ge-lah-den'
+        },
+        {
+          de:'Party',
+          art:'die',
+          pl:'Partys',
+          en:'party',
+          ph:'PAHR-tee'
+        },
+        {
+          de:'Geschenk',
+          art:'das',
+          pl:'Geschenke',
+          en:'gift, present',
+          ph:'ge-SHENK'
+        },
+        {
+          de:'grillen',
+          art:'',
+          pl:'',
+          en:'to barbecue, to grill',
+          ph:'GRIL-len'
+        },
+        {
+          de:'spazieren',
+          art:'',
+          pl:'',
+          en:'to go for a walk',
+          ph:'shpah-TSEE-ren'
+        },
+        {
+          de:'fernsehen',
+          art:'',
+          pl:'',
+          en:'to watch TV',
+          ph:'FAIRN-zay-en'
+        },
+        {
+          de:'aufstehen',
+          art:'',
+          pl:'',
+          en:'to get up',
+          ph:'OWF-shtay-en'
+        },
+        {
+          de:'schlafen',
+          art:'',
+          pl:'',
+          en:'to sleep',
+          ph:'SHLAH-fen'
+        },
+        {
+          de:'lesen',
+          art:'',
+          pl:'',
+          en:'to read',
+          ph:'LAY-zen'
+        },
+        {
+          de:'backen',
+          art:'',
+          pl:'',
+          en:'to bake',
+          ph:'BAH-ken'
+        },
+        {
+          de:'putzen',
+          art:'',
+          pl:'',
+          en:'to clean',
+          ph:'POOT-sen'
+        },
+        {
+          de:'einkaufen',
+          art:'',
+          pl:'',
+          en:'to go shopping',
+          ph:'INE-kow-fen'
+        },
+        {
+          de:'helfen',
+          art:'',
+          pl:'',
+          en:'to help',
+          ph:'HEL-fen'
+        },
+        {
+          de:'gelernt',
+          art:'',
+          pl:'',
+          en:'learned (past of lernen)',
+          ph:'ge-LAIRNT'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: What did you do?',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Was hast du am Wochenende gemacht?',
+          en:'What did you do at the weekend?',
+          ph:'vahs hahst doo ahm VOKH-en-en-de geh-MAHKHT'
+        },
+        {
+          who:'B',
+          de:'Ich habe meine Familie besucht. Wir haben zusammen gegessen.',
+          en:'I visited my family. We ate together.',
+          ph:'ish HAH-be MAI-ne fah-MEE-lee-e beh-ZOOKHT. veer HAH-ben tsoo-ZAH-men geh-GES-sen'
+        },
+        {
+          who:'A',
+          de:'Was habt ihr gegessen?',
+          en:'What did you eat?',
+          ph:'vahs hahpt eer geh-GES-sen'
+        },
+        {
+          who:'B',
+          de:'Wir haben Pizza gegessen und einen Film gesehen.',
+          en:'We ate pizza and watched a film.',
+          ph:'veer HAH-ben PEET-sah geh-GES-sen oont AI-nen film geh-ZAY-en'
+        },
+        {
+          who:'A',
+          de:'Das klingt gut! Ich habe zu Hause gearbeitet.',
+          en:'That sounds good! I worked at home.',
+          ph:'dahs klingt goot! ish HAH-be tsoo HOW-ze geh-AHR-bai-tet'
+        },
+        {
+          who:'B',
+          de:'Nächstes Wochenende gehen wir zusammen ins Kino.',
+          en:'Next weekend we go to the cinema together.',
+          ph:'NEKHS-tes VOKH-en-en-de GAY-en veer tsoo-ZAH-men ins KEE-no'
+        }
+      ],
+      speak:{
+        prompt:'Tell about your weekend out loud in 3 sentences: "Am Wochenende habe ich ... Ich habe ... gegessen/gespielt."',
+        model:[
+          'Am Wochenende habe ich meine Familie besucht.',
+          'Wir haben zusammen gegessen.',
+          'Ich habe einen Film gesehen.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Perfekt with "haben"',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Perfekt — talking about the past',
+        plain:'To talk about the past, German uses the Perfekt: "haben" + a past form called "Partizip II". For regular verbs: ge- + stem + -t → gelernt, gearbeitet, gekocht. The Partizip II goes to the END of the sentence.',
+        rule:'Ich habe gelernt. Du hast gelernt. Er hat gelernt. Wir haben gelernt. · Some verbs have no "ge-": besuchen → besucht, fotografieren → fotografiert.',
+        examples:[
+          {
+            de:'Ich habe gestern viel gelernt.',
+            en:'I learned a lot yesterday.',
+            ph:'ish HAH-be GES-tern feel geh-LERNT'
+          },
+          {
+            de:'Wir haben Pizza gegessen.',
+            en:'We ate pizza.',
+            ph:'veer HAH-ben PEET-sah geh-GES-sen'
+          },
+          {
+            de:'Ich habe meine Familie besucht.',
+            en:'I visited my family.',
+            ph:'ish HAH-be MAI-ne fah-MEE-lee-e beh-ZOOKHT'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: Perfekt',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich habe Deutsch ___."', options:['gelernt', 'lernen', 'lernte', 'lernt'], answer:0,
+         why:'Perfekt = haben + Partizip II. lernen → gelernt: "Ich habe Deutsch gelernt."'},
+        {q:'Fill in: "Ich habe einen Film ___."', options:['sehen', 'gesehen', 'geseht', 'sehe'], answer:1,
+         why:'sehen → gesehen. "Ich habe einen Film gesehen" = I watched a film.'},
+        {q:'What does "Was hast du gemacht?" mean?', options:['What are you doing?', 'What did you do?', 'What will you do?', 'What do you make?'], answer:1,
+         why:'"gemacht" is the past of "machen". "Was hast du gemacht?" = What did you do?'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: family & weekend',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'What is the Partizip II of "besuchen"?', options:['besucht', 'gebesucht', 'besuchen', 'besuchte'], answer:0,
+         why:'Verbs with "be-" have NO "ge-": besuchen → besucht.'},
+        {q:'Fill in: "Wir haben zusammen ___."', options:['essen', 'gegessen', 'geessen', 'isst'], answer:1,
+         why:'essen → gegessen. "Wir haben zusammen gegessen" = We ate together.'}
+      ]
+    }
   ],
   next:'Next: Chapter 2 — In the Restaurant',
 };
 
 CHAPTERS['A2-2'] = {
-  id:'A2-2', n:2, level:'A2', title:'In the Restaurant', time:'9 min',
+  id:'A2-2',
+  n:2,
+  level:'A2',
+  title:'In the Restaurant',
+  time:'17 min',
   concept:'Order food, pay the bill, and use the dative case.',
   dialogue:[
-    {who:'A', de:'Guten Abend! Einen Tisch für zwei Personen, bitte.', en:'Good evening! A table for two people, please.', ph:'GOO-ten AH-bent! AI-nen tish fuer tsvai pair-ZOH-nen, BIT-te'},
-    {who:'B', de:'Gern. Hier ist die Speisekarte.', en:'With pleasure. Here is the menu.', ph:'gairn. heer ist dee SHPY-ze-kahr-te'},
-    {who:'A', de:'Ich möchte das Schnitzel. Und du?', en:'I would like the schnitzel. And you?', ph:'ish MERKH-te dahs SHNIT-sel. oont doo'},
-    {who:'B', de:'Ich nehme die Suppe. Mir schmeckt die Suppe sehr gut.', en:'I will take the soup. The soup tastes very good to me.', ph:'ish NAY-me dee ZUP-pe. meer shmekt dee ZUP-pe zair goot'},
-    {who:'A', de:'Die Rechnung, bitte!', en:'The bill, please!', ph:'dee REKH-nung, BIT-te'},
-    {who:'B', de:'Das macht 32 Euro. Kann ich mit Karte zahlen?', en:'That is 32 euros. Can I pay by card?', ph:'dahs mahkht TSVAI-oont-DRAI-sish OY-ro. kahn ish mit KAHR-te TSAH-len'},
+    {
+      who:'A',
+      de:'Guten Abend! Einen Tisch für zwei Personen, bitte.',
+      en:'Good evening! A table for two people, please.',
+      ph:'GOO-ten AH-bent! AI-nen tish fuer tsvai pair-ZOH-nen, BIT-te'
+    },
+    {
+      who:'B',
+      de:'Gern. Hier ist die Speisekarte.',
+      en:'With pleasure. Here is the menu.',
+      ph:'gairn. heer ist dee SHPY-ze-kahr-te'
+    },
+    {
+      who:'A',
+      de:'Ich möchte das Schnitzel. Und du?',
+      en:'I would like the schnitzel. And you?',
+      ph:'ish MERKH-te dahs SHNIT-sel. oont doo'
+    },
+    {
+      who:'B',
+      de:'Ich nehme die Suppe. Mir schmeckt die Suppe sehr gut.',
+      en:'I will take the soup. The soup tastes very good to me.',
+      ph:'ish NAY-me dee ZUP-pe. meer shmekt dee ZUP-pe zair goot'
+    },
+    {
+      who:'A',
+      de:'Die Rechnung, bitte!',
+      en:'The bill, please!',
+      ph:'dee REKH-nung, BIT-te'
+    },
+    {
+      who:'B',
+      de:'Das macht 32 Euro. Kann ich mit Karte zahlen?',
+      en:'That is 32 euros. Can I pay by card?',
+      ph:'dahs mahkht TSVAI-oont-DRAI-sish OY-ro. kahn ish mit KAHR-te TSAH-len'
+    }
   ],
   vocab:[
-    {de:'Speisekarte', art:'die', pl:'Speisekarten', en:'menu', ph:'SHPY-ze-kahr-te'},
-    {de:'Schnitzel', art:'das', pl:'Schnitzel', en:'schnitzel (breaded meat)', ph:'SHNIT-sel'},
-    {de:'Suppe', art:'die', pl:'Suppen', en:'soup', ph:'ZUP-pe'},
-    {de:'Rechnung', art:'die', pl:'Rechnungen', en:'bill', ph:'REKH-nung'},
-    {de:'Karte', art:'die', pl:'Karten', en:'card', ph:'KAHR-te'},
-    {de:'Trinkgeld', art:'das', pl:'', en:'tip (money)', ph:'TRING-gelt'},
-    {de:'Vorspeise', art:'die', pl:'Vorspeisen', en:'starter', ph:'FOR-shpy-ze'},
-    {de:'Hauptgericht', art:'das', pl:'Hauptgerichte', en:'main course', ph:'HOWPT-geh-rikht'},
-    {de:'Nachtisch', art:'der', pl:'Nachtische', en:'dessert', ph:'NAHKH-tish'},
-    {de:'Kellner', art:'der', pl:'Kellner', en:'waiter', ph:'KEL-ner'},
-    {de:'Kellnerin', art:'die', pl:'Kellnerinnen', en:'waitress', ph:'KEL-ne-rin'},
-    {de:'schmecken', art:'', pl:'', en:'to taste (good/bad)', ph:'SHMEK-ken'},
-    {de:'zahlen', art:'', pl:'', en:'to pay', ph:'TSAH-len'},
-    {de:'bestellen', art:'', pl:'', en:'to order', ph:'beh-SHTEL-len'},
-    {de:'probieren', art:'', pl:'', en:'to try, to taste', ph:'pro-BEE-ren'},
-    {de:'hungrig', art:'', pl:'', en:'hungry', ph:'HOONG-rish'},
-    {de:'durstig', art:'', pl:'', en:'thirsty', ph:'DOORST-ish'},
+    {
+      de:'Speisekarte',
+      art:'die',
+      pl:'Speisekarten',
+      en:'menu',
+      ph:'SHPY-ze-kahr-te'
+    },
+    {
+      de:'Schnitzel',
+      art:'das',
+      pl:'Schnitzel',
+      en:'schnitzel (breaded meat)',
+      ph:'SHNIT-sel'
+    },
+    {
+      de:'Suppe',
+      art:'die',
+      pl:'Suppen',
+      en:'soup',
+      ph:'ZUP-pe'
+    },
+    {
+      de:'Rechnung',
+      art:'die',
+      pl:'Rechnungen',
+      en:'bill',
+      ph:'REKH-nung'
+    },
+    {
+      de:'Karte',
+      art:'die',
+      pl:'Karten',
+      en:'card',
+      ph:'KAHR-te'
+    },
+    {
+      de:'Trinkgeld',
+      art:'das',
+      pl:'',
+      en:'tip (money)',
+      ph:'TRING-gelt'
+    },
+    {
+      de:'Vorspeise',
+      art:'die',
+      pl:'Vorspeisen',
+      en:'starter',
+      ph:'FOR-shpy-ze'
+    },
+    {
+      de:'Hauptgericht',
+      art:'das',
+      pl:'Hauptgerichte',
+      en:'main course',
+      ph:'HOWPT-geh-rikht'
+    },
+    {
+      de:'Nachtisch',
+      art:'der',
+      pl:'Nachtische',
+      en:'dessert',
+      ph:'NAHKH-tish'
+    },
+    {
+      de:'Kellner',
+      art:'der',
+      pl:'Kellner',
+      en:'waiter',
+      ph:'KEL-ner'
+    },
+    {
+      de:'Kellnerin',
+      art:'die',
+      pl:'Kellnerinnen',
+      en:'waitress',
+      ph:'KEL-ne-rin'
+    },
+    {
+      de:'schmecken',
+      art:'',
+      pl:'',
+      en:'to taste (good/bad)',
+      ph:'SHMEK-ken'
+    },
+    {
+      de:'zahlen',
+      art:'',
+      pl:'',
+      en:'to pay',
+      ph:'TSAH-len'
+    },
+    {
+      de:'bestellen',
+      art:'',
+      pl:'',
+      en:'to order',
+      ph:'beh-SHTEL-len'
+    },
+    {
+      de:'probieren',
+      art:'',
+      pl:'',
+      en:'to try, to taste',
+      ph:'pro-BEE-ren'
+    },
+    {
+      de:'hungrig',
+      art:'',
+      pl:'',
+      en:'hungry',
+      ph:'HOONG-rish'
+    },
+    {
+      de:'durstig',
+      art:'',
+      pl:'',
+      en:'thirsty',
+      ph:'DOORST-ish'
+    },
+    {
+      de:'Menü',
+      art:'das',
+      pl:'Menüs',
+      en:'menu (set meal)',
+      ph:'me-NUE'
+    },
+    {
+      de:'Bier',
+      art:'das',
+      pl:'Biere',
+      en:'beer',
+      ph:'beer'
+    },
+    {
+      de:'Wein',
+      art:'der',
+      pl:'Weine',
+      en:'wine',
+      ph:'vine'
+    },
+    {
+      de:'Saft',
+      art:'der',
+      pl:'Säfte',
+      en:'juice',
+      ph:'zahft'
+    },
+    {
+      de:'Pommes',
+      art:'die',
+      pl:'',
+      en:'french fries',
+      ph:'POM-mes'
+    },
+    {
+      de:'Salat',
+      art:'der',
+      pl:'Salate',
+      en:'salad',
+      ph:'zah-LAHT'
+    },
+    {
+      de:'Eis',
+      art:'das',
+      pl:'',
+      en:'ice cream',
+      ph:'ice'
+    },
+    {
+      de:'Kuchen',
+      art:'der',
+      pl:'Kuchen',
+      en:'cake',
+      ph:'KOO-khen'
+    },
+    {
+      de:'Frühstück',
+      art:'das',
+      pl:'',
+      en:'breakfast',
+      ph:'FRUE-shtuek'
+    },
+    {
+      de:'Mittagessen',
+      art:'das',
+      pl:'',
+      en:'lunch',
+      ph:'MIT-tahks-es-sen'
+    },
+    {
+      de:'Abendessen',
+      art:'das',
+      pl:'',
+      en:'dinner, evening meal',
+      ph:'AH-bent-es-sen'
+    },
+    {
+      de:'bezahlen',
+      art:'',
+      pl:'',
+      en:'to pay',
+      ph:'be-TSAH-len'
+    },
+    {
+      de:'kosten',
+      art:'',
+      pl:'',
+      en:'to cost',
+      ph:'KOS-ten'
+    },
+    {
+      de:'lecker',
+      art:'',
+      pl:'',
+      en:'delicious, tasty',
+      ph:'LEK-ker'
+    },
+    {
+      de:'satt',
+      art:'',
+      pl:'',
+      en:'full (after eating)',
+      ph:'zaht'
+    },
+    {
+      de:'reservieren',
+      art:'',
+      pl:'',
+      en:'to reserve, to book',
+      ph:'re-zer-VEE-ren'
+    },
+    {
+      de:'Gast',
+      art:'der',
+      pl:'Gäste',
+      en:'guest',
+      ph:'gahst'
+    },
+    {
+      de:'vegetarisch',
+      art:'',
+      pl:'',
+      en:'vegetarian',
+      ph:'ve-ge-TAH-rish'
+    },
+    {
+      de:'scharf',
+      art:'',
+      pl:'',
+      en:'spicy, hot',
+      ph:'shahrf'
+    },
+    {
+      de:'süß',
+      art:'',
+      pl:'',
+      en:'sweet',
+      ph:'zues'
+    },
+    {
+      de:'salzig',
+      art:'',
+      pl:'',
+      en:'salty',
+      ph:'ZAHL-tsish'
+    },
+    {
+      de:'Gabel',
+      art:'die',
+      pl:'Gabeln',
+      en:'fork',
+      ph:'GAH-bel'
+    },
+    {
+      de:'Teller',
+      art:'der',
+      pl:'Teller',
+      en:'plate',
+      ph:'TEL-ler'
+    }
   ],
   grammar:{
     title:'The dative — "to me", "to you"',
     plain:'A new case: the "dative" answers "to whom?" or "for whom?". "mir" = to me, "dir" = to you, "ihm" = to him, "ihr" = to her, "uns" = to us, "ihnen" = to them. You need it for "Mir schmeckt die Suppe" (the soup tastes good TO ME) and after "mit" (with): "mit dem Auto".',
     rule:'mir (to me) · dir (to you) · ihm (to him) · ihr (to her) · uns (to us) · euch (to you all) · ihnen (to them) · "mit" + dative: mit dem Zug, mit der Karte',
     examples:[
-      {de:'Mir schmeckt die Suppe sehr gut.', en:'The soup tastes very good to me.', ph:'meer shmekt dee ZUP-pe zair goot'},
-      {de:'Kannst du mir helfen?', en:'Can you help me?', ph:'kahnst doo meer HEL-fen'},
-      {de:'Ich fahre mit dem Auto.', en:'I go by car.', ph:'ish FAH-re mit daym OW-to'},
-    ],
+      {
+        de:'Mir schmeckt die Suppe sehr gut.',
+        en:'The soup tastes very good to me.',
+        ph:'meer shmekt dee ZUP-pe zair goot'
+      },
+      {
+        de:'Kannst du mir helfen?',
+        en:'Can you help me?',
+        ph:'kahnst doo meer HEL-fen'
+      },
+      {
+        de:'Ich fahre mit dem Auto.',
+        en:'I go by car.',
+        ph:'ish FAH-re mit daym OW-to'
+      }
+    ]
   },
   quiz:[
-    {q:'Fill in: "___ schmeckt die Suppe."', options:['Ich','Mir','Mich','Mein'], answer:1,
+    {q:'Fill in: "___ schmeckt die Suppe."', options:['Ich', 'Mir', 'Mich', 'Mein'], answer:1,
      why:'"schmecken" needs the dative: "Mir schmeckt die Suppe" = The soup tastes good to me.'},
-    {q:'Fill in: "Kannst du ___ helfen?"', options:['ich','mir','mich','mein'], answer:1,
+    {q:'Fill in: "Kannst du ___ helfen?"', options:['ich', 'mir', 'mich', 'mein'], answer:1,
      why:'"helfen" takes the dative: "Kannst du mir helfen?" = Can you help me?'},
-    {q:'What is "die Rechnung"?', options:['the menu','the bill','the tip','the order'], answer:1,
+    {q:'What is "die Rechnung"?', options:['the menu', 'the bill', 'the tip', 'the order'], answer:1,
      why:'die Rechnung = the bill. die Speisekarte = the menu, das Trinkgeld = the tip.'},
-    {q:'Fill in: "Ich möchte mit Karte ___."', options:['zahlen','zahlt','zahlst','gezahlt'], answer:0,
+    {q:'Fill in: "Ich möchte mit Karte ___."', options:['zahlen', 'zahlt', 'zahlst', 'gezahlt'], answer:0,
      why:'"Ich möchte ... zahlen" = I would like to pay. "mit Karte" = by card.'},
-    {q:'In "Mir geht es gut", "mir" is...', options:['nominative','accusative','dative','genitive'], answer:2,
-     why:'"mir" is the dative of "ich". "Mir geht es gut" = I am fine (literally: to me it goes well).'},
+    {q:'In "Mir geht es gut", "mir" is...', options:['nominative', 'accusative', 'dative', 'genitive'], answer:2,
+     why:'"mir" is the dative of "ich". "Mir geht es gut" = I am fine (literally: to me it goes well).'}
   ],
-  speak:{ prompt:'Order in a restaurant out loud: "Ich möchte das Schnitzel. Die Rechnung, bitte!"',
-    model:'Guten Abend! Einen Tisch für zwei Personen, bitte. Ich möchte die Suppe. Die Rechnung, bitte! Kann ich mit Karte zahlen?' },
+  speak:{
+    prompt:'Order in a restaurant out loud: "Ich möchte das Schnitzel. Die Rechnung, bitte!"',
+    model:[
+      'Guten Abend! Einen Tisch für zwei Personen, bitte.',
+      'Ich möchte die Suppe.',
+      'Die Rechnung, bitte! Kann ich mit Karte zahlen?'
+    ]
+  },
   recap:[
     'Dative pronouns: mir, dir, ihm, ihr, uns, euch, ihnen.',
     '"Mir schmeckt ..." = ... tastes good to me.',
     '"mit" always takes the dative: mit dem Auto, mit der Karte.',
-    'Restaurant: die Speisekarte, die Rechnung, das Trinkgeld.',
+    'Restaurant: die Speisekarte, die Rechnung, das Trinkgeld.'
   ],
   tip:'Memory tip: "Mir geht es gut" — you have known the dative since A1! "mir" was dative all along.',
   extra:[
-    {q:'Say "The soup tastes good to me."', a:'Mir schmeckt die Suppe gut.'},
-    {q:'Say "Can you help me?"', a:'Kannst du mir helfen?'},
-    {q:'What does "Ich nehme die Suppe" mean?', a:'I will take the soup. ("nehmen" = to take)'},
+    {
+      q:'Say "The soup tastes good to me."',
+      a:'Mir schmeckt die Suppe gut.'
+    },
+    {
+      q:'Say "Can you help me?"',
+      a:'Kannst du mir helfen?'
+    },
+    {
+      q:'What does "Ich nehme die Suppe" mean?',
+      a:'I will take the soup. ("nehmen" = to take)'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Food & drink words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Speisekarte',
+          art:'die',
+          pl:'Speisekarten',
+          en:'menu',
+          ph:'SHPY-ze-kahr-te'
+        },
+        {
+          de:'Schnitzel',
+          art:'das',
+          pl:'Schnitzel',
+          en:'schnitzel (breaded meat)',
+          ph:'SHNIT-sel'
+        },
+        {
+          de:'Suppe',
+          art:'die',
+          pl:'Suppen',
+          en:'soup',
+          ph:'ZUP-pe'
+        },
+        {
+          de:'Rechnung',
+          art:'die',
+          pl:'Rechnungen',
+          en:'bill',
+          ph:'REKH-nung'
+        },
+        {
+          de:'Karte',
+          art:'die',
+          pl:'Karten',
+          en:'card',
+          ph:'KAHR-te'
+        },
+        {
+          de:'Trinkgeld',
+          art:'das',
+          pl:'',
+          en:'tip (money)',
+          ph:'TRING-gelt'
+        },
+        {
+          de:'Vorspeise',
+          art:'die',
+          pl:'Vorspeisen',
+          en:'starter',
+          ph:'FOR-shpy-ze'
+        },
+        {
+          de:'Hauptgericht',
+          art:'das',
+          pl:'Hauptgerichte',
+          en:'main course',
+          ph:'HOWPT-geh-rikht'
+        },
+        {
+          de:'Nachtisch',
+          art:'der',
+          pl:'Nachtische',
+          en:'dessert',
+          ph:'NAHKH-tish'
+        },
+        {
+          de:'Kellner',
+          art:'der',
+          pl:'Kellner',
+          en:'waiter',
+          ph:'KEL-ner'
+        },
+        {
+          de:'Kellnerin',
+          art:'die',
+          pl:'Kellnerinnen',
+          en:'waitress',
+          ph:'KEL-ne-rin'
+        },
+        {
+          de:'schmecken',
+          art:'',
+          pl:'',
+          en:'to taste (good/bad)',
+          ph:'SHMEK-ken'
+        },
+        {
+          de:'zahlen',
+          art:'',
+          pl:'',
+          en:'to pay',
+          ph:'TSAH-len'
+        },
+        {
+          de:'bestellen',
+          art:'',
+          pl:'',
+          en:'to order',
+          ph:'beh-SHTEL-len'
+        },
+        {
+          de:'probieren',
+          art:'',
+          pl:'',
+          en:'to try, to taste',
+          ph:'pro-BEE-ren'
+        },
+        {
+          de:'hungrig',
+          art:'',
+          pl:'',
+          en:'hungry',
+          ph:'HOONG-rish'
+        },
+        {
+          de:'durstig',
+          art:'',
+          pl:'',
+          en:'thirsty',
+          ph:'DOORST-ish'
+        },
+        {
+          de:'Menü',
+          art:'das',
+          pl:'Menüs',
+          en:'menu (set meal)',
+          ph:'me-NUE'
+        },
+        {
+          de:'Bier',
+          art:'das',
+          pl:'Biere',
+          en:'beer',
+          ph:'beer'
+        },
+        {
+          de:'Wein',
+          art:'der',
+          pl:'Weine',
+          en:'wine',
+          ph:'vine'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'At the table words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Saft',
+          art:'der',
+          pl:'Säfte',
+          en:'juice',
+          ph:'zahft'
+        },
+        {
+          de:'Pommes',
+          art:'die',
+          pl:'',
+          en:'french fries',
+          ph:'POM-mes'
+        },
+        {
+          de:'Salat',
+          art:'der',
+          pl:'Salate',
+          en:'salad',
+          ph:'zah-LAHT'
+        },
+        {
+          de:'Eis',
+          art:'das',
+          pl:'',
+          en:'ice cream',
+          ph:'ice'
+        },
+        {
+          de:'Kuchen',
+          art:'der',
+          pl:'Kuchen',
+          en:'cake',
+          ph:'KOO-khen'
+        },
+        {
+          de:'Frühstück',
+          art:'das',
+          pl:'',
+          en:'breakfast',
+          ph:'FRUE-shtuek'
+        },
+        {
+          de:'Mittagessen',
+          art:'das',
+          pl:'',
+          en:'lunch',
+          ph:'MIT-tahks-es-sen'
+        },
+        {
+          de:'Abendessen',
+          art:'das',
+          pl:'',
+          en:'dinner, evening meal',
+          ph:'AH-bent-es-sen'
+        },
+        {
+          de:'bezahlen',
+          art:'',
+          pl:'',
+          en:'to pay',
+          ph:'be-TSAH-len'
+        },
+        {
+          de:'kosten',
+          art:'',
+          pl:'',
+          en:'to cost',
+          ph:'KOS-ten'
+        },
+        {
+          de:'lecker',
+          art:'',
+          pl:'',
+          en:'delicious, tasty',
+          ph:'LEK-ker'
+        },
+        {
+          de:'satt',
+          art:'',
+          pl:'',
+          en:'full (after eating)',
+          ph:'zaht'
+        },
+        {
+          de:'reservieren',
+          art:'',
+          pl:'',
+          en:'to reserve, to book',
+          ph:'re-zer-VEE-ren'
+        },
+        {
+          de:'Gast',
+          art:'der',
+          pl:'Gäste',
+          en:'guest',
+          ph:'gahst'
+        },
+        {
+          de:'vegetarisch',
+          art:'',
+          pl:'',
+          en:'vegetarian',
+          ph:'ve-ge-TAH-rish'
+        },
+        {
+          de:'scharf',
+          art:'',
+          pl:'',
+          en:'spicy, hot',
+          ph:'shahrf'
+        },
+        {
+          de:'süß',
+          art:'',
+          pl:'',
+          en:'sweet',
+          ph:'zues'
+        },
+        {
+          de:'salzig',
+          art:'',
+          pl:'',
+          en:'salty',
+          ph:'ZAHL-tsish'
+        },
+        {
+          de:'Gabel',
+          art:'die',
+          pl:'Gabeln',
+          en:'fork',
+          ph:'GAH-bel'
+        },
+        {
+          de:'Teller',
+          art:'der',
+          pl:'Teller',
+          en:'plate',
+          ph:'TEL-ler'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Ordering food',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Guten Abend! Einen Tisch für zwei Personen, bitte.',
+          en:'Good evening! A table for two people, please.',
+          ph:'GOO-ten AH-bent! AI-nen tish fuer tsvai pair-ZOH-nen, BIT-te'
+        },
+        {
+          who:'B',
+          de:'Gern. Hier ist die Speisekarte.',
+          en:'With pleasure. Here is the menu.',
+          ph:'gairn. heer ist dee SHPY-ze-kahr-te'
+        },
+        {
+          who:'A',
+          de:'Ich möchte das Schnitzel. Und du?',
+          en:'I would like the schnitzel. And you?',
+          ph:'ish MERKH-te dahs SHNIT-sel. oont doo'
+        },
+        {
+          who:'B',
+          de:'Ich nehme die Suppe. Mir schmeckt die Suppe sehr gut.',
+          en:'I will take the soup. The soup tastes very good to me.',
+          ph:'ish NAY-me dee ZUP-pe. meer shmekt dee ZUP-pe zair goot'
+        },
+        {
+          who:'A',
+          de:'Die Rechnung, bitte!',
+          en:'The bill, please!',
+          ph:'dee REKH-nung, BIT-te'
+        },
+        {
+          who:'B',
+          de:'Das macht 32 Euro. Kann ich mit Karte zahlen?',
+          en:'That is 32 euros. Can I pay by card?',
+          ph:'dahs mahkht TSVAI-oont-DRAI-sish OY-ro. kahn ish mit KAHR-te TSAH-len'
+        }
+      ],
+      speak:{
+        prompt:'Order in a restaurant out loud: "Ich möchte das Schnitzel. Die Rechnung, bitte!"',
+        model:[
+          'Guten Abend! Einen Tisch für zwei Personen, bitte.',
+          'Ich möchte die Suppe.',
+          'Die Rechnung, bitte! Kann ich mit Karte zahlen?'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: The dative',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'The dative — "to me", "to you"',
+        plain:'A new case: the "dative" answers "to whom?" or "for whom?". "mir" = to me, "dir" = to you, "ihm" = to him, "ihr" = to her, "uns" = to us, "ihnen" = to them. You need it for "Mir schmeckt die Suppe" (the soup tastes good TO ME) and after "mit" (with): "mit dem Auto".',
+        rule:'mir (to me) · dir (to you) · ihm (to him) · ihr (to her) · uns (to us) · euch (to you all) · ihnen (to them) · "mit" + dative: mit dem Zug, mit der Karte',
+        examples:[
+          {
+            de:'Mir schmeckt die Suppe sehr gut.',
+            en:'The soup tastes very good to me.',
+            ph:'meer shmekt dee ZUP-pe zair goot'
+          },
+          {
+            de:'Kannst du mir helfen?',
+            en:'Can you help me?',
+            ph:'kahnst doo meer HEL-fen'
+          },
+          {
+            de:'Ich fahre mit dem Auto.',
+            en:'I go by car.',
+            ph:'ish FAH-re mit daym OW-to'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: dative',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "___ schmeckt die Suppe."', options:['Ich', 'Mir', 'Mich', 'Mein'], answer:1,
+         why:'"schmecken" needs the dative: "Mir schmeckt die Suppe" = The soup tastes good to me.'},
+        {q:'Fill in: "Kannst du ___ helfen?"', options:['ich', 'mir', 'mich', 'mein'], answer:1,
+         why:'"helfen" takes the dative: "Kannst du mir helfen?" = Can you help me?'},
+        {q:'What is "die Rechnung"?', options:['the menu', 'the bill', 'the tip', 'the order'], answer:1,
+         why:'die Rechnung = the bill. die Speisekarte = the menu, das Trinkgeld = the tip.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: in the restaurant',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich möchte mit Karte ___."', options:['zahlen', 'zahlt', 'zahlst', 'gezahlt'], answer:0,
+         why:'"Ich möchte ... zahlen" = I would like to pay. "mit Karte" = by card.'},
+        {q:'In "Mir geht es gut", "mir" is...', options:['nominative', 'accusative', 'dative', 'genitive'], answer:2,
+         why:'"mir" is the dative of "ich". "Mir geht es gut" = I am fine (literally: to me it goes well).'}
+      ]
+    }
   ],
   next:'Next: Chapter 3 — A Holiday Story',
 };
 
 CHAPTERS['A2-3'] = {
-  id:'A2-3', n:3, level:'A2', title:'A Holiday Story', time:'9 min',
+  id:'A2-3',
+  n:3,
+  level:'A2',
+  title:'A Holiday Story',
+  time:'17 min',
   concept:'Tell a story about the past with "war" and "hatte".',
   dialogue:[
-    {who:'A', de:'Wo warst du im Urlaub?', en:'Where were you on holiday?', ph:'voh vahrst doo im OOR-lowp'},
-    {who:'B', de:'Ich war in Italien. Das Wetter war sehr schön.', en:'I was in Italy. The weather was very nice.', ph:'ish vahr in ee-TAH-lee-en. dahs VET-ter vahr zair shern'},
-    {who:'A', de:'Hattest du eine gute Reise?', en:'Did you have a good trip?', ph:'HAH-test doo AI-ne GOO-te RAI-ze'},
-    {who:'B', de:'Ja, die Reise war super. Wir hatten ein schönes Hotel.', en:'Yes, the trip was great. We had a nice hotel.', ph:'yah, dee RAI-ze vahr ZOO-per. veer HAH-ten ine SHER-nes ho-TEL'},
-    {who:'A', de:'Was hast du gemacht?', en:'What did you do?', ph:'vahs hahst doo geh-MAHKHT'},
-    {who:'B', de:'Ich war am Strand und ich habe viel fotografiert.', en:'I was at the beach and I took many photos.', ph:'ish vahr ahm shtrahnt oont ish HAH-be feel foh-toh-grah-FEERT'},
+    {
+      who:'A',
+      de:'Wo warst du im Urlaub?',
+      en:'Where were you on holiday?',
+      ph:'voh vahrst doo im OOR-lowp'
+    },
+    {
+      who:'B',
+      de:'Ich war in Italien. Das Wetter war sehr schön.',
+      en:'I was in Italy. The weather was very nice.',
+      ph:'ish vahr in ee-TAH-lee-en. dahs VET-ter vahr zair shern'
+    },
+    {
+      who:'A',
+      de:'Hattest du eine gute Reise?',
+      en:'Did you have a good trip?',
+      ph:'HAH-test doo AI-ne GOO-te RAI-ze'
+    },
+    {
+      who:'B',
+      de:'Ja, die Reise war super. Wir hatten ein schönes Hotel.',
+      en:'Yes, the trip was great. We had a nice hotel.',
+      ph:'yah, dee RAI-ze vahr ZOO-per. veer HAH-ten ine SHER-nes ho-TEL'
+    },
+    {
+      who:'A',
+      de:'Was hast du gemacht?',
+      en:'What did you do?',
+      ph:'vahs hahst doo geh-MAHKHT'
+    },
+    {
+      who:'B',
+      de:'Ich war am Strand und ich habe viel fotografiert.',
+      en:'I was at the beach and I took many photos.',
+      ph:'ish vahr ahm shtrahnt oont ish HAH-be feel foh-toh-grah-FEERT'
+    }
   ],
   vocab:[
-    {de:'Strand', art:'der', pl:'Strände', en:'beach', ph:'shtrahnt'},
-    {de:'Wetter', art:'das', pl:'', en:'weather', ph:'VET-ter'},
-    {de:'Reise', art:'die', pl:'Reisen', en:'trip', ph:'RAI-ze'},
-    {de:'Foto', art:'das', pl:'Fotos', en:'photo', ph:'FOH-to'},
-    {de:'Kamera', art:'die', pl:'Kameras', en:'camera', ph:'KAH-me-rah'},
-    {de:'Ferien', art:'die', pl:'', en:'holidays (school/work)', ph:'FAY-ree-en'},
-    {de:'See', art:'der', pl:'Seen', en:'lake', ph:'zay'},
-    {de:'Fluss', art:'der', pl:'Flüsse', en:'river', ph:'flooss'},
-    {de:'Insel', art:'die', pl:'Inseln', en:'island', ph:'IN-zel'},
-    {de:'Wald', art:'der', pl:'Wälder', en:'forest', ph:'vahlt'},
-    {de:'fotografieren', art:'', pl:'', en:'to take photos', ph:'foh-toh-grah-FEE-ren'},
-    {de:'war', art:'', pl:'', en:'was (past of sein)', ph:'vahr'},
-    {de:'hatte', art:'', pl:'', en:'had (past of haben)', ph:'HAH-te'},
-    {de:'toll', art:'', pl:'', en:'great, fantastic', ph:'tol'},
-    {de:'super', art:'', pl:'', en:'great, super', ph:'ZOO-per'},
-    {de:'nächstes Jahr', art:'', pl:'', en:'next year', ph:'NEKHS-tes yahr'},
+    {
+      de:'Strand',
+      art:'der',
+      pl:'Strände',
+      en:'beach',
+      ph:'shtrahnt'
+    },
+    {
+      de:'Wetter',
+      art:'das',
+      pl:'',
+      en:'weather',
+      ph:'VET-ter'
+    },
+    {
+      de:'Reise',
+      art:'die',
+      pl:'Reisen',
+      en:'trip',
+      ph:'RAI-ze'
+    },
+    {
+      de:'Foto',
+      art:'das',
+      pl:'Fotos',
+      en:'photo',
+      ph:'FOH-to'
+    },
+    {
+      de:'Kamera',
+      art:'die',
+      pl:'Kameras',
+      en:'camera',
+      ph:'KAH-me-rah'
+    },
+    {
+      de:'Ferien',
+      art:'die',
+      pl:'',
+      en:'holidays (school/work)',
+      ph:'FAY-ree-en'
+    },
+    {
+      de:'See',
+      art:'der',
+      pl:'Seen',
+      en:'lake',
+      ph:'zay'
+    },
+    {
+      de:'Fluss',
+      art:'der',
+      pl:'Flüsse',
+      en:'river',
+      ph:'flooss'
+    },
+    {
+      de:'Insel',
+      art:'die',
+      pl:'Inseln',
+      en:'island',
+      ph:'IN-zel'
+    },
+    {
+      de:'Wald',
+      art:'der',
+      pl:'Wälder',
+      en:'forest',
+      ph:'vahlt'
+    },
+    {
+      de:'fotografieren',
+      art:'',
+      pl:'',
+      en:'to take photos',
+      ph:'foh-toh-grah-FEE-ren'
+    },
+    {
+      de:'war',
+      art:'',
+      pl:'',
+      en:'was (past of sein)',
+      ph:'vahr'
+    },
+    {
+      de:'hatte',
+      art:'',
+      pl:'',
+      en:'had (past of haben)',
+      ph:'HAH-te'
+    },
+    {
+      de:'toll',
+      art:'',
+      pl:'',
+      en:'great, fantastic',
+      ph:'tol'
+    },
+    {
+      de:'super',
+      art:'',
+      pl:'',
+      en:'great, super',
+      ph:'ZOO-per'
+    },
+    {
+      de:'nächstes Jahr',
+      art:'',
+      pl:'',
+      en:'next year',
+      ph:'NEKHS-tes yahr'
+    },
+    {
+      de:'Hotel',
+      art:'das',
+      pl:'Hotels',
+      en:'hotel',
+      ph:'ho-TEL'
+    },
+    {
+      de:'Zimmer',
+      art:'das',
+      pl:'Zimmer',
+      en:'room',
+      ph:'TSIM-mer'
+    },
+    {
+      de:'Stadt',
+      art:'die',
+      pl:'Städte',
+      en:'city, town',
+      ph:'shtaht'
+    },
+    {
+      de:'Land',
+      art:'das',
+      pl:'Länder',
+      en:'country, land',
+      ph:'lahnt'
+    },
+    {
+      de:'Leute',
+      art:'die',
+      pl:'',
+      en:'people',
+      ph:'LOY-te'
+    },
+    {
+      de:'Koffer',
+      art:'der',
+      pl:'Koffer',
+      en:'suitcase',
+      ph:'KOF-fer'
+    },
+    {
+      de:'Pass',
+      art:'der',
+      pl:'Pässe',
+      en:'passport',
+      ph:'pahs'
+    },
+    {
+      de:'Urlaub',
+      art:'der',
+      pl:'',
+      en:'holiday, vacation',
+      ph:'OOR-lowp'
+    },
+    {
+      de:'Bahnhof',
+      art:'der',
+      pl:'Bahnhöfe',
+      en:'train station',
+      ph:'BAHN-hohf'
+    },
+    {
+      de:'Flughafen',
+      art:'der',
+      pl:'Flughäfen',
+      en:'airport',
+      ph:'FLOOK-hah-fen'
+    },
+    {
+      de:'Ticket',
+      art:'das',
+      pl:'Tickets',
+      en:'ticket',
+      ph:'TIK-ket'
+    },
+    {
+      de:'wandern',
+      art:'',
+      pl:'',
+      en:'to hike',
+      ph:'VAHN-dern'
+    },
+    {
+      de:'schwimmen',
+      art:'',
+      pl:'',
+      en:'to swim',
+      ph:'SHVIM-men'
+    },
+    {
+      de:'sonnen',
+      art:'',
+      pl:'',
+      en:'to sunbathe',
+      ph:'ZON-nen'
+    },
+    {
+      de:'entspannen',
+      art:'',
+      pl:'',
+      en:'to relax',
+      ph:'ent-SHPAH-nen'
+    },
+    {
+      de:'besichtigen',
+      art:'',
+      pl:'',
+      en:'to visit, to look around',
+      ph:'be-ZIKH-ti-gen'
+    },
+    {
+      de:'Sehenswürdigkeit',
+      art:'die',
+      pl:'Sehenswürdigkeiten',
+      en:'sight, attraction',
+      ph:'ZAY-ens-vuer-dish-kait'
+    },
+    {
+      de:'Museum',
+      art:'das',
+      pl:'Museen',
+      en:'museum',
+      ph:'moo-ZAY-um'
+    },
+    {
+      de:'Meer',
+      art:'das',
+      pl:'Meere',
+      en:'sea',
+      ph:'mair'
+    },
+    {
+      de:'Sonne',
+      art:'die',
+      pl:'',
+      en:'sun',
+      ph:'ZON-ne'
+    },
+    {
+      de:'Regen',
+      art:'der',
+      pl:'',
+      en:'rain',
+      ph:'RAY-gen'
+    },
+    {
+      de:'Schnee',
+      art:'der',
+      pl:'',
+      en:'snow',
+      ph:'shnay'
+    },
+    {
+      de:'warm',
+      art:'',
+      pl:'',
+      en:'warm',
+      ph:'vahrm'
+    },
+    {
+      de:'schön',
+      art:'',
+      pl:'',
+      en:'beautiful, nice',
+      ph:'shoen'
+    }
   ],
   grammar:{
     title:'Past of sein and haben — war and hatte',
     plain:'For "sein" (to be) and "haben" (to have), Germans do NOT use the Perfekt in stories — they use a simple past form: "war" (was) and "hatte" (had). You need these two words in almost every story.',
     rule:'sein: ich war, du warst, er war, wir waren, ihr wart, sie waren · haben: ich hatte, du hattest, er hatte, wir hatten, ihr hattet, sie hatten',
     examples:[
-      {de:'Ich war in Italien.', en:'I was in Italy.', ph:'ish vahr in ee-TAH-lee-en'},
-      {de:'Wir hatten ein schönes Hotel.', en:'We had a nice hotel.', ph:'veer HAH-ten ine SHER-nes ho-TEL'},
-      {de:'Das Wetter war sehr schön.', en:'The weather was very nice.', ph:'dahs VET-ter vahr zair shern'},
-    ],
+      {
+        de:'Ich war in Italien.',
+        en:'I was in Italy.',
+        ph:'ish vahr in ee-TAH-lee-en'
+      },
+      {
+        de:'Wir hatten ein schönes Hotel.',
+        en:'We had a nice hotel.',
+        ph:'veer HAH-ten ine SHER-nes ho-TEL'
+      },
+      {
+        de:'Das Wetter war sehr schön.',
+        en:'The weather was very nice.',
+        ph:'dahs VET-ter vahr zair shern'
+      }
+    ]
   },
   quiz:[
-    {q:'Fill in: "Ich ___ in Italien."', options:['bin','war','habe','hatte'], answer:1,
+    {q:'Fill in: "Ich ___ in Italien."', options:['bin', 'war', 'habe', 'hatte'], answer:1,
      why:'"war" is the past of "sein". "Ich war in Italien" = I was in Italy.'},
-    {q:'Fill in: "Wir ___ ein schönes Hotel."', options:['haben','hatten','waren','sind'], answer:1,
+    {q:'Fill in: "Wir ___ ein schönes Hotel."', options:['haben', 'hatten', 'waren', 'sind'], answer:1,
      why:'"hatten" is the past of "haben". "Wir hatten ein Hotel" = We had a hotel.'},
-    {q:'"Wo warst du?" means...', options:['Where are you?','Where were you?','Where will you be?','Where do you live?'], answer:1,
+    {q:'"Wo warst du?" means...', options:['Where are you?', 'Where were you?', 'Where will you be?', 'Where do you live?'], answer:1,
      why:'"warst" is the past of "bist". "Wo warst du?" = Where were you?'},
-    {q:'What is the past of "haben" for "ich"?', options:['habe','hatte','hat','gehabt'], answer:1,
+    {q:'What is the past of "haben" for "ich"?', options:['habe', 'hatte', 'hat', 'gehabt'], answer:1,
      why:'ich hatte = I had. Use "hatte" in stories, not "habe gehabt".'},
-    {q:'"Das Wetter war schön." — "war" is the past of...', options:['haben','werden','sein','fahren'], answer:2,
-     why:'"war" is the past of "sein" (to be). "Das Wetter war schön" = The weather was nice.'},
+    {q:'"Das Wetter war schön." — "war" is the past of...', options:['haben', 'werden', 'sein', 'fahren'], answer:2,
+     why:'"war" is the past of "sein" (to be). "Das Wetter war schön" = The weather was nice.'}
   ],
-  speak:{ prompt:'Tell a holiday story out loud in 3 sentences: "Ich war in ... Das Wetter war ... Wir hatten ..."',
-    model:'Ich war in Italien. Das Wetter war sehr schön. Wir hatten ein schönes Hotel. Ich war am Strand.' },
+  speak:{
+    prompt:'Tell a holiday story out loud in 3 sentences: "Ich war in ... Das Wetter war ... Wir hatten ..."',
+    model:[
+      'Ich war in Italien.',
+      'Das Wetter war sehr schön.',
+      'Wir hatten ein schönes Hotel.',
+      'Ich war am Strand.'
+    ]
+  },
   recap:[
     'Past of sein: ich war, du warst, er war, wir waren.',
     'Past of haben: ich hatte, du hattest, er hatte, wir hatten.',
     'Use war/hatte in stories — not the Perfekt.',
-    'Travel: der Strand, die Insel, der See, der Fluss, der Wald.',
+    'Travel: der Strand, die Insel, der See, der Fluss, der Wald.'
   ],
   tip:'Memory tip: "war" and "hatte" are the two most useful past words in German. Learn them by heart — you will use them every day.',
   extra:[
-    {q:'Say "I was in Italy."', a:'Ich war in Italien.'},
-    {q:'Say "We had a nice hotel."', a:'Wir hatten ein schönes Hotel.'},
-    {q:'What is the past of "sein" for "wir"?', a:'wir waren — "Wir waren am Strand."'},
+    {
+      q:'Say "I was in Italy."',
+      a:'Ich war in Italien.'
+    },
+    {
+      q:'Say "We had a nice hotel."',
+      a:'Wir hatten ein schönes Hotel.'
+    },
+    {
+      q:'What is the past of "sein" for "wir"?',
+      a:'wir waren — "Wir waren am Strand."'
+    }
   ],
-  next:'Next: Chapter 4 — Shopping & Clothes (syllabus)',
+  topics:[
+    {
+      id:'t1',
+      title:'Travel words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Strand',
+          art:'der',
+          pl:'Strände',
+          en:'beach',
+          ph:'shtrahnt'
+        },
+        {
+          de:'Wetter',
+          art:'das',
+          pl:'',
+          en:'weather',
+          ph:'VET-ter'
+        },
+        {
+          de:'Reise',
+          art:'die',
+          pl:'Reisen',
+          en:'trip',
+          ph:'RAI-ze'
+        },
+        {
+          de:'Foto',
+          art:'das',
+          pl:'Fotos',
+          en:'photo',
+          ph:'FOH-to'
+        },
+        {
+          de:'Kamera',
+          art:'die',
+          pl:'Kameras',
+          en:'camera',
+          ph:'KAH-me-rah'
+        },
+        {
+          de:'Ferien',
+          art:'die',
+          pl:'',
+          en:'holidays (school/work)',
+          ph:'FAY-ree-en'
+        },
+        {
+          de:'See',
+          art:'der',
+          pl:'Seen',
+          en:'lake',
+          ph:'zay'
+        },
+        {
+          de:'Fluss',
+          art:'der',
+          pl:'Flüsse',
+          en:'river',
+          ph:'flooss'
+        },
+        {
+          de:'Insel',
+          art:'die',
+          pl:'Inseln',
+          en:'island',
+          ph:'IN-zel'
+        },
+        {
+          de:'Wald',
+          art:'der',
+          pl:'Wälder',
+          en:'forest',
+          ph:'vahlt'
+        },
+        {
+          de:'fotografieren',
+          art:'',
+          pl:'',
+          en:'to take photos',
+          ph:'foh-toh-grah-FEE-ren'
+        },
+        {
+          de:'war',
+          art:'',
+          pl:'',
+          en:'was (past of sein)',
+          ph:'vahr'
+        },
+        {
+          de:'hatte',
+          art:'',
+          pl:'',
+          en:'had (past of haben)',
+          ph:'HAH-te'
+        },
+        {
+          de:'toll',
+          art:'',
+          pl:'',
+          en:'great, fantastic',
+          ph:'tol'
+        },
+        {
+          de:'super',
+          art:'',
+          pl:'',
+          en:'great, super',
+          ph:'ZOO-per'
+        },
+        {
+          de:'nächstes Jahr',
+          art:'',
+          pl:'',
+          en:'next year',
+          ph:'NEKHS-tes yahr'
+        },
+        {
+          de:'Hotel',
+          art:'das',
+          pl:'Hotels',
+          en:'hotel',
+          ph:'ho-TEL'
+        },
+        {
+          de:'Zimmer',
+          art:'das',
+          pl:'Zimmer',
+          en:'room',
+          ph:'TSIM-mer'
+        },
+        {
+          de:'Stadt',
+          art:'die',
+          pl:'Städte',
+          en:'city, town',
+          ph:'shtaht'
+        },
+        {
+          de:'Land',
+          art:'das',
+          pl:'Länder',
+          en:'country, land',
+          ph:'lahnt'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Holiday words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Leute',
+          art:'die',
+          pl:'',
+          en:'people',
+          ph:'LOY-te'
+        },
+        {
+          de:'Koffer',
+          art:'der',
+          pl:'Koffer',
+          en:'suitcase',
+          ph:'KOF-fer'
+        },
+        {
+          de:'Pass',
+          art:'der',
+          pl:'Pässe',
+          en:'passport',
+          ph:'pahs'
+        },
+        {
+          de:'Urlaub',
+          art:'der',
+          pl:'',
+          en:'holiday, vacation',
+          ph:'OOR-lowp'
+        },
+        {
+          de:'Bahnhof',
+          art:'der',
+          pl:'Bahnhöfe',
+          en:'train station',
+          ph:'BAHN-hohf'
+        },
+        {
+          de:'Flughafen',
+          art:'der',
+          pl:'Flughäfen',
+          en:'airport',
+          ph:'FLOOK-hah-fen'
+        },
+        {
+          de:'Ticket',
+          art:'das',
+          pl:'Tickets',
+          en:'ticket',
+          ph:'TIK-ket'
+        },
+        {
+          de:'wandern',
+          art:'',
+          pl:'',
+          en:'to hike',
+          ph:'VAHN-dern'
+        },
+        {
+          de:'schwimmen',
+          art:'',
+          pl:'',
+          en:'to swim',
+          ph:'SHVIM-men'
+        },
+        {
+          de:'sonnen',
+          art:'',
+          pl:'',
+          en:'to sunbathe',
+          ph:'ZON-nen'
+        },
+        {
+          de:'entspannen',
+          art:'',
+          pl:'',
+          en:'to relax',
+          ph:'ent-SHPAH-nen'
+        },
+        {
+          de:'besichtigen',
+          art:'',
+          pl:'',
+          en:'to visit, to look around',
+          ph:'be-ZIKH-ti-gen'
+        },
+        {
+          de:'Sehenswürdigkeit',
+          art:'die',
+          pl:'Sehenswürdigkeiten',
+          en:'sight, attraction',
+          ph:'ZAY-ens-vuer-dish-kait'
+        },
+        {
+          de:'Museum',
+          art:'das',
+          pl:'Museen',
+          en:'museum',
+          ph:'moo-ZAY-um'
+        },
+        {
+          de:'Meer',
+          art:'das',
+          pl:'Meere',
+          en:'sea',
+          ph:'mair'
+        },
+        {
+          de:'Sonne',
+          art:'die',
+          pl:'',
+          en:'sun',
+          ph:'ZON-ne'
+        },
+        {
+          de:'Regen',
+          art:'der',
+          pl:'',
+          en:'rain',
+          ph:'RAY-gen'
+        },
+        {
+          de:'Schnee',
+          art:'der',
+          pl:'',
+          en:'snow',
+          ph:'shnay'
+        },
+        {
+          de:'warm',
+          art:'',
+          pl:'',
+          en:'warm',
+          ph:'vahrm'
+        },
+        {
+          de:'schön',
+          art:'',
+          pl:'',
+          en:'beautiful, nice',
+          ph:'shoen'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Where were you?',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Wo warst du im Urlaub?',
+          en:'Where were you on holiday?',
+          ph:'voh vahrst doo im OOR-lowp'
+        },
+        {
+          who:'B',
+          de:'Ich war in Italien. Das Wetter war sehr schön.',
+          en:'I was in Italy. The weather was very nice.',
+          ph:'ish vahr in ee-TAH-lee-en. dahs VET-ter vahr zair shern'
+        },
+        {
+          who:'A',
+          de:'Hattest du eine gute Reise?',
+          en:'Did you have a good trip?',
+          ph:'HAH-test doo AI-ne GOO-te RAI-ze'
+        },
+        {
+          who:'B',
+          de:'Ja, die Reise war super. Wir hatten ein schönes Hotel.',
+          en:'Yes, the trip was great. We had a nice hotel.',
+          ph:'yah, dee RAI-ze vahr ZOO-per. veer HAH-ten ine SHER-nes ho-TEL'
+        },
+        {
+          who:'A',
+          de:'Was hast du gemacht?',
+          en:'What did you do?',
+          ph:'vahs hahst doo geh-MAHKHT'
+        },
+        {
+          who:'B',
+          de:'Ich war am Strand und ich habe viel fotografiert.',
+          en:'I was at the beach and I took many photos.',
+          ph:'ish vahr ahm shtrahnt oont ish HAH-be feel foh-toh-grah-FEERT'
+        }
+      ],
+      speak:{
+        prompt:'Tell a holiday story out loud in 3 sentences: "Ich war in ... Das Wetter war ... Wir hatten ..."',
+        model:[
+          'Ich war in Italien.',
+          'Das Wetter war sehr schön.',
+          'Wir hatten ein schönes Hotel.',
+          'Ich war am Strand.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: "war" and "hatte"',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Past of sein and haben — war and hatte',
+        plain:'For "sein" (to be) and "haben" (to have), Germans do NOT use the Perfekt in stories — they use a simple past form: "war" (was) and "hatte" (had). You need these two words in almost every story.',
+        rule:'sein: ich war, du warst, er war, wir waren, ihr wart, sie waren · haben: ich hatte, du hattest, er hatte, wir hatten, ihr hattet, sie hatten',
+        examples:[
+          {
+            de:'Ich war in Italien.',
+            en:'I was in Italy.',
+            ph:'ish vahr in ee-TAH-lee-en'
+          },
+          {
+            de:'Wir hatten ein schönes Hotel.',
+            en:'We had a nice hotel.',
+            ph:'veer HAH-ten ine SHER-nes ho-TEL'
+          },
+          {
+            de:'Das Wetter war sehr schön.',
+            en:'The weather was very nice.',
+            ph:'dahs VET-ter vahr zair shern'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: war & hatte',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich ___ in Italien."', options:['bin', 'war', 'habe', 'hatte'], answer:1,
+         why:'"war" is the past of "sein". "Ich war in Italien" = I was in Italy.'},
+        {q:'Fill in: "Wir ___ ein schönes Hotel."', options:['haben', 'hatten', 'waren', 'sind'], answer:1,
+         why:'"hatten" is the past of "haben". "Wir hatten ein Hotel" = We had a hotel.'},
+        {q:'"Wo warst du?" means...', options:['Where are you?', 'Where were you?', 'Where will you be?', 'Where do you live?'], answer:1,
+         why:'"warst" is the past of "bist". "Wo warst du?" = Where were you?'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: on holiday',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'What is the past of "haben" for "ich"?', options:['habe', 'hatte', 'hat', 'gehabt'], answer:1,
+         why:'ich hatte = I had. Use "hatte" in stories, not "habe gehabt".'},
+        {q:'"Das Wetter war schön." — "war" is the past of...', options:['haben', 'werden', 'sein', 'fahren'], answer:2,
+         why:'"war" is the past of "sein" (to be). "Das Wetter war schön" = The weather was nice.'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 4 — Shopping & Clothes',
 };
 
-/* ---- A2 syllabus chapters 4–12 (core words + grammar; full lesson coming soon) ---- */
-CHAPTERS['A2-4'] = { id:'A2-4', n:4, level:'A2', title:'Shopping & Clothes', time:'9 min', syllabus:true,
-  concept:'Try on clothes, talk about sizes, and compare prices.',
-  learn:['Ask for a size and try clothes on','Compare prices with the superlative','Pay at the checkout and exchange items'],
-  grammar:{ title:'Comparative & superlative',
-    plain:'You know the comparative (billiger = cheaper). The superlative is "the cheapest": am billigsten. "Das ist die billigste Jacke." = That is the cheapest jacket. Most adjectives: -er (comparative), am -sten (superlative). gut → besser → am besten.' },
+CHAPTERS['A2-4'] = {
+  id:'A2-4',
+  n:4,
+  level:'A2',
+  title:'Shopping & Clothes',
+  time:'17 min',
+  concept:'Try on clothes, talk about sizes, and compare prices — with comparatives, superlatives and adjective endings.',
+  dialogue:[
+    {
+      who:'A',
+      de:'Guten Tag! Ich suche eine rote Bluse.',
+      en:'Good day! I am looking for a red blouse.',
+      ph:'GOO-ten TAHK! ish ZOO-khe INE ROH-te BLOO-ze'
+    },
+    {
+      who:'B',
+      de:'Welche Größe haben Sie?',
+      en:'What size are you?',
+      ph:'VEL-khe GROO-se HAH-ben zee'
+    },
+    {
+      who:'A',
+      de:'Größe 38, bitte.',
+      en:'Size 38, please.',
+      ph:'GROO-se ahkht-oont-DRAI-sish, BIT-te'
+    },
+    {
+      who:'B',
+      de:'Die Umkleidekabine ist dort. Sie können die Bluse anprobieren.',
+      en:'The changing room is over there. You can try on the blouse.',
+      ph:'dee OOM-klai-de-kah-BEE-ne ist dort. zee KOEN-nen dee BLOO-ze AHN-pro-bee-ren'
+    },
+    {
+      who:'A',
+      de:'Die Bluse passt gut. Was kostet sie?',
+      en:'The blouse fits well. How much is it?',
+      ph:'dee BLOO-ze pahst goot. vahs KOS-tet zee'
+    },
+    {
+      who:'B',
+      de:'Sie kostet 29 Euro 99. Möchten Sie mit Karte zahlen?',
+      en:'It costs 29 euros 99. Would you like to pay by card?',
+      ph:'zee KOS-tet NOIN-oont-TSVAHN-tsish OY-ro NOIN-oont-NOIN-tsish. MOEKH-ten zee mit KAHR-te TSAH-len'
+    }
+  ],
   vocab:[
-    {de:'Größe', art:'die', pl:'Größen', en:'size', ph:'GRER-se'},
-    {de:'anprobieren', art:'', pl:'', en:'to try on', ph:'AHN-pro-bee-ren'},
-    {de:'passen', art:'', pl:'', en:'to fit', ph:'PAH-sen'},
-    {de:'stehen', art:'', pl:'', en:'to suit (clothes)', ph:'SHTAY-en'},
-    {de:'Preis', art:'der', pl:'Preise', en:'price', ph:'price'},
-    {de:'Kasse', art:'die', pl:'Kassen', en:'checkout, cash desk', ph:'KAH-se'},
-    {de:'Rabatt', art:'der', pl:'Rabatte', en:'discount', ph:'rah-BAHT'},
-    {de:'umtauschen', art:'', pl:'', en:'to exchange', ph:'OOM-tow-shen'},
-  ], next:'Next: Chapter 5 — At Home & Furniture (syllabus)' };
+    {
+      de:'Hemd',
+      art:'das',
+      pl:'Hemden',
+      en:'shirt',
+      ph:'hemt'
+    },
+    {
+      de:'Hose',
+      art:'die',
+      pl:'Hosen',
+      en:'trousers, pants',
+      ph:'HOH-ze'
+    },
+    {
+      de:'Rock',
+      art:'der',
+      pl:'Röcke',
+      en:'skirt',
+      ph:'rok'
+    },
+    {
+      de:'Bluse',
+      art:'die',
+      pl:'Blusen',
+      en:'blouse',
+      ph:'BLOO-ze'
+    },
+    {
+      de:'Mantel',
+      art:'der',
+      pl:'Mäntel',
+      en:'coat',
+      ph:'MAHN-tel'
+    },
+    {
+      de:'Anzug',
+      art:'der',
+      pl:'Anzüge',
+      en:'suit',
+      ph:'AHN-tsook'
+    },
+    {
+      de:'Kleid',
+      art:'das',
+      pl:'Kleider',
+      en:'dress',
+      ph:'klite'
+    },
+    {
+      de:'Schuh',
+      art:'der',
+      pl:'Schuhe',
+      en:'shoe',
+      ph:'shoo'
+    },
+    {
+      de:'Socke',
+      art:'die',
+      pl:'Socken',
+      en:'sock',
+      ph:'ZOK-ke'
+    },
+    {
+      de:'Hut',
+      art:'der',
+      pl:'Hüte',
+      en:'hat',
+      ph:'hoot'
+    },
+    {
+      de:'Mütze',
+      art:'die',
+      pl:'Mützen',
+      en:'cap, beanie',
+      ph:'MUET-se'
+    },
+    {
+      de:'Schal',
+      art:'der',
+      pl:'Schals',
+      en:'scarf',
+      ph:'shahl'
+    },
+    {
+      de:'Tasche',
+      art:'die',
+      pl:'Taschen',
+      en:'bag',
+      ph:'TAH-she'
+    },
+    {
+      de:'Gürtel',
+      art:'der',
+      pl:'Gürtel',
+      en:'belt',
+      ph:'GUER-tel'
+    },
+    {
+      de:'Brille',
+      art:'die',
+      pl:'Brillen',
+      en:'glasses',
+      ph:'BRIL-le'
+    },
+    {
+      de:'Verkäufer',
+      art:'der',
+      pl:'Verkäufer',
+      en:'salesman',
+      ph:'fair-KOY-fer'
+    },
+    {
+      de:'Verkäuferin',
+      art:'die',
+      pl:'Verkäuferinnen',
+      en:'saleswoman',
+      ph:'fair-KOY-fe-rin'
+    },
+    {
+      de:'Umkleidekabine',
+      art:'die',
+      pl:'Umkleidekabinen',
+      en:'changing room',
+      ph:'OOM-klai-de-kah-BEE-ne'
+    },
+    {
+      de:'Quittung',
+      art:'die',
+      pl:'Quittungen',
+      en:'receipt',
+      ph:'KVIT-toong'
+    },
+    {
+      de:'Kreditkarte',
+      art:'die',
+      pl:'Kreditkarten',
+      en:'credit card',
+      ph:'kre-DEET-kahr-te'
+    },
+    {
+      de:'bar',
+      art:'',
+      pl:'',
+      en:'in cash',
+      ph:'bahr'
+    },
+    {
+      de:'rot',
+      art:'',
+      pl:'',
+      en:'red',
+      ph:'roht'
+    },
+    {
+      de:'blau',
+      art:'',
+      pl:'',
+      en:'blue',
+      ph:'blau'
+    },
+    {
+      de:'grün',
+      art:'',
+      pl:'',
+      en:'green',
+      ph:'gruen'
+    },
+    {
+      de:'gelb',
+      art:'',
+      pl:'',
+      en:'yellow',
+      ph:'gelp'
+    },
+    {
+      de:'schwarz',
+      art:'',
+      pl:'',
+      en:'black',
+      ph:'shvahrts'
+    },
+    {
+      de:'weiß',
+      art:'',
+      pl:'',
+      en:'white',
+      ph:'vice'
+    },
+    {
+      de:'grau',
+      art:'',
+      pl:'',
+      en:'grey',
+      ph:'grau'
+    },
+    {
+      de:'braun',
+      art:'',
+      pl:'',
+      en:'brown',
+      ph:'braun'
+    },
+    {
+      de:'rosa',
+      art:'',
+      pl:'',
+      en:'pink',
+      ph:'ROH-zah'
+    },
+    {
+      de:'bunt',
+      art:'',
+      pl:'',
+      en:'colourful',
+      ph:'boont'
+    },
+    {
+      de:'hell',
+      art:'',
+      pl:'',
+      en:'light (colour)',
+      ph:'hel'
+    },
+    {
+      de:'dunkel',
+      art:'',
+      pl:'',
+      en:'dark (colour)',
+      ph:'DOON-kel'
+    },
+    {
+      de:'kurz',
+      art:'',
+      pl:'',
+      en:'short',
+      ph:'koorts'
+    },
+    {
+      de:'lang',
+      art:'',
+      pl:'',
+      en:'long',
+      ph:'lahng'
+    },
+    {
+      de:'eng',
+      art:'',
+      pl:'',
+      en:'tight',
+      ph:'eng'
+    },
+    {
+      de:'weit',
+      art:'',
+      pl:'',
+      en:'wide, loose',
+      ph:'vite'
+    },
+    {
+      de:'bequem',
+      art:'',
+      pl:'',
+      en:'comfortable',
+      ph:'be-KVAYM'
+    },
+    {
+      de:'modern',
+      art:'',
+      pl:'',
+      en:'modern',
+      ph:'mo-DAIRN'
+    },
+    {
+      de:'tragen',
+      art:'',
+      pl:'',
+      en:'to wear',
+      ph:'TRAH-gen'
+    },
+    {
+      de:'aussehen',
+      art:'',
+      pl:'',
+      en:'to look (like)',
+      ph:'OWS-zay-en'
+    },
+    {
+      de:'gefallen',
+      art:'',
+      pl:'',
+      en:'to like, to please',
+      ph:'ge-FAH-len'
+    },
+    {
+      de:'Größe',
+      art:'die',
+      pl:'Größen',
+      en:'size',
+      ph:'GROO-se'
+    },
+    {
+      de:'anprobieren',
+      art:'',
+      pl:'',
+      en:'to try on',
+      ph:'AHN-pro-bee-ren'
+    },
+    {
+      de:'passen',
+      art:'',
+      pl:'',
+      en:'to fit',
+      ph:'PAH-sen'
+    },
+    {
+      de:'stehen',
+      art:'',
+      pl:'',
+      en:'to suit (clothes)',
+      ph:'SHTAY-en'
+    },
+    {
+      de:'Preis',
+      art:'der',
+      pl:'Preise',
+      en:'price',
+      ph:'price'
+    },
+    {
+      de:'Kasse',
+      art:'die',
+      pl:'Kassen',
+      en:'checkout, cash desk',
+      ph:'KAH-se'
+    },
+    {
+      de:'Rabatt',
+      art:'der',
+      pl:'Rabatte',
+      en:'discount',
+      ph:'rah-BAHT'
+    },
+    {
+      de:'umtauschen',
+      art:'',
+      pl:'',
+      en:'to exchange',
+      ph:'OOM-tow-shen'
+    }
+  ],
+  grammar:{
+    title:'Comparative, superlative & adjective endings',
+    plain:'You know the comparative: billiger = cheaper. The superlative is "the cheapest": am billigsten — "Das ist die billigste Jacke." Adjectives before a noun also take endings: "ein rotes Kleid" (a red dress), "der rote Rock" (the red skirt). Learn the ending WITH the phrase.',
+    rule:'billig → billiger → am billigsten · gut → besser → am besten · ein + -es: ein rotes Kleid · der/die/das + -e: der rote Rock, die rote Bluse, das rote Hemd',
+    examples:[
+      {
+        de:'Diese Jacke ist billiger als die rote.',
+        en:'This jacket is cheaper than the red one.',
+        ph:'DEE-ze YAH-ke ist BIL-li-ger ahls dee ROH-te'
+      },
+      {
+        de:'Das ist die billigste Jacke im Geschäft.',
+        en:'That is the cheapest jacket in the shop.',
+        ph:'dahs ist dee BIL-lish-ste YAH-ke im ge-SHEFT'
+      },
+      {
+        de:'Ich möchte ein rotes Kleid.',
+        en:'I would like a red dress.',
+        ph:'ish MOEKH-te ine ROH-tes klite'
+      }
+    ]
+  },
+  quiz:[
+    {q:'What is the superlative of "billig"?', options:['billiger', 'am billigsten', 'billigster', 'mehr billig'], answer:1,
+     why:'The superlative is "am billigsten": "Das ist die billigste Jacke."'},
+    {q:'Fill in: "Ich möchte ein ___ Kleid." (red)', options:['rote', 'rotes', 'roter', 'rot'], answer:1,
+     why:'"ein" + neuter noun takes -es: ein rotes Kleid.'},
+    {q:'Fill in: "___ Jacke ist die billigste." (the)', options:['Der', 'Die', 'Das', 'Den'], answer:1,
+     why:'"die billigste Jacke" — Jacke is feminine, so "die".'},
+    {q:'"gut → besser → ...?"', options:['am gutesten', 'am besten', 'bester', 'mehr gut'], answer:1,
+     why:'gut is irregular: gut → besser → am besten.'},
+    {q:'What does "anprobieren" mean?', options:['to buy', 'to try on', 'to pay', 'to exchange'], answer:1,
+     why:'anprobieren = to try on: "Ich möchte die Bluse anprobieren."'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich suche eine rote Bluse in Größe 38. Die Bluse passt gut."',
+    model:[
+      'Ich suche eine rote Bluse.',
+      'Welche Größe haben Sie?',
+      'Die Bluse passt gut.',
+      'Ich möchte mit Karte zahlen.'
+    ]
+  },
+  recap:[
+    'Comparative: billig → billiger. Superlative: am billigsten.',
+    'gut → besser → am besten (irregular — learn it by heart).',
+    'Adjective endings: ein rotes Kleid, der rote Rock, die rote Bluse.',
+    'Shopping: die Größe, anprobieren, passen, der Preis, die Kasse, der Rabatt.'
+  ],
+  tip:'Memory tip: always learn clothes WITH the colour and the ending — "ein rotes Kleid", "der blaue Mantel". The ending sticks to the phrase.',
+  extra:[
+    {
+      q:'Say "This jacket is cheaper than the red one."',
+      a:'Diese Jacke ist billiger als die rote.'
+    },
+    {
+      q:'Say "I would like a red dress."',
+      a:'Ich möchte ein rotes Kleid.'
+    },
+    {
+      q:'What is the superlative of "teuer"?',
+      a:'am teuersten — "Das ist das teuerste Kleid."'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Clothes words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Hemd',
+          art:'das',
+          pl:'Hemden',
+          en:'shirt',
+          ph:'hemt'
+        },
+        {
+          de:'Hose',
+          art:'die',
+          pl:'Hosen',
+          en:'trousers, pants',
+          ph:'HOH-ze'
+        },
+        {
+          de:'Rock',
+          art:'der',
+          pl:'Röcke',
+          en:'skirt',
+          ph:'rok'
+        },
+        {
+          de:'Bluse',
+          art:'die',
+          pl:'Blusen',
+          en:'blouse',
+          ph:'BLOO-ze'
+        },
+        {
+          de:'Mantel',
+          art:'der',
+          pl:'Mäntel',
+          en:'coat',
+          ph:'MAHN-tel'
+        },
+        {
+          de:'Anzug',
+          art:'der',
+          pl:'Anzüge',
+          en:'suit',
+          ph:'AHN-tsook'
+        },
+        {
+          de:'Kleid',
+          art:'das',
+          pl:'Kleider',
+          en:'dress',
+          ph:'klite'
+        },
+        {
+          de:'Schuh',
+          art:'der',
+          pl:'Schuhe',
+          en:'shoe',
+          ph:'shoo'
+        },
+        {
+          de:'Socke',
+          art:'die',
+          pl:'Socken',
+          en:'sock',
+          ph:'ZOK-ke'
+        },
+        {
+          de:'Hut',
+          art:'der',
+          pl:'Hüte',
+          en:'hat',
+          ph:'hoot'
+        },
+        {
+          de:'Mütze',
+          art:'die',
+          pl:'Mützen',
+          en:'cap, beanie',
+          ph:'MUET-se'
+        },
+        {
+          de:'Schal',
+          art:'der',
+          pl:'Schals',
+          en:'scarf',
+          ph:'shahl'
+        },
+        {
+          de:'Tasche',
+          art:'die',
+          pl:'Taschen',
+          en:'bag',
+          ph:'TAH-she'
+        },
+        {
+          de:'Gürtel',
+          art:'der',
+          pl:'Gürtel',
+          en:'belt',
+          ph:'GUER-tel'
+        },
+        {
+          de:'Brille',
+          art:'die',
+          pl:'Brillen',
+          en:'glasses',
+          ph:'BRIL-le'
+        },
+        {
+          de:'Verkäufer',
+          art:'der',
+          pl:'Verkäufer',
+          en:'salesman',
+          ph:'fair-KOY-fer'
+        },
+        {
+          de:'Verkäuferin',
+          art:'die',
+          pl:'Verkäuferinnen',
+          en:'saleswoman',
+          ph:'fair-KOY-fe-rin'
+        },
+        {
+          de:'Umkleidekabine',
+          art:'die',
+          pl:'Umkleidekabinen',
+          en:'changing room',
+          ph:'OOM-klai-de-kah-BEE-ne'
+        },
+        {
+          de:'Quittung',
+          art:'die',
+          pl:'Quittungen',
+          en:'receipt',
+          ph:'KVIT-toong'
+        },
+        {
+          de:'Kreditkarte',
+          art:'die',
+          pl:'Kreditkarten',
+          en:'credit card',
+          ph:'kre-DEET-kahr-te'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Colours & shopping words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'bar',
+          art:'',
+          pl:'',
+          en:'in cash',
+          ph:'bahr'
+        },
+        {
+          de:'rot',
+          art:'',
+          pl:'',
+          en:'red',
+          ph:'roht'
+        },
+        {
+          de:'blau',
+          art:'',
+          pl:'',
+          en:'blue',
+          ph:'blau'
+        },
+        {
+          de:'grün',
+          art:'',
+          pl:'',
+          en:'green',
+          ph:'gruen'
+        },
+        {
+          de:'gelb',
+          art:'',
+          pl:'',
+          en:'yellow',
+          ph:'gelp'
+        },
+        {
+          de:'schwarz',
+          art:'',
+          pl:'',
+          en:'black',
+          ph:'shvahrts'
+        },
+        {
+          de:'weiß',
+          art:'',
+          pl:'',
+          en:'white',
+          ph:'vice'
+        },
+        {
+          de:'grau',
+          art:'',
+          pl:'',
+          en:'grey',
+          ph:'grau'
+        },
+        {
+          de:'braun',
+          art:'',
+          pl:'',
+          en:'brown',
+          ph:'braun'
+        },
+        {
+          de:'rosa',
+          art:'',
+          pl:'',
+          en:'pink',
+          ph:'ROH-zah'
+        },
+        {
+          de:'bunt',
+          art:'',
+          pl:'',
+          en:'colourful',
+          ph:'boont'
+        },
+        {
+          de:'hell',
+          art:'',
+          pl:'',
+          en:'light (colour)',
+          ph:'hel'
+        },
+        {
+          de:'dunkel',
+          art:'',
+          pl:'',
+          en:'dark (colour)',
+          ph:'DOON-kel'
+        },
+        {
+          de:'kurz',
+          art:'',
+          pl:'',
+          en:'short',
+          ph:'koorts'
+        },
+        {
+          de:'lang',
+          art:'',
+          pl:'',
+          en:'long',
+          ph:'lahng'
+        },
+        {
+          de:'eng',
+          art:'',
+          pl:'',
+          en:'tight',
+          ph:'eng'
+        },
+        {
+          de:'weit',
+          art:'',
+          pl:'',
+          en:'wide, loose',
+          ph:'vite'
+        },
+        {
+          de:'bequem',
+          art:'',
+          pl:'',
+          en:'comfortable',
+          ph:'be-KVAYM'
+        },
+        {
+          de:'modern',
+          art:'',
+          pl:'',
+          en:'modern',
+          ph:'mo-DAIRN'
+        },
+        {
+          de:'tragen',
+          art:'',
+          pl:'',
+          en:'to wear',
+          ph:'TRAH-gen'
+        },
+        {
+          de:'aussehen',
+          art:'',
+          pl:'',
+          en:'to look (like)',
+          ph:'OWS-zay-en'
+        },
+        {
+          de:'gefallen',
+          art:'',
+          pl:'',
+          en:'to like, to please',
+          ph:'ge-FAH-len'
+        },
+        {
+          de:'Größe',
+          art:'die',
+          pl:'Größen',
+          en:'size',
+          ph:'GROO-se'
+        },
+        {
+          de:'anprobieren',
+          art:'',
+          pl:'',
+          en:'to try on',
+          ph:'AHN-pro-bee-ren'
+        },
+        {
+          de:'passen',
+          art:'',
+          pl:'',
+          en:'to fit',
+          ph:'PAH-sen'
+        },
+        {
+          de:'stehen',
+          art:'',
+          pl:'',
+          en:'to suit (clothes)',
+          ph:'SHTAY-en'
+        },
+        {
+          de:'Preis',
+          art:'der',
+          pl:'Preise',
+          en:'price',
+          ph:'price'
+        },
+        {
+          de:'Kasse',
+          art:'die',
+          pl:'Kassen',
+          en:'checkout, cash desk',
+          ph:'KAH-se'
+        },
+        {
+          de:'Rabatt',
+          art:'der',
+          pl:'Rabatte',
+          en:'discount',
+          ph:'rah-BAHT'
+        },
+        {
+          de:'umtauschen',
+          art:'',
+          pl:'',
+          en:'to exchange',
+          ph:'OOM-tow-shen'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: At the clothes shop',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Guten Tag! Ich suche eine rote Bluse.',
+          en:'Good day! I am looking for a red blouse.',
+          ph:'GOO-ten TAHK! ish ZOO-khe INE ROH-te BLOO-ze'
+        },
+        {
+          who:'B',
+          de:'Welche Größe haben Sie?',
+          en:'What size are you?',
+          ph:'VEL-khe GROO-se HAH-ben zee'
+        },
+        {
+          who:'A',
+          de:'Größe 38, bitte.',
+          en:'Size 38, please.',
+          ph:'GROO-se ahkht-oont-DRAI-sish, BIT-te'
+        },
+        {
+          who:'B',
+          de:'Die Umkleidekabine ist dort. Sie können die Bluse anprobieren.',
+          en:'The changing room is over there. You can try on the blouse.',
+          ph:'dee OOM-klai-de-kah-BEE-ne ist dort. zee KOEN-nen dee BLOO-ze AHN-pro-bee-ren'
+        },
+        {
+          who:'A',
+          de:'Die Bluse passt gut. Was kostet sie?',
+          en:'The blouse fits well. How much is it?',
+          ph:'dee BLOO-ze pahst goot. vahs KOS-tet zee'
+        },
+        {
+          who:'B',
+          de:'Sie kostet 29 Euro 99. Möchten Sie mit Karte zahlen?',
+          en:'It costs 29 euros 99. Would you like to pay by card?',
+          ph:'zee KOS-tet NOIN-oont-TSVAHN-tsish OY-ro NOIN-oont-NOIN-tsish. MOEKH-ten zee mit KAHR-te TSAH-len'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich suche eine rote Bluse in Größe 38. Die Bluse passt gut."',
+        model:[
+          'Ich suche eine rote Bluse.',
+          'Welche Größe haben Sie?',
+          'Die Bluse passt gut.',
+          'Ich möchte mit Karte zahlen.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Comparative & superlative',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Comparative, superlative & adjective endings',
+        plain:'You know the comparative: billiger = cheaper. The superlative is "the cheapest": am billigsten — "Das ist die billigste Jacke." Adjectives before a noun also take endings: "ein rotes Kleid" (a red dress), "der rote Rock" (the red skirt). Learn the ending WITH the phrase.',
+        rule:'billig → billiger → am billigsten · gut → besser → am besten · ein + -es: ein rotes Kleid · der/die/das + -e: der rote Rock, die rote Bluse, das rote Hemd',
+        examples:[
+          {
+            de:'Diese Jacke ist billiger als die rote.',
+            en:'This jacket is cheaper than the red one.',
+            ph:'DEE-ze YAH-ke ist BIL-li-ger ahls dee ROH-te'
+          },
+          {
+            de:'Das ist die billigste Jacke im Geschäft.',
+            en:'That is the cheapest jacket in the shop.',
+            ph:'dahs ist dee BIL-lish-ste YAH-ke im ge-SHEFT'
+          },
+          {
+            de:'Ich möchte ein rotes Kleid.',
+            en:'I would like a red dress.',
+            ph:'ish MOEKH-te ine ROH-tes klite'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: comparatives',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'What is the superlative of "billig"?', options:['billiger', 'am billigsten', 'billigster', 'mehr billig'], answer:1,
+         why:'The superlative is "am billigsten": "Das ist die billigste Jacke."'},
+        {q:'Fill in: "Ich möchte ein ___ Kleid." (red)', options:['rote', 'rotes', 'roter', 'rot'], answer:1,
+         why:'"ein" + neuter noun takes -es: ein rotes Kleid.'},
+        {q:'Fill in: "___ Jacke ist die billigste." (the)', options:['Der', 'Die', 'Das', 'Den'], answer:1,
+         why:'"die billigste Jacke" — Jacke is feminine, so "die".'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: clothes & prices',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'"gut → besser → ...?"', options:['am gutesten', 'am besten', 'bester', 'mehr gut'], answer:1,
+         why:'gut is irregular: gut → besser → am besten.'},
+        {q:'What does "anprobieren" mean?', options:['to buy', 'to try on', 'to pay', 'to exchange'], answer:1,
+         why:'anprobieren = to try on: "Ich möchte die Bluse anprobieren."'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 5 — At Home & Furniture',
+};
 
-CHAPTERS['A2-5'] = { id:'A2-5', n:5, level:'A2', title:'At Home & Furniture', time:'9 min', syllabus:true,
-  concept:'Describe a flat in detail and talk about moving house.',
-  learn:['Say where things are with in/auf/neben/unter','Describe rooms and furniture in detail','Talk about rent and neighbours'],
-  grammar:{ title:'Two-way prepositions — in, auf, an, unter, über, vor, hinter, neben, zwischen',
-    plain:'These 9 prepositions take the dative for "where?" (position) and the accusative for "where to?" (movement). "Das Bild hängt an der Wand." (dative — where?) vs "Ich hänge das Bild an die Wand." (accusative — where to?)' },
+CHAPTERS['A2-5'] = {
+  id:'A2-5',
+  n:5,
+  level:'A2',
+  title:'At Home & Furniture',
+  time:'17 min',
+  concept:'Describe a flat in detail, say where things are, and talk about moving house — with two-way prepositions.',
+  dialogue:[
+    {
+      who:'A',
+      de:'Wo ist der Teppich?',
+      en:'Where is the carpet?',
+      ph:'voh ist dair TEP-pish'
+    },
+    {
+      who:'B',
+      de:'Der Teppich liegt im Wohnzimmer.',
+      en:'The carpet is in the living room.',
+      ph:'dair TEP-pish leekt im VOHN-tsim-mer'
+    },
+    {
+      who:'A',
+      de:'Und wo hängt das Bild?',
+      en:'And where does the picture hang?',
+      ph:'oont voh hengt dahs bilt'
+    },
+    {
+      who:'B',
+      de:'Das Bild hängt an der Wand, über dem Sofa.',
+      en:'The picture hangs on the wall, above the sofa.',
+      ph:'dahs bilt hengt ahn dair vahnt, UE-ber daym ZOH-fah'
+    },
+    {
+      who:'A',
+      de:'Ich stelle die Lampe neben das Bett.',
+      en:'I am putting the lamp next to the bed.',
+      ph:'ish SHTEL-le dee LAHM-pe NAY-ben dahs bet'
+    },
+    {
+      who:'B',
+      de:'Gut! Die Wohnung ist jetzt schön eingerichtet.',
+      en:'Good! The flat is nicely furnished now.',
+      ph:'goot! dee VOHN-noong ist yetst shoen INE-ge-rikh-tet'
+    }
+  ],
   vocab:[
-    {de:'Regal', art:'das', pl:'Regale', en:'shelf', ph:'reh-GAHL'},
-    {de:'Teppich', art:'der', pl:'Teppiche', en:'carpet', ph:'TEP-pish'},
-    {de:'Gardine', art:'die', pl:'Gardinen', en:'curtain', ph:'gahr-DEE-ne'},
-    {de:'umziehen', art:'', pl:'', en:'to move house', ph:'OOM-tsee-en'},
-    {de:'Miete', art:'die', pl:'Mieten', en:'rent', ph:'MEE-te'},
-    {de:'Nachbar', art:'der', pl:'Nachbarn', en:'neighbour (male)', ph:'NAHKH-bahr'},
-    {de:'Nachbarin', art:'die', pl:'Nachbarinnen', en:'neighbour (female)', ph:'NAHKH-bah-rin'},
-    {de:'einrichten', art:'', pl:'', en:'to furnish', ph:'INE-rikh-ten'},
-  ], next:'Next: Chapter 6 — Health & At the Doctor (syllabus)' };
+    {
+      de:'Bild',
+      art:'das',
+      pl:'Bilder',
+      en:'picture, photo',
+      ph:'bilt'
+    },
+    {
+      de:'Lampe',
+      art:'die',
+      pl:'Lampen',
+      en:'lamp',
+      ph:'LAHM-pe'
+    },
+    {
+      de:'Balkon',
+      art:'der',
+      pl:'Balkone',
+      en:'balcony',
+      ph:'bahl-KOHN'
+    },
+    {
+      de:'Garten',
+      art:'der',
+      pl:'Gärten',
+      en:'garden',
+      ph:'GAHR-ten'
+    },
+    {
+      de:'Tür',
+      art:'die',
+      pl:'Türen',
+      en:'door',
+      ph:'tuer'
+    },
+    {
+      de:'Fenster',
+      art:'das',
+      pl:'Fenster',
+      en:'window',
+      ph:'FENS-ter'
+    },
+    {
+      de:'Wand',
+      art:'die',
+      pl:'Wände',
+      en:'wall',
+      ph:'vahnt'
+    },
+    {
+      de:'Boden',
+      art:'der',
+      pl:'Böden',
+      en:'floor',
+      ph:'BOH-den'
+    },
+    {
+      de:'Decke',
+      art:'die',
+      pl:'Decken',
+      en:'ceiling',
+      ph:'DEK-ke'
+    },
+    {
+      de:'Keller',
+      art:'der',
+      pl:'Keller',
+      en:'cellar, basement',
+      ph:'KEL-ler'
+    },
+    {
+      de:'Dachboden',
+      art:'der',
+      pl:'Dachböden',
+      en:'attic',
+      ph:'DAHKH-boh-den'
+    },
+    {
+      de:'Flur',
+      art:'der',
+      pl:'Flure',
+      en:'hallway',
+      ph:'floor'
+    },
+    {
+      de:'Treppe',
+      art:'die',
+      pl:'Treppen',
+      en:'stairs',
+      ph:'TREP-pe'
+    },
+    {
+      de:'Aufzug',
+      art:'der',
+      pl:'Aufzüge',
+      en:'lift, elevator',
+      ph:'OWF-tsook'
+    },
+    {
+      de:'Heizung',
+      art:'die',
+      pl:'Heizungen',
+      en:'heating',
+      ph:'HAI-tsoong'
+    },
+    {
+      de:'Herd',
+      art:'der',
+      pl:'Herde',
+      en:'stove, cooker',
+      ph:'hairt'
+    },
+    {
+      de:'Kühlschrank',
+      art:'der',
+      pl:'Kühlschränke',
+      en:'fridge',
+      ph:'KUEL-shrahnk'
+    },
+    {
+      de:'Waschmaschine',
+      art:'die',
+      pl:'Waschmaschinen',
+      en:'washing machine',
+      ph:'VAHSH-mah-shee-ne'
+    },
+    {
+      de:'Spiegel',
+      art:'der',
+      pl:'Spiegel',
+      en:'mirror',
+      ph:'SHPEE-gel'
+    },
+    {
+      de:'Dusche',
+      art:'die',
+      pl:'Duschen',
+      en:'shower',
+      ph:'DOO-she'
+    },
+    {
+      de:'Badewanne',
+      art:'die',
+      pl:'Badewannen',
+      en:'bathtub',
+      ph:'BAH-de-vah-ne'
+    },
+    {
+      de:'Handtuch',
+      art:'das',
+      pl:'Handtücher',
+      en:'towel',
+      ph:'HAHNT-tookh'
+    },
+    {
+      de:'Kissen',
+      art:'das',
+      pl:'Kissen',
+      en:'pillow',
+      ph:'KIS-sen'
+    },
+    {
+      de:'Pflanze',
+      art:'die',
+      pl:'Pflanzen',
+      en:'plant',
+      ph:'PFLAHN-tse'
+    },
+    {
+      de:'hängen',
+      art:'',
+      pl:'',
+      en:'to hang',
+      ph:'HENG-en'
+    },
+    {
+      de:'stellen',
+      art:'',
+      pl:'',
+      en:'to put, to place (upright)',
+      ph:'SHTEL-len'
+    },
+    {
+      de:'legen',
+      art:'',
+      pl:'',
+      en:'to put, to lay (flat)',
+      ph:'LAY-gen'
+    },
+    {
+      de:'sitzen',
+      art:'',
+      pl:'',
+      en:'to sit',
+      ph:'ZIT-sen'
+    },
+    {
+      de:'liegen',
+      art:'',
+      pl:'',
+      en:'to lie',
+      ph:'LEE-gen'
+    },
+    {
+      de:'Umzug',
+      art:'der',
+      pl:'Umzüge',
+      en:'move (house)',
+      ph:'OOM-tsook'
+    },
+    {
+      de:'Adresse',
+      art:'die',
+      pl:'Adressen',
+      en:'address',
+      ph:'ah-DRES-se'
+    },
+    {
+      de:'Stockwerk',
+      art:'das',
+      pl:'Stockwerke',
+      en:'floor, storey',
+      ph:'SHTOK-vairk'
+    },
+    {
+      de:'neben',
+      art:'',
+      pl:'',
+      en:'next to, beside',
+      ph:'NAY-ben'
+    },
+    {
+      de:'unter',
+      art:'',
+      pl:'',
+      en:'under',
+      ph:'OON-ter'
+    },
+    {
+      de:'über',
+      art:'',
+      pl:'',
+      en:'above, over',
+      ph:'UE-ber'
+    },
+    {
+      de:'vor',
+      art:'',
+      pl:'',
+      en:'in front of',
+      ph:'fohr'
+    },
+    {
+      de:'hinter',
+      art:'',
+      pl:'',
+      en:'behind',
+      ph:'HIN-ter'
+    },
+    {
+      de:'zwischen',
+      art:'',
+      pl:'',
+      en:'between',
+      ph:'TSVISH-en'
+    },
+    {
+      de:'Regal',
+      art:'das',
+      pl:'Regale',
+      en:'shelf',
+      ph:'re-GAHL'
+    },
+    {
+      de:'Teppich',
+      art:'der',
+      pl:'Teppiche',
+      en:'carpet',
+      ph:'TEP-pish'
+    },
+    {
+      de:'Gardine',
+      art:'die',
+      pl:'Gardinen',
+      en:'curtain',
+      ph:'gahr-DEE-ne'
+    },
+    {
+      de:'umziehen',
+      art:'',
+      pl:'',
+      en:'to move house',
+      ph:'OOM-tsee-en'
+    },
+    {
+      de:'Miete',
+      art:'die',
+      pl:'Mieten',
+      en:'rent',
+      ph:'MEE-te'
+    },
+    {
+      de:'Nachbar',
+      art:'der',
+      pl:'Nachbarn',
+      en:'neighbour (male)',
+      ph:'NAHKH-bahr'
+    },
+    {
+      de:'Nachbarin',
+      art:'die',
+      pl:'Nachbarinnen',
+      en:'neighbour (female)',
+      ph:'NAHKH-bah-rin'
+    },
+    {
+      de:'einrichten',
+      art:'',
+      pl:'',
+      en:'to furnish',
+      ph:'INE-rikh-ten'
+    }
+  ],
+  grammar:{
+    title:'Two-way prepositions — in, auf, an, unter, über, vor, hinter, neben, zwischen',
+    plain:'These 9 prepositions take the dative for "where?" (position) and the accusative for "where to?" (movement). "Das Bild hängt an der Wand." (dative — where?) vs "Ich hänge das Bild an die Wand." (accusative — where to?) Ask "Wo?" → dative. Ask "Wohin?" → accusative.',
+    rule:'Wo? (position) = dative: an der Wand, im Wohnzimmer · Wohin? (movement) = accusative: an die Wand, ins Wohnzimmer',
+    examples:[
+      {
+        de:'Das Bild hängt an der Wand.',
+        en:'The picture hangs on the wall. (Wo? → dative)',
+        ph:'dahs bilt hengt ahn dair vahnt'
+      },
+      {
+        de:'Ich hänge das Bild an die Wand.',
+        en:'I am hanging the picture on the wall. (Wohin? → accusative)',
+        ph:'ish HENG-e dahs bilt ahn dee vahnt'
+      },
+      {
+        de:'Der Teppich liegt im Wohnzimmer.',
+        en:'The carpet is in the living room.',
+        ph:'dair TEP-pish leekt im VOHN-tsim-mer'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Das Bild hängt ___ Wand."', options:['an der', 'an die', 'an dem', 'an das'], answer:0,
+     why:'"Wo?" → dative: an der Wand. The picture is already there.'},
+    {q:'Fill in: "Ich hänge das Bild ___ Wand."', options:['an der', 'an die', 'an dem', 'in der'], answer:1,
+     why:'"Wohin?" → accusative: an die Wand. You are moving it there.'},
+    {q:'"Der Teppich liegt ___ Wohnzimmer."', options:['im', 'in das', 'ins', 'am'], answer:0,
+     why:'"im" = in dem. Wo? → dative: im Wohnzimmer.'},
+    {q:'Which preposition means "between"?', options:['neben', 'zwischen', 'hinter', 'unter'], answer:1,
+     why:'zwischen = between. neben = next to, hinter = behind, unter = under.'},
+    {q:'What does "umziehen" mean?', options:['to clean', 'to move house', 'to paint', 'to repair'], answer:1,
+     why:'umziehen = to move house. "Ich ziehe nächste Woche um."'}
+  ],
+  speak:{
+    prompt:'Describe your room out loud: "Das Bild hängt an der Wand. Der Teppich liegt im Wohnzimmer."',
+    model:[
+      'Das Bild hängt an der Wand.',
+      'Ich stelle die Lampe neben das Bett.',
+      'Der Teppich liegt im Wohnzimmer.'
+    ]
+  },
+  recap:[
+    'Two-way prepositions: an, auf, in, unter, über, vor, hinter, neben, zwischen.',
+    'Wo? (position) = dative: an der Wand, im Wohnzimmer.',
+    'Wohin? (movement) = accusative: an die Wand, ins Wohnzimmer.',
+    'Home: der Teppich, das Bild, die Lampe, der Balkon, die Miete.'
+  ],
+  tip:'Memory tip: ask "Wo?" or "Wohin?" before you choose the case. "Wo ist es?" → dative. "Wohin geht es?" → accusative.',
+  extra:[
+    {
+      q:'Say "The picture hangs on the wall."',
+      a:'Das Bild hängt an der Wand.'
+    },
+    {
+      q:'Say "I put the lamp next to the bed."',
+      a:'Ich stelle die Lampe neben das Bett.'
+    },
+    {
+      q:'What does "zwischen" mean?',
+      a:'between — "Das Bild hängt zwischen den Fenstern."'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Rooms & furniture words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Bild',
+          art:'das',
+          pl:'Bilder',
+          en:'picture, photo',
+          ph:'bilt'
+        },
+        {
+          de:'Lampe',
+          art:'die',
+          pl:'Lampen',
+          en:'lamp',
+          ph:'LAHM-pe'
+        },
+        {
+          de:'Balkon',
+          art:'der',
+          pl:'Balkone',
+          en:'balcony',
+          ph:'bahl-KOHN'
+        },
+        {
+          de:'Garten',
+          art:'der',
+          pl:'Gärten',
+          en:'garden',
+          ph:'GAHR-ten'
+        },
+        {
+          de:'Tür',
+          art:'die',
+          pl:'Türen',
+          en:'door',
+          ph:'tuer'
+        },
+        {
+          de:'Fenster',
+          art:'das',
+          pl:'Fenster',
+          en:'window',
+          ph:'FENS-ter'
+        },
+        {
+          de:'Wand',
+          art:'die',
+          pl:'Wände',
+          en:'wall',
+          ph:'vahnt'
+        },
+        {
+          de:'Boden',
+          art:'der',
+          pl:'Böden',
+          en:'floor',
+          ph:'BOH-den'
+        },
+        {
+          de:'Decke',
+          art:'die',
+          pl:'Decken',
+          en:'ceiling',
+          ph:'DEK-ke'
+        },
+        {
+          de:'Keller',
+          art:'der',
+          pl:'Keller',
+          en:'cellar, basement',
+          ph:'KEL-ler'
+        },
+        {
+          de:'Dachboden',
+          art:'der',
+          pl:'Dachböden',
+          en:'attic',
+          ph:'DAHKH-boh-den'
+        },
+        {
+          de:'Flur',
+          art:'der',
+          pl:'Flure',
+          en:'hallway',
+          ph:'floor'
+        },
+        {
+          de:'Treppe',
+          art:'die',
+          pl:'Treppen',
+          en:'stairs',
+          ph:'TREP-pe'
+        },
+        {
+          de:'Aufzug',
+          art:'der',
+          pl:'Aufzüge',
+          en:'lift, elevator',
+          ph:'OWF-tsook'
+        },
+        {
+          de:'Heizung',
+          art:'die',
+          pl:'Heizungen',
+          en:'heating',
+          ph:'HAI-tsoong'
+        },
+        {
+          de:'Herd',
+          art:'der',
+          pl:'Herde',
+          en:'stove, cooker',
+          ph:'hairt'
+        },
+        {
+          de:'Kühlschrank',
+          art:'der',
+          pl:'Kühlschränke',
+          en:'fridge',
+          ph:'KUEL-shrahnk'
+        },
+        {
+          de:'Waschmaschine',
+          art:'die',
+          pl:'Waschmaschinen',
+          en:'washing machine',
+          ph:'VAHSH-mah-shee-ne'
+        },
+        {
+          de:'Spiegel',
+          art:'der',
+          pl:'Spiegel',
+          en:'mirror',
+          ph:'SHPEE-gel'
+        },
+        {
+          de:'Dusche',
+          art:'die',
+          pl:'Duschen',
+          en:'shower',
+          ph:'DOO-she'
+        },
+        {
+          de:'Badewanne',
+          art:'die',
+          pl:'Badewannen',
+          en:'bathtub',
+          ph:'BAH-de-vah-ne'
+        },
+        {
+          de:'Handtuch',
+          art:'das',
+          pl:'Handtücher',
+          en:'towel',
+          ph:'HAHNT-tookh'
+        },
+        {
+          de:'Kissen',
+          art:'das',
+          pl:'Kissen',
+          en:'pillow',
+          ph:'KIS-sen'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Position words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Pflanze',
+          art:'die',
+          pl:'Pflanzen',
+          en:'plant',
+          ph:'PFLAHN-tse'
+        },
+        {
+          de:'hängen',
+          art:'',
+          pl:'',
+          en:'to hang',
+          ph:'HENG-en'
+        },
+        {
+          de:'stellen',
+          art:'',
+          pl:'',
+          en:'to put, to place (upright)',
+          ph:'SHTEL-len'
+        },
+        {
+          de:'legen',
+          art:'',
+          pl:'',
+          en:'to put, to lay (flat)',
+          ph:'LAY-gen'
+        },
+        {
+          de:'sitzen',
+          art:'',
+          pl:'',
+          en:'to sit',
+          ph:'ZIT-sen'
+        },
+        {
+          de:'liegen',
+          art:'',
+          pl:'',
+          en:'to lie',
+          ph:'LEE-gen'
+        },
+        {
+          de:'Umzug',
+          art:'der',
+          pl:'Umzüge',
+          en:'move (house)',
+          ph:'OOM-tsook'
+        },
+        {
+          de:'Adresse',
+          art:'die',
+          pl:'Adressen',
+          en:'address',
+          ph:'ah-DRES-se'
+        },
+        {
+          de:'Stockwerk',
+          art:'das',
+          pl:'Stockwerke',
+          en:'floor, storey',
+          ph:'SHTOK-vairk'
+        },
+        {
+          de:'neben',
+          art:'',
+          pl:'',
+          en:'next to, beside',
+          ph:'NAY-ben'
+        },
+        {
+          de:'unter',
+          art:'',
+          pl:'',
+          en:'under',
+          ph:'OON-ter'
+        },
+        {
+          de:'über',
+          art:'',
+          pl:'',
+          en:'above, over',
+          ph:'UE-ber'
+        },
+        {
+          de:'vor',
+          art:'',
+          pl:'',
+          en:'in front of',
+          ph:'fohr'
+        },
+        {
+          de:'hinter',
+          art:'',
+          pl:'',
+          en:'behind',
+          ph:'HIN-ter'
+        },
+        {
+          de:'zwischen',
+          art:'',
+          pl:'',
+          en:'between',
+          ph:'TSVISH-en'
+        },
+        {
+          de:'Regal',
+          art:'das',
+          pl:'Regale',
+          en:'shelf',
+          ph:'re-GAHL'
+        },
+        {
+          de:'Teppich',
+          art:'der',
+          pl:'Teppiche',
+          en:'carpet',
+          ph:'TEP-pish'
+        },
+        {
+          de:'Gardine',
+          art:'die',
+          pl:'Gardinen',
+          en:'curtain',
+          ph:'gahr-DEE-ne'
+        },
+        {
+          de:'umziehen',
+          art:'',
+          pl:'',
+          en:'to move house',
+          ph:'OOM-tsee-en'
+        },
+        {
+          de:'Miete',
+          art:'die',
+          pl:'Mieten',
+          en:'rent',
+          ph:'MEE-te'
+        },
+        {
+          de:'Nachbar',
+          art:'der',
+          pl:'Nachbarn',
+          en:'neighbour (male)',
+          ph:'NAHKH-bahr'
+        },
+        {
+          de:'Nachbarin',
+          art:'die',
+          pl:'Nachbarinnen',
+          en:'neighbour (female)',
+          ph:'NAHKH-bah-rin'
+        },
+        {
+          de:'einrichten',
+          art:'',
+          pl:'',
+          en:'to furnish',
+          ph:'INE-rikh-ten'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Where is it?',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Wo ist der Teppich?',
+          en:'Where is the carpet?',
+          ph:'voh ist dair TEP-pish'
+        },
+        {
+          who:'B',
+          de:'Der Teppich liegt im Wohnzimmer.',
+          en:'The carpet is in the living room.',
+          ph:'dair TEP-pish leekt im VOHN-tsim-mer'
+        },
+        {
+          who:'A',
+          de:'Und wo hängt das Bild?',
+          en:'And where does the picture hang?',
+          ph:'oont voh hengt dahs bilt'
+        },
+        {
+          who:'B',
+          de:'Das Bild hängt an der Wand, über dem Sofa.',
+          en:'The picture hangs on the wall, above the sofa.',
+          ph:'dahs bilt hengt ahn dair vahnt, UE-ber daym ZOH-fah'
+        },
+        {
+          who:'A',
+          de:'Ich stelle die Lampe neben das Bett.',
+          en:'I am putting the lamp next to the bed.',
+          ph:'ish SHTEL-le dee LAHM-pe NAY-ben dahs bet'
+        },
+        {
+          who:'B',
+          de:'Gut! Die Wohnung ist jetzt schön eingerichtet.',
+          en:'Good! The flat is nicely furnished now.',
+          ph:'goot! dee VOHN-noong ist yetst shoen INE-ge-rikh-tet'
+        }
+      ],
+      speak:{
+        prompt:'Describe your room out loud: "Das Bild hängt an der Wand. Der Teppich liegt im Wohnzimmer."',
+        model:[
+          'Das Bild hängt an der Wand.',
+          'Ich stelle die Lampe neben das Bett.',
+          'Der Teppich liegt im Wohnzimmer.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Two-way prepositions',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Two-way prepositions — in, auf, an, unter, über, vor, hinter, neben, zwischen',
+        plain:'These 9 prepositions take the dative for "where?" (position) and the accusative for "where to?" (movement). "Das Bild hängt an der Wand." (dative — where?) vs "Ich hänge das Bild an die Wand." (accusative — where to?) Ask "Wo?" → dative. Ask "Wohin?" → accusative.',
+        rule:'Wo? (position) = dative: an der Wand, im Wohnzimmer · Wohin? (movement) = accusative: an die Wand, ins Wohnzimmer',
+        examples:[
+          {
+            de:'Das Bild hängt an der Wand.',
+            en:'The picture hangs on the wall. (Wo? → dative)',
+            ph:'dahs bilt hengt ahn dair vahnt'
+          },
+          {
+            de:'Ich hänge das Bild an die Wand.',
+            en:'I am hanging the picture on the wall. (Wohin? → accusative)',
+            ph:'ish HENG-e dahs bilt ahn dee vahnt'
+          },
+          {
+            de:'Der Teppich liegt im Wohnzimmer.',
+            en:'The carpet is in the living room.',
+            ph:'dair TEP-pish leekt im VOHN-tsim-mer'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: Wo or Wohin?',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Das Bild hängt ___ Wand."', options:['an der', 'an die', 'an dem', 'an das'], answer:0,
+         why:'"Wo?" → dative: an der Wand. The picture is already there.'},
+        {q:'Fill in: "Ich hänge das Bild ___ Wand."', options:['an der', 'an die', 'an dem', 'in der'], answer:1,
+         why:'"Wohin?" → accusative: an die Wand. You are moving it there.'},
+        {q:'"Der Teppich liegt ___ Wohnzimmer."', options:['im', 'in das', 'ins', 'am'], answer:0,
+         why:'"im" = in dem. Wo? → dative: im Wohnzimmer.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: at home',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Which preposition means "between"?', options:['neben', 'zwischen', 'hinter', 'unter'], answer:1,
+         why:'zwischen = between. neben = next to, hinter = behind, unter = under.'},
+        {q:'What does "umziehen" mean?', options:['to clean', 'to move house', 'to paint', 'to repair'], answer:1,
+         why:'umziehen = to move house. "Ich ziehe nächste Woche um."'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 6 — Health & At the Doctor',
+};
 
-CHAPTERS['A2-6'] = { id:'A2-6', n:6, level:'A2', title:'Health & At the Doctor', time:'9 min', syllabus:true,
-  concept:'Make a doctor\'s appointment and describe symptoms.',
-  learn:['Make an appointment by phone','Describe symptoms and pain','Understand a prescription'],
-  grammar:{ title:'Past of modal verbs — konnte, musste, wollte',
-    plain:'Modal verbs also have a simple past: können → konnte (could), müssen → musste (had to), wollen → wollte (wanted). "Ich konnte nicht schlafen." = I could not sleep.' },
+CHAPTERS['A2-6'] = {
+  id:'A2-6',
+  n:6,
+  level:'A2',
+  title:'Health & At the Doctor',
+  time:'17 min',
+  concept:'Make a doctor\'s appointment, describe symptoms, and talk about feeling unwell — with the past of modal verbs and reflexive verbs.',
+  dialogue:[
+    {
+      who:'A',
+      de:'Guten Tag, Praxis Dr. Schmidt. Wie kann ich Ihnen helfen?',
+      en:'Good day, Dr. Schmidt\'s practice. How can I help you?',
+      ph:'GOO-ten TAHK, PRAHK-sis DOK-tor shmit. vee kahn ish EE-nen HEL-fen'
+    },
+    {
+      who:'B',
+      de:'Guten Tag, ich möchte einen Termin machen. Ich habe Fieber und Husten.',
+      en:'Good day, I would like to make an appointment. I have a fever and a cough.',
+      ph:'GOO-ten TAHK, ish MOEKH-te INE-en tair-MEEN MAH-khen. ish HAH-be FEE-ber oont HOOS-ten'
+    },
+    {
+      who:'A',
+      de:'Können Sie morgen um 10 Uhr kommen?',
+      en:'Can you come tomorrow at 10 o\'clock?',
+      ph:'KOEN-nen zee MOR-gen oom tsayn oor KOM-men'
+    },
+    {
+      who:'B',
+      de:'Ja, das geht. Ich konnte letzte Nacht nicht schlafen.',
+      en:'Yes, that works. I could not sleep last night.',
+      ph:'yah, dahs gayt. ish KONT-te LETS-te nahkht nikht SHLAH-fen'
+    },
+    {
+      who:'A',
+      de:'Kommen Sie morgen. Bringen Sie bitte Ihre Krankenkassenkarte mit.',
+      en:'Come tomorrow. Please bring your health insurance card.',
+      ph:'KOM-men zee MOR-gen. BRING-en zee BIT-te EE-re KRAHN-ken-kahs-sen-kahr-te mit'
+    },
+    {
+      who:'B',
+      de:'Danke! Auf Wiederhören.',
+      en:'Thank you! Goodbye (on the phone).',
+      ph:'DAHN-ke! owf VEE-der-hoe-ren'
+    }
+  ],
   vocab:[
-    {de:'Termin', art:'der', pl:'Termine', en:'appointment', ph:'tair-MEEN'},
-    {de:'Praxis', art:'die', pl:'Praxen', en:'doctor\'s office', ph:'PRAHK-sis'},
-    {de:'Krankenkasse', art:'die', pl:'Krankenkassen', en:'health insurance', ph:'KRAHN-ken-kah-se'},
-    {de:'Rezept', art:'das', pl:'Rezepte', en:'prescription', ph:'reh-TSEPT'},
-    {de:'Hals', art:'der', pl:'Hälse', en:'throat, neck', ph:'hahls'},
-    {de:'husten', art:'', pl:'', en:'to cough', ph:'HOOS-ten'},
-    {de:'niesen', art:'', pl:'', en:'to sneeze', ph:'NEE-zen'},
-    {de:'Husten', art:'der', pl:'', en:'cough', ph:'HOOS-ten'},
-  ], next:'Next: Chapter 7 — Work & Professions (syllabus)' };
+    {
+      de:'Schnupfen',
+      art:'der',
+      pl:'',
+      en:'cold (runny nose)',
+      ph:'SHNOOP-fen'
+    },
+    {
+      de:'Grippe',
+      art:'die',
+      pl:'Grippen',
+      en:'flu',
+      ph:'GRIP-pe'
+    },
+    {
+      de:'Erkältung',
+      art:'die',
+      pl:'Erkältungen',
+      en:'cold, chill',
+      ph:'air-KEL-toong'
+    },
+    {
+      de:'Kopfschmerzen',
+      art:'die',
+      pl:'',
+      en:'headache',
+      ph:'KOPF-shmair-tsen'
+    },
+    {
+      de:'Bauchschmerzen',
+      art:'die',
+      pl:'',
+      en:'stomach ache',
+      ph:'BOWKH-shmair-tsen'
+    },
+    {
+      de:'Zahnschmerz',
+      art:'der',
+      pl:'Zahnschmerzen',
+      en:'toothache',
+      ph:'TSAHN-shmairts'
+    },
+    {
+      de:'Fieber',
+      art:'das',
+      pl:'',
+      en:'fever',
+      ph:'FEE-ber'
+    },
+    {
+      de:'Tablette',
+      art:'die',
+      pl:'Tabletten',
+      en:'tablet, pill',
+      ph:'tah-BLET-te'
+    },
+    {
+      de:'Medizin',
+      art:'die',
+      pl:'Medizinen',
+      en:'medicine',
+      ph:'me-dee-TSEEN'
+    },
+    {
+      de:'Tropfen',
+      art:'der',
+      pl:'Tropfen',
+      en:'drop (medicine)',
+      ph:'TROP-fen'
+    },
+    {
+      de:'Verband',
+      art:'der',
+      pl:'Verbände',
+      en:'bandage',
+      ph:'fair-BAHNT'
+    },
+    {
+      de:'Pflaster',
+      art:'das',
+      pl:'Pflaster',
+      en:'plaster, band-aid',
+      ph:'PFLAHS-ter'
+    },
+    {
+      de:'Behandlung',
+      art:'die',
+      pl:'Behandlungen',
+      en:'treatment',
+      ph:'be-HAHNT-loong'
+    },
+    {
+      de:'Arzttermin',
+      art:'der',
+      pl:'Arzttermine',
+      en:'doctor\'s appointment',
+      ph:'AHRTST-tair-meen'
+    },
+    {
+      de:'Ärztin',
+      art:'die',
+      pl:'Ärztinnen',
+      en:'doctor (female)',
+      ph:'AIRTS-tin'
+    },
+    {
+      de:'Apotheker',
+      art:'der',
+      pl:'Apotheker',
+      en:'pharmacist',
+      ph:'ah-po-TAY-ker'
+    },
+    {
+      de:'sich fühlen',
+      art:'',
+      pl:'',
+      en:'to feel (well/unwell)',
+      ph:'zikh FUE-len'
+    },
+    {
+      de:'sich ausruhen',
+      art:'',
+      pl:'',
+      en:'to rest',
+      ph:'zikh OWS-roo-en'
+    },
+    {
+      de:'sich erholen',
+      art:'',
+      pl:'',
+      en:'to recover',
+      ph:'zikh air-HOH-len'
+    },
+    {
+      de:'sich erkälten',
+      art:'',
+      pl:'',
+      en:'to catch a cold',
+      ph:'zikh air-KEL-ten'
+    },
+    {
+      de:'weh tun',
+      art:'',
+      pl:'',
+      en:'to hurt, to ache',
+      ph:'vay toon'
+    },
+    {
+      de:'Krankheit',
+      art:'die',
+      pl:'Krankheiten',
+      en:'illness, disease',
+      ph:'KRAHNK-hite'
+    },
+    {
+      de:'Notfall',
+      art:'der',
+      pl:'Notfälle',
+      en:'emergency',
+      ph:'NOHT-fahl'
+    },
+    {
+      de:'Krankenwagen',
+      art:'der',
+      pl:'Krankenwagen',
+      en:'ambulance',
+      ph:'KRAHN-ken-vah-gen'
+    },
+    {
+      de:'Notaufnahme',
+      art:'die',
+      pl:'Notaufnahmen',
+      en:'emergency room',
+      ph:'NOHT-owf-nah-me'
+    },
+    {
+      de:'Wartezimmer',
+      art:'das',
+      pl:'Wartezimmer',
+      en:'waiting room',
+      ph:'VAHR-te-tsim-mer'
+    },
+    {
+      de:'Sprechstunde',
+      art:'die',
+      pl:'Sprechstunden',
+      en:'consultation hours',
+      ph:'SHPREKH-shtoon-de'
+    },
+    {
+      de:'Untersuchung',
+      art:'die',
+      pl:'Untersuchungen',
+      en:'examination',
+      ph:'oon-ter-ZOO-khoong'
+    },
+    {
+      de:'Puls',
+      art:'der',
+      pl:'Pulse',
+      en:'pulse',
+      ph:'pools'
+    },
+    {
+      de:'Temperatur',
+      art:'die',
+      pl:'Temperaturen',
+      en:'temperature',
+      ph:'tem-pe-rah-TOOR'
+    },
+    {
+      de:'messen',
+      art:'',
+      pl:'',
+      en:'to measure',
+      ph:'MES-sen'
+    },
+    {
+      de:'einnehmen',
+      art:'',
+      pl:'',
+      en:'to take (medicine)',
+      ph:'INE-nay-men'
+    },
+    {
+      de:'Allergie',
+      art:'die',
+      pl:'Allergien',
+      en:'allergy',
+      ph:'ah-lair-GEE'
+    },
+    {
+      de:'Impfung',
+      art:'die',
+      pl:'Impfungen',
+      en:'vaccination',
+      ph:'IMP-foong'
+    },
+    {
+      de:'impfen',
+      art:'',
+      pl:'',
+      en:'to vaccinate',
+      ph:'IMP-fen'
+    },
+    {
+      de:'Impfpass',
+      art:'der',
+      pl:'Impfpässe',
+      en:'vaccination card',
+      ph:'IMPF-pahs'
+    },
+    {
+      de:'Versicherung',
+      art:'die',
+      pl:'Versicherungen',
+      en:'insurance',
+      ph:'fair-ZIKH-e-roong'
+    },
+    {
+      de:'versichert',
+      art:'',
+      pl:'',
+      en:'insured',
+      ph:'fair-ZIKH-ert'
+    },
+    {
+      de:'Termin',
+      art:'der',
+      pl:'Termine',
+      en:'appointment',
+      ph:'tair-MEEN'
+    },
+    {
+      de:'Praxis',
+      art:'die',
+      pl:'Praxen',
+      en:'doctor\'s office',
+      ph:'PRAHK-sis'
+    },
+    {
+      de:'Krankenkasse',
+      art:'die',
+      pl:'Krankenkassen',
+      en:'health insurance',
+      ph:'KRAHN-ken-kah-se'
+    },
+    {
+      de:'Rezept',
+      art:'das',
+      pl:'Rezepte',
+      en:'prescription',
+      ph:'reh-TSEPT'
+    },
+    {
+      de:'Hals',
+      art:'der',
+      pl:'Hälse',
+      en:'throat, neck',
+      ph:'hahls'
+    },
+    {
+      de:'husten',
+      art:'',
+      pl:'',
+      en:'to cough',
+      ph:'HOOS-ten'
+    },
+    {
+      de:'niesen',
+      art:'',
+      pl:'',
+      en:'to sneeze',
+      ph:'NEE-zen'
+    },
+    {
+      de:'Husten',
+      art:'der',
+      pl:'',
+      en:'cough',
+      ph:'HOOS-ten'
+    }
+  ],
+  grammar:{
+    title:'Past of modal verbs — and reflexive verbs',
+    plain:'Modal verbs also have a simple past: können → konnte (could), müssen → musste (had to), wollen → wollte (wanted). "Ich konnte nicht schlafen." = I could not sleep. And at the doctor you need reflexive verbs: "Ich fühle mich nicht gut." — "sich" changes with the person: ich fühle mich, du fühlst dich, er fühlt sich, wir fühlen uns.',
+    rule:'können → konnte · müssen → musste · wollen → wollte · reflexive: mich, dich, sich, uns, euch, sich',
+    examples:[
+      {
+        de:'Ich konnte letzte Nacht nicht schlafen.',
+        en:'I could not sleep last night.',
+        ph:'ish KONT-te LETS-te nahkht nikht SHLAH-fen'
+      },
+      {
+        de:'Ich musste zum Arzt gehen.',
+        en:'I had to go to the doctor.',
+        ph:'ish MOOS-te tsoom ahrtst GAY-en'
+      },
+      {
+        de:'Ich fühle mich nicht gut.',
+        en:'I do not feel well.',
+        ph:'ish FUE-le mikh nikht goot'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Ich ___ letzte Nacht nicht schlafen." (could)', options:['kann', 'konnte', 'können', 'gekonnt'], answer:1,
+     why:'können → konnte. "Ich konnte nicht schlafen."'},
+    {q:'Fill in: "Ich ___ zum Arzt gehen." (had to)', options:['muss', 'musste', 'müssen', 'gemusst'], answer:1,
+     why:'müssen → musste. "Ich musste zum Arzt gehen."'},
+    {q:'Fill in: "Ich fühle ___ nicht gut."', options:['mich', 'dich', 'sich', 'mir'], answer:0,
+     why:'Reflexive for "ich" is "mich": Ich fühle mich nicht gut.'},
+    {q:'What does "Ich habe Fieber" mean?', options:['I have a cold', 'I have a fever', 'I have a cough', 'I have a headache'], answer:1,
+     why:'Fieber = fever. Husten = cough, Kopfschmerzen = headache.'},
+    {q:'What is "das Rezept"?', options:['the appointment', 'the prescription', 'the insurance', 'the pharmacy'], answer:1,
+     why:'das Rezept = the prescription. der Termin = the appointment.'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich möchte einen Termin machen. Ich habe Fieber und Husten."',
+    model:[
+      'Ich möchte einen Termin machen.',
+      'Ich habe Fieber und Husten.',
+      'Ich konnte letzte Nacht nicht schlafen.',
+      'Ich fühle mich nicht gut.'
+    ]
+  },
+  recap:[
+    'Modal past: können → konnte, müssen → musste, wollen → wollte.',
+    'Reflexive: ich fühle mich, du fühlst dich, er fühlt sich.',
+    'Doctor words: der Termin, die Praxis, die Krankenkasse, das Rezept.',
+    'Symptoms: das Fieber, der Husten, der Schnupfen, die Kopfschmerzen.'
+  ],
+  tip:'Memory tip: at the doctor, start with "Ich fühle mich nicht gut." and "Ich habe ..." — then name the symptom: Fieber, Husten, Kopfschmerzen.',
+  extra:[
+    {
+      q:'Say "I could not sleep last night."',
+      a:'Ich konnte letzte Nacht nicht schlafen.'
+    },
+    {
+      q:'Say "I do not feel well."',
+      a:'Ich fühle mich nicht gut.'
+    },
+    {
+      q:'What is the past of "wollen" for "ich"?',
+      a:'ich wollte — "Ich wollte zum Arzt gehen."'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Symptom words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Schnupfen',
+          art:'der',
+          pl:'',
+          en:'cold (runny nose)',
+          ph:'SHNOOP-fen'
+        },
+        {
+          de:'Grippe',
+          art:'die',
+          pl:'Grippen',
+          en:'flu',
+          ph:'GRIP-pe'
+        },
+        {
+          de:'Erkältung',
+          art:'die',
+          pl:'Erkältungen',
+          en:'cold, chill',
+          ph:'air-KEL-toong'
+        },
+        {
+          de:'Kopfschmerzen',
+          art:'die',
+          pl:'',
+          en:'headache',
+          ph:'KOPF-shmair-tsen'
+        },
+        {
+          de:'Bauchschmerzen',
+          art:'die',
+          pl:'',
+          en:'stomach ache',
+          ph:'BOWKH-shmair-tsen'
+        },
+        {
+          de:'Zahnschmerz',
+          art:'der',
+          pl:'Zahnschmerzen',
+          en:'toothache',
+          ph:'TSAHN-shmairts'
+        },
+        {
+          de:'Fieber',
+          art:'das',
+          pl:'',
+          en:'fever',
+          ph:'FEE-ber'
+        },
+        {
+          de:'Tablette',
+          art:'die',
+          pl:'Tabletten',
+          en:'tablet, pill',
+          ph:'tah-BLET-te'
+        },
+        {
+          de:'Medizin',
+          art:'die',
+          pl:'Medizinen',
+          en:'medicine',
+          ph:'me-dee-TSEEN'
+        },
+        {
+          de:'Tropfen',
+          art:'der',
+          pl:'Tropfen',
+          en:'drop (medicine)',
+          ph:'TROP-fen'
+        },
+        {
+          de:'Verband',
+          art:'der',
+          pl:'Verbände',
+          en:'bandage',
+          ph:'fair-BAHNT'
+        },
+        {
+          de:'Pflaster',
+          art:'das',
+          pl:'Pflaster',
+          en:'plaster, band-aid',
+          ph:'PFLAHS-ter'
+        },
+        {
+          de:'Behandlung',
+          art:'die',
+          pl:'Behandlungen',
+          en:'treatment',
+          ph:'be-HAHNT-loong'
+        },
+        {
+          de:'Arzttermin',
+          art:'der',
+          pl:'Arzttermine',
+          en:'doctor\'s appointment',
+          ph:'AHRTST-tair-meen'
+        },
+        {
+          de:'Ärztin',
+          art:'die',
+          pl:'Ärztinnen',
+          en:'doctor (female)',
+          ph:'AIRTS-tin'
+        },
+        {
+          de:'Apotheker',
+          art:'der',
+          pl:'Apotheker',
+          en:'pharmacist',
+          ph:'ah-po-TAY-ker'
+        },
+        {
+          de:'sich fühlen',
+          art:'',
+          pl:'',
+          en:'to feel (well/unwell)',
+          ph:'zikh FUE-len'
+        },
+        {
+          de:'sich ausruhen',
+          art:'',
+          pl:'',
+          en:'to rest',
+          ph:'zikh OWS-roo-en'
+        },
+        {
+          de:'sich erholen',
+          art:'',
+          pl:'',
+          en:'to recover',
+          ph:'zikh air-HOH-len'
+        },
+        {
+          de:'sich erkälten',
+          art:'',
+          pl:'',
+          en:'to catch a cold',
+          ph:'zikh air-KEL-ten'
+        },
+        {
+          de:'weh tun',
+          art:'',
+          pl:'',
+          en:'to hurt, to ache',
+          ph:'vay toon'
+        },
+        {
+          de:'Krankheit',
+          art:'die',
+          pl:'Krankheiten',
+          en:'illness, disease',
+          ph:'KRAHNK-hite'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Doctor words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Notfall',
+          art:'der',
+          pl:'Notfälle',
+          en:'emergency',
+          ph:'NOHT-fahl'
+        },
+        {
+          de:'Krankenwagen',
+          art:'der',
+          pl:'Krankenwagen',
+          en:'ambulance',
+          ph:'KRAHN-ken-vah-gen'
+        },
+        {
+          de:'Notaufnahme',
+          art:'die',
+          pl:'Notaufnahmen',
+          en:'emergency room',
+          ph:'NOHT-owf-nah-me'
+        },
+        {
+          de:'Wartezimmer',
+          art:'das',
+          pl:'Wartezimmer',
+          en:'waiting room',
+          ph:'VAHR-te-tsim-mer'
+        },
+        {
+          de:'Sprechstunde',
+          art:'die',
+          pl:'Sprechstunden',
+          en:'consultation hours',
+          ph:'SHPREKH-shtoon-de'
+        },
+        {
+          de:'Untersuchung',
+          art:'die',
+          pl:'Untersuchungen',
+          en:'examination',
+          ph:'oon-ter-ZOO-khoong'
+        },
+        {
+          de:'Puls',
+          art:'der',
+          pl:'Pulse',
+          en:'pulse',
+          ph:'pools'
+        },
+        {
+          de:'Temperatur',
+          art:'die',
+          pl:'Temperaturen',
+          en:'temperature',
+          ph:'tem-pe-rah-TOOR'
+        },
+        {
+          de:'messen',
+          art:'',
+          pl:'',
+          en:'to measure',
+          ph:'MES-sen'
+        },
+        {
+          de:'einnehmen',
+          art:'',
+          pl:'',
+          en:'to take (medicine)',
+          ph:'INE-nay-men'
+        },
+        {
+          de:'Allergie',
+          art:'die',
+          pl:'Allergien',
+          en:'allergy',
+          ph:'ah-lair-GEE'
+        },
+        {
+          de:'Impfung',
+          art:'die',
+          pl:'Impfungen',
+          en:'vaccination',
+          ph:'IMP-foong'
+        },
+        {
+          de:'impfen',
+          art:'',
+          pl:'',
+          en:'to vaccinate',
+          ph:'IMP-fen'
+        },
+        {
+          de:'Impfpass',
+          art:'der',
+          pl:'Impfpässe',
+          en:'vaccination card',
+          ph:'IMPF-pahs'
+        },
+        {
+          de:'Versicherung',
+          art:'die',
+          pl:'Versicherungen',
+          en:'insurance',
+          ph:'fair-ZIKH-e-roong'
+        },
+        {
+          de:'versichert',
+          art:'',
+          pl:'',
+          en:'insured',
+          ph:'fair-ZIKH-ert'
+        },
+        {
+          de:'Termin',
+          art:'der',
+          pl:'Termine',
+          en:'appointment',
+          ph:'tair-MEEN'
+        },
+        {
+          de:'Praxis',
+          art:'die',
+          pl:'Praxen',
+          en:'doctor\'s office',
+          ph:'PRAHK-sis'
+        },
+        {
+          de:'Krankenkasse',
+          art:'die',
+          pl:'Krankenkassen',
+          en:'health insurance',
+          ph:'KRAHN-ken-kah-se'
+        },
+        {
+          de:'Rezept',
+          art:'das',
+          pl:'Rezepte',
+          en:'prescription',
+          ph:'reh-TSEPT'
+        },
+        {
+          de:'Hals',
+          art:'der',
+          pl:'Hälse',
+          en:'throat, neck',
+          ph:'hahls'
+        },
+        {
+          de:'husten',
+          art:'',
+          pl:'',
+          en:'to cough',
+          ph:'HOOS-ten'
+        },
+        {
+          de:'niesen',
+          art:'',
+          pl:'',
+          en:'to sneeze',
+          ph:'NEE-zen'
+        },
+        {
+          de:'Husten',
+          art:'der',
+          pl:'',
+          en:'cough',
+          ph:'HOOS-ten'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: At the doctor',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Guten Tag, Praxis Dr. Schmidt. Wie kann ich Ihnen helfen?',
+          en:'Good day, Dr. Schmidt\'s practice. How can I help you?',
+          ph:'GOO-ten TAHK, PRAHK-sis DOK-tor shmit. vee kahn ish EE-nen HEL-fen'
+        },
+        {
+          who:'B',
+          de:'Guten Tag, ich möchte einen Termin machen. Ich habe Fieber und Husten.',
+          en:'Good day, I would like to make an appointment. I have a fever and a cough.',
+          ph:'GOO-ten TAHK, ish MOEKH-te INE-en tair-MEEN MAH-khen. ish HAH-be FEE-ber oont HOOS-ten'
+        },
+        {
+          who:'A',
+          de:'Können Sie morgen um 10 Uhr kommen?',
+          en:'Can you come tomorrow at 10 o\'clock?',
+          ph:'KOEN-nen zee MOR-gen oom tsayn oor KOM-men'
+        },
+        {
+          who:'B',
+          de:'Ja, das geht. Ich konnte letzte Nacht nicht schlafen.',
+          en:'Yes, that works. I could not sleep last night.',
+          ph:'yah, dahs gayt. ish KONT-te LETS-te nahkht nikht SHLAH-fen'
+        },
+        {
+          who:'A',
+          de:'Kommen Sie morgen. Bringen Sie bitte Ihre Krankenkassenkarte mit.',
+          en:'Come tomorrow. Please bring your health insurance card.',
+          ph:'KOM-men zee MOR-gen. BRING-en zee BIT-te EE-re KRAHN-ken-kahs-sen-kahr-te mit'
+        },
+        {
+          who:'B',
+          de:'Danke! Auf Wiederhören.',
+          en:'Thank you! Goodbye (on the phone).',
+          ph:'DAHN-ke! owf VEE-der-hoe-ren'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich möchte einen Termin machen. Ich habe Fieber und Husten."',
+        model:[
+          'Ich möchte einen Termin machen.',
+          'Ich habe Fieber und Husten.',
+          'Ich konnte letzte Nacht nicht schlafen.',
+          'Ich fühle mich nicht gut.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Modal past & reflexive verbs',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Past of modal verbs — and reflexive verbs',
+        plain:'Modal verbs also have a simple past: können → konnte (could), müssen → musste (had to), wollen → wollte (wanted). "Ich konnte nicht schlafen." = I could not sleep. And at the doctor you need reflexive verbs: "Ich fühle mich nicht gut." — "sich" changes with the person: ich fühle mich, du fühlst dich, er fühlt sich, wir fühlen uns.',
+        rule:'können → konnte · müssen → musste · wollen → wollte · reflexive: mich, dich, sich, uns, euch, sich',
+        examples:[
+          {
+            de:'Ich konnte letzte Nacht nicht schlafen.',
+            en:'I could not sleep last night.',
+            ph:'ish KONT-te LETS-te nahkht nikht SHLAH-fen'
+          },
+          {
+            de:'Ich musste zum Arzt gehen.',
+            en:'I had to go to the doctor.',
+            ph:'ish MOOS-te tsoom ahrtst GAY-en'
+          },
+          {
+            de:'Ich fühle mich nicht gut.',
+            en:'I do not feel well.',
+            ph:'ish FUE-le mikh nikht goot'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: konnte, musste, wollte',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich ___ letzte Nacht nicht schlafen." (could)', options:['kann', 'konnte', 'können', 'gekonnt'], answer:1,
+         why:'können → konnte. "Ich konnte nicht schlafen."'},
+        {q:'Fill in: "Ich ___ zum Arzt gehen." (had to)', options:['muss', 'musste', 'müssen', 'gemusst'], answer:1,
+         why:'müssen → musste. "Ich musste zum Arzt gehen."'},
+        {q:'Fill in: "Ich fühle ___ nicht gut."', options:['mich', 'dich', 'sich', 'mir'], answer:0,
+         why:'Reflexive for "ich" is "mich": Ich fühle mich nicht gut.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: at the doctor',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'What does "Ich habe Fieber" mean?', options:['I have a cold', 'I have a fever', 'I have a cough', 'I have a headache'], answer:1,
+         why:'Fieber = fever. Husten = cough, Kopfschmerzen = headache.'},
+        {q:'What is "das Rezept"?', options:['the appointment', 'the prescription', 'the insurance', 'the pharmacy'], answer:1,
+         why:'das Rezept = the prescription. der Termin = the appointment.'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 7 — Work & Professions',
+};
 
-CHAPTERS['A2-7'] = { id:'A2-7', n:7, level:'A2', title:'Work & Professions', time:'9 min', syllabus:true,
-  concept:'Talk about jobs, applications and job interviews.',
-  learn:['Write a short application','Talk about your CV in a job interview','Say why you want a job'],
-  grammar:{ title:'Connectors — weil and dass',
-    plain:'"weil" (because) and "dass" (that) start a subordinate clause — and the verb goes to the END: "Ich lerne Deutsch, weil ich in Deutschland arbeiten will."' },
+CHAPTERS['A2-7'] = {
+  id:'A2-7',
+  n:7,
+  level:'A2',
+  title:'Work & Professions',
+  time:'17 min',
+  concept:'Talk about jobs, applications and job interviews — with the connectors "weil" and "dass".',
+  dialogue:[
+    {
+      who:'A',
+      de:'Guten Tag, ich bin Frau Müller. Bitte setzen Sie sich.',
+      en:'Good day, I am Mrs. Müller. Please sit down.',
+      ph:'GOO-ten TAHK, ish bin frow MUE-ler. BIT-te ZET-sen zee zikh'
+    },
+    {
+      who:'B',
+      de:'Danke. Ich habe mich um die Stelle als Krankenpfleger beworben.',
+      en:'Thank you. I applied for the job as a male nurse.',
+      ph:'DAHN-ke. ish HAH-be mikh oom dee SHTEL-le ahls KRAHN-ken-pflay-ger be-VOR-ben'
+    },
+    {
+      who:'A',
+      de:'Warum möchten Sie in Deutschland arbeiten?',
+      en:'Why do you want to work in Germany?',
+      ph:'vah-ROOM MOEKH-ten zee in DOYCH-lahnt AHR-bai-ten'
+    },
+    {
+      who:'B',
+      de:'Ich lerne Deutsch, weil ich hier eine Ausbildung machen will.',
+      en:'I am learning German because I want to do training here.',
+      ph:'ish LAIR-ne doych, vile ish heer INE-ow-BIL-doong MAH-khen vil'
+    },
+    {
+      who:'A',
+      de:'Was können Sie gut?',
+      en:'What are you good at?',
+      ph:'vahs KOEN-nen zee goot'
+    },
+    {
+      who:'B',
+      de:'Ich kann gut mit Menschen arbeiten. Ich lerne schnell.',
+      en:'I am good at working with people. I learn fast.',
+      ph:'ish kahn goot mit MEN-shen AHR-bai-ten. ish LAIR-ne shnel'
+    }
+  ],
   vocab:[
-    {de:'Bewerbung', art:'die', pl:'Bewerbungen', en:'application', ph:'beh-VER-bung'},
-    {de:'Lebenslauf', art:'der', pl:'Lebensläufe', en:'CV, résumé', ph:'LAY-bens-lowf'},
-    {de:'Vorstellungsgespräch', art:'das', pl:'Vorstellungsgespräche', en:'job interview', ph:'FOR-shtel-lungs-geh-shpraykh'},
-    {de:'Stelle', art:'die', pl:'Stellen', en:'position, job', ph:'SHTEL-le'},
-    {de:'verdienen', art:'', pl:'', en:'to earn', ph:'fair-DEE-nen'},
-    {de:'Ausbildung', art:'die', pl:'Ausbildungen', en:'training, apprenticeship', ph:'OWS-bil-dung'},
-    {de:'Chef', art:'der', pl:'Chefs', en:'boss', ph:'shef'},
-    {de:'Gehalt', art:'das', pl:'Gehälter', en:'salary', ph:'geh-HAHLT'},
-  ], next:'Next: Chapter 8 — Free Time & Hobbies (syllabus)' };
+    {
+      de:'Job',
+      art:'der',
+      pl:'Jobs',
+      en:'job',
+      ph:'job'
+    },
+    {
+      de:'Arbeitsplatz',
+      art:'der',
+      pl:'Arbeitsplätze',
+      en:'workplace',
+      ph:'AHR-baits-plahts'
+    },
+    {
+      de:'Firma',
+      art:'die',
+      pl:'Firmen',
+      en:'company',
+      ph:'FEER-mah'
+    },
+    {
+      de:'Büro',
+      art:'das',
+      pl:'Büros',
+      en:'office',
+      ph:'bue-ROH'
+    },
+    {
+      de:'Fabrik',
+      art:'die',
+      pl:'Fabriken',
+      en:'factory',
+      ph:'fah-BREEK'
+    },
+    {
+      de:'Schule',
+      art:'die',
+      pl:'Schulen',
+      en:'school',
+      ph:'SHOO-le'
+    },
+    {
+      de:'Bank',
+      art:'die',
+      pl:'Banken',
+      en:'bank',
+      ph:'bahnk'
+    },
+    {
+      de:'Geschäft',
+      art:'das',
+      pl:'Geschäfte',
+      en:'shop, business',
+      ph:'ge-SHEFT'
+    },
+    {
+      de:'Laden',
+      art:'der',
+      pl:'Läden',
+      en:'shop, store',
+      ph:'LAH-den'
+    },
+    {
+      de:'Kunde',
+      art:'der',
+      pl:'Kunden',
+      en:'customer (male)',
+      ph:'KOON-de'
+    },
+    {
+      de:'Kundin',
+      art:'die',
+      pl:'Kundinnen',
+      en:'customer (female)',
+      ph:'KOON-din'
+    },
+    {
+      de:'Kollege',
+      art:'der',
+      pl:'Kollegen',
+      en:'colleague (male)',
+      ph:'kol-LAY-ge'
+    },
+    {
+      de:'Kollegin',
+      art:'die',
+      pl:'Kolleginnen',
+      en:'colleague (female)',
+      ph:'kol-LAY-gin'
+    },
+    {
+      de:'Mitarbeiter',
+      art:'der',
+      pl:'Mitarbeiter',
+      en:'employee (male)',
+      ph:'MIT-ahr-bai-ter'
+    },
+    {
+      de:'Mitarbeiterin',
+      art:'die',
+      pl:'Mitarbeiterinnen',
+      en:'employee (female)',
+      ph:'MIT-ahr-bai-te-rin'
+    },
+    {
+      de:'Arbeiter',
+      art:'der',
+      pl:'Arbeiter',
+      en:'worker (male)',
+      ph:'AHR-bai-ter'
+    },
+    {
+      de:'Lohn',
+      art:'der',
+      pl:'Löhne',
+      en:'wage',
+      ph:'lohn'
+    },
+    {
+      de:'Einkommen',
+      art:'das',
+      pl:'Einkommen',
+      en:'income',
+      ph:'INE-kom-men'
+    },
+    {
+      de:'Steuer',
+      art:'die',
+      pl:'Steuern',
+      en:'tax',
+      ph:'SHTOY-er'
+    },
+    {
+      de:'Rente',
+      art:'die',
+      pl:'Renten',
+      en:'pension',
+      ph:'REN-te'
+    },
+    {
+      de:'Pause',
+      art:'die',
+      pl:'Pausen',
+      en:'break',
+      ph:'POW-ze'
+    },
+    {
+      de:'Überstunden',
+      art:'die',
+      pl:'',
+      en:'overtime',
+      ph:'UE-ber-shtoon-den'
+    },
+    {
+      de:'Vertrag',
+      art:'der',
+      pl:'Verträge',
+      en:'contract',
+      ph:'fair-TRAHK'
+    },
+    {
+      de:'unterschreiben',
+      art:'',
+      pl:'',
+      en:'to sign',
+      ph:'oon-ter-SHRAI-ben'
+    },
+    {
+      de:'Unterschrift',
+      art:'die',
+      pl:'Unterschriften',
+      en:'signature',
+      ph:'oon-ter-shrift'
+    },
+    {
+      de:'sich bewerben',
+      art:'',
+      pl:'',
+      en:'to apply (for a job)',
+      ph:'zikh be-VAIR-ben'
+    },
+    {
+      de:'kündigen',
+      art:'',
+      pl:'',
+      en:'to quit, to give notice',
+      ph:'KUEN-di-gen'
+    },
+    {
+      de:'Kündigung',
+      art:'die',
+      pl:'Kündigungen',
+      en:'notice, termination',
+      ph:'KUEN-di-goong'
+    },
+    {
+      de:'arbeitslos',
+      art:'',
+      pl:'',
+      en:'unemployed',
+      ph:'AHR-baits-lohs'
+    },
+    {
+      de:'anfangen',
+      art:'',
+      pl:'',
+      en:'to start, to begin',
+      ph:'AHN-fahng-en'
+    },
+    {
+      de:'aufhören',
+      art:'',
+      pl:'',
+      en:'to stop',
+      ph:'OWF-hoe-ren'
+    },
+    {
+      de:'Feierabend',
+      art:'der',
+      pl:'',
+      en:'end of the working day',
+      ph:'FAI-er-ah-bent'
+    },
+    {
+      de:'Mittagspause',
+      art:'die',
+      pl:'Mittagspausen',
+      en:'lunch break',
+      ph:'MIT-tahks-pow-ze'
+    },
+    {
+      de:'Teamleiter',
+      art:'der',
+      pl:'Teamleiter',
+      en:'team leader',
+      ph:'TEEM-lai-ter'
+    },
+    {
+      de:'Azubi',
+      art:'der',
+      pl:'Azubis',
+      en:'trainee, apprentice',
+      ph:'ah-TSOO-bee'
+    },
+    {
+      de:'Praktikant',
+      art:'der',
+      pl:'Praktikanten',
+      en:'intern (male)',
+      ph:'prahk-ti-KAHNT'
+    },
+    {
+      de:'Praktikantin',
+      art:'die',
+      pl:'Praktikantinnen',
+      en:'intern (female)',
+      ph:'prahk-ti-KAHN-tin'
+    },
+    {
+      de:'Bewerbung',
+      art:'die',
+      pl:'Bewerbungen',
+      en:'application',
+      ph:'beh-VAIR-boong'
+    },
+    {
+      de:'Lebenslauf',
+      art:'der',
+      pl:'Lebensläufe',
+      en:'CV, résumé',
+      ph:'LAY-bens-lowf'
+    },
+    {
+      de:'Vorstellungsgespräch',
+      art:'das',
+      pl:'Vorstellungsgespräche',
+      en:'job interview',
+      ph:'FOR-shtel-loongs-geh-shpraykh'
+    },
+    {
+      de:'Stelle',
+      art:'die',
+      pl:'Stellen',
+      en:'position, job',
+      ph:'SHTEL-le'
+    },
+    {
+      de:'verdienen',
+      art:'',
+      pl:'',
+      en:'to earn',
+      ph:'fair-DEE-nen'
+    },
+    {
+      de:'Ausbildung',
+      art:'die',
+      pl:'Ausbildungen',
+      en:'training, apprenticeship',
+      ph:'OWS-bil-doong'
+    },
+    {
+      de:'Chef',
+      art:'der',
+      pl:'Chefs',
+      en:'boss',
+      ph:'shef'
+    },
+    {
+      de:'Gehalt',
+      art:'das',
+      pl:'Gehälter',
+      en:'salary',
+      ph:'ge-HAHLT'
+    }
+  ],
+  grammar:{
+    title:'Connectors — weil and dass',
+    plain:'"weil" (because) and "dass" (that) start a subordinate clause — and the verb goes to the END: "Ich lerne Deutsch, weil ich in Deutschland arbeiten will." "Ich weiß, dass du Deutsch lernst." Learn the pattern: connector + ... + verb at the end.',
+    rule:'weil/dass + subject + ... + verb LAST: "Ich lerne Deutsch, weil ich arbeiten will." · "Ich weiß, dass du lernst."',
+    examples:[
+      {
+        de:'Ich lerne Deutsch, weil ich in Deutschland arbeiten will.',
+        en:'I am learning German because I want to work in Germany.',
+        ph:'ish LAIR-ne doych, vile ish in DOYCH-lahnt AHR-bai-ten vil'
+      },
+      {
+        de:'Ich weiß, dass du Deutsch lernst.',
+        en:'I know that you are learning German.',
+        ph:'ish vice, dahs doo doych lairnst'
+      },
+      {
+        de:'Ich habe mich beworben, weil ich eine Ausbildung machen will.',
+        en:'I applied because I want to do training.',
+        ph:'ish HAH-be mikh be-VOR-ben, vile ish INE-ow-BIL-doong MAH-khen vil'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Ich lerne Deutsch, ___ ich in Deutschland arbeiten will."', options:['weil', 'dass', 'wenn', 'aber'], answer:0,
+     why:'"weil" = because. The verb "will" goes to the end.'},
+    {q:'Fill in: "Ich weiß, ___ du Deutsch lernst."', options:['weil', 'dass', 'wenn', 'oder'], answer:1,
+     why:'"dass" = that. "Ich weiß, dass du Deutsch lernst."'},
+    {q:'Where does the verb go after "weil"?', options:['2nd place', '1st place', 'At the end', 'It disappears'], answer:2,
+     why:'After "weil" and "dass", the verb goes to the END of the clause.'},
+    {q:'What does "sich bewerben" mean?', options:['to work', 'to apply (for a job)', 'to earn', 'to quit'], answer:1,
+     why:'sich bewerben = to apply. "Ich habe mich um die Stelle beworben."'},
+    {q:'What is "der Lebenslauf"?', options:['the contract', 'the CV, résumé', 'the salary', 'the boss'], answer:1,
+     why:'der Lebenslauf = the CV. der Vertrag = the contract, das Gehalt = the salary.'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich lerne Deutsch, weil ich in Deutschland arbeiten will."',
+    model:[
+      'Ich lerne Deutsch, weil ich in Deutschland arbeiten will.',
+      'Ich weiß, dass du Deutsch lernst.',
+      'Ich habe mich um die Stelle beworben.'
+    ]
+  },
+  recap:[
+    'weil = because, dass = that — the verb goes to the END.',
+    '"Ich lerne Deutsch, weil ich arbeiten will."',
+    '"Ich weiß, dass du Deutsch lernst."',
+    'Work: die Bewerbung, der Lebenslauf, das Vorstellungsgespräch, das Gehalt.'
+  ],
+  tip:'Memory tip: in a "weil" sentence, put the verb last and check it: "Ich lerne Deutsch, weil ich ... will." Say it out loud 3 times.',
+  extra:[
+    {
+      q:'Say "I learn German because I want to work in Germany."',
+      a:'Ich lerne Deutsch, weil ich in Deutschland arbeiten will.'
+    },
+    {
+      q:'Say "I know that you learn German."',
+      a:'Ich weiß, dass du Deutsch lernst.'
+    },
+    {
+      q:'What does "kündigen" mean?',
+      a:'to quit, to give notice — "Ich möchte kündigen."'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Work words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Job',
+          art:'der',
+          pl:'Jobs',
+          en:'job',
+          ph:'job'
+        },
+        {
+          de:'Arbeitsplatz',
+          art:'der',
+          pl:'Arbeitsplätze',
+          en:'workplace',
+          ph:'AHR-baits-plahts'
+        },
+        {
+          de:'Firma',
+          art:'die',
+          pl:'Firmen',
+          en:'company',
+          ph:'FEER-mah'
+        },
+        {
+          de:'Büro',
+          art:'das',
+          pl:'Büros',
+          en:'office',
+          ph:'bue-ROH'
+        },
+        {
+          de:'Fabrik',
+          art:'die',
+          pl:'Fabriken',
+          en:'factory',
+          ph:'fah-BREEK'
+        },
+        {
+          de:'Schule',
+          art:'die',
+          pl:'Schulen',
+          en:'school',
+          ph:'SHOO-le'
+        },
+        {
+          de:'Bank',
+          art:'die',
+          pl:'Banken',
+          en:'bank',
+          ph:'bahnk'
+        },
+        {
+          de:'Geschäft',
+          art:'das',
+          pl:'Geschäfte',
+          en:'shop, business',
+          ph:'ge-SHEFT'
+        },
+        {
+          de:'Laden',
+          art:'der',
+          pl:'Läden',
+          en:'shop, store',
+          ph:'LAH-den'
+        },
+        {
+          de:'Kunde',
+          art:'der',
+          pl:'Kunden',
+          en:'customer (male)',
+          ph:'KOON-de'
+        },
+        {
+          de:'Kundin',
+          art:'die',
+          pl:'Kundinnen',
+          en:'customer (female)',
+          ph:'KOON-din'
+        },
+        {
+          de:'Kollege',
+          art:'der',
+          pl:'Kollegen',
+          en:'colleague (male)',
+          ph:'kol-LAY-ge'
+        },
+        {
+          de:'Kollegin',
+          art:'die',
+          pl:'Kolleginnen',
+          en:'colleague (female)',
+          ph:'kol-LAY-gin'
+        },
+        {
+          de:'Mitarbeiter',
+          art:'der',
+          pl:'Mitarbeiter',
+          en:'employee (male)',
+          ph:'MIT-ahr-bai-ter'
+        },
+        {
+          de:'Mitarbeiterin',
+          art:'die',
+          pl:'Mitarbeiterinnen',
+          en:'employee (female)',
+          ph:'MIT-ahr-bai-te-rin'
+        },
+        {
+          de:'Arbeiter',
+          art:'der',
+          pl:'Arbeiter',
+          en:'worker (male)',
+          ph:'AHR-bai-ter'
+        },
+        {
+          de:'Lohn',
+          art:'der',
+          pl:'Löhne',
+          en:'wage',
+          ph:'lohn'
+        },
+        {
+          de:'Einkommen',
+          art:'das',
+          pl:'Einkommen',
+          en:'income',
+          ph:'INE-kom-men'
+        },
+        {
+          de:'Steuer',
+          art:'die',
+          pl:'Steuern',
+          en:'tax',
+          ph:'SHTOY-er'
+        },
+        {
+          de:'Rente',
+          art:'die',
+          pl:'Renten',
+          en:'pension',
+          ph:'REN-te'
+        },
+        {
+          de:'Pause',
+          art:'die',
+          pl:'Pausen',
+          en:'break',
+          ph:'POW-ze'
+        },
+        {
+          de:'Überstunden',
+          art:'die',
+          pl:'',
+          en:'overtime',
+          ph:'UE-ber-shtoon-den'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Job words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Vertrag',
+          art:'der',
+          pl:'Verträge',
+          en:'contract',
+          ph:'fair-TRAHK'
+        },
+        {
+          de:'unterschreiben',
+          art:'',
+          pl:'',
+          en:'to sign',
+          ph:'oon-ter-SHRAI-ben'
+        },
+        {
+          de:'Unterschrift',
+          art:'die',
+          pl:'Unterschriften',
+          en:'signature',
+          ph:'oon-ter-shrift'
+        },
+        {
+          de:'sich bewerben',
+          art:'',
+          pl:'',
+          en:'to apply (for a job)',
+          ph:'zikh be-VAIR-ben'
+        },
+        {
+          de:'kündigen',
+          art:'',
+          pl:'',
+          en:'to quit, to give notice',
+          ph:'KUEN-di-gen'
+        },
+        {
+          de:'Kündigung',
+          art:'die',
+          pl:'Kündigungen',
+          en:'notice, termination',
+          ph:'KUEN-di-goong'
+        },
+        {
+          de:'arbeitslos',
+          art:'',
+          pl:'',
+          en:'unemployed',
+          ph:'AHR-baits-lohs'
+        },
+        {
+          de:'anfangen',
+          art:'',
+          pl:'',
+          en:'to start, to begin',
+          ph:'AHN-fahng-en'
+        },
+        {
+          de:'aufhören',
+          art:'',
+          pl:'',
+          en:'to stop',
+          ph:'OWF-hoe-ren'
+        },
+        {
+          de:'Feierabend',
+          art:'der',
+          pl:'',
+          en:'end of the working day',
+          ph:'FAI-er-ah-bent'
+        },
+        {
+          de:'Mittagspause',
+          art:'die',
+          pl:'Mittagspausen',
+          en:'lunch break',
+          ph:'MIT-tahks-pow-ze'
+        },
+        {
+          de:'Teamleiter',
+          art:'der',
+          pl:'Teamleiter',
+          en:'team leader',
+          ph:'TEEM-lai-ter'
+        },
+        {
+          de:'Azubi',
+          art:'der',
+          pl:'Azubis',
+          en:'trainee, apprentice',
+          ph:'ah-TSOO-bee'
+        },
+        {
+          de:'Praktikant',
+          art:'der',
+          pl:'Praktikanten',
+          en:'intern (male)',
+          ph:'prahk-ti-KAHNT'
+        },
+        {
+          de:'Praktikantin',
+          art:'die',
+          pl:'Praktikantinnen',
+          en:'intern (female)',
+          ph:'prahk-ti-KAHN-tin'
+        },
+        {
+          de:'Bewerbung',
+          art:'die',
+          pl:'Bewerbungen',
+          en:'application',
+          ph:'beh-VAIR-boong'
+        },
+        {
+          de:'Lebenslauf',
+          art:'der',
+          pl:'Lebensläufe',
+          en:'CV, résumé',
+          ph:'LAY-bens-lowf'
+        },
+        {
+          de:'Vorstellungsgespräch',
+          art:'das',
+          pl:'Vorstellungsgespräche',
+          en:'job interview',
+          ph:'FOR-shtel-loongs-geh-shpraykh'
+        },
+        {
+          de:'Stelle',
+          art:'die',
+          pl:'Stellen',
+          en:'position, job',
+          ph:'SHTEL-le'
+        },
+        {
+          de:'verdienen',
+          art:'',
+          pl:'',
+          en:'to earn',
+          ph:'fair-DEE-nen'
+        },
+        {
+          de:'Ausbildung',
+          art:'die',
+          pl:'Ausbildungen',
+          en:'training, apprenticeship',
+          ph:'OWS-bil-doong'
+        },
+        {
+          de:'Chef',
+          art:'der',
+          pl:'Chefs',
+          en:'boss',
+          ph:'shef'
+        },
+        {
+          de:'Gehalt',
+          art:'das',
+          pl:'Gehälter',
+          en:'salary',
+          ph:'ge-HAHLT'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Job interview',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Guten Tag, ich bin Frau Müller. Bitte setzen Sie sich.',
+          en:'Good day, I am Mrs. Müller. Please sit down.',
+          ph:'GOO-ten TAHK, ish bin frow MUE-ler. BIT-te ZET-sen zee zikh'
+        },
+        {
+          who:'B',
+          de:'Danke. Ich habe mich um die Stelle als Krankenpfleger beworben.',
+          en:'Thank you. I applied for the job as a male nurse.',
+          ph:'DAHN-ke. ish HAH-be mikh oom dee SHTEL-le ahls KRAHN-ken-pflay-ger be-VOR-ben'
+        },
+        {
+          who:'A',
+          de:'Warum möchten Sie in Deutschland arbeiten?',
+          en:'Why do you want to work in Germany?',
+          ph:'vah-ROOM MOEKH-ten zee in DOYCH-lahnt AHR-bai-ten'
+        },
+        {
+          who:'B',
+          de:'Ich lerne Deutsch, weil ich hier eine Ausbildung machen will.',
+          en:'I am learning German because I want to do training here.',
+          ph:'ish LAIR-ne doych, vile ish heer INE-ow-BIL-doong MAH-khen vil'
+        },
+        {
+          who:'A',
+          de:'Was können Sie gut?',
+          en:'What are you good at?',
+          ph:'vahs KOEN-nen zee goot'
+        },
+        {
+          who:'B',
+          de:'Ich kann gut mit Menschen arbeiten. Ich lerne schnell.',
+          en:'I am good at working with people. I learn fast.',
+          ph:'ish kahn goot mit MEN-shen AHR-bai-ten. ish LAIR-ne shnel'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich lerne Deutsch, weil ich in Deutschland arbeiten will."',
+        model:[
+          'Ich lerne Deutsch, weil ich in Deutschland arbeiten will.',
+          'Ich weiß, dass du Deutsch lernst.',
+          'Ich habe mich um die Stelle beworben.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: "weil" and "dass"',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Connectors — weil and dass',
+        plain:'"weil" (because) and "dass" (that) start a subordinate clause — and the verb goes to the END: "Ich lerne Deutsch, weil ich in Deutschland arbeiten will." "Ich weiß, dass du Deutsch lernst." Learn the pattern: connector + ... + verb at the end.',
+        rule:'weil/dass + subject + ... + verb LAST: "Ich lerne Deutsch, weil ich arbeiten will." · "Ich weiß, dass du lernst."',
+        examples:[
+          {
+            de:'Ich lerne Deutsch, weil ich in Deutschland arbeiten will.',
+            en:'I am learning German because I want to work in Germany.',
+            ph:'ish LAIR-ne doych, vile ish in DOYCH-lahnt AHR-bai-ten vil'
+          },
+          {
+            de:'Ich weiß, dass du Deutsch lernst.',
+            en:'I know that you are learning German.',
+            ph:'ish vice, dahs doo doych lairnst'
+          },
+          {
+            de:'Ich habe mich beworben, weil ich eine Ausbildung machen will.',
+            en:'I applied because I want to do training.',
+            ph:'ish HAH-be mikh be-VOR-ben, vile ish INE-ow-BIL-doong MAH-khen vil'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: connectors',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich lerne Deutsch, ___ ich in Deutschland arbeiten will."', options:['weil', 'dass', 'wenn', 'aber'], answer:0,
+         why:'"weil" = because. The verb "will" goes to the end.'},
+        {q:'Fill in: "Ich weiß, ___ du Deutsch lernst."', options:['weil', 'dass', 'wenn', 'oder'], answer:1,
+         why:'"dass" = that. "Ich weiß, dass du Deutsch lernst."'},
+        {q:'Where does the verb go after "weil"?', options:['2nd place', '1st place', 'At the end', 'It disappears'], answer:2,
+         why:'After "weil" and "dass", the verb goes to the END of the clause.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: work & jobs',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'What does "sich bewerben" mean?', options:['to work', 'to apply (for a job)', 'to earn', 'to quit'], answer:1,
+         why:'sich bewerben = to apply. "Ich habe mich um die Stelle beworben."'},
+        {q:'What is "der Lebenslauf"?', options:['the contract', 'the CV, résumé', 'the salary', 'the boss'], answer:1,
+         why:'der Lebenslauf = the CV. der Vertrag = the contract, das Gehalt = the salary.'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 8 — Free Time & Hobbies',
+};
 
-CHAPTERS['A2-8'] = { id:'A2-8', n:8, level:'A2', title:'Free Time & Hobbies', time:'9 min', syllabus:true,
-  concept:'Talk about hobbies, sports and clubs.',
-  learn:['Say what you like doing','Talk about sports and clubs','Invite someone to join you'],
-  grammar:{ title:'"zu" + infinitive',
-    plain:'After some verbs, the infinitive comes with "zu": "Ich habe Lust zu schwimmen." (I feel like swimming.) "Ich freue mich, dich zu sehen." (I am happy to see you.) The "zu" goes before the infinitive, at the end.' },
+CHAPTERS['A2-8'] = {
+  id:'A2-8',
+  n:8,
+  level:'A2',
+  title:'Free Time & Hobbies',
+  time:'17 min',
+  concept:'Talk about hobbies, sports and clubs — with "zu" + infinitive.',
+  dialogue:[
+    {
+      who:'A',
+      de:'Was machst du am Wochenende?',
+      en:'What are you doing at the weekend?',
+      ph:'vahs mahkhst doo ahm VOKH-en-en-de'
+    },
+    {
+      who:'B',
+      de:'Ich spiele Fußball im Verein. Kommst du mit?',
+      en:'I play football in a club. Are you coming along?',
+      ph:'ish SHPEE-le FOOS-bahl im fair-INE. komst doo mit'
+    },
+    {
+      who:'A',
+      de:'Gern! Ich habe Lust, Fußball zu spielen.',
+      en:'Gladly! I feel like playing football.',
+      ph:'gairn! ish HAH-be loost, FOOS-bahl tsoo SHPEE-len'
+    },
+    {
+      who:'B',
+      de:'Super! Wir trainieren am Samstag um 10 Uhr.',
+      en:'Great! We train on Saturday at 10 o\'clock.',
+      ph:'ZOO-per! veer trai-NEE-ren ahm ZAHMS-tahk oom tsayn oor'
+    },
+    {
+      who:'A',
+      de:'Ich freue mich, dich zu sehen.',
+      en:'I am happy to see you.',
+      ph:'ish FROY-e mikh, dikh tsoo ZAY-en'
+    },
+    {
+      who:'B',
+      de:'Bis Samstag!',
+      en:'See you Saturday!',
+      ph:'bis ZAHMS-tahk'
+    }
+  ],
   vocab:[
-    {de:'Hobby', art:'das', pl:'Hobbys', en:'hobby', ph:'HOB-bee'},
-    {de:'Fahrrad', art:'das', pl:'Fahrräder', en:'bicycle', ph:'FAHR-raht'},
-    {de:'wandern', art:'', pl:'', en:'to hike', ph:'VAHN-dern'},
-    {de:'angeln', art:'', pl:'', en:'to fish', ph:'AHNG-eln'},
-    {de:'Verein', art:'der', pl:'Vereine', en:'club, association', ph:'fair-INE'},
-    {de:'Kurs', art:'der', pl:'Kurse', en:'course', ph:'koors'},
-    {de:'Freizeit', art:'die', pl:'', en:'free time, leisure', ph:'FRAI-tsait'},
-    {de:'Lust', art:'die', pl:'', en:'desire, liking', ph:'loost'},
-  ], next:'Next: Chapter 9 — Travel & Transport (syllabus)' };
+    {
+      de:'Sport',
+      art:'der',
+      pl:'',
+      en:'sport',
+      ph:'shport'
+    },
+    {
+      de:'Tennis',
+      art:'das',
+      pl:'',
+      en:'tennis',
+      ph:'TEN-nis'
+    },
+    {
+      de:'tanzen',
+      art:'',
+      pl:'',
+      en:'to dance',
+      ph:'TAHN-tsen'
+    },
+    {
+      de:'singen',
+      art:'',
+      pl:'',
+      en:'to sing',
+      ph:'ZING-en'
+    },
+    {
+      de:'malen',
+      art:'',
+      pl:'',
+      en:'to paint',
+      ph:'MAH-len'
+    },
+    {
+      de:'reisen',
+      art:'',
+      pl:'',
+      en:'to travel',
+      ph:'RAI-zen'
+    },
+    {
+      de:'spielen',
+      art:'',
+      pl:'',
+      en:'to play',
+      ph:'SHPEE-len'
+    },
+    {
+      de:'Spiel',
+      art:'das',
+      pl:'Spiele',
+      en:'game',
+      ph:'shpeel'
+    },
+    {
+      de:'Musik',
+      art:'die',
+      pl:'',
+      en:'music',
+      ph:'moo-ZEEK'
+    },
+    {
+      de:'Theater',
+      art:'das',
+      pl:'Theater',
+      en:'theatre',
+      ph:'tay-AH-ter'
+    },
+    {
+      de:'Konzert',
+      art:'das',
+      pl:'Konzerte',
+      en:'concert',
+      ph:'kon-TSAIRT'
+    },
+    {
+      de:'Film',
+      art:'der',
+      pl:'Filme',
+      en:'film, movie',
+      ph:'film'
+    },
+    {
+      de:'Buch',
+      art:'das',
+      pl:'Bücher',
+      en:'book',
+      ph:'bookh'
+    },
+    {
+      de:'Instrument',
+      art:'das',
+      pl:'Instrumente',
+      en:'instrument',
+      ph:'in-stroo-MENT'
+    },
+    {
+      de:'Gitarre',
+      art:'die',
+      pl:'Gitarren',
+      en:'guitar',
+      ph:'gi-TAHR-re'
+    },
+    {
+      de:'Klavier',
+      art:'das',
+      pl:'Klaviere',
+      en:'piano',
+      ph:'klah-VEER'
+    },
+    {
+      de:'Sportverein',
+      art:'der',
+      pl:'Sportvereine',
+      en:'sports club',
+      ph:'SHPORT-fair-ine'
+    },
+    {
+      de:'Mitgliedschaft',
+      art:'die',
+      pl:'Mitgliedschaften',
+      en:'membership',
+      ph:'MIT-gleed-shahft'
+    },
+    {
+      de:'Mitglied',
+      art:'das',
+      pl:'Mitglieder',
+      en:'member',
+      ph:'MIT-gleed'
+    },
+    {
+      de:'trainieren',
+      art:'',
+      pl:'',
+      en:'to train',
+      ph:'trai-NEE-ren'
+    },
+    {
+      de:'Trainer',
+      art:'der',
+      pl:'Trainer',
+      en:'trainer, coach (male)',
+      ph:'TRAI-ner'
+    },
+    {
+      de:'Trainerin',
+      art:'die',
+      pl:'Trainerinnen',
+      en:'trainer, coach (female)',
+      ph:'TRAI-ne-rin'
+    },
+    {
+      de:'Training',
+      art:'das',
+      pl:'Trainings',
+      en:'training, practice',
+      ph:'TRAI-ning'
+    },
+    {
+      de:'Mannschaft',
+      art:'die',
+      pl:'Mannschaften',
+      en:'team',
+      ph:'MAHN-shahft'
+    },
+    {
+      de:'gewinnen',
+      art:'',
+      pl:'',
+      en:'to win',
+      ph:'ge-VIN-nen'
+    },
+    {
+      de:'verlieren',
+      art:'',
+      pl:'',
+      en:'to lose',
+      ph:'fair-LEE-ren'
+    },
+    {
+      de:'Zuschauer',
+      art:'der',
+      pl:'Zuschauer',
+      en:'spectator (male)',
+      ph:'TSOO-show-er'
+    },
+    {
+      de:'Zuschauerin',
+      art:'die',
+      pl:'Zuschauerinnen',
+      en:'spectator (female)',
+      ph:'TSOO-show-e-rin'
+    },
+    {
+      de:'Eintritt',
+      art:'der',
+      pl:'',
+      en:'admission, entry',
+      ph:'INE-trit'
+    },
+    {
+      de:'Eintrittskarte',
+      art:'die',
+      pl:'Eintrittskarten',
+      en:'admission ticket',
+      ph:'INE-trits-kahr-te'
+    },
+    {
+      de:'Ausflug',
+      art:'der',
+      pl:'Ausflüge',
+      en:'trip, outing',
+      ph:'OWS-flook'
+    },
+    {
+      de:'Picknick',
+      art:'das',
+      pl:'Picknicks',
+      en:'picnic',
+      ph:'PIK-nik'
+    },
+    {
+      de:'Grill',
+      art:'der',
+      pl:'Grills',
+      en:'barbecue grill',
+      ph:'gril'
+    },
+    {
+      de:'Lagerfeuer',
+      art:'das',
+      pl:'Lagerfeuer',
+      en:'campfire',
+      ph:'LAH-ger-foy-er'
+    },
+    {
+      de:'Natur',
+      art:'die',
+      pl:'',
+      en:'nature',
+      ph:'nah-TOOR'
+    },
+    {
+      de:'Berg',
+      art:'der',
+      pl:'Berge',
+      en:'mountain',
+      ph:'bairk'
+    },
+    {
+      de:'Hobby',
+      art:'das',
+      pl:'Hobbys',
+      en:'hobby',
+      ph:'HOB-bee'
+    },
+    {
+      de:'Fahrrad',
+      art:'das',
+      pl:'Fahrräder',
+      en:'bicycle',
+      ph:'FAHR-raht'
+    },
+    {
+      de:'wandern',
+      art:'',
+      pl:'',
+      en:'to hike',
+      ph:'VAHN-dern'
+    },
+    {
+      de:'angeln',
+      art:'',
+      pl:'',
+      en:'to fish',
+      ph:'AHNG-eln'
+    },
+    {
+      de:'Verein',
+      art:'der',
+      pl:'Vereine',
+      en:'club, association',
+      ph:'fair-INE'
+    },
+    {
+      de:'Kurs',
+      art:'der',
+      pl:'Kurse',
+      en:'course',
+      ph:'koors'
+    },
+    {
+      de:'Freizeit',
+      art:'die',
+      pl:'',
+      en:'free time, leisure',
+      ph:'FRAI-tsite'
+    },
+    {
+      de:'Lust',
+      art:'die',
+      pl:'',
+      en:'desire, liking',
+      ph:'loost'
+    }
+  ],
+  grammar:{
+    title:'"zu" + infinitive',
+    plain:'After some verbs, the infinitive comes with "zu": "Ich habe Lust zu schwimmen." (I feel like swimming.) "Ich freue mich, dich zu sehen." (I am happy to see you.) The "zu" goes before the infinitive, at the end.',
+    rule:'Lust haben + zu + infinitive · sich freuen + zu + infinitive · "zu" always sits right before the infinitive, at the end',
+    examples:[
+      {
+        de:'Ich habe Lust, Fußball zu spielen.',
+        en:'I feel like playing football.',
+        ph:'ish HAH-be loost, FOOS-bahl tsoo SHPEE-len'
+      },
+      {
+        de:'Ich freue mich, dich zu sehen.',
+        en:'I am happy to see you.',
+        ph:'ish FROY-e mikh, dikh tsoo ZAY-en'
+      },
+      {
+        de:'Es ist schön, hier zu sein.',
+        en:'It is nice to be here.',
+        ph:'es ist shoen, heer tsoo zine'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Ich habe Lust, Fußball ___ spielen."', options:['zu', 'nach', 'um', 'mit'], answer:0,
+     why:'"Lust haben" takes "zu" + infinitive: Lust zu spielen.'},
+    {q:'Fill in: "Ich freue mich, dich ___ sehen."', options:['zu', 'nach', 'um', 'mit'], answer:0,
+     why:'"sich freuen" takes "zu" + infinitive: dich zu sehen.'},
+    {q:'Where does "zu" go?', options:['Before the verb', 'Right before the infinitive, at the end', 'After the subject', 'At the start'], answer:1,
+     why:'"zu" sits right before the infinitive, at the end of the sentence.'},
+    {q:'What does "gewinnen" mean?', options:['to lose', 'to win', 'to train', 'to play'], answer:1,
+     why:'gewinnen = to win. verlieren = to lose.'},
+    {q:'What is "die Mannschaft"?', options:['the trainer', 'the team', 'the club', 'the game'], answer:1,
+     why:'die Mannschaft = the team. der Trainer = the trainer, der Verein = the club.'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich habe Lust, Fußball zu spielen. Ich freue mich, dich zu sehen."',
+    model:[
+      'Ich habe Lust, Fußball zu spielen.',
+      'Ich freue mich, dich zu sehen.',
+      'Was machst du am Wochenende?'
+    ]
+  },
+  recap:[
+    '"zu" + infinitive: Ich habe Lust zu schwimmen.',
+    '"Ich freue mich, dich zu sehen."',
+    '"zu" sits right before the infinitive, at the end.',
+    'Hobbies: der Sport, das Hobby, der Verein, die Mannschaft, das Training.'
+  ],
+  tip:'Memory tip: learn "Lust haben" and "sich freuen" as fixed phrases with "zu": "Ich habe Lust zu ..." — then just add any verb.',
+  extra:[
+    {
+      q:'Say "I feel like playing football."',
+      a:'Ich habe Lust, Fußball zu spielen.'
+    },
+    {
+      q:'Say "I am happy to see you."',
+      a:'Ich freue mich, dich zu sehen.'
+    },
+    {
+      q:'What does "trainieren" mean?',
+      a:'to train — "Wir trainieren am Samstag."'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Hobby words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Sport',
+          art:'der',
+          pl:'',
+          en:'sport',
+          ph:'shport'
+        },
+        {
+          de:'Tennis',
+          art:'das',
+          pl:'',
+          en:'tennis',
+          ph:'TEN-nis'
+        },
+        {
+          de:'tanzen',
+          art:'',
+          pl:'',
+          en:'to dance',
+          ph:'TAHN-tsen'
+        },
+        {
+          de:'singen',
+          art:'',
+          pl:'',
+          en:'to sing',
+          ph:'ZING-en'
+        },
+        {
+          de:'malen',
+          art:'',
+          pl:'',
+          en:'to paint',
+          ph:'MAH-len'
+        },
+        {
+          de:'reisen',
+          art:'',
+          pl:'',
+          en:'to travel',
+          ph:'RAI-zen'
+        },
+        {
+          de:'spielen',
+          art:'',
+          pl:'',
+          en:'to play',
+          ph:'SHPEE-len'
+        },
+        {
+          de:'Spiel',
+          art:'das',
+          pl:'Spiele',
+          en:'game',
+          ph:'shpeel'
+        },
+        {
+          de:'Musik',
+          art:'die',
+          pl:'',
+          en:'music',
+          ph:'moo-ZEEK'
+        },
+        {
+          de:'Theater',
+          art:'das',
+          pl:'Theater',
+          en:'theatre',
+          ph:'tay-AH-ter'
+        },
+        {
+          de:'Konzert',
+          art:'das',
+          pl:'Konzerte',
+          en:'concert',
+          ph:'kon-TSAIRT'
+        },
+        {
+          de:'Film',
+          art:'der',
+          pl:'Filme',
+          en:'film, movie',
+          ph:'film'
+        },
+        {
+          de:'Buch',
+          art:'das',
+          pl:'Bücher',
+          en:'book',
+          ph:'bookh'
+        },
+        {
+          de:'Instrument',
+          art:'das',
+          pl:'Instrumente',
+          en:'instrument',
+          ph:'in-stroo-MENT'
+        },
+        {
+          de:'Gitarre',
+          art:'die',
+          pl:'Gitarren',
+          en:'guitar',
+          ph:'gi-TAHR-re'
+        },
+        {
+          de:'Klavier',
+          art:'das',
+          pl:'Klaviere',
+          en:'piano',
+          ph:'klah-VEER'
+        },
+        {
+          de:'Sportverein',
+          art:'der',
+          pl:'Sportvereine',
+          en:'sports club',
+          ph:'SHPORT-fair-ine'
+        },
+        {
+          de:'Mitgliedschaft',
+          art:'die',
+          pl:'Mitgliedschaften',
+          en:'membership',
+          ph:'MIT-gleed-shahft'
+        },
+        {
+          de:'Mitglied',
+          art:'das',
+          pl:'Mitglieder',
+          en:'member',
+          ph:'MIT-gleed'
+        },
+        {
+          de:'trainieren',
+          art:'',
+          pl:'',
+          en:'to train',
+          ph:'trai-NEE-ren'
+        },
+        {
+          de:'Trainer',
+          art:'der',
+          pl:'Trainer',
+          en:'trainer, coach (male)',
+          ph:'TRAI-ner'
+        },
+        {
+          de:'Trainerin',
+          art:'die',
+          pl:'Trainerinnen',
+          en:'trainer, coach (female)',
+          ph:'TRAI-ne-rin'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Sports & club words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Training',
+          art:'das',
+          pl:'Trainings',
+          en:'training, practice',
+          ph:'TRAI-ning'
+        },
+        {
+          de:'Mannschaft',
+          art:'die',
+          pl:'Mannschaften',
+          en:'team',
+          ph:'MAHN-shahft'
+        },
+        {
+          de:'gewinnen',
+          art:'',
+          pl:'',
+          en:'to win',
+          ph:'ge-VIN-nen'
+        },
+        {
+          de:'verlieren',
+          art:'',
+          pl:'',
+          en:'to lose',
+          ph:'fair-LEE-ren'
+        },
+        {
+          de:'Zuschauer',
+          art:'der',
+          pl:'Zuschauer',
+          en:'spectator (male)',
+          ph:'TSOO-show-er'
+        },
+        {
+          de:'Zuschauerin',
+          art:'die',
+          pl:'Zuschauerinnen',
+          en:'spectator (female)',
+          ph:'TSOO-show-e-rin'
+        },
+        {
+          de:'Eintritt',
+          art:'der',
+          pl:'',
+          en:'admission, entry',
+          ph:'INE-trit'
+        },
+        {
+          de:'Eintrittskarte',
+          art:'die',
+          pl:'Eintrittskarten',
+          en:'admission ticket',
+          ph:'INE-trits-kahr-te'
+        },
+        {
+          de:'Ausflug',
+          art:'der',
+          pl:'Ausflüge',
+          en:'trip, outing',
+          ph:'OWS-flook'
+        },
+        {
+          de:'Picknick',
+          art:'das',
+          pl:'Picknicks',
+          en:'picnic',
+          ph:'PIK-nik'
+        },
+        {
+          de:'Grill',
+          art:'der',
+          pl:'Grills',
+          en:'barbecue grill',
+          ph:'gril'
+        },
+        {
+          de:'Lagerfeuer',
+          art:'das',
+          pl:'Lagerfeuer',
+          en:'campfire',
+          ph:'LAH-ger-foy-er'
+        },
+        {
+          de:'Natur',
+          art:'die',
+          pl:'',
+          en:'nature',
+          ph:'nah-TOOR'
+        },
+        {
+          de:'Berg',
+          art:'der',
+          pl:'Berge',
+          en:'mountain',
+          ph:'bairk'
+        },
+        {
+          de:'Hobby',
+          art:'das',
+          pl:'Hobbys',
+          en:'hobby',
+          ph:'HOB-bee'
+        },
+        {
+          de:'Fahrrad',
+          art:'das',
+          pl:'Fahrräder',
+          en:'bicycle',
+          ph:'FAHR-raht'
+        },
+        {
+          de:'wandern',
+          art:'',
+          pl:'',
+          en:'to hike',
+          ph:'VAHN-dern'
+        },
+        {
+          de:'angeln',
+          art:'',
+          pl:'',
+          en:'to fish',
+          ph:'AHNG-eln'
+        },
+        {
+          de:'Verein',
+          art:'der',
+          pl:'Vereine',
+          en:'club, association',
+          ph:'fair-INE'
+        },
+        {
+          de:'Kurs',
+          art:'der',
+          pl:'Kurse',
+          en:'course',
+          ph:'koors'
+        },
+        {
+          de:'Freizeit',
+          art:'die',
+          pl:'',
+          en:'free time, leisure',
+          ph:'FRAI-tsite'
+        },
+        {
+          de:'Lust',
+          art:'die',
+          pl:'',
+          en:'desire, liking',
+          ph:'loost'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: At the weekend',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Was machst du am Wochenende?',
+          en:'What are you doing at the weekend?',
+          ph:'vahs mahkhst doo ahm VOKH-en-en-de'
+        },
+        {
+          who:'B',
+          de:'Ich spiele Fußball im Verein. Kommst du mit?',
+          en:'I play football in a club. Are you coming along?',
+          ph:'ish SHPEE-le FOOS-bahl im fair-INE. komst doo mit'
+        },
+        {
+          who:'A',
+          de:'Gern! Ich habe Lust, Fußball zu spielen.',
+          en:'Gladly! I feel like playing football.',
+          ph:'gairn! ish HAH-be loost, FOOS-bahl tsoo SHPEE-len'
+        },
+        {
+          who:'B',
+          de:'Super! Wir trainieren am Samstag um 10 Uhr.',
+          en:'Great! We train on Saturday at 10 o\'clock.',
+          ph:'ZOO-per! veer trai-NEE-ren ahm ZAHMS-tahk oom tsayn oor'
+        },
+        {
+          who:'A',
+          de:'Ich freue mich, dich zu sehen.',
+          en:'I am happy to see you.',
+          ph:'ish FROY-e mikh, dikh tsoo ZAY-en'
+        },
+        {
+          who:'B',
+          de:'Bis Samstag!',
+          en:'See you Saturday!',
+          ph:'bis ZAHMS-tahk'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich habe Lust, Fußball zu spielen. Ich freue mich, dich zu sehen."',
+        model:[
+          'Ich habe Lust, Fußball zu spielen.',
+          'Ich freue mich, dich zu sehen.',
+          'Was machst du am Wochenende?'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: "zu" + infinitive',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'"zu" + infinitive',
+        plain:'After some verbs, the infinitive comes with "zu": "Ich habe Lust zu schwimmen." (I feel like swimming.) "Ich freue mich, dich zu sehen." (I am happy to see you.) The "zu" goes before the infinitive, at the end.',
+        rule:'Lust haben + zu + infinitive · sich freuen + zu + infinitive · "zu" always sits right before the infinitive, at the end',
+        examples:[
+          {
+            de:'Ich habe Lust, Fußball zu spielen.',
+            en:'I feel like playing football.',
+            ph:'ish HAH-be loost, FOOS-bahl tsoo SHPEE-len'
+          },
+          {
+            de:'Ich freue mich, dich zu sehen.',
+            en:'I am happy to see you.',
+            ph:'ish FROY-e mikh, dikh tsoo ZAY-en'
+          },
+          {
+            de:'Es ist schön, hier zu sein.',
+            en:'It is nice to be here.',
+            ph:'es ist shoen, heer tsoo zine'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: "zu" + infinitive',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich habe Lust, Fußball ___ spielen."', options:['zu', 'nach', 'um', 'mit'], answer:0,
+         why:'"Lust haben" takes "zu" + infinitive: Lust zu spielen.'},
+        {q:'Fill in: "Ich freue mich, dich ___ sehen."', options:['zu', 'nach', 'um', 'mit'], answer:0,
+         why:'"sich freuen" takes "zu" + infinitive: dich zu sehen.'},
+        {q:'Where does "zu" go?', options:['Before the verb', 'Right before the infinitive, at the end', 'After the subject', 'At the start'], answer:1,
+         why:'"zu" sits right before the infinitive, at the end of the sentence.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: free time',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'What does "gewinnen" mean?', options:['to lose', 'to win', 'to train', 'to play'], answer:1,
+         why:'gewinnen = to win. verlieren = to lose.'},
+        {q:'What is "die Mannschaft"?', options:['the trainer', 'the team', 'the club', 'the game'], answer:1,
+         why:'die Mannschaft = the team. der Trainer = the trainer, der Verein = the club.'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 9 — Travel & Transport',
+};
 
-CHAPTERS['A2-9'] = { id:'A2-9', n:9, level:'A2', title:'Travel & Transport', time:'9 min', syllabus:true,
-  concept:'Buy tickets, read timetables, and change trains.',
-  learn:['Buy a ticket and ask about the platform','Understand delays and announcements','Change trains'],
-  grammar:{ title:'Perfekt with "sein"',
-    plain:'Most verbs use "haben" in the Perfekt — but verbs of movement and change use "sein": "Ich bin nach Berlin gefahren." (I travelled to Berlin.) "Ich bin um 8 Uhr angekommen." (I arrived at 8.)' },
+CHAPTERS['A2-9'] = {
+  id:'A2-9',
+  n:9,
+  level:'A2',
+  title:'Travel & Transport',
+  time:'17 min',
+  concept:'Buy tickets, read timetables, and change trains — with Perfekt with "sein" and separable verbs.',
+  dialogue:[
+    {
+      who:'A',
+      de:'Entschuldigung, wann fährt der Zug nach Berlin ab?',
+      en:'Excuse me, when does the train to Berlin leave?',
+      ph:'ent-SHOOL-di-goong, vahn fairt dair tsook nahkh bair-LEEN ahp'
+    },
+    {
+      who:'B',
+      de:'Der Zug fährt um 14 Uhr 30 von Gleis 5 ab.',
+      en:'The train leaves at 2:30 pm from platform 5.',
+      ph:'dair tsook fairt oom FEER-tsayn oor DRAI-sish fon glise fuenf ahp'
+    },
+    {
+      who:'A',
+      de:'Muss ich umsteigen?',
+      en:'Do I have to change trains?',
+      ph:'moos ish OOM-shtai-gen'
+    },
+    {
+      who:'B',
+      de:'Nein, der Zug fährt direkt. Sie kommen um 17 Uhr an.',
+      en:'No, the train goes direct. You arrive at 5 pm.',
+      ph:'nine, dair tsook fairt di-REKT. zee KOM-men oom ZEEB-tsayn oor ahn'
+    },
+    {
+      who:'A',
+      de:'Was kostet eine Fahrkarte?',
+      en:'How much is a ticket?',
+      ph:'vahs KOS-tet INE-FAHR-kahr-te'
+    },
+    {
+      who:'B',
+      de:'Eine Fahrkarte kostet 49 Euro. Der Zug hat heute 20 Minuten Verspätung.',
+      en:'A ticket costs 49 euros. The train is 20 minutes late today.',
+      ph:'INE-FAHR-kahr-te KOS-tet NOIN-oont-FEER-tsish OY-ro. dair tsook haht HOY-te TSVAHN-tsish mi-NOO-ten fair-SHPAY-toong'
+    }
+  ],
   vocab:[
-    {de:'Fahrplan', art:'der', pl:'Fahrpläne', en:'timetable', ph:'FAHR-plahn'},
-    {de:'Fahrkarte', art:'die', pl:'Fahrkarten', en:'ticket', ph:'FAHR-kahr-te'},
-    {de:'Bahnsteig', art:'der', pl:'Bahnsteige', en:'platform', ph:'BAHN-shtaik'},
-    {de:'umsteigen', art:'', pl:'', en:'to change (trains)', ph:'OOM-shtai-gen'},
-    {de:'Verspätung', art:'die', pl:'Verspätungen', en:'delay', ph:'fair-SHPAY-tung'},
-    {de:'ankommen', art:'', pl:'', en:'to arrive', ph:'AHN-kom-men'},
-    {de:'abfahren', art:'', pl:'', en:'to depart', ph:'AHP-fah-ren'},
-    {de:'Haltestelle', art:'die', pl:'Haltestellen', en:'stop, station', ph:'HAHL-te-shtel-le'},
-  ], next:'Next: Chapter 10 — Media & Communication (syllabus)' };
+    {
+      de:'U-Bahn',
+      art:'die',
+      pl:'U-Bahnen',
+      en:'underground, metro',
+      ph:'OO-bahn'
+    },
+    {
+      de:'S-Bahn',
+      art:'die',
+      pl:'S-Bahnen',
+      en:'suburban train',
+      ph:'ES-bahn'
+    },
+    {
+      de:'Straßenbahn',
+      art:'die',
+      pl:'Straßenbahnen',
+      en:'tram',
+      ph:'SHTRAH-sen-bahn'
+    },
+    {
+      de:'Taxi',
+      art:'das',
+      pl:'Taxis',
+      en:'taxi',
+      ph:'TAHK-see'
+    },
+    {
+      de:'Auto',
+      art:'das',
+      pl:'Autos',
+      en:'car',
+      ph:'OW-toh'
+    },
+    {
+      de:'Motorrad',
+      art:'das',
+      pl:'Motorräder',
+      en:'motorbike',
+      ph:'moh-toh-RAHT'
+    },
+    {
+      de:'Flugzeug',
+      art:'das',
+      pl:'Flugzeuge',
+      en:'airplane',
+      ph:'FLOOK-tsoyk'
+    },
+    {
+      de:'Abfahrt',
+      art:'die',
+      pl:'Abfahrten',
+      en:'departure',
+      ph:'AHP-fahrt'
+    },
+    {
+      de:'Ankunft',
+      art:'die',
+      pl:'Ankünfte',
+      en:'arrival',
+      ph:'AHN-koonft'
+    },
+    {
+      de:'Rucksack',
+      art:'der',
+      pl:'Rucksäcke',
+      en:'backpack',
+      ph:'ROOK-zahk'
+    },
+    {
+      de:'Fahrgast',
+      art:'der',
+      pl:'Fahrgäste',
+      en:'passenger',
+      ph:'FAHR-gahst'
+    },
+    {
+      de:'Schaffner',
+      art:'der',
+      pl:'Schaffner',
+      en:'conductor',
+      ph:'SHAHF-ner'
+    },
+    {
+      de:'Fahrschein',
+      art:'der',
+      pl:'Fahrscheine',
+      en:'ticket',
+      ph:'FAHR-shine'
+    },
+    {
+      de:'Monatskarte',
+      art:'die',
+      pl:'Monatskarten',
+      en:'monthly ticket',
+      ph:'MOH-nahts-kahr-te'
+    },
+    {
+      de:'Gleis',
+      art:'das',
+      pl:'Gleise',
+      en:'platform, track',
+      ph:'glice'
+    },
+    {
+      de:'Ausgang',
+      art:'der',
+      pl:'Ausgänge',
+      en:'exit',
+      ph:'OWS-gahng'
+    },
+    {
+      de:'Eingang',
+      art:'der',
+      pl:'Eingänge',
+      en:'entrance',
+      ph:'INE-gahng'
+    },
+    {
+      de:'Information',
+      art:'die',
+      pl:'Informationen',
+      en:'information',
+      ph:'in-for-mah-TSEE-ohn'
+    },
+    {
+      de:'Ansage',
+      art:'die',
+      pl:'Ansagen',
+      en:'announcement',
+      ph:'AHN-zah-ge'
+    },
+    {
+      de:'Durchsage',
+      art:'die',
+      pl:'Durchsagen',
+      en:'announcement (PA)',
+      ph:'DOORKH-zah-ge'
+    },
+    {
+      de:'pünktlich',
+      art:'',
+      pl:'',
+      en:'on time',
+      ph:'PUENKT-likh'
+    },
+    {
+      de:'Stau',
+      art:'der',
+      pl:'Staus',
+      en:'traffic jam',
+      ph:'shtau'
+    },
+    {
+      de:'Verkehr',
+      art:'der',
+      pl:'',
+      en:'traffic',
+      ph:'fair-KAIR'
+    },
+    {
+      de:'Ampel',
+      art:'die',
+      pl:'Ampeln',
+      en:'traffic light',
+      ph:'AHM-pel'
+    },
+    {
+      de:'Kreuzung',
+      art:'die',
+      pl:'Kreuzungen',
+      en:'crossroads',
+      ph:'KROY-tsoong'
+    },
+    {
+      de:'Brücke',
+      art:'die',
+      pl:'Brücken',
+      en:'bridge',
+      ph:'BRUEK-ke'
+    },
+    {
+      de:'Tunnel',
+      art:'der',
+      pl:'Tunnel',
+      en:'tunnel',
+      ph:'TOO-nel'
+    },
+    {
+      de:'fliegen',
+      art:'',
+      pl:'',
+      en:'to fly',
+      ph:'FLEE-gen'
+    },
+    {
+      de:'steigen',
+      art:'',
+      pl:'',
+      en:'to climb, to get on',
+      ph:'SHTAI-gen'
+    },
+    {
+      de:'einsteigen',
+      art:'',
+      pl:'',
+      en:'to get in/on',
+      ph:'INE-shtai-gen'
+    },
+    {
+      de:'aussteigen',
+      art:'',
+      pl:'',
+      en:'to get out/off',
+      ph:'OWS-shtai-gen'
+    },
+    {
+      de:'losfahren',
+      art:'',
+      pl:'',
+      en:'to set off, to leave',
+      ph:'LOHS-fah-ren'
+    },
+    {
+      de:'wegfahren',
+      art:'',
+      pl:'',
+      en:'to drive away',
+      ph:'VEK-fah-ren'
+    },
+    {
+      de:'mitfahren',
+      art:'',
+      pl:'',
+      en:'to ride along',
+      ph:'MIT-fah-ren'
+    },
+    {
+      de:'buchen',
+      art:'',
+      pl:'',
+      en:'to book',
+      ph:'BOO-khen'
+    },
+    {
+      de:'Fahrpreis',
+      art:'der',
+      pl:'Fahrpreise',
+      en:'fare',
+      ph:'FAHR-price'
+    },
+    {
+      de:'Ermäßigung',
+      art:'die',
+      pl:'Ermäßigungen',
+      en:'reduction, discount',
+      ph:'air-MAY-si-goong'
+    },
+    {
+      de:'Studentenausweis',
+      art:'der',
+      pl:'Studentenausweise',
+      en:'student ID',
+      ph:'shtoo-DEN-ten-ows-vice'
+    },
+    {
+      de:'Fahrplan',
+      art:'der',
+      pl:'Fahrpläne',
+      en:'timetable',
+      ph:'FAHR-plahn'
+    },
+    {
+      de:'Fahrkarte',
+      art:'die',
+      pl:'Fahrkarten',
+      en:'ticket',
+      ph:'FAHR-kahr-te'
+    },
+    {
+      de:'Bahnsteig',
+      art:'der',
+      pl:'Bahnsteige',
+      en:'platform',
+      ph:'BAHN-shtaik'
+    },
+    {
+      de:'umsteigen',
+      art:'',
+      pl:'',
+      en:'to change (trains)',
+      ph:'OOM-shtai-gen'
+    },
+    {
+      de:'Verspätung',
+      art:'die',
+      pl:'Verspätungen',
+      en:'delay',
+      ph:'fair-SHPAY-toong'
+    },
+    {
+      de:'ankommen',
+      art:'',
+      pl:'',
+      en:'to arrive',
+      ph:'AHN-kom-men'
+    },
+    {
+      de:'abfahren',
+      art:'',
+      pl:'',
+      en:'to depart',
+      ph:'AHP-fah-ren'
+    },
+    {
+      de:'Haltestelle',
+      art:'die',
+      pl:'Haltestellen',
+      en:'stop, station',
+      ph:'HAHL-te-shtel-le'
+    }
+  ],
+  grammar:{
+    title:'Perfekt with "sein" — and separable verbs',
+    plain:'Most verbs use "haben" in the Perfekt — but verbs of movement and change use "sein": "Ich bin nach Berlin gefahren." "Ich bin um 8 Uhr angekommen." Separable verbs put "ge-" in the MIDDLE: ankommen → angekommen, aufstehen → aufgestanden, einkaufen → eingekauft.',
+    rule:'sein + Partizip II for movement/change: ich bin gefahren, angekommen · separable: an-ge-kommen, auf-ge-standen, ein-ge-kauft',
+    examples:[
+      {
+        de:'Ich bin nach Berlin gefahren.',
+        en:'I travelled to Berlin.',
+        ph:'ish bin nahkh bair-LEEN ge-FAH-ren'
+      },
+      {
+        de:'Ich bin um 8 Uhr angekommen.',
+        en:'I arrived at 8 o\'clock.',
+        ph:'ish bin oom ahkht oor AHN-ge-kom-men'
+      },
+      {
+        de:'Ich bin heute früh aufgestanden.',
+        en:'I got up early today.',
+        ph:'ish bin HOY-te frue OWF-ge-shtahn-den'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Ich bin nach Berlin ___."', options:['gefahren', 'gefahr', 'gefahren ist', 'fahren'], answer:0,
+     why:'Movement → "sein" + Partizip II: Ich bin gefahren.'},
+    {q:'Fill in: "Ich bin um 8 Uhr ___."', options:['angekommen', 'angekomm', 'gekommen an', 'ankommen'], answer:0,
+     why:'ankommen → angekommen. The "ge-" goes in the middle.'},
+    {q:'What is the Partizip II of "aufstehen"?', options:['aufgestanden', 'aufgestehen', 'gestanden auf', 'aufstehen'], answer:0,
+     why:'aufstehen → aufgestanden: "Ich bin früh aufgestanden."'},
+    {q:'Which verb takes "sein" in the Perfekt?', options:['lernen', 'fahren', 'kochen', 'arbeiten'], answer:1,
+     why:'Verbs of movement take "sein": fahren, gehen, kommen, ankommen.'},
+    {q:'What does "umsteigen" mean?', options:['to arrive', 'to depart', 'to change (trains)', 'to wait'], answer:2,
+     why:'umsteigen = to change trains. "Muss ich umsteigen?"'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich bin nach Berlin gefahren. Ich bin um 8 Uhr angekommen."',
+    model:['Ich bin nach Berlin gefahren.', 'Ich bin um 8 Uhr angekommen.', 'Der Zug fährt um 14 Uhr 30 ab.']
+  },
+  recap:[
+    'Movement/change verbs take "sein": ich bin gefahren, angekommen.',
+    'Separable verbs: "ge-" goes in the middle — angekommen, aufgestanden.',
+    'At the station: der Fahrplan, die Fahrkarte, der Bahnsteig, das Gleis.',
+    'Ask: "Wann fährt der Zug ab?" — "Muss ich umsteigen?"'
+  ],
+  tip:'Memory tip: if the verb moves you (fahren, gehen, kommen, ankommen, aufstehen), use "sein". If it stays in one place (lernen, kochen, arbeiten), use "haben".',
+  extra:[
+    {
+      q:'Say "I travelled to Berlin."',
+      a:'Ich bin nach Berlin gefahren.'
+    },
+    {
+      q:'Say "I arrived at 8 o\'clock."',
+      a:'Ich bin um 8 Uhr angekommen.'
+    },
+    {
+      q:'What is the Partizip II of "einkaufen"?',
+      a:'eingekauft — "Ich habe eingekauft."'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Transport words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'U-Bahn',
+          art:'die',
+          pl:'U-Bahnen',
+          en:'underground, metro',
+          ph:'OO-bahn'
+        },
+        {
+          de:'S-Bahn',
+          art:'die',
+          pl:'S-Bahnen',
+          en:'suburban train',
+          ph:'ES-bahn'
+        },
+        {
+          de:'Straßenbahn',
+          art:'die',
+          pl:'Straßenbahnen',
+          en:'tram',
+          ph:'SHTRAH-sen-bahn'
+        },
+        {
+          de:'Taxi',
+          art:'das',
+          pl:'Taxis',
+          en:'taxi',
+          ph:'TAHK-see'
+        },
+        {
+          de:'Auto',
+          art:'das',
+          pl:'Autos',
+          en:'car',
+          ph:'OW-toh'
+        },
+        {
+          de:'Motorrad',
+          art:'das',
+          pl:'Motorräder',
+          en:'motorbike',
+          ph:'moh-toh-RAHT'
+        },
+        {
+          de:'Flugzeug',
+          art:'das',
+          pl:'Flugzeuge',
+          en:'airplane',
+          ph:'FLOOK-tsoyk'
+        },
+        {
+          de:'Abfahrt',
+          art:'die',
+          pl:'Abfahrten',
+          en:'departure',
+          ph:'AHP-fahrt'
+        },
+        {
+          de:'Ankunft',
+          art:'die',
+          pl:'Ankünfte',
+          en:'arrival',
+          ph:'AHN-koonft'
+        },
+        {
+          de:'Rucksack',
+          art:'der',
+          pl:'Rucksäcke',
+          en:'backpack',
+          ph:'ROOK-zahk'
+        },
+        {
+          de:'Fahrgast',
+          art:'der',
+          pl:'Fahrgäste',
+          en:'passenger',
+          ph:'FAHR-gahst'
+        },
+        {
+          de:'Schaffner',
+          art:'der',
+          pl:'Schaffner',
+          en:'conductor',
+          ph:'SHAHF-ner'
+        },
+        {
+          de:'Fahrschein',
+          art:'der',
+          pl:'Fahrscheine',
+          en:'ticket',
+          ph:'FAHR-shine'
+        },
+        {
+          de:'Monatskarte',
+          art:'die',
+          pl:'Monatskarten',
+          en:'monthly ticket',
+          ph:'MOH-nahts-kahr-te'
+        },
+        {
+          de:'Gleis',
+          art:'das',
+          pl:'Gleise',
+          en:'platform, track',
+          ph:'glice'
+        },
+        {
+          de:'Ausgang',
+          art:'der',
+          pl:'Ausgänge',
+          en:'exit',
+          ph:'OWS-gahng'
+        },
+        {
+          de:'Eingang',
+          art:'der',
+          pl:'Eingänge',
+          en:'entrance',
+          ph:'INE-gahng'
+        },
+        {
+          de:'Information',
+          art:'die',
+          pl:'Informationen',
+          en:'information',
+          ph:'in-for-mah-TSEE-ohn'
+        },
+        {
+          de:'Ansage',
+          art:'die',
+          pl:'Ansagen',
+          en:'announcement',
+          ph:'AHN-zah-ge'
+        },
+        {
+          de:'Durchsage',
+          art:'die',
+          pl:'Durchsagen',
+          en:'announcement (PA)',
+          ph:'DOORKH-zah-ge'
+        },
+        {
+          de:'pünktlich',
+          art:'',
+          pl:'',
+          en:'on time',
+          ph:'PUENKT-likh'
+        },
+        {
+          de:'Stau',
+          art:'der',
+          pl:'Staus',
+          en:'traffic jam',
+          ph:'shtau'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'At the station words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Verkehr',
+          art:'der',
+          pl:'',
+          en:'traffic',
+          ph:'fair-KAIR'
+        },
+        {
+          de:'Ampel',
+          art:'die',
+          pl:'Ampeln',
+          en:'traffic light',
+          ph:'AHM-pel'
+        },
+        {
+          de:'Kreuzung',
+          art:'die',
+          pl:'Kreuzungen',
+          en:'crossroads',
+          ph:'KROY-tsoong'
+        },
+        {
+          de:'Brücke',
+          art:'die',
+          pl:'Brücken',
+          en:'bridge',
+          ph:'BRUEK-ke'
+        },
+        {
+          de:'Tunnel',
+          art:'der',
+          pl:'Tunnel',
+          en:'tunnel',
+          ph:'TOO-nel'
+        },
+        {
+          de:'fliegen',
+          art:'',
+          pl:'',
+          en:'to fly',
+          ph:'FLEE-gen'
+        },
+        {
+          de:'steigen',
+          art:'',
+          pl:'',
+          en:'to climb, to get on',
+          ph:'SHTAI-gen'
+        },
+        {
+          de:'einsteigen',
+          art:'',
+          pl:'',
+          en:'to get in/on',
+          ph:'INE-shtai-gen'
+        },
+        {
+          de:'aussteigen',
+          art:'',
+          pl:'',
+          en:'to get out/off',
+          ph:'OWS-shtai-gen'
+        },
+        {
+          de:'losfahren',
+          art:'',
+          pl:'',
+          en:'to set off, to leave',
+          ph:'LOHS-fah-ren'
+        },
+        {
+          de:'wegfahren',
+          art:'',
+          pl:'',
+          en:'to drive away',
+          ph:'VEK-fah-ren'
+        },
+        {
+          de:'mitfahren',
+          art:'',
+          pl:'',
+          en:'to ride along',
+          ph:'MIT-fah-ren'
+        },
+        {
+          de:'buchen',
+          art:'',
+          pl:'',
+          en:'to book',
+          ph:'BOO-khen'
+        },
+        {
+          de:'Fahrpreis',
+          art:'der',
+          pl:'Fahrpreise',
+          en:'fare',
+          ph:'FAHR-price'
+        },
+        {
+          de:'Ermäßigung',
+          art:'die',
+          pl:'Ermäßigungen',
+          en:'reduction, discount',
+          ph:'air-MAY-si-goong'
+        },
+        {
+          de:'Studentenausweis',
+          art:'der',
+          pl:'Studentenausweise',
+          en:'student ID',
+          ph:'shtoo-DEN-ten-ows-vice'
+        },
+        {
+          de:'Fahrplan',
+          art:'der',
+          pl:'Fahrpläne',
+          en:'timetable',
+          ph:'FAHR-plahn'
+        },
+        {
+          de:'Fahrkarte',
+          art:'die',
+          pl:'Fahrkarten',
+          en:'ticket',
+          ph:'FAHR-kahr-te'
+        },
+        {
+          de:'Bahnsteig',
+          art:'der',
+          pl:'Bahnsteige',
+          en:'platform',
+          ph:'BAHN-shtaik'
+        },
+        {
+          de:'umsteigen',
+          art:'',
+          pl:'',
+          en:'to change (trains)',
+          ph:'OOM-shtai-gen'
+        },
+        {
+          de:'Verspätung',
+          art:'die',
+          pl:'Verspätungen',
+          en:'delay',
+          ph:'fair-SHPAY-toong'
+        },
+        {
+          de:'ankommen',
+          art:'',
+          pl:'',
+          en:'to arrive',
+          ph:'AHN-kom-men'
+        },
+        {
+          de:'abfahren',
+          art:'',
+          pl:'',
+          en:'to depart',
+          ph:'AHP-fah-ren'
+        },
+        {
+          de:'Haltestelle',
+          art:'die',
+          pl:'Haltestellen',
+          en:'stop, station',
+          ph:'HAHL-te-shtel-le'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: At the station',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Entschuldigung, wann fährt der Zug nach Berlin ab?',
+          en:'Excuse me, when does the train to Berlin leave?',
+          ph:'ent-SHOOL-di-goong, vahn fairt dair tsook nahkh bair-LEEN ahp'
+        },
+        {
+          who:'B',
+          de:'Der Zug fährt um 14 Uhr 30 von Gleis 5 ab.',
+          en:'The train leaves at 2:30 pm from platform 5.',
+          ph:'dair tsook fairt oom FEER-tsayn oor DRAI-sish fon glise fuenf ahp'
+        },
+        {
+          who:'A',
+          de:'Muss ich umsteigen?',
+          en:'Do I have to change trains?',
+          ph:'moos ish OOM-shtai-gen'
+        },
+        {
+          who:'B',
+          de:'Nein, der Zug fährt direkt. Sie kommen um 17 Uhr an.',
+          en:'No, the train goes direct. You arrive at 5 pm.',
+          ph:'nine, dair tsook fairt di-REKT. zee KOM-men oom ZEEB-tsayn oor ahn'
+        },
+        {
+          who:'A',
+          de:'Was kostet eine Fahrkarte?',
+          en:'How much is a ticket?',
+          ph:'vahs KOS-tet INE-FAHR-kahr-te'
+        },
+        {
+          who:'B',
+          de:'Eine Fahrkarte kostet 49 Euro. Der Zug hat heute 20 Minuten Verspätung.',
+          en:'A ticket costs 49 euros. The train is 20 minutes late today.',
+          ph:'INE-FAHR-kahr-te KOS-tet NOIN-oont-FEER-tsish OY-ro. dair tsook haht HOY-te TSVAHN-tsish mi-NOO-ten fair-SHPAY-toong'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich bin nach Berlin gefahren. Ich bin um 8 Uhr angekommen."',
+        model:['Ich bin nach Berlin gefahren.', 'Ich bin um 8 Uhr angekommen.', 'Der Zug fährt um 14 Uhr 30 ab.']
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Perfekt with "sein"',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Perfekt with "sein" — and separable verbs',
+        plain:'Most verbs use "haben" in the Perfekt — but verbs of movement and change use "sein": "Ich bin nach Berlin gefahren." "Ich bin um 8 Uhr angekommen." Separable verbs put "ge-" in the MIDDLE: ankommen → angekommen, aufstehen → aufgestanden, einkaufen → eingekauft.',
+        rule:'sein + Partizip II for movement/change: ich bin gefahren, angekommen · separable: an-ge-kommen, auf-ge-standen, ein-ge-kauft',
+        examples:[
+          {
+            de:'Ich bin nach Berlin gefahren.',
+            en:'I travelled to Berlin.',
+            ph:'ish bin nahkh bair-LEEN ge-FAH-ren'
+          },
+          {
+            de:'Ich bin um 8 Uhr angekommen.',
+            en:'I arrived at 8 o\'clock.',
+            ph:'ish bin oom ahkht oor AHN-ge-kom-men'
+          },
+          {
+            de:'Ich bin heute früh aufgestanden.',
+            en:'I got up early today.',
+            ph:'ish bin HOY-te frue OWF-ge-shtahn-den'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: sein or haben?',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich bin nach Berlin ___."', options:['gefahren', 'gefahr', 'gefahren ist', 'fahren'], answer:0,
+         why:'Movement → "sein" + Partizip II: Ich bin gefahren.'},
+        {q:'Fill in: "Ich bin um 8 Uhr ___."', options:['angekommen', 'angekomm', 'gekommen an', 'ankommen'], answer:0,
+         why:'ankommen → angekommen. The "ge-" goes in the middle.'},
+        {q:'What is the Partizip II of "aufstehen"?', options:['aufgestanden', 'aufgestehen', 'gestanden auf', 'aufstehen'], answer:0,
+         why:'aufstehen → aufgestanden: "Ich bin früh aufgestanden."'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: travel',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Which verb takes "sein" in the Perfekt?', options:['lernen', 'fahren', 'kochen', 'arbeiten'], answer:1,
+         why:'Verbs of movement take "sein": fahren, gehen, kommen, ankommen.'},
+        {q:'What does "umsteigen" mean?', options:['to arrive', 'to depart', 'to change (trains)', 'to wait'], answer:2,
+         why:'umsteigen = to change trains. "Muss ich umsteigen?"'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 10 — Media & Communication',
+};
 
-CHAPTERS['A2-10'] = { id:'A2-10', n:10, level:'A2', title:'Media & Communication', time:'9 min', syllabus:true,
-  concept:'Talk about news, phones and the internet.',
-  learn:['Talk about what you read and watch','Describe your phone and computer use','Give your opinion on media'],
-  grammar:{ title:'Prepositions for media — in, auf, bei',
-    plain:'"in der Zeitung" (in the newspaper), "im Internet" (on the internet), "am Handy" (on the phone). Media words take fixed prepositions — learn them as phrases.' },
+CHAPTERS['A2-10'] = {
+  id:'A2-10',
+  n:10,
+  level:'A2',
+  title:'Media & Communication',
+  time:'17 min',
+  concept:'Talk about news, phones and the internet — with the fixed prepositions for media.',
+  dialogue:[
+    {
+      who:'A',
+      de:'Was liest du da?',
+      en:'What are you reading there?',
+      ph:'vahs leest doo dah'
+    },
+    {
+      who:'B',
+      de:'Ich lese die Nachrichten im Internet.',
+      en:'I am reading the news on the internet.',
+      ph:'ish LAY-ze dee NAHKH-rikh-ten im in-tair-NET'
+    },
+    {
+      who:'A',
+      de:'Ich schaue lieber fern. Heute Abend gibt es eine gute Dokumentation.',
+      en:'I prefer watching TV. Tonight there is a good documentary.',
+      ph:'ish SHOW-e LEE-ber fairn. HOY-te AH-bent geept es INE-goo-te do-koo-men-tah-TSEE-ohn'
+    },
+    {
+      who:'B',
+      de:'Ich höre lieber einen Podcast. Ich folge einem deutschen Podcast.',
+      en:'I prefer listening to a podcast. I follow a German podcast.',
+      ph:'ish HOE-re LEE-ber INE-en POD-kahst. ish FOL-ge INE-em DOY-chen POD-kahst'
+    },
+    {
+      who:'A',
+      de:'Ich poste jeden Tag ein Foto. Hast du mein Foto gesehen?',
+      en:'I post a photo every day. Have you seen my photo?',
+      ph:'ish POS-te YAY-den tahk ine FOH-toh. hahst doo mine FOH-toh ge-ZAY-en'
+    },
+    {
+      who:'B',
+      de:'Ja, ich habe es geliked!',
+      en:'Yes, I liked it!',
+      ph:'yah, ish HAH-be es ge-LIKED'
+    }
+  ],
   vocab:[
-    {de:'Zeitung', art:'die', pl:'Zeitungen', en:'newspaper', ph:'TSAI-tung'},
-    {de:'Zeitschrift', art:'die', pl:'Zeitschriften', en:'magazine', ph:'TSAIT-shrift'},
-    {de:'Nachricht', art:'die', pl:'Nachrichten', en:'news, message', ph:'NAHKH-rikht'},
-    {de:'Handy', art:'das', pl:'Handys', en:'mobile phone', ph:'HEN-dee'},
-    {de:'Internet', art:'das', pl:'', en:'internet', ph:'IN-ter-net'},
-    {de:'Computer', art:'der', pl:'Computer', en:'computer', ph:'kom-PYOO-ter'},
-    {de:'E-Mail', art:'die', pl:'E-Mails', en:'email', ph:'EE-mayl'},
-    {de:'surfen', art:'', pl:'', en:'to surf the web', ph:'ZOOR-fen'},
-  ], next:'Next: Chapter 11 — Celebrations & Traditions (syllabus)' };
+    {
+      de:'Schlagzeile',
+      art:'die',
+      pl:'Schlagzeilen',
+      en:'headline',
+      ph:'SHLAHK-tsai-le'
+    },
+    {
+      de:'Artikel',
+      art:'der',
+      pl:'Artikel',
+      en:'article',
+      ph:'ahr-TIK-kel'
+    },
+    {
+      de:'Sendung',
+      art:'die',
+      pl:'Sendungen',
+      en:'programme, show',
+      ph:'ZEN-doong'
+    },
+    {
+      de:'Sender',
+      art:'der',
+      pl:'Sender',
+      en:'channel, broadcaster',
+      ph:'ZEN-der'
+    },
+    {
+      de:'Programm',
+      art:'das',
+      pl:'Programme',
+      en:'programme',
+      ph:'pro-GRAHM'
+    },
+    {
+      de:'Werbung',
+      art:'die',
+      pl:'',
+      en:'advertising',
+      ph:'VAIR-boong'
+    },
+    {
+      de:'Bericht',
+      art:'der',
+      pl:'Berichte',
+      en:'report',
+      ph:'be-RIKHT'
+    },
+    {
+      de:'Reportage',
+      art:'die',
+      pl:'Reportagen',
+      en:'reportage, feature',
+      ph:'re-por-TAH-zhe'
+    },
+    {
+      de:'Moderator',
+      art:'der',
+      pl:'Moderatoren',
+      en:'presenter (male)',
+      ph:'mo-de-rah-TOR'
+    },
+    {
+      de:'Moderatorin',
+      art:'die',
+      pl:'Moderatorinnen',
+      en:'presenter (female)',
+      ph:'mo-de-rah-TOH-rin'
+    },
+    {
+      de:'Folge',
+      art:'die',
+      pl:'Folgen',
+      en:'episode',
+      ph:'FOL-ge'
+    },
+    {
+      de:'Serie',
+      art:'die',
+      pl:'Serien',
+      en:'series',
+      ph:'ZAY-ree-e'
+    },
+    {
+      de:'Dokumentation',
+      art:'die',
+      pl:'Dokumentationen',
+      en:'documentary',
+      ph:'do-koo-men-tah-TSEE-ohn'
+    },
+    {
+      de:'Podcast',
+      art:'der',
+      pl:'Podcasts',
+      en:'podcast',
+      ph:'POD-kahst'
+    },
+    {
+      de:'Video',
+      art:'das',
+      pl:'Videos',
+      en:'video',
+      ph:'VEE-de-oh'
+    },
+    {
+      de:'Bildschirm',
+      art:'der',
+      pl:'Bildschirme',
+      en:'screen',
+      ph:'BILT-sheerm'
+    },
+    {
+      de:'Tastatur',
+      art:'die',
+      pl:'Tastaturen',
+      en:'keyboard',
+      ph:'tahs-tah-TOOR'
+    },
+    {
+      de:'Passwort',
+      art:'das',
+      pl:'Passwörter',
+      en:'password',
+      ph:'PAHS-vort'
+    },
+    {
+      de:'App',
+      art:'die',
+      pl:'Apps',
+      en:'app',
+      ph:'ap'
+    },
+    {
+      de:'Smartphone',
+      art:'das',
+      pl:'Smartphones',
+      en:'smartphone',
+      ph:'SMAHRT-fohn'
+    },
+    {
+      de:'Tablet',
+      art:'das',
+      pl:'Tablets',
+      en:'tablet',
+      ph:'TAB-let'
+    },
+    {
+      de:'Laptop',
+      art:'der',
+      pl:'Laptops',
+      en:'laptop',
+      ph:'LAP-top'
+    },
+    {
+      de:'Kommentar',
+      art:'der',
+      pl:'Kommentare',
+      en:'comment',
+      ph:'kom-men-TAHR'
+    },
+    {
+      de:'liken',
+      art:'',
+      pl:'',
+      en:'to like (online)',
+      ph:'LAI-ken'
+    },
+    {
+      de:'teilen',
+      art:'',
+      pl:'',
+      en:'to share',
+      ph:'TAI-len'
+    },
+    {
+      de:'posten',
+      art:'',
+      pl:'',
+      en:'to post',
+      ph:'POS-ten'
+    },
+    {
+      de:'folgen',
+      art:'',
+      pl:'',
+      en:'to follow',
+      ph:'FOL-gen'
+    },
+    {
+      de:'abonnieren',
+      art:'',
+      pl:'',
+      en:'to subscribe',
+      ph:'ah-bon-NEE-ren'
+    },
+    {
+      de:'herunterladen',
+      art:'',
+      pl:'',
+      en:'to download',
+      ph:'hair-OON-ter-lah-den'
+    },
+    {
+      de:'hochladen',
+      art:'',
+      pl:'',
+      en:'to upload',
+      ph:'HOHKH-lah-den'
+    },
+    {
+      de:'online',
+      art:'',
+      pl:'',
+      en:'online',
+      ph:'ON-line'
+    },
+    {
+      de:'offline',
+      art:'',
+      pl:'',
+      en:'offline',
+      ph:'OFF-line'
+    },
+    {
+      de:'digital',
+      art:'',
+      pl:'',
+      en:'digital',
+      ph:'di-gi-TAHL'
+    },
+    {
+      de:'sehen',
+      art:'',
+      pl:'',
+      en:'to see',
+      ph:'ZAY-en'
+    },
+    {
+      de:'schauen',
+      art:'',
+      pl:'',
+      en:'to watch, to look',
+      ph:'SHOW-en'
+    },
+    {
+      de:'gucken',
+      art:'',
+      pl:'',
+      en:'to look (colloquial)',
+      ph:'GOO-ken'
+    },
+    {
+      de:'Fernseher',
+      art:'der',
+      pl:'Fernseher',
+      en:'TV set',
+      ph:'FAIRN-zay-er'
+    },
+    {
+      de:'Radio',
+      art:'das',
+      pl:'Radios',
+      en:'radio',
+      ph:'RAH-dee-oh'
+    },
+    {
+      de:'Zeitung',
+      art:'die',
+      pl:'Zeitungen',
+      en:'newspaper',
+      ph:'TSAI-toong'
+    },
+    {
+      de:'Zeitschrift',
+      art:'die',
+      pl:'Zeitschriften',
+      en:'magazine',
+      ph:'TSAIT-shrift'
+    },
+    {
+      de:'Nachricht',
+      art:'die',
+      pl:'Nachrichten',
+      en:'news, message',
+      ph:'NAHKH-rikht'
+    },
+    {
+      de:'Handy',
+      art:'das',
+      pl:'Handys',
+      en:'mobile phone',
+      ph:'HEN-dee'
+    },
+    {
+      de:'Internet',
+      art:'das',
+      pl:'',
+      en:'internet',
+      ph:'in-tair-NET'
+    },
+    {
+      de:'Computer',
+      art:'der',
+      pl:'Computer',
+      en:'computer',
+      ph:'kom-PYOO-ter'
+    },
+    {
+      de:'E-Mail',
+      art:'die',
+      pl:'E-Mails',
+      en:'email',
+      ph:'EE-mayl'
+    },
+    {
+      de:'surfen',
+      art:'',
+      pl:'',
+      en:'to surf the web',
+      ph:'ZOOR-fen'
+    }
+  ],
+  grammar:{
+    title:'Prepositions for media — in, auf, bei',
+    plain:'"in der Zeitung" (in the newspaper), "im Internet" (on the internet), "am Handy" (on the phone). Media words take fixed prepositions — learn them as phrases, not as rules.',
+    rule:'in der Zeitung · im Internet · am Handy · im Fernsehen · im Radio',
+    examples:[
+      {
+        de:'Ich lese die Nachrichten in der Zeitung.',
+        en:'I read the news in the newspaper.',
+        ph:'ish LAY-ze dee NAHKH-rikh-ten in dair TSAI-toong'
+      },
+      {
+        de:'Ich sehe einen Film im Internet.',
+        en:'I watch a film on the internet.',
+        ph:'ish ZAY-e INE-en film im in-tair-NET'
+      },
+      {
+        de:'Ich bin am Handy.',
+        en:'I am on the phone.',
+        ph:'ish bin ahm HEN-dee'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Ich lese die Nachrichten ___ Internet."', options:['in der', 'im', 'am', 'auf dem'], answer:1,
+     why:'"im Internet" — learn it as a fixed phrase.'},
+    {q:'Fill in: "Ich bin ___ Handy."', options:['in der', 'im', 'am', 'auf dem'], answer:2,
+     why:'"am Handy" — on the phone.'},
+    {q:'Fill in: "Ich lese die Nachrichten ___ Zeitung."', options:['in der', 'im', 'am', 'auf der'], answer:0,
+     why:'"in der Zeitung" — in the newspaper.'},
+    {q:'What does "herunterladen" mean?', options:['to upload', 'to download', 'to post', 'to follow'], answer:1,
+     why:'herunterladen = to download. hochladen = to upload.'},
+    {q:'What is "die Schlagzeile"?', options:['the article', 'the headline', 'the programme', 'the channel'], answer:1,
+     why:'die Schlagzeile = the headline. der Artikel = the article.'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich lese die Nachrichten im Internet. Ich folge einem deutschen Podcast."',
+    model:[
+      'Ich lese die Nachrichten im Internet.',
+      'Ich schaue eine Dokumentation im Fernsehen.',
+      'Ich folge einem deutschen Podcast.'
+    ]
+  },
+  recap:[
+    'Media phrases: in der Zeitung, im Internet, am Handy, im Fernsehen.',
+    'Learn media prepositions as fixed phrases.',
+    'Verbs: liken, teilen, posten, folgen, abonnieren.',
+    'Media: die Schlagzeile, der Artikel, die Sendung, der Podcast.'
+  ],
+  tip:'Memory tip: never translate media prepositions word by word. Learn the whole phrase: "im Internet", "in der Zeitung", "am Handy".',
+  extra:[
+    {
+      q:'Say "I read the news on the internet."',
+      a:'Ich lese die Nachrichten im Internet.'
+    },
+    {
+      q:'Say "I am on the phone."',
+      a:'Ich bin am Handy.'
+    },
+    {
+      q:'What does "hochladen" mean?',
+      a:'to upload — "Ich lade ein Foto hoch."'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Media words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Schlagzeile',
+          art:'die',
+          pl:'Schlagzeilen',
+          en:'headline',
+          ph:'SHLAHK-tsai-le'
+        },
+        {
+          de:'Artikel',
+          art:'der',
+          pl:'Artikel',
+          en:'article',
+          ph:'ahr-TIK-kel'
+        },
+        {
+          de:'Sendung',
+          art:'die',
+          pl:'Sendungen',
+          en:'programme, show',
+          ph:'ZEN-doong'
+        },
+        {
+          de:'Sender',
+          art:'der',
+          pl:'Sender',
+          en:'channel, broadcaster',
+          ph:'ZEN-der'
+        },
+        {
+          de:'Programm',
+          art:'das',
+          pl:'Programme',
+          en:'programme',
+          ph:'pro-GRAHM'
+        },
+        {
+          de:'Werbung',
+          art:'die',
+          pl:'',
+          en:'advertising',
+          ph:'VAIR-boong'
+        },
+        {
+          de:'Bericht',
+          art:'der',
+          pl:'Berichte',
+          en:'report',
+          ph:'be-RIKHT'
+        },
+        {
+          de:'Reportage',
+          art:'die',
+          pl:'Reportagen',
+          en:'reportage, feature',
+          ph:'re-por-TAH-zhe'
+        },
+        {
+          de:'Moderator',
+          art:'der',
+          pl:'Moderatoren',
+          en:'presenter (male)',
+          ph:'mo-de-rah-TOR'
+        },
+        {
+          de:'Moderatorin',
+          art:'die',
+          pl:'Moderatorinnen',
+          en:'presenter (female)',
+          ph:'mo-de-rah-TOH-rin'
+        },
+        {
+          de:'Folge',
+          art:'die',
+          pl:'Folgen',
+          en:'episode',
+          ph:'FOL-ge'
+        },
+        {
+          de:'Serie',
+          art:'die',
+          pl:'Serien',
+          en:'series',
+          ph:'ZAY-ree-e'
+        },
+        {
+          de:'Dokumentation',
+          art:'die',
+          pl:'Dokumentationen',
+          en:'documentary',
+          ph:'do-koo-men-tah-TSEE-ohn'
+        },
+        {
+          de:'Podcast',
+          art:'der',
+          pl:'Podcasts',
+          en:'podcast',
+          ph:'POD-kahst'
+        },
+        {
+          de:'Video',
+          art:'das',
+          pl:'Videos',
+          en:'video',
+          ph:'VEE-de-oh'
+        },
+        {
+          de:'Bildschirm',
+          art:'der',
+          pl:'Bildschirme',
+          en:'screen',
+          ph:'BILT-sheerm'
+        },
+        {
+          de:'Tastatur',
+          art:'die',
+          pl:'Tastaturen',
+          en:'keyboard',
+          ph:'tahs-tah-TOOR'
+        },
+        {
+          de:'Passwort',
+          art:'das',
+          pl:'Passwörter',
+          en:'password',
+          ph:'PAHS-vort'
+        },
+        {
+          de:'App',
+          art:'die',
+          pl:'Apps',
+          en:'app',
+          ph:'ap'
+        },
+        {
+          de:'Smartphone',
+          art:'das',
+          pl:'Smartphones',
+          en:'smartphone',
+          ph:'SMAHRT-fohn'
+        },
+        {
+          de:'Tablet',
+          art:'das',
+          pl:'Tablets',
+          en:'tablet',
+          ph:'TAB-let'
+        },
+        {
+          de:'Laptop',
+          art:'der',
+          pl:'Laptops',
+          en:'laptop',
+          ph:'LAP-top'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Phone & internet words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Kommentar',
+          art:'der',
+          pl:'Kommentare',
+          en:'comment',
+          ph:'kom-men-TAHR'
+        },
+        {
+          de:'liken',
+          art:'',
+          pl:'',
+          en:'to like (online)',
+          ph:'LAI-ken'
+        },
+        {
+          de:'teilen',
+          art:'',
+          pl:'',
+          en:'to share',
+          ph:'TAI-len'
+        },
+        {
+          de:'posten',
+          art:'',
+          pl:'',
+          en:'to post',
+          ph:'POS-ten'
+        },
+        {
+          de:'folgen',
+          art:'',
+          pl:'',
+          en:'to follow',
+          ph:'FOL-gen'
+        },
+        {
+          de:'abonnieren',
+          art:'',
+          pl:'',
+          en:'to subscribe',
+          ph:'ah-bon-NEE-ren'
+        },
+        {
+          de:'herunterladen',
+          art:'',
+          pl:'',
+          en:'to download',
+          ph:'hair-OON-ter-lah-den'
+        },
+        {
+          de:'hochladen',
+          art:'',
+          pl:'',
+          en:'to upload',
+          ph:'HOHKH-lah-den'
+        },
+        {
+          de:'online',
+          art:'',
+          pl:'',
+          en:'online',
+          ph:'ON-line'
+        },
+        {
+          de:'offline',
+          art:'',
+          pl:'',
+          en:'offline',
+          ph:'OFF-line'
+        },
+        {
+          de:'digital',
+          art:'',
+          pl:'',
+          en:'digital',
+          ph:'di-gi-TAHL'
+        },
+        {
+          de:'sehen',
+          art:'',
+          pl:'',
+          en:'to see',
+          ph:'ZAY-en'
+        },
+        {
+          de:'schauen',
+          art:'',
+          pl:'',
+          en:'to watch, to look',
+          ph:'SHOW-en'
+        },
+        {
+          de:'gucken',
+          art:'',
+          pl:'',
+          en:'to look (colloquial)',
+          ph:'GOO-ken'
+        },
+        {
+          de:'Fernseher',
+          art:'der',
+          pl:'Fernseher',
+          en:'TV set',
+          ph:'FAIRN-zay-er'
+        },
+        {
+          de:'Radio',
+          art:'das',
+          pl:'Radios',
+          en:'radio',
+          ph:'RAH-dee-oh'
+        },
+        {
+          de:'Zeitung',
+          art:'die',
+          pl:'Zeitungen',
+          en:'newspaper',
+          ph:'TSAI-toong'
+        },
+        {
+          de:'Zeitschrift',
+          art:'die',
+          pl:'Zeitschriften',
+          en:'magazine',
+          ph:'TSAIT-shrift'
+        },
+        {
+          de:'Nachricht',
+          art:'die',
+          pl:'Nachrichten',
+          en:'news, message',
+          ph:'NAHKH-rikht'
+        },
+        {
+          de:'Handy',
+          art:'das',
+          pl:'Handys',
+          en:'mobile phone',
+          ph:'HEN-dee'
+        },
+        {
+          de:'Internet',
+          art:'das',
+          pl:'',
+          en:'internet',
+          ph:'in-tair-NET'
+        },
+        {
+          de:'Computer',
+          art:'der',
+          pl:'Computer',
+          en:'computer',
+          ph:'kom-PYOO-ter'
+        },
+        {
+          de:'E-Mail',
+          art:'die',
+          pl:'E-Mails',
+          en:'email',
+          ph:'EE-mayl'
+        },
+        {
+          de:'surfen',
+          art:'',
+          pl:'',
+          en:'to surf the web',
+          ph:'ZOOR-fen'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: News & phones',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Was liest du da?',
+          en:'What are you reading there?',
+          ph:'vahs leest doo dah'
+        },
+        {
+          who:'B',
+          de:'Ich lese die Nachrichten im Internet.',
+          en:'I am reading the news on the internet.',
+          ph:'ish LAY-ze dee NAHKH-rikh-ten im in-tair-NET'
+        },
+        {
+          who:'A',
+          de:'Ich schaue lieber fern. Heute Abend gibt es eine gute Dokumentation.',
+          en:'I prefer watching TV. Tonight there is a good documentary.',
+          ph:'ish SHOW-e LEE-ber fairn. HOY-te AH-bent geept es INE-goo-te do-koo-men-tah-TSEE-ohn'
+        },
+        {
+          who:'B',
+          de:'Ich höre lieber einen Podcast. Ich folge einem deutschen Podcast.',
+          en:'I prefer listening to a podcast. I follow a German podcast.',
+          ph:'ish HOE-re LEE-ber INE-en POD-kahst. ish FOL-ge INE-em DOY-chen POD-kahst'
+        },
+        {
+          who:'A',
+          de:'Ich poste jeden Tag ein Foto. Hast du mein Foto gesehen?',
+          en:'I post a photo every day. Have you seen my photo?',
+          ph:'ish POS-te YAY-den tahk ine FOH-toh. hahst doo mine FOH-toh ge-ZAY-en'
+        },
+        {
+          who:'B',
+          de:'Ja, ich habe es geliked!',
+          en:'Yes, I liked it!',
+          ph:'yah, ish HAH-be es ge-LIKED'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich lese die Nachrichten im Internet. Ich folge einem deutschen Podcast."',
+        model:[
+          'Ich lese die Nachrichten im Internet.',
+          'Ich schaue eine Dokumentation im Fernsehen.',
+          'Ich folge einem deutschen Podcast.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Media prepositions',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Prepositions for media — in, auf, bei',
+        plain:'"in der Zeitung" (in the newspaper), "im Internet" (on the internet), "am Handy" (on the phone). Media words take fixed prepositions — learn them as phrases, not as rules.',
+        rule:'in der Zeitung · im Internet · am Handy · im Fernsehen · im Radio',
+        examples:[
+          {
+            de:'Ich lese die Nachrichten in der Zeitung.',
+            en:'I read the news in the newspaper.',
+            ph:'ish LAY-ze dee NAHKH-rikh-ten in dair TSAI-toong'
+          },
+          {
+            de:'Ich sehe einen Film im Internet.',
+            en:'I watch a film on the internet.',
+            ph:'ish ZAY-e INE-en film im in-tair-NET'
+          },
+          {
+            de:'Ich bin am Handy.',
+            en:'I am on the phone.',
+            ph:'ish bin ahm HEN-dee'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: in, im, am',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich lese die Nachrichten ___ Internet."', options:['in der', 'im', 'am', 'auf dem'], answer:1,
+         why:'"im Internet" — learn it as a fixed phrase.'},
+        {q:'Fill in: "Ich bin ___ Handy."', options:['in der', 'im', 'am', 'auf dem'], answer:2,
+         why:'"am Handy" — on the phone.'},
+        {q:'Fill in: "Ich lese die Nachrichten ___ Zeitung."', options:['in der', 'im', 'am', 'auf der'], answer:0,
+         why:'"in der Zeitung" — in the newspaper.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: media',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'What does "herunterladen" mean?', options:['to upload', 'to download', 'to post', 'to follow'], answer:1,
+         why:'herunterladen = to download. hochladen = to upload.'},
+        {q:'What is "die Schlagzeile"?', options:['the article', 'the headline', 'the programme', 'the channel'], answer:1,
+         why:'die Schlagzeile = the headline. der Artikel = the article.'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 11 — Celebrations & Traditions',
+};
 
-CHAPTERS['A2-11'] = { id:'A2-11', n:11, level:'A2', title:'Celebrations & Traditions', time:'9 min', syllabus:true,
-  concept:'Talk about festivals, birthdays and traditions.',
-  learn:['Talk about Christmas and Easter in Germany','Congratulate someone','Describe a celebration'],
-  grammar:{ title:'Time expressions in the past',
-    plain:'"letzte Woche" (last week), "vor einem Jahr" (a year ago), "gestern Abend" (yesterday evening). Use them with the Perfekt: "Letzte Woche habe ich Geburtstag gefeiert." (Last week I celebrated my birthday.)' },
+CHAPTERS['A2-11'] = {
+  id:'A2-11',
+  n:11,
+  level:'A2',
+  title:'Celebrations & Traditions',
+  time:'17 min',
+  concept:'Talk about festivals, birthdays and traditions — with time expressions and "wenn" vs "als".',
+  dialogue:[
+    {
+      who:'A',
+      de:'Alles Gute zum Geburtstag!',
+      en:'Happy birthday!',
+      ph:'AHL-les GOO-te tsoom ge-BOORTS-tahk'
+    },
+    {
+      who:'B',
+      de:'Danke! Letzte Woche habe ich meinen Geburtstag gefeiert.',
+      en:'Thank you! Last week I celebrated my birthday.',
+      ph:'DAHN-ke! LETS-te VOKH-e HAH-be ish MINE-en ge-BOORTS-tahk ge-FAI-ert'
+    },
+    {
+      who:'A',
+      de:'Was hast du gemacht?',
+      en:'What did you do?',
+      ph:'vahs hahst doo ge-MAHKHT'
+    },
+    {
+      who:'B',
+      de:'Wir haben zu Hause gefeiert. Es gab Kuchen und Sekt.',
+      en:'We celebrated at home. There was cake and sparkling wine.',
+      ph:'veer HAH-ben tsoo HOW-ze ge-FAI-ert. es gahp KOO-khen oont zekt'
+    },
+    {
+      who:'A',
+      de:'Als ich klein war, hat meine Mutter immer einen Kuchen gebacken.',
+      en:'When I was little, my mother always baked a cake.',
+      ph:'ahls ish kline vahr, haht MINE-e MOOT-ter IM-mer INE-en KOO-khen ge-BAH-ken'
+    },
+    {
+      who:'B',
+      de:'Schön! Nächstes Jahr feiern wir zusammen.',
+      en:'Nice! Next year we will celebrate together.',
+      ph:'shoen! NAYKHS-tes yahr FAI-ern veer tsoo-ZAHM-men'
+    }
+  ],
   vocab:[
-    {de:'Fest', art:'das', pl:'Feste', en:'festival, celebration', ph:'fest'},
-    {de:'Weihnachten', art:'', pl:'', en:'Christmas', ph:'VAI-nahkh-ten'},
-    {de:'Ostern', art:'', pl:'', en:'Easter', ph:'OHS-tern'},
-    {de:'Geburtstag', art:'der', pl:'Geburtstage', en:'birthday', ph:'geh-BOORTS-tahk'},
-    {de:'feiern', art:'', pl:'', en:'to celebrate', ph:'FAI-ern'},
-    {de:'Geschenk', art:'das', pl:'Geschenke', en:'gift', ph:'geh-SHENK'},
-    {de:'gratulieren', art:'', pl:'', en:'to congratulate', ph:'grah-too-LEE-ren'},
-    {de:'Tradition', art:'die', pl:'Traditionen', en:'tradition', ph:'trah-dee-TSEE-ohn'},
-  ], next:'Next: Chapter 12 — Review & A2 Mock (syllabus)' };
+    {
+      de:'Neujahr',
+      art:'das',
+      pl:'',
+      en:'New Year',
+      ph:'NOY-yahr'
+    },
+    {
+      de:'Silvester',
+      art:'der',
+      pl:'',
+      en:'New Year\'s Eve',
+      ph:'zil-VES-ter'
+    },
+    {
+      de:'Karneval',
+      art:'der',
+      pl:'',
+      en:'carnival',
+      ph:'kahr-ne-VAHL'
+    },
+    {
+      de:'Advent',
+      art:'der',
+      pl:'',
+      en:'Advent',
+      ph:'ahd-VENT'
+    },
+    {
+      de:'Adventskalender',
+      art:'der',
+      pl:'Adventskalender',
+      en:'Advent calendar',
+      ph:'ahd-VENTS-kah-len-der'
+    },
+    {
+      de:'Kerze',
+      art:'die',
+      pl:'Kerzen',
+      en:'candle',
+      ph:'KAIRT-se'
+    },
+    {
+      de:'Weihnachtsbaum',
+      art:'der',
+      pl:'Weihnachtsbäume',
+      en:'Christmas tree',
+      ph:'VAI-nahks-baum'
+    },
+    {
+      de:'Weihnachtsmarkt',
+      art:'der',
+      pl:'Weihnachtsmärkte',
+      en:'Christmas market',
+      ph:'VAI-nahks-mahrkt'
+    },
+    {
+      de:'Nikolaus',
+      art:'der',
+      pl:'',
+      en:'St. Nicholas',
+      ph:'nee-ko-LAH-oos'
+    },
+    {
+      de:'Osterhase',
+      art:'der',
+      pl:'Osterhasen',
+      en:'Easter bunny',
+      ph:'OHS-ter-hah-ze'
+    },
+    {
+      de:'Osterei',
+      art:'das',
+      pl:'Ostereier',
+      en:'Easter egg',
+      ph:'OHS-ter-ai'
+    },
+    {
+      de:'Schokolade',
+      art:'die',
+      pl:'',
+      en:'chocolate',
+      ph:'sho-ko-LAH-de'
+    },
+    {
+      de:'Torte',
+      art:'die',
+      pl:'Torten',
+      en:'cake, torte',
+      ph:'TOR-te'
+    },
+    {
+      de:'Einladung',
+      art:'die',
+      pl:'Einladungen',
+      en:'invitation',
+      ph:'INE-lah-doong'
+    },
+    {
+      de:'Gäste',
+      art:'die',
+      pl:'',
+      en:'guests',
+      ph:'GAYS-te'
+    },
+    {
+      de:'Toast',
+      art:'der',
+      pl:'Toasts',
+      en:'toast (drink)',
+      ph:'tohst'
+    },
+    {
+      de:'anstoßen',
+      art:'',
+      pl:'',
+      en:'to toast, to clink glasses',
+      ph:'AHN-shtoh-sen'
+    },
+    {
+      de:'Sekt',
+      art:'der',
+      pl:'',
+      en:'sparkling wine',
+      ph:'zekt'
+    },
+    {
+      de:'Feuerwerk',
+      art:'das',
+      pl:'',
+      en:'fireworks',
+      ph:'FOY-er-vairk'
+    },
+    {
+      de:'Dekoration',
+      art:'die',
+      pl:'Dekorationen',
+      en:'decoration',
+      ph:'de-ko-rah-TSEE-ohn'
+    },
+    {
+      de:'schmücken',
+      art:'',
+      pl:'',
+      en:'to decorate',
+      ph:'SHMUEK-ken'
+    },
+    {
+      de:'Brauch',
+      art:'der',
+      pl:'Bräuche',
+      en:'custom, tradition',
+      ph:'browkh'
+    },
+    {
+      de:'Feier',
+      art:'die',
+      pl:'Feiern',
+      en:'party, celebration',
+      ph:'FAI-er'
+    },
+    {
+      de:'Hochzeit',
+      art:'die',
+      pl:'Hochzeiten',
+      en:'wedding',
+      ph:'HOKH-tsite'
+    },
+    {
+      de:'Jubiläum',
+      art:'das',
+      pl:'Jubiläen',
+      en:'anniversary, jubilee',
+      ph:'yoo-bi-LAY-um'
+    },
+    {
+      de:'Jahrestag',
+      art:'der',
+      pl:'Jahrestage',
+      en:'anniversary (day)',
+      ph:'YAH-res-tahk'
+    },
+    {
+      de:'Feiertag',
+      art:'der',
+      pl:'Feiertage',
+      en:'public holiday',
+      ph:'FAI-er-tahk'
+    },
+    {
+      de:'letzte Woche',
+      art:'',
+      pl:'',
+      en:'last week',
+      ph:'LETS-te VOKH-e'
+    },
+    {
+      de:'vor einem Jahr',
+      art:'',
+      pl:'',
+      en:'a year ago',
+      ph:'fohr INE-em yahr'
+    },
+    {
+      de:'gestern Abend',
+      art:'',
+      pl:'',
+      en:'yesterday evening',
+      ph:'GES-tern AH-bent'
+    },
+    {
+      de:'morgen früh',
+      art:'',
+      pl:'',
+      en:'tomorrow morning',
+      ph:'MOR-gen frue'
+    },
+    {
+      de:'nächste Woche',
+      art:'',
+      pl:'',
+      en:'next week',
+      ph:'NAYKHS-te VOKH-e'
+    },
+    {
+      de:'vor zwei Tagen',
+      art:'',
+      pl:'',
+      en:'two days ago',
+      ph:'fohr tsvai TAH-gen'
+    },
+    {
+      de:'letzten Monat',
+      art:'',
+      pl:'',
+      en:'last month',
+      ph:'LETS-ten MOH-naht'
+    },
+    {
+      de:'letztes Jahr',
+      art:'',
+      pl:'',
+      en:'last year',
+      ph:'LETS-tes yahr'
+    },
+    {
+      de:'vor einer Woche',
+      art:'',
+      pl:'',
+      en:'a week ago',
+      ph:'fohr INE-er VOKH-e'
+    },
+    {
+      de:'als',
+      art:'',
+      pl:'',
+      en:'when (one past event)',
+      ph:'ahls'
+    },
+    {
+      de:'wenn',
+      art:'',
+      pl:'',
+      en:'when (repeated) / if',
+      ph:'ven'
+    },
+    {
+      de:'Fest',
+      art:'das',
+      pl:'Feste',
+      en:'festival, celebration',
+      ph:'fest'
+    },
+    {
+      de:'Weihnachten',
+      art:'',
+      pl:'',
+      en:'Christmas',
+      ph:'VAI-nahkh-ten'
+    },
+    {
+      de:'Ostern',
+      art:'',
+      pl:'',
+      en:'Easter',
+      ph:'OHS-tern'
+    },
+    {
+      de:'Geburtstag',
+      art:'der',
+      pl:'Geburtstage',
+      en:'birthday',
+      ph:'ge-BOORTS-tahk'
+    },
+    {
+      de:'feiern',
+      art:'',
+      pl:'',
+      en:'to celebrate',
+      ph:'FAI-ern'
+    },
+    {
+      de:'Geschenk',
+      art:'das',
+      pl:'Geschenke',
+      en:'gift, present',
+      ph:'ge-SHENK'
+    },
+    {
+      de:'gratulieren',
+      art:'',
+      pl:'',
+      en:'to congratulate',
+      ph:'grah-too-LEE-ren'
+    },
+    {
+      de:'Tradition',
+      art:'die',
+      pl:'Traditionen',
+      en:'tradition',
+      ph:'trah-dee-TSEE-ohn'
+    }
+  ],
+  grammar:{
+    title:'Time expressions — and "wenn" vs "als"',
+    plain:'"letzte Woche" (last week), "vor einem Jahr" (a year ago), "gestern Abend" (yesterday evening). Use them with the Perfekt: "Letzte Woche habe ich Geburtstag gefeiert." And: "als" = when (ONE past event): "Als ich klein war ..." — "wenn" = when (repeated) or if: "Wenn ich Zeit habe, besuche ich meine Familie."',
+    rule:'letzte Woche · vor einem Jahr · gestern Abend · als + one past event · wenn + repeated / if',
+    examples:[
+      {
+        de:'Letzte Woche habe ich Geburtstag gefeiert.',
+        en:'Last week I celebrated my birthday.',
+        ph:'LETS-te VOKH-e HAH-be ish ge-BOORTS-tahk ge-FAI-ert'
+      },
+      {
+        de:'Als ich klein war, wohnte ich in einem Dorf.',
+        en:'When I was little, I lived in a village.',
+        ph:'ahls ish kline vahr, VOHN-te ish in INE-em dorf'
+      },
+      {
+        de:'Wenn ich Zeit habe, besuche ich meine Familie.',
+        en:'When I have time, I visit my family.',
+        ph:'ven ish tsite HAH-be, be-ZOO-khe ish MINE-e fah-MEE-lee-e'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "___ ich klein war, wohnte ich in einem Dorf."', options:['Wenn', 'Als', 'Weil', 'Dass'], answer:1,
+     why:'"als" = when, one past event: "Als ich klein war ..."'},
+    {q:'Fill in: "___ ich Zeit habe, besuche ich meine Familie."', options:['Als', 'Wenn', 'Weil', 'Dass'], answer:1,
+     why:'"wenn" = when (repeated) / if: "Wenn ich Zeit habe ..."'},
+    {q:'"Letzte Woche habe ich Geburtstag gefeiert." — "letzte Woche" means...', options:['next week', 'last week', 'this week', 'every week'], answer:1,
+     why:'letzte Woche = last week. nächste Woche = next week.'},
+    {q:'What does "vor einem Jahr" mean?', options:['next year', 'last year', 'a year ago', 'every year'], answer:2,
+     why:'vor einem Jahr = a year ago. letztes Jahr = last year.'},
+    {q:'What does "gratulieren" mean?', options:['to celebrate', 'to congratulate', 'to invite', 'to decorate'], answer:1,
+     why:'gratulieren = to congratulate. "Ich gratuliere dir zum Geburtstag!"'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Letzte Woche habe ich Geburtstag gefeiert. Als ich klein war, wohnte ich in einem Dorf."',
+    model:[
+      'Letzte Woche habe ich Geburtstag gefeiert.',
+      'Als ich klein war, wohnte ich in einem Dorf.',
+      'Wenn ich Zeit habe, besuche ich meine Familie.'
+    ]
+  },
+  recap:[
+    'Time: letzte Woche, vor einem Jahr, gestern Abend, nächste Woche.',
+    '"als" = when, one past event. "wenn" = when (repeated) / if.',
+    'Use time expressions with the Perfekt.',
+    'Celebrations: das Fest, der Geburtstag, Weihnachten, Ostern.'
+  ],
+  tip:'Memory tip: "als" is for ONE moment in the past ("Als ich klein war ..."). "wenn" is for repeats ("Wenn ich Zeit habe ..."). One moment = als.',
+  extra:[
+    {
+      q:'Say "Last week I celebrated my birthday."',
+      a:'Letzte Woche habe ich Geburtstag gefeiert.'
+    },
+    {
+      q:'Say "When I was little, I lived in a village."',
+      a:'Als ich klein war, wohnte ich in einem Dorf.'
+    },
+    {
+      q:'What does "anstoßen" mean?',
+      a:'to toast, to clink glasses — "Wir stoßen auf dich an!"'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Festival words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Neujahr',
+          art:'das',
+          pl:'',
+          en:'New Year',
+          ph:'NOY-yahr'
+        },
+        {
+          de:'Silvester',
+          art:'der',
+          pl:'',
+          en:'New Year\'s Eve',
+          ph:'zil-VES-ter'
+        },
+        {
+          de:'Karneval',
+          art:'der',
+          pl:'',
+          en:'carnival',
+          ph:'kahr-ne-VAHL'
+        },
+        {
+          de:'Advent',
+          art:'der',
+          pl:'',
+          en:'Advent',
+          ph:'ahd-VENT'
+        },
+        {
+          de:'Adventskalender',
+          art:'der',
+          pl:'Adventskalender',
+          en:'Advent calendar',
+          ph:'ahd-VENTS-kah-len-der'
+        },
+        {
+          de:'Kerze',
+          art:'die',
+          pl:'Kerzen',
+          en:'candle',
+          ph:'KAIRT-se'
+        },
+        {
+          de:'Weihnachtsbaum',
+          art:'der',
+          pl:'Weihnachtsbäume',
+          en:'Christmas tree',
+          ph:'VAI-nahks-baum'
+        },
+        {
+          de:'Weihnachtsmarkt',
+          art:'der',
+          pl:'Weihnachtsmärkte',
+          en:'Christmas market',
+          ph:'VAI-nahks-mahrkt'
+        },
+        {
+          de:'Nikolaus',
+          art:'der',
+          pl:'',
+          en:'St. Nicholas',
+          ph:'nee-ko-LAH-oos'
+        },
+        {
+          de:'Osterhase',
+          art:'der',
+          pl:'Osterhasen',
+          en:'Easter bunny',
+          ph:'OHS-ter-hah-ze'
+        },
+        {
+          de:'Osterei',
+          art:'das',
+          pl:'Ostereier',
+          en:'Easter egg',
+          ph:'OHS-ter-ai'
+        },
+        {
+          de:'Schokolade',
+          art:'die',
+          pl:'',
+          en:'chocolate',
+          ph:'sho-ko-LAH-de'
+        },
+        {
+          de:'Torte',
+          art:'die',
+          pl:'Torten',
+          en:'cake, torte',
+          ph:'TOR-te'
+        },
+        {
+          de:'Einladung',
+          art:'die',
+          pl:'Einladungen',
+          en:'invitation',
+          ph:'INE-lah-doong'
+        },
+        {
+          de:'Gäste',
+          art:'die',
+          pl:'',
+          en:'guests',
+          ph:'GAYS-te'
+        },
+        {
+          de:'Toast',
+          art:'der',
+          pl:'Toasts',
+          en:'toast (drink)',
+          ph:'tohst'
+        },
+        {
+          de:'anstoßen',
+          art:'',
+          pl:'',
+          en:'to toast, to clink glasses',
+          ph:'AHN-shtoh-sen'
+        },
+        {
+          de:'Sekt',
+          art:'der',
+          pl:'',
+          en:'sparkling wine',
+          ph:'zekt'
+        },
+        {
+          de:'Feuerwerk',
+          art:'das',
+          pl:'',
+          en:'fireworks',
+          ph:'FOY-er-vairk'
+        },
+        {
+          de:'Dekoration',
+          art:'die',
+          pl:'Dekorationen',
+          en:'decoration',
+          ph:'de-ko-rah-TSEE-ohn'
+        },
+        {
+          de:'schmücken',
+          art:'',
+          pl:'',
+          en:'to decorate',
+          ph:'SHMUEK-ken'
+        },
+        {
+          de:'Brauch',
+          art:'der',
+          pl:'Bräuche',
+          en:'custom, tradition',
+          ph:'browkh'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Time & celebration words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Feier',
+          art:'die',
+          pl:'Feiern',
+          en:'party, celebration',
+          ph:'FAI-er'
+        },
+        {
+          de:'Hochzeit',
+          art:'die',
+          pl:'Hochzeiten',
+          en:'wedding',
+          ph:'HOKH-tsite'
+        },
+        {
+          de:'Jubiläum',
+          art:'das',
+          pl:'Jubiläen',
+          en:'anniversary, jubilee',
+          ph:'yoo-bi-LAY-um'
+        },
+        {
+          de:'Jahrestag',
+          art:'der',
+          pl:'Jahrestage',
+          en:'anniversary (day)',
+          ph:'YAH-res-tahk'
+        },
+        {
+          de:'Feiertag',
+          art:'der',
+          pl:'Feiertage',
+          en:'public holiday',
+          ph:'FAI-er-tahk'
+        },
+        {
+          de:'letzte Woche',
+          art:'',
+          pl:'',
+          en:'last week',
+          ph:'LETS-te VOKH-e'
+        },
+        {
+          de:'vor einem Jahr',
+          art:'',
+          pl:'',
+          en:'a year ago',
+          ph:'fohr INE-em yahr'
+        },
+        {
+          de:'gestern Abend',
+          art:'',
+          pl:'',
+          en:'yesterday evening',
+          ph:'GES-tern AH-bent'
+        },
+        {
+          de:'morgen früh',
+          art:'',
+          pl:'',
+          en:'tomorrow morning',
+          ph:'MOR-gen frue'
+        },
+        {
+          de:'nächste Woche',
+          art:'',
+          pl:'',
+          en:'next week',
+          ph:'NAYKHS-te VOKH-e'
+        },
+        {
+          de:'vor zwei Tagen',
+          art:'',
+          pl:'',
+          en:'two days ago',
+          ph:'fohr tsvai TAH-gen'
+        },
+        {
+          de:'letzten Monat',
+          art:'',
+          pl:'',
+          en:'last month',
+          ph:'LETS-ten MOH-naht'
+        },
+        {
+          de:'letztes Jahr',
+          art:'',
+          pl:'',
+          en:'last year',
+          ph:'LETS-tes yahr'
+        },
+        {
+          de:'vor einer Woche',
+          art:'',
+          pl:'',
+          en:'a week ago',
+          ph:'fohr INE-er VOKH-e'
+        },
+        {
+          de:'als',
+          art:'',
+          pl:'',
+          en:'when (one past event)',
+          ph:'ahls'
+        },
+        {
+          de:'wenn',
+          art:'',
+          pl:'',
+          en:'when (repeated) / if',
+          ph:'ven'
+        },
+        {
+          de:'Fest',
+          art:'das',
+          pl:'Feste',
+          en:'festival, celebration',
+          ph:'fest'
+        },
+        {
+          de:'Weihnachten',
+          art:'',
+          pl:'',
+          en:'Christmas',
+          ph:'VAI-nahkh-ten'
+        },
+        {
+          de:'Ostern',
+          art:'',
+          pl:'',
+          en:'Easter',
+          ph:'OHS-tern'
+        },
+        {
+          de:'Geburtstag',
+          art:'der',
+          pl:'Geburtstage',
+          en:'birthday',
+          ph:'ge-BOORTS-tahk'
+        },
+        {
+          de:'feiern',
+          art:'',
+          pl:'',
+          en:'to celebrate',
+          ph:'FAI-ern'
+        },
+        {
+          de:'Geschenk',
+          art:'das',
+          pl:'Geschenke',
+          en:'gift, present',
+          ph:'ge-SHENK'
+        },
+        {
+          de:'gratulieren',
+          art:'',
+          pl:'',
+          en:'to congratulate',
+          ph:'grah-too-LEE-ren'
+        },
+        {
+          de:'Tradition',
+          art:'die',
+          pl:'Traditionen',
+          en:'tradition',
+          ph:'trah-dee-TSEE-ohn'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Happy birthday!',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Alles Gute zum Geburtstag!',
+          en:'Happy birthday!',
+          ph:'AHL-les GOO-te tsoom ge-BOORTS-tahk'
+        },
+        {
+          who:'B',
+          de:'Danke! Letzte Woche habe ich meinen Geburtstag gefeiert.',
+          en:'Thank you! Last week I celebrated my birthday.',
+          ph:'DAHN-ke! LETS-te VOKH-e HAH-be ish MINE-en ge-BOORTS-tahk ge-FAI-ert'
+        },
+        {
+          who:'A',
+          de:'Was hast du gemacht?',
+          en:'What did you do?',
+          ph:'vahs hahst doo ge-MAHKHT'
+        },
+        {
+          who:'B',
+          de:'Wir haben zu Hause gefeiert. Es gab Kuchen und Sekt.',
+          en:'We celebrated at home. There was cake and sparkling wine.',
+          ph:'veer HAH-ben tsoo HOW-ze ge-FAI-ert. es gahp KOO-khen oont zekt'
+        },
+        {
+          who:'A',
+          de:'Als ich klein war, hat meine Mutter immer einen Kuchen gebacken.',
+          en:'When I was little, my mother always baked a cake.',
+          ph:'ahls ish kline vahr, haht MINE-e MOOT-ter IM-mer INE-en KOO-khen ge-BAH-ken'
+        },
+        {
+          who:'B',
+          de:'Schön! Nächstes Jahr feiern wir zusammen.',
+          en:'Nice! Next year we will celebrate together.',
+          ph:'shoen! NAYKHS-tes yahr FAI-ern veer tsoo-ZAHM-men'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Letzte Woche habe ich Geburtstag gefeiert. Als ich klein war, wohnte ich in einem Dorf."',
+        model:[
+          'Letzte Woche habe ich Geburtstag gefeiert.',
+          'Als ich klein war, wohnte ich in einem Dorf.',
+          'Wenn ich Zeit habe, besuche ich meine Familie.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: "wenn" vs "als"',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Time expressions — and "wenn" vs "als"',
+        plain:'"letzte Woche" (last week), "vor einem Jahr" (a year ago), "gestern Abend" (yesterday evening). Use them with the Perfekt: "Letzte Woche habe ich Geburtstag gefeiert." And: "als" = when (ONE past event): "Als ich klein war ..." — "wenn" = when (repeated) or if: "Wenn ich Zeit habe, besuche ich meine Familie."',
+        rule:'letzte Woche · vor einem Jahr · gestern Abend · als + one past event · wenn + repeated / if',
+        examples:[
+          {
+            de:'Letzte Woche habe ich Geburtstag gefeiert.',
+            en:'Last week I celebrated my birthday.',
+            ph:'LETS-te VOKH-e HAH-be ish ge-BOORTS-tahk ge-FAI-ert'
+          },
+          {
+            de:'Als ich klein war, wohnte ich in einem Dorf.',
+            en:'When I was little, I lived in a village.',
+            ph:'ahls ish kline vahr, VOHN-te ish in INE-em dorf'
+          },
+          {
+            de:'Wenn ich Zeit habe, besuche ich meine Familie.',
+            en:'When I have time, I visit my family.',
+            ph:'ven ish tsite HAH-be, be-ZOO-khe ish MINE-e fah-MEE-lee-e'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: als & wenn',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "___ ich klein war, wohnte ich in einem Dorf."', options:['Wenn', 'Als', 'Weil', 'Dass'], answer:1,
+         why:'"als" = when, one past event: "Als ich klein war ..."'},
+        {q:'Fill in: "___ ich Zeit habe, besuche ich meine Familie."', options:['Als', 'Wenn', 'Weil', 'Dass'], answer:1,
+         why:'"wenn" = when (repeated) / if: "Wenn ich Zeit habe ..."'},
+        {q:'"Letzte Woche habe ich Geburtstag gefeiert." — "letzte Woche" means...', options:['next week', 'last week', 'this week', 'every week'], answer:1,
+         why:'letzte Woche = last week. nächste Woche = next week.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: celebrations',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'What does "vor einem Jahr" mean?', options:['next year', 'last year', 'a year ago', 'every year'], answer:2,
+         why:'vor einem Jahr = a year ago. letztes Jahr = last year.'},
+        {q:'What does "gratulieren" mean?', options:['to celebrate', 'to congratulate', 'to invite', 'to decorate'], answer:1,
+         why:'gratulieren = to congratulate. "Ich gratuliere dir zum Geburtstag!"'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 12 — Review & A2 Mock',
+};
 
-CHAPTERS['A2-12'] = { id:'A2-12', n:12, level:'A2', title:'Review & A2 Mock', time:'10 min', syllabus:true,
-  concept:'Review all of A2 and test yourself, Goethe-style.',
-  learn:['Review Perfekt, dative and war/hatte','Practise all A2 topics in one test','See your score per skill area'],
-  grammar:{ title:'A2 review — the three big steps',
-    plain:'A2 gave you three big tools: (1) Perfekt — "Ich habe gelernt." (2) Dative — "Mir geht es gut." (3) war/hatte — "Ich war in Italien." If you can use all three, you are ready for B1.' },
+CHAPTERS['A2-12'] = {
+  id:'A2-12',
+  n:12,
+  level:'A2',
+  title:'Review & A2 Mock',
+  time:'17 min',
+  concept:'Review all of A2 and test yourself, Goethe-style — Perfekt, dative, war/hatte and the connectors.',
+  dialogue:[
+    {
+      who:'A',
+      de:'Was hast du in A2 gelernt?',
+      en:'What did you learn in A2?',
+      ph:'vahs hahst doo in ah-tsvai ge-LAIRNT'
+    },
+    {
+      who:'B',
+      de:'Ich habe das Perfekt gelernt: Ich habe gelernt, ich bin gefahren.',
+      en:'I learned the Perfekt: I have learned, I have travelled.',
+      ph:'ish HAH-be dahs pair-FEKT ge-LAIRNT: ish HAH-be ge-LAIRNT, ish bin ge-FAH-ren'
+    },
+    {
+      who:'A',
+      de:'Und was war schwer?',
+      en:'And what was difficult?',
+      ph:'oont vahs vahr shvair'
+    },
+    {
+      who:'B',
+      de:'Der Dativ war schwer. Aber jetzt kann ich sagen: Mir geht es gut!',
+      en:'The dative was difficult. But now I can say: I am fine!',
+      ph:'dair dah-TEEF vahr shvair. AH-ber yetst kahn ish ZAH-gen: meer gayt es goot'
+    },
+    {
+      who:'A',
+      de:'Was machst du als Nächstes?',
+      en:'What are you doing next?',
+      ph:'vahs mahkhst doo ahls NAYKHS-tes'
+    },
+    {
+      who:'B',
+      de:'Ich mache den A2-Mock-Test. Dann fange ich mit B1 an!',
+      en:'I am taking the A2 mock test. Then I start B1!',
+      ph:'ish MAH-khe dayn ah-tsvai MOK-test. dahn FAHNG-e ish mit bay-INE ahn'
+    }
+  ],
   vocab:[
-    {de:'Prüfung', art:'die', pl:'Prüfungen', en:'exam', ph:'PRUE-fung'},
-    {de:'bestehen', art:'', pl:'', en:'to pass (an exam)', ph:'beh-SHTAY-en'},
-    {de:'wiederholen', art:'', pl:'', en:'to repeat, to review', ph:'VEE-der-hoh-len'},
-    {de:'Fehler', art:'der', pl:'Fehler', en:'mistake', ph:'FAY-ler'},
-    {de:'üben', art:'', pl:'', en:'to practise', ph:'UE-ben'},
-    {de:'Regel', art:'die', pl:'Regeln', en:'rule', ph:'RAY-gel'},
-    {de:'Satz', art:'der', pl:'Sätze', en:'sentence', ph:'zahts'},
-    {de:'Übung', art:'die', pl:'Übungen', en:'exercise', ph:'UE-bung'},
-  ], next:'Next: B1 — Intermediate (visa level)' };
-
-/* ================= B1 ================= */
+    {
+      de:'Aufgabe',
+      art:'die',
+      pl:'Aufgaben',
+      en:'task, exercise',
+      ph:'OWF-gah-be'
+    },
+    {
+      de:'Lösung',
+      art:'die',
+      pl:'Lösungen',
+      en:'solution',
+      ph:'LOE-zoong'
+    },
+    {
+      de:'Antwort',
+      art:'die',
+      pl:'Antworten',
+      en:'answer',
+      ph:'AHNT-vort'
+    },
+    {
+      de:'Frage',
+      art:'die',
+      pl:'Fragen',
+      en:'question',
+      ph:'FRAH-ge'
+    },
+    {
+      de:'Tipp',
+      art:'der',
+      pl:'Tipps',
+      en:'tip',
+      ph:'tip'
+    },
+    {
+      de:'Beispiel',
+      art:'das',
+      pl:'Beispiele',
+      en:'example',
+      ph:'BAI-shpeel'
+    },
+    {
+      de:'Text',
+      art:'der',
+      pl:'Texte',
+      en:'text',
+      ph:'tekst'
+    },
+    {
+      de:'Kapitel',
+      art:'das',
+      pl:'Kapitel',
+      en:'chapter',
+      ph:'kah-PEE-tel'
+    },
+    {
+      de:'Lektion',
+      art:'die',
+      pl:'Lektionen',
+      en:'lesson',
+      ph:'lek-TSEE-ohn'
+    },
+    {
+      de:'Hausaufgabe',
+      art:'die',
+      pl:'Hausaufgaben',
+      en:'homework',
+      ph:'HOWS-owf-gah-be'
+    },
+    {
+      de:'Test',
+      art:'der',
+      pl:'Tests',
+      en:'test',
+      ph:'test'
+    },
+    {
+      de:'Note',
+      art:'die',
+      pl:'Noten',
+      en:'mark, grade',
+      ph:'NOH-te'
+    },
+    {
+      de:'Ergebnis',
+      art:'das',
+      pl:'Ergebnisse',
+      en:'result',
+      ph:'air-GAYB-nis'
+    },
+    {
+      de:'Fortschritt',
+      art:'der',
+      pl:'Fortschritte',
+      en:'progress',
+      ph:'FORT-shrit'
+    },
+    {
+      de:'Ziel',
+      art:'das',
+      pl:'Ziele',
+      en:'goal',
+      ph:'tseel'
+    },
+    {
+      de:'Erfolg',
+      art:'der',
+      pl:'Erfolge',
+      en:'success',
+      ph:'air-FOLK'
+    },
+    {
+      de:'Motivation',
+      art:'die',
+      pl:'',
+      en:'motivation',
+      ph:'mo-tee-vah-TSEE-ohn'
+    },
+    {
+      de:'Lernplan',
+      art:'der',
+      pl:'Lernpläne',
+      en:'study plan',
+      ph:'LAIRN-plahn'
+    },
+    {
+      de:'Wiederholung',
+      art:'die',
+      pl:'Wiederholungen',
+      en:'revision, repetition',
+      ph:'VEE-der-hoh-loong'
+    },
+    {
+      de:'Grammatik',
+      art:'die',
+      pl:'',
+      en:'grammar',
+      ph:'grah-MAH-tik'
+    },
+    {
+      de:'Wortschatz',
+      art:'der',
+      pl:'',
+      en:'vocabulary',
+      ph:'VORT-shahts'
+    },
+    {
+      de:'Zertifikat',
+      art:'das',
+      pl:'Zertifikate',
+      en:'certificate',
+      ph:'tsair-tee-fi-KAHT'
+    },
+    {
+      de:'Prüfung',
+      art:'die',
+      pl:'Prüfungen',
+      en:'exam',
+      ph:'PRUE-foong'
+    },
+    {
+      de:'bestehen',
+      art:'',
+      pl:'',
+      en:'to pass (an exam)',
+      ph:'be-SHTAY-en'
+    },
+    {
+      de:'wiederholen',
+      art:'',
+      pl:'',
+      en:'to repeat, to review',
+      ph:'VEE-der-hoh-len'
+    },
+    {
+      de:'Fehler',
+      art:'der',
+      pl:'Fehler',
+      en:'mistake',
+      ph:'FAY-ler'
+    },
+    {
+      de:'üben',
+      art:'',
+      pl:'',
+      en:'to practise',
+      ph:'UE-ben'
+    },
+    {
+      de:'Regel',
+      art:'die',
+      pl:'Regeln',
+      en:'rule',
+      ph:'RAY-gel'
+    },
+    {
+      de:'Satz',
+      art:'der',
+      pl:'Sätze',
+      en:'sentence',
+      ph:'zahts'
+    },
+    {
+      de:'Übung',
+      art:'die',
+      pl:'Übungen',
+      en:'exercise',
+      ph:'UE-boong'
+    }
+  ],
+  grammar:{
+    title:'A2 review — the three big steps',
+    plain:'A2 gave you three big tools: (1) Perfekt — "Ich habe gelernt." (2) Dative — "Mir geht es gut." (3) war/hatte — "Ich war in Italien." Plus: weil/dass (verb at the end), "zu" + infinitive, and Perfekt with "sein". If you can use all of these, you are ready for B1.',
+    rule:'(1) Perfekt — Ich habe gelernt. (2) Dativ — Mir geht es gut. (3) war/hatte — Ich war in Italien. (4) weil/dass — verb at the end.',
+    examples:[
+      {
+        de:'Ich habe viel gelernt und ich bin nach Berlin gefahren.',
+        en:'I learned a lot and I travelled to Berlin.',
+        ph:'ish HAH-be feel ge-LAIRNT oont ish bin nahkh bair-LEEN ge-FAH-ren'
+      },
+      {
+        de:'Mir geht es gut, weil ich Deutsch lerne.',
+        en:'I am fine because I am learning German.',
+        ph:'meer gayt es goot, vile ish doych LAIR-ne'
+      },
+      {
+        de:'Ich war in Italien und ich hatte ein schönes Hotel.',
+        en:'I was in Italy and I had a nice hotel.',
+        ph:'ish vahr in i-TAH-lee-en oont ish HAHT-te ine SHOEN-es ho-TEL'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Ich habe Deutsch ___."', options:['gelernt', 'lernen', 'lernte', 'gelernen'], answer:0,
+     why:'Perfekt: haben + Partizip II. lernen → gelernt.'},
+    {q:'Fill in: "___ schmeckt die Suppe."', options:['Ich', 'Mir', 'Mich', 'Mein'], answer:1,
+     why:'Dative: "Mir schmeckt die Suppe." — the soup tastes good TO ME.'},
+    {q:'Fill in: "Ich ___ in Italien."', options:['bin', 'war', 'hatte', 'habe'], answer:1,
+     why:'Stories use "war": "Ich war in Italien."'},
+    {q:'Fill in: "Ich lerne Deutsch, ___ ich in Deutschland arbeiten will."', options:['dass', 'weil', 'wenn', 'als'], answer:1,
+     why:'"weil" = because. The verb "will" goes to the end.'},
+    {q:'Fill in: "Ich bin nach Berlin ___."', options:['gefahren', 'gefahr', 'gefahren ist', 'fahren'], answer:0,
+     why:'Movement → "sein": Ich bin gefahren.'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich habe das Perfekt gelernt. Mir geht es gut. Ich war in Italien."',
+    model:[
+      'Ich habe das Perfekt gelernt.',
+      'Mir geht es gut.',
+      'Ich war in Italien.',
+      'Ich mache jetzt den A2-Mock-Test.'
+    ]
+  },
+  recap:[
+    'Perfekt = haben/sein + Partizip II (at the END).',
+    'Dative: mir, dir, ihm, ihr, uns, euch, ihnen.',
+    'war/hatte for stories. weil/dass — verb at the end.',
+    'You are ready for B1 when all four feel easy.'
+  ],
+  tip:'Memory tip: before B1, say these four sentences out loud every day: "Ich habe gelernt." "Mir geht es gut." "Ich war in Italien." "Ich lerne Deutsch, weil ich arbeiten will."',
+  extra:[
+    {
+      q:'Say "I have learned a lot."',
+      a:'Ich habe viel gelernt.'
+    },
+    {
+      q:'Say "I am fine because I learn German."',
+      a:'Mir geht es gut, weil ich Deutsch lerne.'
+    },
+    {
+      q:'What are the three big A2 tools?',
+      a:'Perfekt, Dativ, war/hatte — plus weil/dass and Perfekt with sein.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Review words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Aufgabe',
+          art:'die',
+          pl:'Aufgaben',
+          en:'task, exercise',
+          ph:'OWF-gah-be'
+        },
+        {
+          de:'Lösung',
+          art:'die',
+          pl:'Lösungen',
+          en:'solution',
+          ph:'LOE-zoong'
+        },
+        {
+          de:'Antwort',
+          art:'die',
+          pl:'Antworten',
+          en:'answer',
+          ph:'AHNT-vort'
+        },
+        {
+          de:'Frage',
+          art:'die',
+          pl:'Fragen',
+          en:'question',
+          ph:'FRAH-ge'
+        },
+        {
+          de:'Tipp',
+          art:'der',
+          pl:'Tipps',
+          en:'tip',
+          ph:'tip'
+        },
+        {
+          de:'Beispiel',
+          art:'das',
+          pl:'Beispiele',
+          en:'example',
+          ph:'BAI-shpeel'
+        },
+        {
+          de:'Text',
+          art:'der',
+          pl:'Texte',
+          en:'text',
+          ph:'tekst'
+        },
+        {
+          de:'Kapitel',
+          art:'das',
+          pl:'Kapitel',
+          en:'chapter',
+          ph:'kah-PEE-tel'
+        },
+        {
+          de:'Lektion',
+          art:'die',
+          pl:'Lektionen',
+          en:'lesson',
+          ph:'lek-TSEE-ohn'
+        },
+        {
+          de:'Hausaufgabe',
+          art:'die',
+          pl:'Hausaufgaben',
+          en:'homework',
+          ph:'HOWS-owf-gah-be'
+        },
+        {
+          de:'Test',
+          art:'der',
+          pl:'Tests',
+          en:'test',
+          ph:'test'
+        },
+        {
+          de:'Note',
+          art:'die',
+          pl:'Noten',
+          en:'mark, grade',
+          ph:'NOH-te'
+        },
+        {
+          de:'Ergebnis',
+          art:'das',
+          pl:'Ergebnisse',
+          en:'result',
+          ph:'air-GAYB-nis'
+        },
+        {
+          de:'Fortschritt',
+          art:'der',
+          pl:'Fortschritte',
+          en:'progress',
+          ph:'FORT-shrit'
+        },
+        {
+          de:'Ziel',
+          art:'das',
+          pl:'Ziele',
+          en:'goal',
+          ph:'tseel'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Exam words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Erfolg',
+          art:'der',
+          pl:'Erfolge',
+          en:'success',
+          ph:'air-FOLK'
+        },
+        {
+          de:'Motivation',
+          art:'die',
+          pl:'',
+          en:'motivation',
+          ph:'mo-tee-vah-TSEE-ohn'
+        },
+        {
+          de:'Lernplan',
+          art:'der',
+          pl:'Lernpläne',
+          en:'study plan',
+          ph:'LAIRN-plahn'
+        },
+        {
+          de:'Wiederholung',
+          art:'die',
+          pl:'Wiederholungen',
+          en:'revision, repetition',
+          ph:'VEE-der-hoh-loong'
+        },
+        {
+          de:'Grammatik',
+          art:'die',
+          pl:'',
+          en:'grammar',
+          ph:'grah-MAH-tik'
+        },
+        {
+          de:'Wortschatz',
+          art:'der',
+          pl:'',
+          en:'vocabulary',
+          ph:'VORT-shahts'
+        },
+        {
+          de:'Zertifikat',
+          art:'das',
+          pl:'Zertifikate',
+          en:'certificate',
+          ph:'tsair-tee-fi-KAHT'
+        },
+        {
+          de:'Prüfung',
+          art:'die',
+          pl:'Prüfungen',
+          en:'exam',
+          ph:'PRUE-foong'
+        },
+        {
+          de:'bestehen',
+          art:'',
+          pl:'',
+          en:'to pass (an exam)',
+          ph:'be-SHTAY-en'
+        },
+        {
+          de:'wiederholen',
+          art:'',
+          pl:'',
+          en:'to repeat, to review',
+          ph:'VEE-der-hoh-len'
+        },
+        {
+          de:'Fehler',
+          art:'der',
+          pl:'Fehler',
+          en:'mistake',
+          ph:'FAY-ler'
+        },
+        {
+          de:'üben',
+          art:'',
+          pl:'',
+          en:'to practise',
+          ph:'UE-ben'
+        },
+        {
+          de:'Regel',
+          art:'die',
+          pl:'Regeln',
+          en:'rule',
+          ph:'RAY-gel'
+        },
+        {
+          de:'Satz',
+          art:'der',
+          pl:'Sätze',
+          en:'sentence',
+          ph:'zahts'
+        },
+        {
+          de:'Übung',
+          art:'die',
+          pl:'Übungen',
+          en:'exercise',
+          ph:'UE-boong'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: What did you learn?',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Was hast du in A2 gelernt?',
+          en:'What did you learn in A2?',
+          ph:'vahs hahst doo in ah-tsvai ge-LAIRNT'
+        },
+        {
+          who:'B',
+          de:'Ich habe das Perfekt gelernt: Ich habe gelernt, ich bin gefahren.',
+          en:'I learned the Perfekt: I have learned, I have travelled.',
+          ph:'ish HAH-be dahs pair-FEKT ge-LAIRNT: ish HAH-be ge-LAIRNT, ish bin ge-FAH-ren'
+        },
+        {
+          who:'A',
+          de:'Und was war schwer?',
+          en:'And what was difficult?',
+          ph:'oont vahs vahr shvair'
+        },
+        {
+          who:'B',
+          de:'Der Dativ war schwer. Aber jetzt kann ich sagen: Mir geht es gut!',
+          en:'The dative was difficult. But now I can say: I am fine!',
+          ph:'dair dah-TEEF vahr shvair. AH-ber yetst kahn ish ZAH-gen: meer gayt es goot'
+        },
+        {
+          who:'A',
+          de:'Was machst du als Nächstes?',
+          en:'What are you doing next?',
+          ph:'vahs mahkhst doo ahls NAYKHS-tes'
+        },
+        {
+          who:'B',
+          de:'Ich mache den A2-Mock-Test. Dann fange ich mit B1 an!',
+          en:'I am taking the A2 mock test. Then I start B1!',
+          ph:'ish MAH-khe dayn ah-tsvai MOK-test. dahn FAHNG-e ish mit bay-INE ahn'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich habe das Perfekt gelernt. Mir geht es gut. Ich war in Italien."',
+        model:[
+          'Ich habe das Perfekt gelernt.',
+          'Mir geht es gut.',
+          'Ich war in Italien.',
+          'Ich mache jetzt den A2-Mock-Test.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: A2 review',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'A2 review — the three big steps',
+        plain:'A2 gave you three big tools: (1) Perfekt — "Ich habe gelernt." (2) Dative — "Mir geht es gut." (3) war/hatte — "Ich war in Italien." Plus: weil/dass (verb at the end), "zu" + infinitive, and Perfekt with "sein". If you can use all of these, you are ready for B1.',
+        rule:'(1) Perfekt — Ich habe gelernt. (2) Dativ — Mir geht es gut. (3) war/hatte — Ich war in Italien. (4) weil/dass — verb at the end.',
+        examples:[
+          {
+            de:'Ich habe viel gelernt und ich bin nach Berlin gefahren.',
+            en:'I learned a lot and I travelled to Berlin.',
+            ph:'ish HAH-be feel ge-LAIRNT oont ish bin nahkh bair-LEEN ge-FAH-ren'
+          },
+          {
+            de:'Mir geht es gut, weil ich Deutsch lerne.',
+            en:'I am fine because I am learning German.',
+            ph:'meer gayt es goot, vile ish doych LAIR-ne'
+          },
+          {
+            de:'Ich war in Italien und ich hatte ein schönes Hotel.',
+            en:'I was in Italy and I had a nice hotel.',
+            ph:'ish vahr in i-TAH-lee-en oont ish HAHT-te ine SHOEN-es ho-TEL'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: A2 review',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich habe Deutsch ___."', options:['gelernt', 'lernen', 'lernte', 'gelernen'], answer:0,
+         why:'Perfekt: haben + Partizip II. lernen → gelernt.'},
+        {q:'Fill in: "___ schmeckt die Suppe."', options:['Ich', 'Mir', 'Mich', 'Mein'], answer:1,
+         why:'Dative: "Mir schmeckt die Suppe." — the soup tastes good TO ME.'},
+        {q:'Fill in: "Ich ___ in Italien."', options:['bin', 'war', 'hatte', 'habe'], answer:1,
+         why:'Stories use "war": "Ich war in Italien."'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: ready for B1?',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich lerne Deutsch, ___ ich in Deutschland arbeiten will."', options:['dass', 'weil', 'wenn', 'als'], answer:1,
+         why:'"weil" = because. The verb "will" goes to the end.'},
+        {q:'Fill in: "Ich bin nach Berlin ___."', options:['gefahren', 'gefahr', 'gefahren ist', 'fahren'], answer:0,
+         why:'Movement → "sein": Ich bin gefahren.'}
+      ]
+    }
+  ],
+  next:'Next: B1 — Intermediate (visa level)',
+};
 
 CHAPTERS['B1-1'] = {
   id:'B1-1', n:1, level:'B1', title:'Work & Career', time:'10 min',
@@ -10820,7 +20623,7 @@ CHAPTERS['B1-1'] = {
      why:'hoffen = to hope. "Ich hoffe, dass ..." = I hope that ...'},
   ],
   speak:{ prompt:'Give a reason out loud: "Ich lerne Deutsch, weil ..." Say 3 reasons.',
-    model:'Ich lerne Deutsch, weil ich in Deutschland arbeiten will. Ich will Krankenpfleger werden, weil ich Menschen helfen möchte. Ich hoffe, dass ich bald nach Deutschland komme.' },
+    model:['Ich lerne Deutsch, weil ich in Deutschland arbeiten will.', 'Ich will Krankenpfleger werden, weil ich Menschen helfen möchte.', 'Ich hoffe, dass ich bald nach Deutschland komme.'] },
   recap:[
     '"weil" = because, "dass" = that.',
     'In a subordinate clause, the verb goes to the END.',
@@ -10887,7 +20690,7 @@ CHAPTERS['B1-2'] = {
      why:'"wäre" comes from "sein" (to be). "Es wäre gut" = It would be good.'},
   ],
   speak:{ prompt:'Make an appointment out loud, politely: "Ich hätte gern einen Termin. Morgen Vormittag wäre gut."',
-    model:'Guten Tag! Ich hätte gern einen Termin bei Frau Doktor Schmidt. Morgen Vormittag wäre gut. Könnten Sie mir helfen?' },
+    model:['Guten Tag!', 'Ich hätte gern einen Termin bei Frau Doktor Schmidt.', 'Morgen Vormittag wäre gut.', 'Könnten Sie mir helfen?'] },
   recap:[
     'Polite German: Ich hätte gern ... / Könnten Sie ...? / Ich würde gern ...',
     'hätte (have), wäre (be), könnte (can), würde + infinitive (would).',
@@ -10955,7 +20758,7 @@ CHAPTERS['B1-3'] = {
      why:'der Untertitel = the subtitle. die Schlagzeile = the headline, der Artikel = the article.'},
   ],
   speak:{ prompt:'Talk about media out loud: "Der Film wird auf Deutsch gezeigt. Die Nachrichten werden jeden Tag gesendet."',
-    model:'Was wird heute im Fernsehen gezeigt? Heute wird ein Film über Deutschland gezeigt. Der Film wird auf Deutsch gezeigt, mit Untertiteln.' },
+    model:['Was wird heute im Fernsehen gezeigt?', 'Heute wird ein Film über Deutschland gezeigt.', 'Der Film wird auf Deutsch gezeigt, mit Untertiteln.'] },
   recap:[
     'Passive: werden + Partizip II — "Der Film wird gezeigt."',
     'Use the passive when the doer is not important.',
@@ -11171,7 +20974,7 @@ CHAPTERS['B2-1'] = {
      why:'die Besprechung = the meeting. der Vorschlag = the suggestion, die Abteilung = the department.'},
   ],
   speak:{ prompt:'Report what someone said out loud: "Er sagt, er sei ... Sie sagt, sie habe ..."',
-    model:'Der Chef sagt, er sei mit der Arbeit zufrieden. Die Kollegin sagt, sie habe schon alles vorbereitet.' },
+    model:['Der Chef sagt, er sei mit der Arbeit zufrieden.', 'Die Kollegin sagt, sie habe schon alles vorbereitet.'] },
   recap:[
     'Konjunktiv I = reported speech: "Er sagt, er sei ..."',
     'sei (be), habe (have), werde (will) — most verbs add -e.',
@@ -11239,7 +21042,7 @@ CHAPTERS['B2-2'] = {
      why:'die Verschmutzung = pollution. der Abfall = waste, das Klima = climate.'},
   ],
   speak:{ prompt:'Discuss the environment out loud: "Die Umwelt muss geschützt werden. Das Problem lässt sich lösen."',
-    model:'Die Umwelt muss geschützt werden. Viel Plastik kann recycelt werden. Das Problem lässt sich nicht so einfach lösen. Aber jeder kann etwas tun.' },
+    model:['Die Umwelt muss geschützt werden.', 'Viel Plastik kann recycelt werden.', 'Das Problem lässt sich nicht so einfach lösen.', 'Aber jeder kann etwas tun.'] },
   recap:[
     'Passive with modal verbs: muss/kann + Partizip II + werden.',
     '"sich lassen + infinitive" = can be done.',
@@ -11307,7 +21110,7 @@ CHAPTERS['B2-3'] = {
      why:'betreuen = to care for (a patient). behandeln = to treat, untersuchen = to examine.'},
   ],
   speak:{ prompt:'Give a handover out loud: "Der Patient, den ich betreue, hat starke Schmerzen. Die Medikamente, die der Arzt verschrieben hat, sind im Schrank."',
-    model:'Der Patient, den ich heute betreue, hat starke Schmerzen. Der Arzt, dem ich berichtet habe, kommt gleich. Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.' },
+    model:['Der Patient, den ich heute betreue, hat starke Schmerzen.', 'Der Arzt, dem ich berichtet habe, kommt gleich.', 'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.'] },
   recap:[
     'Relative pronouns: der/den/dem/dessen (masculine), die/die/der/deren (feminine), das/das/dem/dessen (neuter).',
     'The verb goes to the END of the relative clause.',
@@ -11522,7 +21325,7 @@ CHAPTERS['C1-1'] = {
      why:'"wäre" is Konjunktiv II of "sein". It talks about an unreal situation.'},
   ],
   speak:{ prompt:'Speak formally out loud: "Die Behandlung des Patienten erfordert viel Erfahrung. Die Ergebnisse der Studie zeigen eine deutliche Verbesserung."',
-    model:'Die Behandlung des Patienten erfordert viel Erfahrung. Die Durchführung der Untersuchung dauert etwa eine Stunde. Die Bedeutung der Forschung ist unbestritten.' },
+    model:['Die Behandlung des Patienten erfordert viel Erfahrung.', 'Die Durchführung der Untersuchung dauert etwa eine Stunde.', 'Die Bedeutung der Forschung ist unbestritten.'] },
   recap:[
     'Nominal style: nouns instead of verbs — die Behandlung, die Durchführung, die Veröffentlichung.',
     'Genitive chains: die Ergebnisse der Studie, die Bedeutung der Forschung.',
@@ -11590,7 +21393,7 @@ CHAPTERS['C1-2'] = {
      why:'das Meisterwerk = the masterpiece. der Regisseur = the director, der Kritiker = the critic.'},
   ],
   speak:{ prompt:'Give your opinion out loud: "Meiner Meinung nach ist das der beste Film des Jahres. Allerdings ist das Ende etwas langatmig."',
-    model:'Der neue Film ist in aller Munde. Er hat mich umgehauen! Meiner Meinung nach ist das der beste Film des Jahres. Alles in allem ist der Film ein Meisterwerk.' },
+    model:['Der neue Film ist in aller Munde.', 'Er hat mich umgehauen!', 'Meiner Meinung nach ist das der beste Film des Jahres.', 'Alles in allem ist der Film ein Meisterwerk.'] },
   recap:[
     'Opinion phrases: Meiner Meinung nach, meiner Ansicht nach, alles in allem.',
     'Softeners: allerdings, immerhin, schließlich, im Großen und Ganzen.',
@@ -11657,7 +21460,7 @@ CHAPTERS['C1-3'] = {
      why:'"jemanden vor Herausforderungen stellen" = to present someone with challenges.'},
   ],
   speak:{ prompt:'Argue out loud: "Meiner Ansicht nach muss mehr in die Ausbildung investiert werden. Die gut ausgebildeten Pflegekräfte sind die Zukunft."',
-    model:'Die in den letzten Jahren stark gestiegene Lebenserwartung stellt die Gesellschaft vor neue Herausforderungen. Meiner Ansicht nach muss mehr in die Ausbildung investiert werden.' },
+    model:['Die in den letzten Jahren stark gestiegene Lebenserwartung stellt die Gesellschaft vor neue Herausforderungen.', 'Meiner Ansicht nach muss mehr in die Ausbildung investiert werden.'] },
   recap:[
     'Partizip I = active, ongoing: die lebenden Menschen.',
     'Partizip II = passive, finished: das gelesene Buch, die geplanten Reformen.',

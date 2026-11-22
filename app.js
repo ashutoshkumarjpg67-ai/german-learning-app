@@ -86,7 +86,7 @@ const store = {
   data: null,
   fresh() {
     return { xp: 0, streak: 0, lastVisit: null, days: {}, completed: {}, read: {}, topicsDone: {},
-      quizBest: {}, cards: {}, speed: 'slow', podcastDone: false, mockBest: null, trainerBest: 0 };
+      quizBest: {}, cards: {}, speed: 'slow', podcastDone: false, mockBest: null, mockBests: {}, trainerBest: 0 };
   },
   load() {
     try { this.data = JSON.parse(localStorage.getItem(this.key)) || this.fresh(); }
@@ -193,7 +193,7 @@ function voiceNote() {
 }
 
 /* ================= Router ================= */
-let state = { tab: 'listen', quiz: {}, quizDone: {}, trainer: null, mock: null, topicQuiz: null, cardFilter: 'due', cardIdx: 0, cardFlipped: false, cardQueue: [], cardSession: 0, searchQ: '' };
+let state = { tab: 'listen', quiz: {}, quizDone: {}, trainer: null, mock: null, topicQuiz: null, cardFilter: 'due', cardIdx: 0, cardFlipped: false, cardQueue: [], cardSession: 0, searchQ: '', vocabFilter: 'all', vocabQ: '' };
 let lastPage = '';
 
 function render() {
@@ -202,8 +202,9 @@ function render() {
   const parts = hash.split('/');
   const page = parts[0] || 'home';
   const view = document.getElementById('view');
+  const navPage = page === 'trainer' ? 'vocab' : page;
   document.querySelectorAll('#bottomnav button').forEach(b => {
-    b.classList.toggle('active', b.dataset.nav === page || (page === 'chapter' && b.dataset.nav === 'learn') || (page === 'topic' && b.dataset.nav === 'learn') || (page === 'level' && b.dataset.nav === 'learn'));
+    b.classList.toggle('active', b.dataset.nav === navPage || (page === 'chapter' && b.dataset.nav === 'learn') || (page === 'topic' && b.dataset.nav === 'learn') || (page === 'level' && b.dataset.nav === 'learn'));
   });
   const st = document.getElementById('streakTop'); if (st) st.textContent = store.data.streak;
   updateSpeedBtn();
@@ -219,9 +220,11 @@ function render() {
     view.innerHTML = viewCards();
   }
   else if (page === 'trainer') view.innerHTML = viewTrainer();
+  else if (page === 'vocab') view.innerHTML = viewVocab();
   else if (page === 'podcast') view.innerHTML = viewPodcast();
   else if (page === 'nursing') view.innerHTML = viewNursing();
-  else if (page === 'mock') view.innerHTML = viewMock();
+  else if (page === 'mock') view.innerHTML = viewMock(parts[1] || 'A1');
+  else if (page === 'mocks') view.innerHTML = viewMocks();
   else if (page === 'search') view.innerHTML = viewSearch();
   else if (page === 'progress') view.innerHTML = viewProgress();
   else view.innerHTML = viewHome();
@@ -266,19 +269,30 @@ function viewHome() {
   LEVELS.forEach(lv => {
     const p = levelProgress(lv.id);
     const pct = p.full ? Math.round(p.done / p.full * 100) : 0;
-    const status = lv.status === 'complete' ? '<span class="tag green">Complete content</span>'
-      : '<span class="tag">Full content: ' + p.done + ' of ' + p.full + ' chapters</span>';
+    const status = '<span class="tag">' + p.full + ' of ' + p.total + ' chapters ready</span>';
     h += '<div class="card level-card" onclick="go(\'level/' + lv.id + '\')" style="cursor:pointer">' +
       '<div class="level-badge ' + (p.done === p.full && p.full ? 'done' : (p.done > 0 ? 'open' : 'locked')) + '">' + lv.id + '</div>' +
       '<div class="grow"><h3>' + esc(lv.name) + '</h3><p>' + esc(lv.desc) + '</p>' + status +
       '<div class="progress-track" style="margin-top:8px"><div class="progress-fill gold" style="width:' + pct + '%"></div></div></div></div>';
   });
-  h += '<div class="card"><h3 style="margin-top:0">Do this today</h3>' +
-    '<p>1. Finish one tiny topic (2–4 minutes).<br>2. Review ' + dueCount + ' flashcards due now.<br>3. Listen to the Day 1 podcast once.</p>' +
-    '<div class="btn-row"><button class="btn small" onclick="go(\'cards\')">🗂️ Flashcards (' + dueCount + ' due)</button>' +
-    '<button class="btn small ghost" onclick="go(\'podcast\')">🎧 Podcast</button></div></div>';
+  h += '<h2>All sections</h2>';
+  h += '<div class="sections-grid">' +
+    sectionCard('📖', 'Learn', 'Lessons in tiny topics, A1 to C1.', doneFull + '/' + totalFull + ' lessons done', 'learn') +
+    sectionCard('🗂️', 'Flashcards', 'Spaced repetition for every word you learn.', dueCount + ' due now', 'cards') +
+    sectionCard('📝', 'Vocabulary', 'Every word, searchable by level and chapter.', allVocab().length + ' words', 'vocab') +
+    sectionCard('🎓', 'Mock tests', 'Goethe-style practice tests, one per level.', store.data.mockBest !== null ? 'A1 best: ' + store.data.mockBest + '/100' : 'A1 mock ready', 'mocks') +
+    sectionCard('🎧', 'Podcast', 'German Day 1 — Zero se Start.', '10:08 · listen & repeat', 'podcast') +
+    sectionCard('🏥', 'Nursing', 'Hospital German for Pflege.', '26 words · 14 phrases', 'nursing') +
+    sectionCard('📊', 'Progress', 'XP, streak and per-level progress.', store.data.xp + ' XP · 🔥 ' + store.data.streak + '-day streak', 'progress') +
+    '</div>';
   h += nextBar('Not sure where to start? Start at A1 Chapter 1 — it begins from absolute zero.', 'chapter/A1-1', 'Start A1 Chapter 1');
   return h;
+}
+function sectionCard(icon, title, desc, status, route) {
+  return '<button class="section-card" onclick="go(\'' + route + '\')">' +
+    '<span class="section-ic">' + icon + '</span><b>' + esc(title) + '</b>' +
+    '<span class="section-desc">' + esc(desc) + '</span>' +
+    '<span class="section-status">' + esc(status) + '</span></button>';
 }
 
 /* ================= Learn (level list) ================= */
@@ -294,7 +308,7 @@ function viewLearn() {
       (p.read ? '<span class="tag green">' + p.read + ' syllabus chapters read</span>' : '') +
       '<div class="chip-row"><span class="chip">📚 ' + esc(lv.vocab) + '</span><span class="chip">⏱ ' + esc(lv.hours) + '</span><span class="chip">📖 ' + esc(lv.book) + '</span></div></div></div>';
   });
-  h += nextBar('Finished a level? Take its mock test to check your score before moving on.', 'mock', 'Take the A1 mock test');
+  h += nextBar('Finished a level? Take its mock test to check your score before moving on.', 'mocks', 'Take a mock test');
   return h;
 }
 
@@ -320,10 +334,11 @@ function viewLevel(levelId) {
       '<span>' + esc(ch.concept) + ' · ' + esc(ch.time) + (tp ? ' · ' + tp.done + '/' + tp.total + ' topics' : '') + (ch.syllabus ? ' · core words + grammar' : '') + (read && ch.syllabus ? ' · read ✓' : '') + '</span></span>' +
       '<span class="arrow">›</span></button>';
   });
-  if (levelId === 'A1') {
-    h += '<div class="card"><h3 style="margin-top:0">🎓 A1 Mock Test</h3><p>Goethe-style practice test: 20 questions, 20 minutes, pass at 60%. Practice only — not an official certificate.' +
-      (store.data.mockBest !== null ? ' Your best score: <b>' + store.data.mockBest + '/100</b>.' : '') + '</p>' +
-      '<button class="btn red" onclick="go(\'mock\')">Start the mock test →</button></div>';
+  if (mockFor(levelId)) {
+    const best = store.data.mockBests ? store.data.mockBests[levelId] : null;
+    h += '<div class="card"><h3 style="margin-top:0">🎓 ' + levelId + ' Mock Test</h3><p>Goethe-style practice test: 20 questions, 20 minutes, pass at 60%. Practice only — not an official certificate.' +
+      (best !== null && best !== undefined ? ' Your best score: <b>' + best + '/100</b>.' : '') + '</p>' +
+      '<button class="btn red" onclick="startMock(\'' + levelId + '\')">Start the mock test →</button></div>';
   }
   h += nextBar('What to do next: finish one chapter, then review its words in flashcards.', 'cards', 'Review flashcards');
   return h;
@@ -731,8 +746,14 @@ function viewCards() {
       '<button class="chip ' + (state.cardFilter === f.id ? 'active' : '') + '" onclick="setCardFilter(\'' + f.id + '\')">' + f.label + '</button>').join('') + '</div>';
   const queue = state.cardQueue;
   if (!queue.length) {
-    h += '<div class="card empty">No cards in this view.' +
-      (state.cardFilter === 'due' ? ' You are all caught up — great work! 🎉' : ' Learn a chapter first, then add its words here.') + '</div>';
+    const hasAnyCards = Object.keys(store.data.cards).length > 0;
+    if (!hasAnyCards) {
+      h += '<div class="card"><h3 style="margin-top:0">🗂️ No flashcards yet — start here</h3>' +
+        '<p>Flashcards are built from the words you learn. Finish A1 Chapter 1 (Letters &amp; Sounds), then tap "Add these words to flashcards" — your first cards will appear here.</p>' +
+        '<button class="btn gold" onclick="go(\'chapter/A1-1\')">Start A1 Chapter 1 →</button></div>';
+      return h;
+    }
+    h += '<div class="card empty">No cards in this view. You are all caught up — great work! 🎉</div>';
     h += nextBar('What to do next: learn a new chapter to add more words.', 'learn', 'Go to lessons');
     return h;
   }
@@ -855,6 +876,51 @@ function nextTrainer() {
   t.picked = null; t.idx++;
   if (t.idx >= 10) { t.finished = true; store.addXP(5); }
   render();
+}
+
+/* ================= Vocabulary (own section) ================= */
+function vocabItems() {
+  const all = allVocab();
+  const q = (state.vocabQ || '').trim().toLowerCase();
+  let items = all;
+  if (state.vocabFilter !== 'all') items = items.filter(v => v.level === state.vocabFilter);
+  if (q) items = items.filter(v => v.de.toLowerCase().includes(q) || v.en.toLowerCase().includes(q));
+  return items;
+}
+function vocabListHTML(items) {
+  if (!items.length) return '<p class="empty">No words match. Try a shorter word or another level.</p>';
+  const known = items.filter(v => store.data.cards[v.key]).length;
+  const shown = Math.min(state.vocabShown || 200, items.length);
+  let h = '<p class="small">' + shown + ' of ' + items.length + ' words shown · ' + known + ' in your flashcards</p><div class="card">';
+  let lastCh = null;
+  items.slice(0, shown).forEach(v => {
+    if (v.ch !== lastCh) { h += '<h3>' + esc(v.level) + ' · ' + esc(v.title) + '</h3>'; lastCh = v.ch; }
+    h += '<div class="vocab-row"><div class="txt"><div class="de">' +
+      (v.art ? '<span class="art">' + esc(v.art) + '</span> ' : '') + esc(v.de) +
+      (v.pl ? ' <span class="plural">· plural: die ' + esc(v.pl) + '</span>' : '') + '</div>' +
+      '<div class="ph">' + esc(v.ph) + '</div><div class="en">' + esc(v.en) + '</div></div>' +
+      speakBtn((v.art ? v.art + ' ' : '') + v.de) + '</div>';
+  });
+  if (items.length > shown) h += '<button class="btn ghost mt" onclick="showMoreVocab()">Show more (' + (items.length - shown) + ' remaining) ↓</button>';
+  return h + '</div>';
+}
+function showMoreVocab() { state.vocabShown = (state.vocabShown || 200) + 200; renderVocabList(); }
+function viewVocab() {
+  const all = allVocab();
+  const levels = ['all', 'A1', 'A2', 'B1', 'B2', 'C1', 'Pflege'];
+  let h = '<p class="kicker">Vocabulary</p><h1>Vocabulary</h1>' +
+    '<p class="lead">Every word in the app — ' + all.length + ' words. Filter by level, search, tap 🔊 to hear each one.</p>' +
+    '<input class="search-input mb" type="text" placeholder="Search German or English…" value="' + escAttr(state.vocabQ || '') + '" oninput="state.vocabQ=this.value;state.vocabShown=200;renderVocabList()">' +
+    '<div class="chip-row mb">' + levels.map(lv => '<button class="chip ' + (state.vocabFilter === lv ? 'active' : '') + '" onclick="setVocabFilter(\'' + lv + '\')">' + (lv === 'all' ? 'All levels' : lv) + '</button>').join('') + '</div>' +
+    '<div id="vocabList">' + vocabListHTML(vocabItems()) + '</div>' +
+    '<div class="card"><h3 style="margin-top:0">🎯 Test yourself</h3><p>10 quick questions, German → English or English → German.</p>' +
+    '<button class="btn" onclick="go(\'trainer\')">Open the vocabulary trainer →</button></div>';
+  return h;
+}
+function setVocabFilter(f) { state.vocabFilter = f; state.vocabShown = 200; render(); }
+function renderVocabList() {
+  const el = document.getElementById('vocabList');
+  if (el) el.innerHTML = vocabListHTML(vocabItems());
 }
 
 /* ================= Search ================= */
@@ -986,26 +1052,60 @@ function addNursingToCards() {
   toast(added ? added + ' nursing words added to flashcards.' : 'Nursing words are already in your flashcards.');
 }
 
-/* ================= A1 Mock Test ================= */
-function startMock() {
-  const qs = [...MOCK_A1.questions];
-  state.mock = { qs, idx: 0, answers: {}, score: 0, remaining: MOCK_A1.time || 20 * 60, running: true, finished: false };
+/* ================= Mock Tests (one per level) ================= */
+function mockFor(level) {
+  if (level === 'A2') return (typeof MOCK_A2 !== 'undefined') ? MOCK_A2 : null;
+  if (level === 'B1') return (typeof MOCK_B1 !== 'undefined') ? MOCK_B1 : null;
+  if (level === 'B2') return (typeof MOCK_B2 !== 'undefined') ? MOCK_B2 : null;
+  if (level === 'C1') return (typeof MOCK_C1 !== 'undefined') ? MOCK_C1 : null;
+  return MOCK_A1;
+}
+function mockBest(level) {
+  if (store.data.mockBests && store.data.mockBests[level] !== undefined) return store.data.mockBests[level];
+  return level === 'A1' ? store.data.mockBest : null;
+}
+function startMock(level) {
+  const src = mockFor(level || 'A1');
+  if (!src) { toast('This mock test is not ready yet — it arrives when the level is complete.'); return; }
+  const qs = [...src.questions];
+  state.mock = { level: level || 'A1', qs, idx: 0, answers: {}, score: 0, remaining: src.time || 20 * 60, running: true, finished: false };
   render();
 }
-function viewMock() {
+function viewMocks() {
+  let h = '<p class="kicker">Mock tests</p><h1>Mock tests</h1>' +
+    '<p class="lead">Goethe-style practice tests — 20 questions, 20 minutes, pass at 60%. One per level. Practice only — not an official certificate.</p>';
+  LEVELS.forEach(lv => {
+    const m = mockFor(lv.id);
+    const best = mockBest(lv.id);
+    if (m) {
+      h += '<div class="card"><h3 style="margin-top:0">🎓 ' + lv.id + ' Mock Test</h3><p>20 questions · 20 minutes · pass 12/20.' +
+        (best !== null && best !== undefined ? ' Your best: <b>' + best + '/100</b>.' : '') + '</p>' +
+        '<button class="btn red" onclick="startMock(\'' + lv.id + '\')">Start the ' + lv.id + ' mock test →</button></div>';
+    } else {
+      h += '<div class="card"><h3 style="margin-top:0">🎓 ' + lv.id + ' Mock Test</h3>' +
+        '<p class="small">This mock test arrives when ' + lv.id + ' is complete. Finish the level first — then test yourself here.</p></div>';
+    }
+  });
+  return h;
+}
+function viewMock(level) {
+  const lv = level || 'A1';
   const m = state.mock;
   if (!m) {
-    return '<p class="kicker">Mock test · A1</p><h1>Goethe-style A1 Mock Test</h1>' +
+    const src = mockFor(lv);
+    if (!src) return viewMocks();
+    const best = mockBest(lv);
+    return '<p class="kicker">Mock test · ' + lv + '</p><h1>Goethe-style ' + lv + ' Mock Test</h1>' +
       '<p class="lead">20 questions. 20 minutes. Pass at 60% (12 correct). Each question is worth 5 points. Practice only — not an official certificate.</p>' +
-      '<div class="card"><h3 style="margin-top:0">Rules</h3><ul><li>One question at a time — no going back.</li><li>The timer starts when you tap Start.</li><li>When time runs out, the test submits itself.</li><li>Your best score is saved: <b>' + (store.data.mockBest !== null ? store.data.mockBest + ' / 100' : 'not taken yet') + '</b></li></ul>' +
-      '<button class="btn red" onclick="startMock()">▶️ Start the mock test</button></div>' +
-      nextBar('Not ready yet? Finish A1 Chapter 12 first — it covers travel and the exam basics.', 'chapter/A1-12', 'Open A1 Chapter 12');
+      '<div class="card"><h3 style="margin-top:0">Rules</h3><ul><li>One question at a time — no going back.</li><li>The timer starts when you tap Start.</li><li>When time runs out, the test submits itself.</li><li>Your best score is saved: <b>' + (best !== null && best !== undefined ? best + ' / 100' : 'not taken yet') + '</b></li></ul>' +
+      '<button class="btn red" onclick="startMock(\'' + lv + '\')">▶️ Start the mock test</button></div>' +
+      nextBar('Not ready yet? Finish ' + lv + ' Chapter 12 first — it reviews the whole level.', 'chapter/' + lv + '-12', 'Open ' + lv + ' Chapter 12');
   }
   if (m.finished) {
     const pct = m.score * 5;
-    return '<p class="kicker">Mock test · A1</p><h1>Your result</h1>' +
-      '<div class="result-box ' + (pct >= 60 ? 'pass' : 'fail') + '"><b>Score: ' + pct + ' / 100 (' + m.score + ' of 20 correct)</b><br>' +
-      (pct >= 60 ? '🎉 You passed! Goethe B1-style pass mark is 60% — you are at A1 exam level.' : 'Not yet — 60% is the pass mark. Review the answers below, revise the weak chapters, and try again.') + '</div>' +
+    return '<p class="kicker">Mock test · ' + m.level + '</p><h1>Your result</h1>' +
+      '<div class="result-box ' + (pct >= 60 ? 'pass' : 'fail') + '"><b>Score: ' + pct + ' / 100 (' + m.score + ' of ' + m.qs.length + ' correct)</b><br>' +
+      (pct >= 60 ? '🎉 You passed! The pass mark is 60% — you are at ' + m.level + ' exam level.' : 'Not yet — 60% is the pass mark. Review the answers below, revise the weak chapters, and try again.') + '</div>' +
       m.qs.map((q, i) => {
         const picked = m.answers[i];
         return '<div class="card tight"><p><b>' + (i + 1) + '.</b> ' + esc(q.q) + '</p>' +
@@ -1013,14 +1113,14 @@ function viewMock() {
           (picked !== q.answer ? '<p class="ok">✅ Correct answer: ' + esc(q.options[q.answer]) + '</p>' : '') +
           (q.why ? '<p class="small">' + esc(q.why) + '</p>' : '') + '</div>';
       }).join('') +
-      '<button class="btn mt" onclick="startMock()">Try again →</button>' +
+      '<button class="btn mt" onclick="startMock(\'' + m.level + '\')">Try again →</button>' +
       nextBar('What to do next: revise your weakest chapter, then retake the test.', 'learn', 'Go to lessons');
   }
   const q = m.qs[m.idx];
   const mm = Math.floor(m.remaining / 60), ss = String(m.remaining % 60).padStart(2, '0');
-  let h = '<p class="kicker">Mock test · A1</p><h1>Question ' + (m.idx + 1) + ' of 20</h1>' +
+  let h = '<p class="kicker">Mock test · ' + m.level + '</p><h1>Question ' + (m.idx + 1) + ' of ' + m.qs.length + '</h1>' +
     '<div class="timer ' + (m.remaining <= 120 ? 'low' : '') + '">⏱ ' + mm + ':' + ss + ' left</div>' +
-    '<div class="progress-track mb"><div class="progress-fill" style="width:' + (m.idx / 20 * 100) + '%"></div></div>' +
+    '<div class="progress-track mb"><div class="progress-fill" style="width:' + (m.idx / m.qs.length * 100) + '%"></div></div>' +
     '<div class="card"><p class="big">' + esc(q.q) + ' ' + speakBtn(q.q) + '</p>';
   q.options.forEach((opt, oi) => {
     h += '<button class="opt" onclick="answerMock(' + oi + ')">' + esc(opt) + '</button>';
@@ -1033,14 +1133,16 @@ function answerMock(oi) {
   m.answers[m.idx] = oi;
   if (oi === m.qs[m.idx].answer) m.score++;
   m.idx++;
-  if (m.idx >= 20) finishMock();
+  if (m.idx >= m.qs.length) finishMock();
   render();
 }
 function finishMock() {
   const m = state.mock; if (!m) return;
   m.running = false; m.finished = true;
   const pct = m.score * 5;
-  store.data.mockBest = Math.max(store.data.mockBest || 0, pct);
+  if (!store.data.mockBests) store.data.mockBests = {};
+  store.data.mockBests[m.level] = Math.max(store.data.mockBests[m.level] || 0, pct);
+  if (m.level === 'A1') store.data.mockBest = store.data.mockBests.A1;
   store.addXP(20);
   store.save();
   toast(pct >= 60 ? 'Mock test passed! +20 XP 🎉' : 'Mock test finished. +20 XP');
