@@ -20,10 +20,10 @@ const LEVELS = [
     desc:'Opinions, plans, reasons — in connected sentences, in tiny 2–4 minute topics.',
     goal:'You can deal with most situations in Germany and explain your opinions.',
     vocab:'~1147 words', hours:'350–650 hours total', book:'Netzwerk neu B1' },
-  { id:'B2', name:'B2 — Upper Intermediate', tag:'Job level · 3 full chapters', status:'partial', full:3, total:12,
-    desc:'The level employers and the nursing licence need. Fluent discussion, reports, arguments.',
+  { id:'B2', name:'B2 — Upper Intermediate', tag:'Complete', status:'complete', full:12, total:12,
+    desc:'Fluent discussion, reports and arguments — in connected sentences, in tiny 2–4 minute topics.',
     goal:'You can discuss complex topics and work in German, including nursing (telc Pflege).',
-    vocab:'~3,000–6,000 words', hours:'600–900 hours total', book:'Sicher! aktuell B2' },
+    vocab:'~1426 words', hours:'600–900 hours total', book:'Sicher! aktuell B2' },
   { id:'C1', name:'C1 — Advanced', tag:'Stretch goal · 3 full chapters', status:'partial', full:3, total:12,
     desc:'Demanding texts, implicit meaning, flexible and precise German for study and work.',
     goal:'You can use German flexibly for academic and professional purposes.',
@@ -30065,357 +30065,9668 @@ CHAPTERS['B1-12'] = {
   next:'Next: B2 — Upper Intermediate (job level)',
 };
 
+const MOCK_B2 = {
+  title:'B2 Mock Test',
+  time:1200,
+  questions:[
+    {q:'Fill in: "Er sagt, er ___ zufrieden."', options:['ist', 'sei', 'wäre', 'war'], answer:1,
+     why:'"sei" is Konjunktiv I of "sein". Reported speech uses Konjunktiv I.'},
+    {q:'Fill in: "Sie sagt, sie ___ keine Zeit."', options:['hat', 'habe', 'hätte', 'hatte'], answer:1,
+     why:'"habe" is Konjunktiv I of "haben".'},
+    {q:'Fill in: "Das Problem lässt sich ___."', options:['lösen', 'gelöst', 'löst', 'gelösen'], answer:0,
+     why:'"sich lassen + infinitive": "Das Problem lässt sich lösen."'},
+    {q:'Fill in: "Die Luft ist zu ___."', options:['verbessern', 'verbessert', 'verbesserte', 'verbessernde'], answer:0,
+     why:'"sein + zu + infinitive": "Die Luft ist zu verbessern."'},
+    {q:'Fill in: "Der Patient, ___ ich betreue, hat Schmerzen."', options:['der', 'den', 'dem', 'dessen'], answer:1,
+     why:'Accusative: den Patient, den ich betreue.'},
+    {q:'Fill in: "Die Patientin, ___ Blutdruck zu hoch ist, braucht Ruhe."', options:['die', 'der', 'deren', 'den'], answer:2,
+     why:'Genitive relative pronoun: deren Blutdruck.'},
+    {q:'Fill in: "Wenn ich mehr Zeit ___, würde ich reisen."', options:['habe', 'hätte', 'hatte', 'haben'], answer:1,
+     why:'"hätte" = Konjunktiv II of haben.'},
+    {q:'What is the noun from "behandeln"?', options:['die Behandlung', 'der Behandler', 'das Behandeln', 'die Behandelung'], answer:0,
+     why:'"behandeln → die Behandlung" — verb + -ung makes the noun.'},
+    {q:'Fill in: "Die ___ der Daten ist wichtig."', options:['Speichern', 'Speicherung', 'Speicher', 'Gespeicherte'], answer:1,
+     why:'"die Speicherung" = the storing (noun).'},
+    {q:'Fill in: "Die in Berlin ___ Menschen sprechen Deutsch."', options:['lebend', 'lebenden', 'gelebten', 'leben'], answer:1,
+     why:'Partizip I + adjective ending: "die lebenden Menschen".'},
+    {q:'Fill in: "Das gestern ___ Buch war sehr gut."', options:['lesende', 'gelesene', 'gelesen', 'lesene'], answer:1,
+     why:'Partizip II + ending: "das gelesene Buch".'},
+    {q:'Fill in: "___ es regnet, gehen wir spazieren."', options:['Trotzdem', 'Obwohl', 'Je', 'Während'], answer:1,
+     why:'"Obwohl es regnet ..." = Although it is raining — obwohl starts the clause, verb at the end.'},
+    {q:'Fill in: "___ mehr man lernt, ___ besser spricht man."', options:['Je … desto', 'Obwohl … trotzdem', 'Wenn … dann', 'Je … je'], answer:0,
+     why:'"Je mehr man lernt, desto besser spricht man." — the … the …'},
+    {q:'What does "Er soll reich sein." mean?', options:['He wants to be rich.', 'He is said to be rich.', 'He must become rich.', 'He can be rich.'], answer:1,
+     why:'"sollen + sein" reports a rumour: "Er soll reich sein" = he is said to be rich.'},
+    {q:'Fill in: "Er ___ krank sein. (I conclude this.)"', options:['soll', 'muss', 'kann', 'will'], answer:1,
+     why:'"Er muss krank sein" = I conclude he is ill.'},
+    {q:'Fill in: "Ich freue mich ___ die Aufführung."', options:['auf', 'über', 'an', 'für'], answer:0,
+     why:'"sich freuen auf" = to look forward to.'},
+    {q:'Fill in: "Ich sehe den ___ Film."', options:['neue', 'neuer', 'neuen', 'neu'], answer:2,
+     why:'Accusative masculine after "den": "den neuen Film".'},
+    {q:'Which is the correct collocation?', options:['einen Antrag machen', 'einen Antrag stellen', 'einen Antrag geben', 'einen Antrag nehmen'], answer:1,
+     why:'"einen Antrag stellen" = to submit an application — a fixed pair.'},
+    {q:'Fill in: "Die Energie ___ gespart worden."', options:['wird', 'wurde', 'ist', 'werden'], answer:2,
+     why:'Perfect passive: "ist gespart worden".'},
+    {q:'How many modules does the Goethe B2 exam have, and what is the pass mark?', options:['2 modules, 50%', '4 modules, 60% each', '3 modules, 60%', '4 modules, 50% each'], answer:1,
+     why:'Goethe B2: 4 modules (Lesen, Hören, Schreiben, Sprechen), pass 60 per module. The telc B1·B2 Pflege is the nursing exam.'}
+  ]
+};
+
 CHAPTERS['B2-1'] = {
-  id:'B2-1', n:1, level:'B2', title:'Work & Career', time:'10 min',
+  id:'B2-1',
+  n:1,
+  level:'B2',
+  title:'Work & Career',
+  time:'17 min',
   concept:'Report what others say — Konjunktiv I.',
   dialogue:[
-    {who:'A', de:'Was hat der Chef gesagt?', en:'What did the boss say?', ph:'vahs haht dair shef geh-ZAHKT'},
-    {who:'B', de:'Er hat gesagt, er sei mit der Arbeit zufrieden.', en:'He said that he is satisfied with the work.', ph:'air haht geh-ZAHKT, air zai mit dair AHR-bait tsoo-FREE-den'},
-    {who:'A', de:'Wirklich? Er sagt, wir sollen schneller arbeiten?', en:'Really? He says we should work faster?', ph:'VIRK-lish? air zahkt, veer ZOL-len SHNEL-ler AHR-bai-ten'},
-    {who:'B', de:'Er sagt, die neue Schicht beginne um sechs Uhr.', en:'He says the new shift starts at six o\'clock.', ph:'air zahkt, dee NOY-e shikht beh-GIN-ne oom zeks oor'},
-    {who:'A', de:'Und was sagt die Kollegin?', en:'And what does the colleague say?', ph:'oont vahs zahkt dee kol-LAY-gin'},
-    {who:'B', de:'Sie sagt, sie habe schon alles vorbereitet.', en:'She says she has already prepared everything.', ph:'zee zahkt, zee HAH-be shohn AHL-les FOR-bai-rai-tet'},
+    {
+      who:'A',
+      de:'Was hat der Chef gesagt?',
+      en:'What did the boss say?',
+      ph:'vahs haht dair shef geh-ZAHKT'
+    },
+    {
+      who:'B',
+      de:'Er hat gesagt, er sei mit der Arbeit zufrieden.',
+      en:'He said that he is satisfied with the work.',
+      ph:'air haht geh-ZAHKT, air zai mit dair AHR-bait tsoo-FREE-den'
+    },
+    {
+      who:'A',
+      de:'Wirklich? Er sagt, wir sollen schneller arbeiten?',
+      en:'Really? He says we should work faster?',
+      ph:'VIRK-lish? air zahkt, veer ZOL-len SHNEL-ler AHR-bai-ten'
+    },
+    {
+      who:'B',
+      de:'Er sagt, die neue Schicht beginne um sechs Uhr.',
+      en:'He says the new shift starts at six o\'clock.',
+      ph:'air zahkt, dee NOY-e shikht beh-GIN-ne oom zeks oor'
+    },
+    {
+      who:'A',
+      de:'Und was sagt die Kollegin?',
+      en:'And what does the colleague say?',
+      ph:'oont vahs zahkt dee kol-LAY-gin'
+    },
+    {
+      who:'B',
+      de:'Sie sagt, sie habe schon alles vorbereitet.',
+      en:'She says she has already prepared everything.',
+      ph:'zee zahkt, zee HAH-be shohn AHL-les FOR-bai-rai-tet'
+    }
   ],
   vocab:[
-    {de:'Besprechung', art:'die', pl:'Besprechungen', en:'meeting', ph:'beh-SHPREH-khung'},
-    {de:'Sitzung', art:'die', pl:'Sitzungen', en:'meeting, session', ph:'ZIT-tsung'},
-    {de:'Vorschlag', art:'der', pl:'Vorschläge', en:'suggestion', ph:'FOR-shlahk'},
-    {de:'Entscheidung', art:'die', pl:'Entscheidungen', en:'decision', ph:'ent-SHAI-dung'},
-    {de:'Abteilung', art:'die', pl:'Abteilungen', en:'department', ph:'ahp-TAI-lung'},
-    {de:'Geschäftsführung', art:'die', pl:'', en:'management', ph:'geh-SHEFTS-fue-rung'},
-    {de:'Umsatz', art:'der', pl:'Umsätze', en:'turnover, revenue', ph:'OOM-zahts'},
-    {de:'Konkurrenz', art:'die', pl:'', en:'competition', ph:'kon-koo-RENTS'},
-    {de:'Strategie', art:'die', pl:'Strategien', en:'strategy', ph:'shtrah-teh-GHEE'},
-    {de:'Gewinn', art:'der', pl:'Gewinne', en:'profit', ph:'geh-VIN'},
-    {de:'Verlust', art:'der', pl:'Verluste', en:'loss', ph:'fair-LOOST'},
-    {de:'Leistung', art:'die', pl:'Leistungen', en:'performance', ph:'LAI-stung'},
-    {de:'zufrieden', art:'', pl:'', en:'satisfied', ph:'tsoo-FREE-den'},
-    {de:'unzufrieden', art:'', pl:'', en:'dissatisfied', ph:'oon-tsoo-FREE-den'},
-    {de:'pünktlich', art:'', pl:'', en:'on time', ph:'PUENKT-lish'},
-    {de:'vorschlagen', art:'', pl:'', en:'to suggest', ph:'FOR-shlah-gen'},
-    {de:'berichten', art:'', pl:'', en:'to report', ph:'beh-RIKH-ten'},
+    {
+      de:'Besprechung',
+      art:'die',
+      pl:'Besprechungen',
+      en:'meeting',
+      ph:'beh-SHPREH-khung'
+    },
+    {
+      de:'Sitzung',
+      art:'die',
+      pl:'Sitzungen',
+      en:'meeting, session',
+      ph:'ZIT-tsung'
+    },
+    {
+      de:'Vorschlag',
+      art:'der',
+      pl:'Vorschläge',
+      en:'suggestion',
+      ph:'FOR-shlahk'
+    },
+    {
+      de:'Entscheidung',
+      art:'die',
+      pl:'Entscheidungen',
+      en:'decision',
+      ph:'ent-SHAI-dung'
+    },
+    {
+      de:'Abteilung',
+      art:'die',
+      pl:'Abteilungen',
+      en:'department',
+      ph:'ahp-TAI-lung'
+    },
+    {
+      de:'Geschäftsführung',
+      art:'die',
+      pl:'',
+      en:'management',
+      ph:'geh-SHEFTS-fue-rung'
+    },
+    {
+      de:'Umsatz',
+      art:'der',
+      pl:'Umsätze',
+      en:'turnover, revenue',
+      ph:'OOM-zahts'
+    },
+    {
+      de:'Konkurrenz',
+      art:'die',
+      pl:'',
+      en:'competition',
+      ph:'kon-koo-RENTS'
+    },
+    {
+      de:'Strategie',
+      art:'die',
+      pl:'Strategien',
+      en:'strategy',
+      ph:'shtrah-teh-GHEE'
+    },
+    {
+      de:'Gewinn',
+      art:'der',
+      pl:'Gewinne',
+      en:'profit',
+      ph:'geh-VIN'
+    },
+    {
+      de:'Verlust',
+      art:'der',
+      pl:'Verluste',
+      en:'loss',
+      ph:'fair-LOOST'
+    },
+    {
+      de:'Leistung',
+      art:'die',
+      pl:'Leistungen',
+      en:'performance',
+      ph:'LAI-stung'
+    },
+    {
+      de:'zufrieden',
+      art:'',
+      pl:'',
+      en:'satisfied',
+      ph:'tsoo-FREE-den'
+    },
+    {
+      de:'unzufrieden',
+      art:'',
+      pl:'',
+      en:'dissatisfied',
+      ph:'oon-tsoo-FREE-den'
+    },
+    {
+      de:'pünktlich',
+      art:'',
+      pl:'',
+      en:'on time',
+      ph:'PUENKT-lish'
+    },
+    {
+      de:'vorschlagen',
+      art:'',
+      pl:'',
+      en:'to suggest',
+      ph:'FOR-shlah-gen'
+    },
+    {
+      de:'berichten',
+      art:'',
+      pl:'',
+      en:'to report',
+      ph:'beh-RIKH-ten'
+    },
+    {
+      de:'Chef',
+      art:'der',
+      pl:'Chefs',
+      en:'boss',
+      ph:'shef'
+    },
+    {
+      de:'Kollegin',
+      art:'die',
+      pl:'Kolleginnen',
+      en:'female colleague',
+      ph:'kol-LAY-gin'
+    },
+    {
+      de:'Kollege',
+      art:'der',
+      pl:'Kollegen',
+      en:'male colleague',
+      ph:'kol-LAY-ge'
+    },
+    {
+      de:'Mitarbeiter',
+      art:'der',
+      pl:'Mitarbeiter',
+      en:'male employee',
+      ph:'MIT-ahr-bai-ter'
+    },
+    {
+      de:'Mitarbeiterin',
+      art:'die',
+      pl:'Mitarbeiterinnen',
+      en:'female employee',
+      ph:'MIT-ahr-bai-te-rin'
+    },
+    {
+      de:'Schicht',
+      art:'die',
+      pl:'Schichten',
+      en:'shift',
+      ph:'shikht'
+    },
+    {
+      de:'Überstunde',
+      art:'die',
+      pl:'Überstunden',
+      en:'overtime hour',
+      ph:'UE-ber-shtun-de'
+    },
+    {
+      de:'Termin',
+      art:'der',
+      pl:'Termine',
+      en:'appointment',
+      ph:'tair-MEEN'
+    },
+    {
+      de:'Aufgabe',
+      art:'die',
+      pl:'Aufgaben',
+      en:'task',
+      ph:'OWF-gah-be'
+    },
+    {
+      de:'Bericht',
+      art:'der',
+      pl:'Berichte',
+      en:'report',
+      ph:'beh-RIKHT'
+    },
+    {
+      de:'Nachricht',
+      art:'die',
+      pl:'Nachrichten',
+      en:'message, news',
+      ph:'NAHKH-rikht'
+    },
+    {
+      de:'Anweisung',
+      art:'die',
+      pl:'Anweisungen',
+      en:'instruction',
+      ph:'AHN-vai-zung'
+    },
+    {
+      de:'Auftrag',
+      art:'der',
+      pl:'Aufträge',
+      en:'order, assignment',
+      ph:'OWF-trahk'
+    },
+    {
+      de:'Frist',
+      art:'die',
+      pl:'Fristen',
+      en:'deadline',
+      ph:'frist'
+    },
+    {
+      de:'Kunde',
+      art:'der',
+      pl:'Kunden',
+      en:'male customer, client',
+      ph:'KUN-de'
+    },
+    {
+      de:'Kundin',
+      art:'die',
+      pl:'Kundinnen',
+      en:'female customer, client',
+      ph:'KUN-din'
+    },
+    {
+      de:'sagen',
+      art:'',
+      pl:'',
+      en:'to say',
+      ph:'ZAH-gen'
+    },
+    {
+      de:'behaupten',
+      art:'',
+      pl:'',
+      en:'to claim',
+      ph:'beh-HOWP-ten'
+    },
+    {
+      de:'erklären',
+      art:'',
+      pl:'',
+      en:'to explain',
+      ph:'air-KLAY-ren'
+    },
+    {
+      de:'bestätigen',
+      art:'',
+      pl:'',
+      en:'to confirm',
+      ph:'beh-SHTEH-ti-gen'
+    },
+    {
+      de:'mitteilen',
+      art:'',
+      pl:'',
+      en:'to inform',
+      ph:'MIT-tai-len'
+    },
+    {
+      de:'angeblich',
+      art:'',
+      pl:'',
+      en:'allegedly',
+      ph:'AHN-gay-blish'
+    },
+    {
+      de:'laut',
+      art:'',
+      pl:'',
+      en:'according to',
+      ph:'lowt'
+    }
   ],
   grammar:{
     title:'Konjunktiv I — reported speech',
     plain:'When you report what someone said, German uses the "Konjunktiv I": "Er sagt, er sei krank." (He says he is ill.) It shows that these are HIS words, not yours. Forms: sein → sei, haben → habe, werden → werde; most verbs: stem + -e (er beginne, sie komme).',
     rule:'Er sagt, er sei zufrieden. · Sie sagt, sie habe keine Zeit. · Der Chef sagt, die Schicht beginne um sechs Uhr. · "man" → "man sage"',
     examples:[
-      {de:'Er sagt, er sei mit der Arbeit zufrieden.', en:'He says he is satisfied with the work.', ph:'air zahkt, air zai mit dair AHR-bait tsoo-FREE-den'},
-      {de:'Sie sagt, sie habe schon alles vorbereitet.', en:'She says she has already prepared everything.', ph:'zee zahkt, zee HAH-be shohn AHL-les FOR-bai-rai-tet'},
-      {de:'Der Arzt sagt, der Patient müsse viel trinken.', en:'The doctor says the patient must drink a lot.', ph:'dair ahrtst zahkt, dair pah-TSEE-ent MUES-se feel TRING-ken'},
-    ],
+      {
+        de:'Er sagt, er sei mit der Arbeit zufrieden.',
+        en:'He says he is satisfied with the work.',
+        ph:'air zahkt, air zai mit dair AHR-bait tsoo-FREE-den'
+      },
+      {
+        de:'Sie sagt, sie habe schon alles vorbereitet.',
+        en:'She says she has already prepared everything.',
+        ph:'zee zahkt, zee HAH-be shohn AHL-les FOR-bai-rai-tet'
+      },
+      {
+        de:'Der Arzt sagt, der Patient müsse viel trinken.',
+        en:'The doctor says the patient must drink a lot.',
+        ph:'dair ahrtst zahkt, dair pah-TSEE-ent MUES-se feel TRING-ken'
+      }
+    ]
   },
   quiz:[
-    {q:'Fill in: "Er sagt, er ___ zufrieden."', options:['ist','sei','wäre','war'], answer:1,
+    {q:'Fill in: "Er sagt, er ___ zufrieden."', options:['ist', 'sei', 'wäre', 'war'], answer:1,
      why:'"sei" is Konjunktiv I of "sein". Reported speech uses Konjunktiv I: "Er sagt, er sei zufrieden."'},
-    {q:'Konjunktiv I is used for...', options:['wishes','reported speech','the future','orders'], answer:1,
+    {q:'Konjunktiv I is used for...', options:['wishes', 'reported speech', 'the future', 'orders'], answer:1,
      why:'Konjunktiv I reports what others say: "Sie sagt, sie habe keine Zeit."'},
-    {q:'Fill in: "Sie sagt, sie ___ keine Zeit."', options:['hat','habe','hätte','hatte'], answer:1,
+    {q:'Fill in: "Sie sagt, sie ___ keine Zeit."', options:['hat', 'habe', 'hätte', 'hatte'], answer:1,
      why:'"habe" is Konjunktiv I of "haben". "Sie sagt, sie habe keine Zeit."'},
-    {q:'"Die Schicht beginne um sechs Uhr." — "beginne" is Konjunktiv I of...', options:['beginnen','sein','haben','werden'], answer:0,
+    {q:'"Die Schicht beginne um sechs Uhr." — "beginne" is Konjunktiv I of...', options:['beginnen', 'sein', 'haben', 'werden'], answer:0,
      why:'beginnen → beginne. The 3rd person singular Konjunktiv I adds -e to the stem.'},
-    {q:'What is "die Besprechung"?', options:['the decision','the meeting','the suggestion','the department'], answer:1,
-     why:'die Besprechung = the meeting. der Vorschlag = the suggestion, die Abteilung = the department.'},
+    {q:'What is "die Besprechung"?', options:['the decision', 'the meeting', 'the suggestion', 'the department'], answer:1,
+     why:'die Besprechung = the meeting. der Vorschlag = the suggestion, die Abteilung = the department.'}
   ],
-  speak:{ prompt:'Report what someone said out loud: "Er sagt, er sei ... Sie sagt, sie habe ..."',
-    model:['Der Chef sagt, er sei mit der Arbeit zufrieden.', 'Die Kollegin sagt, sie habe schon alles vorbereitet.'] },
+  speak:{
+    prompt:'Report what someone said out loud: "Er sagt, er sei ... Sie sagt, sie habe ..."',
+    model:[
+      'Der Chef sagt, er sei mit der Arbeit zufrieden.',
+      'Die Kollegin sagt, sie habe schon alles vorbereitet.'
+    ]
+  },
   recap:[
     'Konjunktiv I = reported speech: "Er sagt, er sei ..."',
     'sei (be), habe (have), werde (will) — most verbs add -e.',
     'It shows the words belong to someone else, not to you.',
-    'Work words: die Besprechung, der Vorschlag, die Entscheidung, der Umsatz.',
+    'Work words: die Besprechung, der Vorschlag, die Entscheidung, der Umsatz.'
   ],
   tip:'Memory tip: in newspapers and meetings, Konjunktiv I is everywhere. Listen for "sei", "habe", "werde" — they signal reported speech.',
   extra:[
-    {q:'Say "He says he is satisfied."', a:'Er sagt, er sei zufrieden.'},
-    {q:'Say "She says she has no time."', a:'Sie sagt, sie habe keine Zeit.'},
-    {q:'What does "zufrieden" mean?', a:'Satisfied. The opposite is "unzufrieden".'},
+    {
+      q:'Say "He says he is satisfied."',
+      a:'Er sagt, er sei zufrieden.'
+    },
+    {
+      q:'Say "She says she has no time."',
+      a:'Sie sagt, sie habe keine Zeit.'
+    },
+    {
+      q:'What does "zufrieden" mean?',
+      a:'Satisfied. The opposite is "unzufrieden".'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Work words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Besprechung',
+          art:'die',
+          pl:'Besprechungen',
+          en:'meeting',
+          ph:'beh-SHPREH-khung'
+        },
+        {
+          de:'Sitzung',
+          art:'die',
+          pl:'Sitzungen',
+          en:'meeting, session',
+          ph:'ZIT-tsung'
+        },
+        {
+          de:'Vorschlag',
+          art:'der',
+          pl:'Vorschläge',
+          en:'suggestion',
+          ph:'FOR-shlahk'
+        },
+        {
+          de:'Entscheidung',
+          art:'die',
+          pl:'Entscheidungen',
+          en:'decision',
+          ph:'ent-SHAI-dung'
+        },
+        {
+          de:'Abteilung',
+          art:'die',
+          pl:'Abteilungen',
+          en:'department',
+          ph:'ahp-TAI-lung'
+        },
+        {
+          de:'Geschäftsführung',
+          art:'die',
+          pl:'',
+          en:'management',
+          ph:'geh-SHEFTS-fue-rung'
+        },
+        {
+          de:'Umsatz',
+          art:'der',
+          pl:'Umsätze',
+          en:'turnover, revenue',
+          ph:'OOM-zahts'
+        },
+        {
+          de:'Konkurrenz',
+          art:'die',
+          pl:'',
+          en:'competition',
+          ph:'kon-koo-RENTS'
+        },
+        {
+          de:'Strategie',
+          art:'die',
+          pl:'Strategien',
+          en:'strategy',
+          ph:'shtrah-teh-GHEE'
+        },
+        {
+          de:'Gewinn',
+          art:'der',
+          pl:'Gewinne',
+          en:'profit',
+          ph:'geh-VIN'
+        },
+        {
+          de:'Verlust',
+          art:'der',
+          pl:'Verluste',
+          en:'loss',
+          ph:'fair-LOOST'
+        },
+        {
+          de:'Leistung',
+          art:'die',
+          pl:'Leistungen',
+          en:'performance',
+          ph:'LAI-stung'
+        },
+        {
+          de:'zufrieden',
+          art:'',
+          pl:'',
+          en:'satisfied',
+          ph:'tsoo-FREE-den'
+        },
+        {
+          de:'unzufrieden',
+          art:'',
+          pl:'',
+          en:'dissatisfied',
+          ph:'oon-tsoo-FREE-den'
+        },
+        {
+          de:'pünktlich',
+          art:'',
+          pl:'',
+          en:'on time',
+          ph:'PUENKT-lish'
+        },
+        {
+          de:'vorschlagen',
+          art:'',
+          pl:'',
+          en:'to suggest',
+          ph:'FOR-shlah-gen'
+        },
+        {
+          de:'berichten',
+          art:'',
+          pl:'',
+          en:'to report',
+          ph:'beh-RIKH-ten'
+        },
+        {
+          de:'Chef',
+          art:'der',
+          pl:'Chefs',
+          en:'boss',
+          ph:'shef'
+        },
+        {
+          de:'Kollegin',
+          art:'die',
+          pl:'Kolleginnen',
+          en:'female colleague',
+          ph:'kol-LAY-gin'
+        },
+        {
+          de:'Kollege',
+          art:'der',
+          pl:'Kollegen',
+          en:'male colleague',
+          ph:'kol-LAY-ge'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Reporting words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Mitarbeiter',
+          art:'der',
+          pl:'Mitarbeiter',
+          en:'male employee',
+          ph:'MIT-ahr-bai-ter'
+        },
+        {
+          de:'Mitarbeiterin',
+          art:'die',
+          pl:'Mitarbeiterinnen',
+          en:'female employee',
+          ph:'MIT-ahr-bai-te-rin'
+        },
+        {
+          de:'Schicht',
+          art:'die',
+          pl:'Schichten',
+          en:'shift',
+          ph:'shikht'
+        },
+        {
+          de:'Überstunde',
+          art:'die',
+          pl:'Überstunden',
+          en:'overtime hour',
+          ph:'UE-ber-shtun-de'
+        },
+        {
+          de:'Termin',
+          art:'der',
+          pl:'Termine',
+          en:'appointment',
+          ph:'tair-MEEN'
+        },
+        {
+          de:'Aufgabe',
+          art:'die',
+          pl:'Aufgaben',
+          en:'task',
+          ph:'OWF-gah-be'
+        },
+        {
+          de:'Bericht',
+          art:'der',
+          pl:'Berichte',
+          en:'report',
+          ph:'beh-RIKHT'
+        },
+        {
+          de:'Nachricht',
+          art:'die',
+          pl:'Nachrichten',
+          en:'message, news',
+          ph:'NAHKH-rikht'
+        },
+        {
+          de:'Anweisung',
+          art:'die',
+          pl:'Anweisungen',
+          en:'instruction',
+          ph:'AHN-vai-zung'
+        },
+        {
+          de:'Auftrag',
+          art:'der',
+          pl:'Aufträge',
+          en:'order, assignment',
+          ph:'OWF-trahk'
+        },
+        {
+          de:'Frist',
+          art:'die',
+          pl:'Fristen',
+          en:'deadline',
+          ph:'frist'
+        },
+        {
+          de:'Kunde',
+          art:'der',
+          pl:'Kunden',
+          en:'male customer, client',
+          ph:'KUN-de'
+        },
+        {
+          de:'Kundin',
+          art:'die',
+          pl:'Kundinnen',
+          en:'female customer, client',
+          ph:'KUN-din'
+        },
+        {
+          de:'sagen',
+          art:'',
+          pl:'',
+          en:'to say',
+          ph:'ZAH-gen'
+        },
+        {
+          de:'behaupten',
+          art:'',
+          pl:'',
+          en:'to claim',
+          ph:'beh-HOWP-ten'
+        },
+        {
+          de:'erklären',
+          art:'',
+          pl:'',
+          en:'to explain',
+          ph:'air-KLAY-ren'
+        },
+        {
+          de:'bestätigen',
+          art:'',
+          pl:'',
+          en:'to confirm',
+          ph:'beh-SHTEH-ti-gen'
+        },
+        {
+          de:'mitteilen',
+          art:'',
+          pl:'',
+          en:'to inform',
+          ph:'MIT-tai-len'
+        },
+        {
+          de:'angeblich',
+          art:'',
+          pl:'',
+          en:'allegedly',
+          ph:'AHN-gay-blish'
+        },
+        {
+          de:'laut',
+          art:'',
+          pl:'',
+          en:'according to',
+          ph:'lowt'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: What did the boss say?',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Was hat der Chef gesagt?',
+          en:'What did the boss say?',
+          ph:'vahs haht dair shef geh-ZAHKT'
+        },
+        {
+          who:'B',
+          de:'Er hat gesagt, er sei mit der Arbeit zufrieden.',
+          en:'He said that he is satisfied with the work.',
+          ph:'air haht geh-ZAHKT, air zai mit dair AHR-bait tsoo-FREE-den'
+        },
+        {
+          who:'A',
+          de:'Wirklich? Er sagt, wir sollen schneller arbeiten?',
+          en:'Really? He says we should work faster?',
+          ph:'VIRK-lish? air zahkt, veer ZOL-len SHNEL-ler AHR-bai-ten'
+        },
+        {
+          who:'B',
+          de:'Er sagt, die neue Schicht beginne um sechs Uhr.',
+          en:'He says the new shift starts at six o\'clock.',
+          ph:'air zahkt, dee NOY-e shikht beh-GIN-ne oom zeks oor'
+        },
+        {
+          who:'A',
+          de:'Und was sagt die Kollegin?',
+          en:'And what does the colleague say?',
+          ph:'oont vahs zahkt dee kol-LAY-gin'
+        },
+        {
+          who:'B',
+          de:'Sie sagt, sie habe schon alles vorbereitet.',
+          en:'She says she has already prepared everything.',
+          ph:'zee zahkt, zee HAH-be shohn AHL-les FOR-bai-rai-tet'
+        }
+      ],
+      speak:{
+        prompt:'Report what someone said out loud: "Er sagt, er sei ... Sie sagt, sie habe ..."',
+        model:[
+          'Der Chef sagt, er sei mit der Arbeit zufrieden.',
+          'Die Kollegin sagt, sie habe schon alles vorbereitet.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Konjunktiv I',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Konjunktiv I — reported speech',
+        plain:'When you report what someone said, German uses the "Konjunktiv I": "Er sagt, er sei krank." (He says he is ill.) It shows that these are HIS words, not yours. Forms: sein → sei, haben → habe, werden → werde; most verbs: stem + -e (er beginne, sie komme).',
+        rule:'Er sagt, er sei zufrieden. · Sie sagt, sie habe keine Zeit. · Der Chef sagt, die Schicht beginne um sechs Uhr. · "man" → "man sage"',
+        examples:[
+          {
+            de:'Er sagt, er sei mit der Arbeit zufrieden.',
+            en:'He says he is satisfied with the work.',
+            ph:'air zahkt, air zai mit dair AHR-bait tsoo-FREE-den'
+          },
+          {
+            de:'Sie sagt, sie habe schon alles vorbereitet.',
+            en:'She says she has already prepared everything.',
+            ph:'zee zahkt, zee HAH-be shohn AHL-les FOR-bai-rai-tet'
+          },
+          {
+            de:'Der Arzt sagt, der Patient müsse viel trinken.',
+            en:'The doctor says the patient must drink a lot.',
+            ph:'dair ahrtst zahkt, dair pah-TSEE-ent MUES-se feel TRING-ken'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: Konjunktiv I',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Er sagt, er ___ zufrieden."', options:['ist', 'sei', 'wäre', 'war'], answer:1,
+         why:'"sei" is Konjunktiv I of "sein". Reported speech uses Konjunktiv I: "Er sagt, er sei zufrieden."'},
+        {q:'Konjunktiv I is used for...', options:['wishes', 'reported speech', 'the future', 'orders'], answer:1,
+         why:'Konjunktiv I reports what others say: "Sie sagt, sie habe keine Zeit."'},
+        {q:'Fill in: "Sie sagt, sie ___ keine Zeit."', options:['hat', 'habe', 'hätte', 'hatte'], answer:1,
+         why:'"habe" is Konjunktiv I of "haben". "Sie sagt, sie habe keine Zeit."'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: work & reporting',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'"Die Schicht beginne um sechs Uhr." — "beginne" is Konjunktiv I of...', options:['beginnen', 'sein', 'haben', 'werden'], answer:0,
+         why:'beginnen → beginne. The 3rd person singular Konjunktiv I adds -e to the stem.'},
+        {q:'What is "die Besprechung"?', options:['the decision', 'the meeting', 'the suggestion', 'the department'], answer:1,
+         why:'die Besprechung = the meeting. der Vorschlag = the suggestion, die Abteilung = the department.'}
+      ]
+    }
   ],
   next:'Next: Chapter 2 — Society & Environment',
 };
 
 CHAPTERS['B2-2'] = {
-  id:'B2-2', n:2, level:'B2', title:'Society & Environment', time:'10 min',
+  id:'B2-2',
+  n:2,
+  level:'B2',
+  title:'Society & Environment',
+  time:'17 min',
   concept:'Passive voice in full — and its elegant substitutes.',
   dialogue:[
-    {who:'A', de:'Die Umwelt muss geschützt werden.', en:'The environment must be protected.', ph:'dee OOM-velt mooss geh-SHUETST VAIR-den'},
-    {who:'B', de:'Ja, viel Plastik kann recycelt werden.', en:'Yes, a lot of plastic can be recycled.', ph:'yah, feel PLAHS-tik kahn reh-SAI-kelt VAIR-den'},
-    {who:'A', de:'Das Problem lässt sich nicht so einfach lösen.', en:'The problem cannot be solved so easily.', ph:'dahs pro-BLAYM LESST zish nikht zoh INE-fahkh LER-zen'},
-    {who:'B', de:'Aber es ist viel zu tun. Die Luft ist zu verbessern.', en:'But there is a lot to do. The air is to be improved.', ph:'AH-ber es ist feel tsoo toon. dee looft ist tsoo fair-BES-sern'},
-    {who:'A', de:'Richtig. Und die Energie muss gespart werden.', en:'Right. And energy must be saved.', ph:'RIKH-tish. oont dee en-air-GHEE mooss geh-SHPAHRT VAIR-den'},
-    {who:'B', de:'Jeder kann etwas tun. Das ist zu schaffen!', en:'Everyone can do something. That can be done!', ph:'YAY-der kahn ET-vahs toon. dahs ist tsoo SHAHF-fen'},
+    {
+      who:'A',
+      de:'Die Umwelt muss geschützt werden.',
+      en:'The environment must be protected.',
+      ph:'dee OOM-velt mooss geh-SHUETST VAIR-den'
+    },
+    {
+      who:'B',
+      de:'Ja, viel Plastik kann recycelt werden.',
+      en:'Yes, a lot of plastic can be recycled.',
+      ph:'yah, feel PLAHS-tik kahn reh-SAI-kelt VAIR-den'
+    },
+    {
+      who:'A',
+      de:'Das Problem lässt sich nicht so einfach lösen.',
+      en:'The problem cannot be solved so easily.',
+      ph:'dahs pro-BLAYM LESST zish nikht zoh INE-fahkh LER-zen'
+    },
+    {
+      who:'B',
+      de:'Aber es ist viel zu tun. Die Luft ist zu verbessern.',
+      en:'But there is a lot to do. The air is to be improved.',
+      ph:'AH-ber es ist feel tsoo toon. dee looft ist tsoo fair-BES-sern'
+    },
+    {
+      who:'A',
+      de:'Richtig. Und die Energie muss gespart werden.',
+      en:'Right. And energy must be saved.',
+      ph:'RIKH-tish. oont dee en-air-GHEE mooss geh-SHPAHRT VAIR-den'
+    },
+    {
+      who:'B',
+      de:'Jeder kann etwas tun. Das ist zu schaffen!',
+      en:'Everyone can do something. That can be done!',
+      ph:'YAY-der kahn ET-vahs toon. dahs ist tsoo SHAHF-fen'
+    }
   ],
   vocab:[
-    {de:'Umwelt', art:'die', pl:'', en:'environment', ph:'OOM-velt'},
-    {de:'Luft', art:'die', pl:'', en:'air', ph:'looft'},
-    {de:'Wald', art:'der', pl:'Wälder', en:'forest', ph:'vahlt'},
-    {de:'Klima', art:'das', pl:'', en:'climate', ph:'KLEE-mah'},
-    {de:'Verschmutzung', art:'die', pl:'', en:'pollution', ph:'fair-SHMOOT-tsung'},
-    {de:'Abfall', art:'der', pl:'Abfälle', en:'waste', ph:'AHP-fahl'},
-    {de:'recyceln', art:'', pl:'', en:'to recycle', ph:'reh-SAI-keln'},
-    {de:'schützen', art:'', pl:'', en:'to protect', ph:'SHUET-sen'},
-    {de:'sparen', art:'', pl:'', en:'to save', ph:'SHPAH-ren'},
-    {de:'verbessern', art:'', pl:'', en:'to improve', ph:'fair-BES-sern'},
-    {de:'lösen', art:'', pl:'', en:'to solve', ph:'LER-zen'},
-    {de:'schaffen', art:'', pl:'', en:'to manage, to achieve', ph:'SHAHF-fen'},
-    {de:'Problem', art:'das', pl:'Probleme', en:'problem', ph:'pro-BLAYM'},
-    {de:'Lösung', art:'die', pl:'Lösungen', en:'solution', ph:'LER-zung'},
-    {de:'Folge', art:'die', pl:'Folgen', en:'consequence', ph:'FOL-ge'},
-    {de:'Maßnahme', art:'die', pl:'Maßnahmen', en:'measure', ph:'MAHSS-nah-me'},
+    {
+      de:'Umwelt',
+      art:'die',
+      pl:'',
+      en:'environment',
+      ph:'OOM-velt'
+    },
+    {
+      de:'Luft',
+      art:'die',
+      pl:'',
+      en:'air',
+      ph:'looft'
+    },
+    {
+      de:'Wald',
+      art:'der',
+      pl:'Wälder',
+      en:'forest',
+      ph:'vahlt'
+    },
+    {
+      de:'Klima',
+      art:'das',
+      pl:'',
+      en:'climate',
+      ph:'KLEE-mah'
+    },
+    {
+      de:'Verschmutzung',
+      art:'die',
+      pl:'',
+      en:'pollution',
+      ph:'fair-SHMOOT-tsung'
+    },
+    {
+      de:'Abfall',
+      art:'der',
+      pl:'Abfälle',
+      en:'waste',
+      ph:'AHP-fahl'
+    },
+    {
+      de:'recyceln',
+      art:'',
+      pl:'',
+      en:'to recycle',
+      ph:'reh-SAI-keln'
+    },
+    {
+      de:'schützen',
+      art:'',
+      pl:'',
+      en:'to protect',
+      ph:'SHUET-sen'
+    },
+    {
+      de:'sparen',
+      art:'',
+      pl:'',
+      en:'to save',
+      ph:'SHPAH-ren'
+    },
+    {
+      de:'verbessern',
+      art:'',
+      pl:'',
+      en:'to improve',
+      ph:'fair-BES-sern'
+    },
+    {
+      de:'lösen',
+      art:'',
+      pl:'',
+      en:'to solve',
+      ph:'LER-zen'
+    },
+    {
+      de:'schaffen',
+      art:'',
+      pl:'',
+      en:'to manage, to achieve',
+      ph:'SHAHF-fen'
+    },
+    {
+      de:'Problem',
+      art:'das',
+      pl:'Probleme',
+      en:'problem',
+      ph:'pro-BLAYM'
+    },
+    {
+      de:'Lösung',
+      art:'die',
+      pl:'Lösungen',
+      en:'solution',
+      ph:'LER-zung'
+    },
+    {
+      de:'Folge',
+      art:'die',
+      pl:'Folgen',
+      en:'consequence',
+      ph:'FOL-ge'
+    },
+    {
+      de:'Maßnahme',
+      art:'die',
+      pl:'Maßnahmen',
+      en:'measure',
+      ph:'MAHSS-nah-me'
+    },
+    {
+      de:'Natur',
+      art:'die',
+      pl:'',
+      en:'nature',
+      ph:'nah-TOOR'
+    },
+    {
+      de:'Energie',
+      art:'die',
+      pl:'Energien',
+      en:'energy',
+      ph:'en-air-GHEE'
+    },
+    {
+      de:'Strom',
+      art:'der',
+      pl:'',
+      en:'electricity',
+      ph:'shtrohm'
+    },
+    {
+      de:'Wasser',
+      art:'das',
+      pl:'',
+      en:'water',
+      ph:'VAHS-ser'
+    },
+    {
+      de:'Müll',
+      art:'der',
+      pl:'',
+      en:'rubbish, waste',
+      ph:'MUEL'
+    },
+    {
+      de:'Mülltrennung',
+      art:'die',
+      pl:'',
+      en:'waste separation',
+      ph:'MUEL-tren-nung'
+    },
+    {
+      de:'Klimawandel',
+      art:'der',
+      pl:'',
+      en:'climate change',
+      ph:'KLEE-mah-vahn-del'
+    },
+    {
+      de:'Erderwärmung',
+      art:'die',
+      pl:'',
+      en:'global warming',
+      ph:'AIRT-air-VAIR-mung'
+    },
+    {
+      de:'Ausstoß',
+      art:'der',
+      pl:'Ausstöße',
+      en:'emission, output',
+      ph:'OWS-shtohss'
+    },
+    {
+      de:'Emission',
+      art:'die',
+      pl:'Emissionen',
+      en:'emission',
+      ph:'eh-mee-SEE-ohn'
+    },
+    {
+      de:'nachhaltig',
+      art:'',
+      pl:'',
+      en:'sustainable',
+      ph:'NAHKH-hahl-tish'
+    },
+    {
+      de:'umweltfreundlich',
+      art:'',
+      pl:'',
+      en:'environmentally friendly',
+      ph:'OOM-velt-FROYNT-lish'
+    },
+    {
+      de:'Verkehr',
+      art:'der',
+      pl:'',
+      en:'traffic',
+      ph:'fair-KAIR'
+    },
+    {
+      de:'Luftverschmutzung',
+      art:'die',
+      pl:'',
+      en:'air pollution',
+      ph:'LOOFT-fair-SHMUT-tsung'
+    },
+    {
+      de:'Regenwald',
+      art:'der',
+      pl:'Regenwälder',
+      en:'rainforest',
+      ph:'RAY-gen-vahlt'
+    },
+    {
+      de:'Art',
+      art:'die',
+      pl:'Arten',
+      en:'species, kind',
+      ph:'ahrt'
+    },
+    {
+      de:'aussterben',
+      art:'',
+      pl:'',
+      en:'to die out, become extinct',
+      ph:'OWS-shtair-ben'
+    },
+    {
+      de:'bedroht',
+      art:'',
+      pl:'',
+      en:'threatened, endangered',
+      ph:'beh-DROHT'
+    },
+    {
+      de:'Umweltschutz',
+      art:'der',
+      pl:'',
+      en:'environmental protection',
+      ph:'OOM-velt-shuts'
+    },
+    {
+      de:'Regierung',
+      art:'die',
+      pl:'Regierungen',
+      en:'government',
+      ph:'reh-GHEE-rung'
+    },
+    {
+      de:'Gesetz',
+      art:'das',
+      pl:'Gesetze',
+      en:'law',
+      ph:'geh-ZETS'
+    },
+    {
+      de:'verbieten',
+      art:'',
+      pl:'',
+      en:'to forbid',
+      ph:'fair-BEE-ten'
+    },
+    {
+      de:'erlauben',
+      art:'',
+      pl:'',
+      en:'to allow',
+      ph:'air-LOW-ben'
+    },
+    {
+      de:'verantwortlich',
+      art:'',
+      pl:'',
+      en:'responsible',
+      ph:'fair-AHNT-vort-lish'
+    }
   ],
   grammar:{
     title:'Passive substitutes — "sich lassen" and "sein + zu"',
     plain:'Native speakers often avoid the long passive. Two elegant shortcuts: (1) "sich lassen + infinitive" = can be done: "Das Problem lässt sich lösen." (2) "sein + zu + infinitive" = is to be done / can be done: "Das ist zu schaffen." Both are very common in formal German.',
     rule:'Das Problem lässt sich lösen. (The problem can be solved.) · Das ist zu schaffen. (That can be done.) · Die Umwelt muss geschützt werden. (passive with modal verb)',
     examples:[
-      {de:'Das Problem lässt sich nicht so einfach lösen.', en:'The problem cannot be solved so easily.', ph:'dahs pro-BLAYM LESST zish nikht zoh INE-fahkh LER-zen'},
-      {de:'Die Luft ist zu verbessern.', en:'The air is to be improved.', ph:'dee looft ist tsoo fair-BES-sern'},
-      {de:'Die Energie muss gespart werden.', en:'Energy must be saved.', ph:'dee en-air-GHEE mooss geh-SHPAHRT VAIR-den'},
-    ],
+      {
+        de:'Das Problem lässt sich nicht so einfach lösen.',
+        en:'The problem cannot be solved so easily.',
+        ph:'dahs pro-BLAYM LESST zish nikht zoh INE-fahkh LER-zen'
+      },
+      {
+        de:'Die Luft ist zu verbessern.',
+        en:'The air is to be improved.',
+        ph:'dee looft ist tsoo fair-BES-sern'
+      },
+      {
+        de:'Die Energie muss gespart werden.',
+        en:'Energy must be saved.',
+        ph:'dee en-air-GHEE mooss geh-SHPAHRT VAIR-den'
+      }
+    ]
   },
   quiz:[
-    {q:'Fill in: "Das Problem lässt sich ___."', options:['lösen','gelöst','löst','lösbar'], answer:0,
+    {q:'Fill in: "Das Problem lässt sich ___."', options:['lösen', 'gelöst', 'löst', 'lösbar'], answer:0,
      why:'"sich lassen + infinitive": "Das Problem lässt sich lösen."'},
-    {q:'Fill in: "Das ist zu ___."', options:['schaffen','geschafft','schafft','schaffbar'], answer:0,
+    {q:'Fill in: "Das ist zu ___."', options:['schaffen', 'geschafft', 'schafft', 'schaffbar'], answer:0,
      why:'"sein + zu + infinitive": "Das ist zu schaffen." = That can be done.'},
-    {q:'Fill in: "Die Umwelt muss ___ werden."', options:['schützen','geschützt','schützt','schutz'], answer:1,
+    {q:'Fill in: "Die Umwelt muss ___ werden."', options:['schützen', 'geschützt', 'schützt', 'schutz'], answer:1,
      why:'Passive with a modal verb: "muss geschützt werden" = must be protected.'},
-    {q:'"sich lassen + infinitive" means...', options:['to let go','can be done','to allow','to leave'], answer:1,
+    {q:'"sich lassen + infinitive" means...', options:['to let go', 'can be done', 'to allow', 'to leave'], answer:1,
      why:'"Das lässt sich machen" = That can be done. It is a passive substitute.'},
-    {q:'What is "die Verschmutzung"?', options:['the solution','the pollution','the climate','the waste'], answer:1,
-     why:'die Verschmutzung = pollution. der Abfall = waste, das Klima = climate.'},
+    {q:'What is "die Verschmutzung"?', options:['the solution', 'the pollution', 'the climate', 'the waste'], answer:1,
+     why:'die Verschmutzung = pollution. der Abfall = waste, das Klima = climate.'}
   ],
-  speak:{ prompt:'Discuss the environment out loud: "Die Umwelt muss geschützt werden. Das Problem lässt sich lösen."',
-    model:['Die Umwelt muss geschützt werden.', 'Viel Plastik kann recycelt werden.', 'Das Problem lässt sich nicht so einfach lösen.', 'Aber jeder kann etwas tun.'] },
+  speak:{
+    prompt:'Discuss the environment out loud: "Die Umwelt muss geschützt werden. Das Problem lässt sich lösen."',
+    model:[
+      'Die Umwelt muss geschützt werden.',
+      'Viel Plastik kann recycelt werden.',
+      'Das Problem lässt sich nicht so einfach lösen.',
+      'Aber jeder kann etwas tun.'
+    ]
+  },
   recap:[
     'Passive with modal verbs: muss/kann + Partizip II + werden.',
     '"sich lassen + infinitive" = can be done.',
     '"sein + zu + infinitive" = is to be done / can be done.',
-    'Environment words: die Umwelt, die Verschmutzung, der Abfall, die Maßnahme.',
+    'Environment words: die Umwelt, die Verschmutzung, der Abfall, die Maßnahme.'
   ],
   tip:'Memory tip: "lässt sich" is your B2 superpower — "Das lässt sich machen", "Das lässt sich ändern", "Das lässt sich nicht vermeiden". Use it in every discussion.',
   extra:[
-    {q:'Say "The problem can be solved."', a:'Das Problem lässt sich lösen.'},
-    {q:'Say "That can be done."', a:'Das ist zu schaffen.'},
-    {q:'What does "schützen" mean?', a:'To protect. "Die Umwelt schützen" = to protect the environment.'},
+    {
+      q:'Say "The problem can be solved."',
+      a:'Das Problem lässt sich lösen.'
+    },
+    {
+      q:'Say "That can be done."',
+      a:'Das ist zu schaffen.'
+    },
+    {
+      q:'What does "schützen" mean?',
+      a:'To protect. "Die Umwelt schützen" = to protect the environment.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Environment words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Umwelt',
+          art:'die',
+          pl:'',
+          en:'environment',
+          ph:'OOM-velt'
+        },
+        {
+          de:'Luft',
+          art:'die',
+          pl:'',
+          en:'air',
+          ph:'looft'
+        },
+        {
+          de:'Wald',
+          art:'der',
+          pl:'Wälder',
+          en:'forest',
+          ph:'vahlt'
+        },
+        {
+          de:'Klima',
+          art:'das',
+          pl:'',
+          en:'climate',
+          ph:'KLEE-mah'
+        },
+        {
+          de:'Verschmutzung',
+          art:'die',
+          pl:'',
+          en:'pollution',
+          ph:'fair-SHMOOT-tsung'
+        },
+        {
+          de:'Abfall',
+          art:'der',
+          pl:'Abfälle',
+          en:'waste',
+          ph:'AHP-fahl'
+        },
+        {
+          de:'recyceln',
+          art:'',
+          pl:'',
+          en:'to recycle',
+          ph:'reh-SAI-keln'
+        },
+        {
+          de:'schützen',
+          art:'',
+          pl:'',
+          en:'to protect',
+          ph:'SHUET-sen'
+        },
+        {
+          de:'sparen',
+          art:'',
+          pl:'',
+          en:'to save',
+          ph:'SHPAH-ren'
+        },
+        {
+          de:'verbessern',
+          art:'',
+          pl:'',
+          en:'to improve',
+          ph:'fair-BES-sern'
+        },
+        {
+          de:'lösen',
+          art:'',
+          pl:'',
+          en:'to solve',
+          ph:'LER-zen'
+        },
+        {
+          de:'schaffen',
+          art:'',
+          pl:'',
+          en:'to manage, to achieve',
+          ph:'SHAHF-fen'
+        },
+        {
+          de:'Problem',
+          art:'das',
+          pl:'Probleme',
+          en:'problem',
+          ph:'pro-BLAYM'
+        },
+        {
+          de:'Lösung',
+          art:'die',
+          pl:'Lösungen',
+          en:'solution',
+          ph:'LER-zung'
+        },
+        {
+          de:'Folge',
+          art:'die',
+          pl:'Folgen',
+          en:'consequence',
+          ph:'FOL-ge'
+        },
+        {
+          de:'Maßnahme',
+          art:'die',
+          pl:'Maßnahmen',
+          en:'measure',
+          ph:'MAHSS-nah-me'
+        },
+        {
+          de:'Natur',
+          art:'die',
+          pl:'',
+          en:'nature',
+          ph:'nah-TOOR'
+        },
+        {
+          de:'Energie',
+          art:'die',
+          pl:'Energien',
+          en:'energy',
+          ph:'en-air-GHEE'
+        },
+        {
+          de:'Strom',
+          art:'der',
+          pl:'',
+          en:'electricity',
+          ph:'shtrohm'
+        },
+        {
+          de:'Wasser',
+          art:'das',
+          pl:'',
+          en:'water',
+          ph:'VAHS-ser'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Passive words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Müll',
+          art:'der',
+          pl:'',
+          en:'rubbish, waste',
+          ph:'MUEL'
+        },
+        {
+          de:'Mülltrennung',
+          art:'die',
+          pl:'',
+          en:'waste separation',
+          ph:'MUEL-tren-nung'
+        },
+        {
+          de:'Klimawandel',
+          art:'der',
+          pl:'',
+          en:'climate change',
+          ph:'KLEE-mah-vahn-del'
+        },
+        {
+          de:'Erderwärmung',
+          art:'die',
+          pl:'',
+          en:'global warming',
+          ph:'AIRT-air-VAIR-mung'
+        },
+        {
+          de:'Ausstoß',
+          art:'der',
+          pl:'Ausstöße',
+          en:'emission, output',
+          ph:'OWS-shtohss'
+        },
+        {
+          de:'Emission',
+          art:'die',
+          pl:'Emissionen',
+          en:'emission',
+          ph:'eh-mee-SEE-ohn'
+        },
+        {
+          de:'nachhaltig',
+          art:'',
+          pl:'',
+          en:'sustainable',
+          ph:'NAHKH-hahl-tish'
+        },
+        {
+          de:'umweltfreundlich',
+          art:'',
+          pl:'',
+          en:'environmentally friendly',
+          ph:'OOM-velt-FROYNT-lish'
+        },
+        {
+          de:'Verkehr',
+          art:'der',
+          pl:'',
+          en:'traffic',
+          ph:'fair-KAIR'
+        },
+        {
+          de:'Luftverschmutzung',
+          art:'die',
+          pl:'',
+          en:'air pollution',
+          ph:'LOOFT-fair-SHMUT-tsung'
+        },
+        {
+          de:'Regenwald',
+          art:'der',
+          pl:'Regenwälder',
+          en:'rainforest',
+          ph:'RAY-gen-vahlt'
+        },
+        {
+          de:'Art',
+          art:'die',
+          pl:'Arten',
+          en:'species, kind',
+          ph:'ahrt'
+        },
+        {
+          de:'aussterben',
+          art:'',
+          pl:'',
+          en:'to die out, become extinct',
+          ph:'OWS-shtair-ben'
+        },
+        {
+          de:'bedroht',
+          art:'',
+          pl:'',
+          en:'threatened, endangered',
+          ph:'beh-DROHT'
+        },
+        {
+          de:'Umweltschutz',
+          art:'der',
+          pl:'',
+          en:'environmental protection',
+          ph:'OOM-velt-shuts'
+        },
+        {
+          de:'Regierung',
+          art:'die',
+          pl:'Regierungen',
+          en:'government',
+          ph:'reh-GHEE-rung'
+        },
+        {
+          de:'Gesetz',
+          art:'das',
+          pl:'Gesetze',
+          en:'law',
+          ph:'geh-ZETS'
+        },
+        {
+          de:'verbieten',
+          art:'',
+          pl:'',
+          en:'to forbid',
+          ph:'fair-BEE-ten'
+        },
+        {
+          de:'erlauben',
+          art:'',
+          pl:'',
+          en:'to allow',
+          ph:'air-LOW-ben'
+        },
+        {
+          de:'verantwortlich',
+          art:'',
+          pl:'',
+          en:'responsible',
+          ph:'fair-AHNT-vort-lish'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Protect the environment',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Die Umwelt muss geschützt werden.',
+          en:'The environment must be protected.',
+          ph:'dee OOM-velt mooss geh-SHUETST VAIR-den'
+        },
+        {
+          who:'B',
+          de:'Ja, viel Plastik kann recycelt werden.',
+          en:'Yes, a lot of plastic can be recycled.',
+          ph:'yah, feel PLAHS-tik kahn reh-SAI-kelt VAIR-den'
+        },
+        {
+          who:'A',
+          de:'Das Problem lässt sich nicht so einfach lösen.',
+          en:'The problem cannot be solved so easily.',
+          ph:'dahs pro-BLAYM LESST zish nikht zoh INE-fahkh LER-zen'
+        },
+        {
+          who:'B',
+          de:'Aber es ist viel zu tun. Die Luft ist zu verbessern.',
+          en:'But there is a lot to do. The air is to be improved.',
+          ph:'AH-ber es ist feel tsoo toon. dee looft ist tsoo fair-BES-sern'
+        },
+        {
+          who:'A',
+          de:'Richtig. Und die Energie muss gespart werden.',
+          en:'Right. And energy must be saved.',
+          ph:'RIKH-tish. oont dee en-air-GHEE mooss geh-SHPAHRT VAIR-den'
+        },
+        {
+          who:'B',
+          de:'Jeder kann etwas tun. Das ist zu schaffen!',
+          en:'Everyone can do something. That can be done!',
+          ph:'YAY-der kahn ET-vahs toon. dahs ist tsoo SHAHF-fen'
+        }
+      ],
+      speak:{
+        prompt:'Discuss the environment out loud: "Die Umwelt muss geschützt werden. Das Problem lässt sich lösen."',
+        model:[
+          'Die Umwelt muss geschützt werden.',
+          'Viel Plastik kann recycelt werden.',
+          'Das Problem lässt sich nicht so einfach lösen.',
+          'Aber jeder kann etwas tun.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Passive substitutes',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Passive substitutes — "sich lassen" and "sein + zu"',
+        plain:'Native speakers often avoid the long passive. Two elegant shortcuts: (1) "sich lassen + infinitive" = can be done: "Das Problem lässt sich lösen." (2) "sein + zu + infinitive" = is to be done / can be done: "Das ist zu schaffen." Both are very common in formal German.',
+        rule:'Das Problem lässt sich lösen. (The problem can be solved.) · Das ist zu schaffen. (That can be done.) · Die Umwelt muss geschützt werden. (passive with modal verb)',
+        examples:[
+          {
+            de:'Das Problem lässt sich nicht so einfach lösen.',
+            en:'The problem cannot be solved so easily.',
+            ph:'dahs pro-BLAYM LESST zish nikht zoh INE-fahkh LER-zen'
+          },
+          {
+            de:'Die Luft ist zu verbessern.',
+            en:'The air is to be improved.',
+            ph:'dee looft ist tsoo fair-BES-sern'
+          },
+          {
+            de:'Die Energie muss gespart werden.',
+            en:'Energy must be saved.',
+            ph:'dee en-air-GHEE mooss geh-SHPAHRT VAIR-den'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: sich lassen & sein + zu',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Das Problem lässt sich ___."', options:['lösen', 'gelöst', 'löst', 'lösbar'], answer:0,
+         why:'"sich lassen + infinitive": "Das Problem lässt sich lösen."'},
+        {q:'Fill in: "Das ist zu ___."', options:['schaffen', 'geschafft', 'schafft', 'schaffbar'], answer:0,
+         why:'"sein + zu + infinitive": "Das ist zu schaffen." = That can be done.'},
+        {q:'Fill in: "Die Umwelt muss ___ werden."', options:['schützen', 'geschützt', 'schützt', 'schutz'], answer:1,
+         why:'Passive with a modal verb: "muss geschützt werden" = must be protected.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: environment',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'"sich lassen + infinitive" means...', options:['to let go', 'can be done', 'to allow', 'to leave'], answer:1,
+         why:'"Das lässt sich machen" = That can be done. It is a passive substitute.'},
+        {q:'What is "die Verschmutzung"?', options:['the solution', 'the pollution', 'the climate', 'the waste'], answer:1,
+         why:'die Verschmutzung = pollution. der Abfall = waste, das Klima = climate.'}
+      ]
+    }
   ],
   next:'Next: Chapter 3 — Health & Nursing',
 };
 
 CHAPTERS['B2-3'] = {
-  id:'B2-3', n:3, level:'B2', title:'Health & Nursing', time:'10 min',
+  id:'B2-3',
+  n:3,
+  level:'B2',
+  title:'Health & Nursing',
+  time:'17 min',
   concept:'Relative clauses in all cases — the language of nursing reports.',
   dialogue:[
-    {who:'A', de:'Der Patient, den ich heute betreue, hat starke Schmerzen.', en:'The patient whom I am caring for today has severe pain.', ph:'dair pah-TSEE-ent, dayn ish HOY-te beh-TROY-e, haht SHTAHR-ke SHMAIR-tsen'},
-    {who:'B', de:'Der Arzt, dem ich berichtet habe, kommt gleich.', en:'The doctor to whom I reported is coming soon.', ph:'dair ahrtst, daym ish beh-RIKH-tet HAH-be, komt glaish'},
-    {who:'A', de:'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.', en:'The patient (female) whose blood pressure is too high needs rest.', ph:'dee pah-TSEE-en-tin, DAY-ren BLOOT-drook tsoo hohkh ist, browkht ROO-e'},
-    {who:'B', de:'Die Medikamente, die der Arzt verschrieben hat, sind im Schrank.', en:'The medicines that the doctor prescribed are in the cupboard.', ph:'dee meh-dee-kah-MEN-te, dee dair ahrtst fair-SHREE-ben haht, zint im shrahnk'},
-    {who:'A', de:'Die Schwester, mit der ich zusammenarbeite, ist sehr erfahren.', en:'The nurse with whom I work together is very experienced.', ph:'dee SHVES-ter, mit dair ish tsoo-ZAH-men-ahr-bai-te, ist zair air-FAH-ren'},
-    {who:'B', de:'Gut. Die Pflege, die wir leisten, ist sehr wichtig.', en:'Good. The care that we provide is very important.', ph:'goot. dee PFLAY-ge, dee veer LAI-sten, ist zair VIKH-tish'},
+    {
+      who:'A',
+      de:'Der Patient, den ich heute betreue, hat starke Schmerzen.',
+      en:'The patient whom I am caring for today has severe pain.',
+      ph:'dair pah-TSEE-ent, dayn ish HOY-te beh-TROY-e, haht SHTAHR-ke SHMAIR-tsen'
+    },
+    {
+      who:'B',
+      de:'Der Arzt, dem ich berichtet habe, kommt gleich.',
+      en:'The doctor to whom I reported is coming soon.',
+      ph:'dair ahrtst, daym ish beh-RIKH-tet HAH-be, komt glaish'
+    },
+    {
+      who:'A',
+      de:'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.',
+      en:'The patient (female) whose blood pressure is too high needs rest.',
+      ph:'dee pah-TSEE-en-tin, DAY-ren BLOOT-drook tsoo hohkh ist, browkht ROO-e'
+    },
+    {
+      who:'B',
+      de:'Die Medikamente, die der Arzt verschrieben hat, sind im Schrank.',
+      en:'The medicines that the doctor prescribed are in the cupboard.',
+      ph:'dee meh-dee-kah-MEN-te, dee dair ahrtst fair-SHREE-ben haht, zint im shrahnk'
+    },
+    {
+      who:'A',
+      de:'Die Schwester, mit der ich zusammenarbeite, ist sehr erfahren.',
+      en:'The nurse with whom I work together is very experienced.',
+      ph:'dee SHVES-ter, mit dair ish tsoo-ZAH-men-ahr-bai-te, ist zair air-FAH-ren'
+    },
+    {
+      who:'B',
+      de:'Gut. Die Pflege, die wir leisten, ist sehr wichtig.',
+      en:'Good. The care that we provide is very important.',
+      ph:'goot. dee PFLAY-ge, dee veer LAI-sten, ist zair VIKH-tish'
+    }
   ],
   vocab:[
-    {de:'Patient', art:'der', pl:'Patienten', en:'patient (male)', ph:'pah-TSEE-ent'},
-    {de:'Patientin', art:'die', pl:'Patientinnen', en:'patient (female)', ph:'pah-TSEE-en-tin'},
-    {de:'betreuen', art:'', pl:'', en:'to care for', ph:'beh-TROY-en'},
-    {de:'Schmerz', art:'der', pl:'Schmerzen', en:'pain', ph:'shmairts'},
-    {de:'Blutdruck', art:'der', pl:'', en:'blood pressure', ph:'BLOOT-drook'},
-    {de:'Medikament', art:'das', pl:'Medikamente', en:'medicine, drug', ph:'meh-dee-kah-MENT'},
-    {de:'verschreiben', art:'', pl:'', en:'to prescribe', ph:'fair-SHRAI-ben'},
-    {de:'Pflege', art:'die', pl:'', en:'care, nursing', ph:'PFLAY-ge'},
-    {de:'leisten', art:'', pl:'', en:'to provide, to perform', ph:'LAI-sten'},
-    {de:'erfahren', art:'', pl:'', en:'experienced', ph:'air-FAH-ren'},
-    {de:'Dienst', art:'der', pl:'Dienste', en:'shift, duty', ph:'deenst'},
-    {de:'Übergabe', art:'die', pl:'Übergaben', en:'handover', ph:'ue-ber-GAH-be'},
-    {de:'Station', art:'die', pl:'Stationen', en:'ward', ph:'shtah-TSEE-ohn'},
-    {de:'Dokumentation', art:'die', pl:'', en:'documentation', ph:'do-koo-men-tah-TSEE-ohn'},
-    {de:'Verband', art:'der', pl:'Verbände', en:'bandage', ph:'fair-BAHNT'},
-    {de:'Wunde', art:'die', pl:'Wunden', en:'wound', ph:'VOON-de'},
+    {
+      de:'Patient',
+      art:'der',
+      pl:'Patienten',
+      en:'patient (male)',
+      ph:'pah-TSEE-ent'
+    },
+    {
+      de:'Patientin',
+      art:'die',
+      pl:'Patientinnen',
+      en:'patient (female)',
+      ph:'pah-TSEE-en-tin'
+    },
+    {
+      de:'betreuen',
+      art:'',
+      pl:'',
+      en:'to care for',
+      ph:'beh-TROY-en'
+    },
+    {
+      de:'Schmerz',
+      art:'der',
+      pl:'Schmerzen',
+      en:'pain',
+      ph:'shmairts'
+    },
+    {
+      de:'Blutdruck',
+      art:'der',
+      pl:'',
+      en:'blood pressure',
+      ph:'BLOOT-drook'
+    },
+    {
+      de:'Medikament',
+      art:'das',
+      pl:'Medikamente',
+      en:'medicine, drug',
+      ph:'meh-dee-kah-MENT'
+    },
+    {
+      de:'verschreiben',
+      art:'',
+      pl:'',
+      en:'to prescribe',
+      ph:'fair-SHRAI-ben'
+    },
+    {
+      de:'Pflege',
+      art:'die',
+      pl:'',
+      en:'care, nursing',
+      ph:'PFLAY-ge'
+    },
+    {
+      de:'leisten',
+      art:'',
+      pl:'',
+      en:'to provide, to perform',
+      ph:'LAI-sten'
+    },
+    {
+      de:'erfahren',
+      art:'',
+      pl:'',
+      en:'experienced',
+      ph:'air-FAH-ren'
+    },
+    {
+      de:'Dienst',
+      art:'der',
+      pl:'Dienste',
+      en:'shift, duty',
+      ph:'deenst'
+    },
+    {
+      de:'Übergabe',
+      art:'die',
+      pl:'Übergaben',
+      en:'handover',
+      ph:'ue-ber-GAH-be'
+    },
+    {
+      de:'Station',
+      art:'die',
+      pl:'Stationen',
+      en:'ward',
+      ph:'shtah-TSEE-ohn'
+    },
+    {
+      de:'Dokumentation',
+      art:'die',
+      pl:'',
+      en:'documentation',
+      ph:'do-koo-men-tah-TSEE-ohn'
+    },
+    {
+      de:'Verband',
+      art:'der',
+      pl:'Verbände',
+      en:'bandage',
+      ph:'fair-BAHNT'
+    },
+    {
+      de:'Wunde',
+      art:'die',
+      pl:'Wunden',
+      en:'wound',
+      ph:'VOON-de'
+    },
+    {
+      de:'Arzt',
+      art:'der',
+      pl:'Ärzte',
+      en:'doctor (male)',
+      ph:'ahrtst'
+    },
+    {
+      de:'Ärztin',
+      art:'die',
+      pl:'Ärztinnen',
+      en:'doctor (female)',
+      ph:'AIRTS-tin'
+    },
+    {
+      de:'Krankenschwester',
+      art:'die',
+      pl:'Krankenschwestern',
+      en:'nurse (female)',
+      ph:'KRAHN-ken-shves-ter'
+    },
+    {
+      de:'Krankenpfleger',
+      art:'der',
+      pl:'Krankenpfleger',
+      en:'nurse (male)',
+      ph:'KRAHN-ken-pflay-ger'
+    },
+    {
+      de:'Diagnose',
+      art:'die',
+      pl:'Diagnosen',
+      en:'diagnosis',
+      ph:'dee-ahg-NOH-ze'
+    },
+    {
+      de:'Therapie',
+      art:'die',
+      pl:'Therapien',
+      en:'therapy',
+      ph:'teh-rah-PEE'
+    },
+    {
+      de:'Behandlung',
+      art:'die',
+      pl:'Behandlungen',
+      en:'treatment',
+      ph:'beh-HAHND-lung'
+    },
+    {
+      de:'Untersuchung',
+      art:'die',
+      pl:'Untersuchungen',
+      en:'examination',
+      ph:'oon-ter-ZOO-khung'
+    },
+    {
+      de:'Krankheit',
+      art:'die',
+      pl:'Krankheiten',
+      en:'illness',
+      ph:'KRAHNK-hait'
+    },
+    {
+      de:'Symptom',
+      art:'das',
+      pl:'Symptome',
+      en:'symptom',
+      ph:'zump-TOHM'
+    },
+    {
+      de:'Heilung',
+      art:'die',
+      pl:'',
+      en:'healing, recovery',
+      ph:'HAI-lung'
+    },
+    {
+      de:'Spritze',
+      art:'die',
+      pl:'Spritzen',
+      en:'injection',
+      ph:'SHPRIT-tse'
+    },
+    {
+      de:'Tablette',
+      art:'die',
+      pl:'Tabletten',
+      en:'tablet, pill',
+      ph:'tah-BLET-te'
+    },
+    {
+      de:'Dosis',
+      art:'die',
+      pl:'Dosen',
+      en:'dose',
+      ph:'DOH-zis'
+    },
+    {
+      de:'Nebenwirkung',
+      art:'die',
+      pl:'Nebenwirkungen',
+      en:'side effect',
+      ph:'NAY-ben-vir-kung'
+    },
+    {
+      de:'messen',
+      art:'',
+      pl:'',
+      en:'to measure',
+      ph:'MES-sen'
+    },
+    {
+      de:'behandeln',
+      art:'',
+      pl:'',
+      en:'to treat',
+      ph:'beh-HAHN-deln'
+    },
+    {
+      de:'untersuchen',
+      art:'',
+      pl:'',
+      en:'to examine',
+      ph:'oon-ter-ZOO-khen'
+    },
+    {
+      de:'heilen',
+      art:'',
+      pl:'',
+      en:'to heal',
+      ph:'HAI-len'
+    },
+    {
+      de:'sich erholen',
+      art:'',
+      pl:'',
+      en:'to recover',
+      ph:'zish air-HOH-len'
+    },
+    {
+      de:'krank',
+      art:'',
+      pl:'',
+      en:'ill, sick',
+      ph:'krahnk'
+    },
+    {
+      de:'gesund',
+      art:'',
+      pl:'',
+      en:'healthy',
+      ph:'geh-ZUNT'
+    },
+    {
+      de:'Gesundheit',
+      art:'die',
+      pl:'',
+      en:'health',
+      ph:'geh-ZUNT-hait'
+    },
+    {
+      de:'Krankenversicherung',
+      art:'die',
+      pl:'Krankenversicherungen',
+      en:'health insurance',
+      ph:'KRAHN-ken-fair-ZI-khe-rung'
+    }
   ],
   grammar:{
     title:'Relative clauses — all cases',
     plain:'A relative clause describes a noun. The relative pronoun changes with the case: nominative der/die/das, accusative den/die/das, dative dem/der/dem, genitive dessen/deren. The verb goes to the end. In nursing reports, you use these sentences all day.',
     rule:'Der Patient, DEN ich betreue, ... (accusative) · Der Arzt, DEM ich berichtet habe, ... (dative) · Die Patientin, DEREN Blutdruck zu hoch ist, ... (genitive) · Die Medikamente, DIE der Arzt verschrieben hat, ... (plural)',
     examples:[
-      {de:'Der Patient, den ich heute betreue, hat starke Schmerzen.', en:'The patient whom I am caring for today has severe pain.', ph:'dair pah-TSEE-ent, dayn ish HOY-te beh-TROY-e, haht SHTAHR-ke SHMAIR-tsen'},
-      {de:'Der Arzt, dem ich berichtet habe, kommt gleich.', en:'The doctor to whom I reported is coming soon.', ph:'dair ahrtst, daym ish beh-RIKH-tet HAH-be, komt glaish'},
-      {de:'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.', en:'The patient whose blood pressure is too high needs rest.', ph:'dee pah-TSEE-en-tin, DAY-ren BLOOT-drook tsoo hohkh ist, browkht ROO-e'},
-    ],
+      {
+        de:'Der Patient, den ich heute betreue, hat starke Schmerzen.',
+        en:'The patient whom I am caring for today has severe pain.',
+        ph:'dair pah-TSEE-ent, dayn ish HOY-te beh-TROY-e, haht SHTAHR-ke SHMAIR-tsen'
+      },
+      {
+        de:'Der Arzt, dem ich berichtet habe, kommt gleich.',
+        en:'The doctor to whom I reported is coming soon.',
+        ph:'dair ahrtst, daym ish beh-RIKH-tet HAH-be, komt glaish'
+      },
+      {
+        de:'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.',
+        en:'The patient whose blood pressure is too high needs rest.',
+        ph:'dee pah-TSEE-en-tin, DAY-ren BLOOT-drook tsoo hohkh ist, browkht ROO-e'
+      }
+    ]
   },
   quiz:[
-    {q:'Fill in: "Der Patient, ___ ich betreue, hat Schmerzen."', options:['der','den','dem','dessen'], answer:1,
+    {q:'Fill in: "Der Patient, ___ ich betreue, hat Schmerzen."', options:['der', 'den', 'dem', 'dessen'], answer:1,
      why:'"den" is the accusative relative pronoun for a masculine noun: "den ich betreue" (whom I care for).'},
-    {q:'Fill in: "Die Frau, ___ ich helfe, ist krank."', options:['die','den','der','dem'], answer:2,
+    {q:'Fill in: "Die Frau, ___ ich helfe, ist krank."', options:['die', 'den', 'der', 'dem'], answer:2,
      why:'"helfen" takes the dative, so the relative pronoun is "der" (dative feminine).'},
-    {q:'Fill in: "Die Patientin, ___ Blutdruck zu hoch ist, braucht Ruhe."', options:['deren','dessen','die','der'], answer:0,
+    {q:'Fill in: "Die Patientin, ___ Blutdruck zu hoch ist, braucht Ruhe."', options:['deren', 'dessen', 'die', 'der'], answer:0,
      why:'"deren" is the genitive relative pronoun (feminine): "deren Blutdruck" = whose blood pressure.'},
-    {q:'Fill in: "Die Medikamente, ___ der Arzt verschrieben hat, sind im Schrank."', options:['den','die','der','dem'], answer:1,
+    {q:'Fill in: "Die Medikamente, ___ der Arzt verschrieben hat, sind im Schrank."', options:['den', 'die', 'der', 'dem'], answer:1,
      why:'"die" is the plural relative pronoun here (accusative plural): "die der Arzt verschrieben hat".'},
-    {q:'What does "betreuen" mean?', options:['to visit','to care for','to examine','to treat'], answer:1,
-     why:'betreuen = to care for (a patient). behandeln = to treat, untersuchen = to examine.'},
+    {q:'What does "betreuen" mean?', options:['to visit', 'to care for', 'to examine', 'to treat'], answer:1,
+     why:'betreuen = to care for (a patient). behandeln = to treat, untersuchen = to examine.'}
   ],
-  speak:{ prompt:'Give a handover out loud: "Der Patient, den ich betreue, hat starke Schmerzen. Die Medikamente, die der Arzt verschrieben hat, sind im Schrank."',
-    model:['Der Patient, den ich heute betreue, hat starke Schmerzen.', 'Der Arzt, dem ich berichtet habe, kommt gleich.', 'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.'] },
+  speak:{
+    prompt:'Give a handover out loud: "Der Patient, den ich betreue, hat starke Schmerzen. Die Medikamente, die der Arzt verschrieben hat, sind im Schrank."',
+    model:[
+      'Der Patient, den ich heute betreue, hat starke Schmerzen.',
+      'Der Arzt, dem ich berichtet habe, kommt gleich.',
+      'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.'
+    ]
+  },
   recap:[
     'Relative pronouns: der/den/dem/dessen (masculine), die/die/der/deren (feminine), das/das/dem/dessen (neuter).',
     'The verb goes to the END of the relative clause.',
     'Nursing words: betreuen, die Übergabe, die Dokumentation, der Verband.',
-    'This is telc Pflege language — handovers are built from these sentences.',
+    'This is telc Pflege language — handovers are built from these sentences.'
   ],
   tip:'Memory tip: in a handover, start with the patient: "Der Patient, den ich betreue, ..." — then add the facts. One sentence, all the information.',
   extra:[
-    {q:'Say "The patient whom I care for has severe pain."', a:'Der Patient, den ich betreue, hat starke Schmerzen.'},
-    {q:'Say "The medicines that the doctor prescribed are in the cupboard."', a:'Die Medikamente, die der Arzt verschrieben hat, sind im Schrank.'},
-    {q:'What does "die Übergabe" mean?', a:'The handover (between shifts).'},
+    {
+      q:'Say "The patient whom I care for has severe pain."',
+      a:'Der Patient, den ich betreue, hat starke Schmerzen.'
+    },
+    {
+      q:'Say "The medicines that the doctor prescribed are in the cupboard."',
+      a:'Die Medikamente, die der Arzt verschrieben hat, sind im Schrank.'
+    },
+    {
+      q:'What does "die Übergabe" mean?',
+      a:'The handover (between shifts).'
+    }
   ],
-  next:'Next: Chapter 4 — Travel & Leisure (syllabus)',
+  topics:[
+    {
+      id:'t1',
+      title:'Nursing words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Patient',
+          art:'der',
+          pl:'Patienten',
+          en:'patient (male)',
+          ph:'pah-TSEE-ent'
+        },
+        {
+          de:'Patientin',
+          art:'die',
+          pl:'Patientinnen',
+          en:'patient (female)',
+          ph:'pah-TSEE-en-tin'
+        },
+        {
+          de:'betreuen',
+          art:'',
+          pl:'',
+          en:'to care for',
+          ph:'beh-TROY-en'
+        },
+        {
+          de:'Schmerz',
+          art:'der',
+          pl:'Schmerzen',
+          en:'pain',
+          ph:'shmairts'
+        },
+        {
+          de:'Blutdruck',
+          art:'der',
+          pl:'',
+          en:'blood pressure',
+          ph:'BLOOT-drook'
+        },
+        {
+          de:'Medikament',
+          art:'das',
+          pl:'Medikamente',
+          en:'medicine, drug',
+          ph:'meh-dee-kah-MENT'
+        },
+        {
+          de:'verschreiben',
+          art:'',
+          pl:'',
+          en:'to prescribe',
+          ph:'fair-SHRAI-ben'
+        },
+        {
+          de:'Pflege',
+          art:'die',
+          pl:'',
+          en:'care, nursing',
+          ph:'PFLAY-ge'
+        },
+        {
+          de:'leisten',
+          art:'',
+          pl:'',
+          en:'to provide, to perform',
+          ph:'LAI-sten'
+        },
+        {
+          de:'erfahren',
+          art:'',
+          pl:'',
+          en:'experienced',
+          ph:'air-FAH-ren'
+        },
+        {
+          de:'Dienst',
+          art:'der',
+          pl:'Dienste',
+          en:'shift, duty',
+          ph:'deenst'
+        },
+        {
+          de:'Übergabe',
+          art:'die',
+          pl:'Übergaben',
+          en:'handover',
+          ph:'ue-ber-GAH-be'
+        },
+        {
+          de:'Station',
+          art:'die',
+          pl:'Stationen',
+          en:'ward',
+          ph:'shtah-TSEE-ohn'
+        },
+        {
+          de:'Dokumentation',
+          art:'die',
+          pl:'',
+          en:'documentation',
+          ph:'do-koo-men-tah-TSEE-ohn'
+        },
+        {
+          de:'Verband',
+          art:'der',
+          pl:'Verbände',
+          en:'bandage',
+          ph:'fair-BAHNT'
+        },
+        {
+          de:'Wunde',
+          art:'die',
+          pl:'Wunden',
+          en:'wound',
+          ph:'VOON-de'
+        },
+        {
+          de:'Arzt',
+          art:'der',
+          pl:'Ärzte',
+          en:'doctor (male)',
+          ph:'ahrtst'
+        },
+        {
+          de:'Ärztin',
+          art:'die',
+          pl:'Ärztinnen',
+          en:'doctor (female)',
+          ph:'AIRTS-tin'
+        },
+        {
+          de:'Krankenschwester',
+          art:'die',
+          pl:'Krankenschwestern',
+          en:'nurse (female)',
+          ph:'KRAHN-ken-shves-ter'
+        },
+        {
+          de:'Krankenpfleger',
+          art:'der',
+          pl:'Krankenpfleger',
+          en:'nurse (male)',
+          ph:'KRAHN-ken-pflay-ger'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Body & care words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Diagnose',
+          art:'die',
+          pl:'Diagnosen',
+          en:'diagnosis',
+          ph:'dee-ahg-NOH-ze'
+        },
+        {
+          de:'Therapie',
+          art:'die',
+          pl:'Therapien',
+          en:'therapy',
+          ph:'teh-rah-PEE'
+        },
+        {
+          de:'Behandlung',
+          art:'die',
+          pl:'Behandlungen',
+          en:'treatment',
+          ph:'beh-HAHND-lung'
+        },
+        {
+          de:'Untersuchung',
+          art:'die',
+          pl:'Untersuchungen',
+          en:'examination',
+          ph:'oon-ter-ZOO-khung'
+        },
+        {
+          de:'Krankheit',
+          art:'die',
+          pl:'Krankheiten',
+          en:'illness',
+          ph:'KRAHNK-hait'
+        },
+        {
+          de:'Symptom',
+          art:'das',
+          pl:'Symptome',
+          en:'symptom',
+          ph:'zump-TOHM'
+        },
+        {
+          de:'Heilung',
+          art:'die',
+          pl:'',
+          en:'healing, recovery',
+          ph:'HAI-lung'
+        },
+        {
+          de:'Spritze',
+          art:'die',
+          pl:'Spritzen',
+          en:'injection',
+          ph:'SHPRIT-tse'
+        },
+        {
+          de:'Tablette',
+          art:'die',
+          pl:'Tabletten',
+          en:'tablet, pill',
+          ph:'tah-BLET-te'
+        },
+        {
+          de:'Dosis',
+          art:'die',
+          pl:'Dosen',
+          en:'dose',
+          ph:'DOH-zis'
+        },
+        {
+          de:'Nebenwirkung',
+          art:'die',
+          pl:'Nebenwirkungen',
+          en:'side effect',
+          ph:'NAY-ben-vir-kung'
+        },
+        {
+          de:'messen',
+          art:'',
+          pl:'',
+          en:'to measure',
+          ph:'MES-sen'
+        },
+        {
+          de:'behandeln',
+          art:'',
+          pl:'',
+          en:'to treat',
+          ph:'beh-HAHN-deln'
+        },
+        {
+          de:'untersuchen',
+          art:'',
+          pl:'',
+          en:'to examine',
+          ph:'oon-ter-ZOO-khen'
+        },
+        {
+          de:'heilen',
+          art:'',
+          pl:'',
+          en:'to heal',
+          ph:'HAI-len'
+        },
+        {
+          de:'sich erholen',
+          art:'',
+          pl:'',
+          en:'to recover',
+          ph:'zish air-HOH-len'
+        },
+        {
+          de:'krank',
+          art:'',
+          pl:'',
+          en:'ill, sick',
+          ph:'krahnk'
+        },
+        {
+          de:'gesund',
+          art:'',
+          pl:'',
+          en:'healthy',
+          ph:'geh-ZUNT'
+        },
+        {
+          de:'Gesundheit',
+          art:'die',
+          pl:'',
+          en:'health',
+          ph:'geh-ZUNT-hait'
+        },
+        {
+          de:'Krankenversicherung',
+          art:'die',
+          pl:'Krankenversicherungen',
+          en:'health insurance',
+          ph:'KRAHN-ken-fair-ZI-khe-rung'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: The patient I care for',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Der Patient, den ich heute betreue, hat starke Schmerzen.',
+          en:'The patient whom I am caring for today has severe pain.',
+          ph:'dair pah-TSEE-ent, dayn ish HOY-te beh-TROY-e, haht SHTAHR-ke SHMAIR-tsen'
+        },
+        {
+          who:'B',
+          de:'Der Arzt, dem ich berichtet habe, kommt gleich.',
+          en:'The doctor to whom I reported is coming soon.',
+          ph:'dair ahrtst, daym ish beh-RIKH-tet HAH-be, komt glaish'
+        },
+        {
+          who:'A',
+          de:'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.',
+          en:'The patient (female) whose blood pressure is too high needs rest.',
+          ph:'dee pah-TSEE-en-tin, DAY-ren BLOOT-drook tsoo hohkh ist, browkht ROO-e'
+        },
+        {
+          who:'B',
+          de:'Die Medikamente, die der Arzt verschrieben hat, sind im Schrank.',
+          en:'The medicines that the doctor prescribed are in the cupboard.',
+          ph:'dee meh-dee-kah-MEN-te, dee dair ahrtst fair-SHREE-ben haht, zint im shrahnk'
+        },
+        {
+          who:'A',
+          de:'Die Schwester, mit der ich zusammenarbeite, ist sehr erfahren.',
+          en:'The nurse with whom I work together is very experienced.',
+          ph:'dee SHVES-ter, mit dair ish tsoo-ZAH-men-ahr-bai-te, ist zair air-FAH-ren'
+        },
+        {
+          who:'B',
+          de:'Gut. Die Pflege, die wir leisten, ist sehr wichtig.',
+          en:'Good. The care that we provide is very important.',
+          ph:'goot. dee PFLAY-ge, dee veer LAI-sten, ist zair VIKH-tish'
+        }
+      ],
+      speak:{
+        prompt:'Give a handover out loud: "Der Patient, den ich betreue, hat starke Schmerzen. Die Medikamente, die der Arzt verschrieben hat, sind im Schrank."',
+        model:[
+          'Der Patient, den ich heute betreue, hat starke Schmerzen.',
+          'Der Arzt, dem ich berichtet habe, kommt gleich.',
+          'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Relative clauses, all cases',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Relative clauses — all cases',
+        plain:'A relative clause describes a noun. The relative pronoun changes with the case: nominative der/die/das, accusative den/die/das, dative dem/der/dem, genitive dessen/deren. The verb goes to the end. In nursing reports, you use these sentences all day.',
+        rule:'Der Patient, DEN ich betreue, ... (accusative) · Der Arzt, DEM ich berichtet habe, ... (dative) · Die Patientin, DEREN Blutdruck zu hoch ist, ... (genitive) · Die Medikamente, DIE der Arzt verschrieben hat, ... (plural)',
+        examples:[
+          {
+            de:'Der Patient, den ich heute betreue, hat starke Schmerzen.',
+            en:'The patient whom I am caring for today has severe pain.',
+            ph:'dair pah-TSEE-ent, dayn ish HOY-te beh-TROY-e, haht SHTAHR-ke SHMAIR-tsen'
+          },
+          {
+            de:'Der Arzt, dem ich berichtet habe, kommt gleich.',
+            en:'The doctor to whom I reported is coming soon.',
+            ph:'dair ahrtst, daym ish beh-RIKH-tet HAH-be, komt glaish'
+          },
+          {
+            de:'Die Patientin, deren Blutdruck zu hoch ist, braucht Ruhe.',
+            en:'The patient whose blood pressure is too high needs rest.',
+            ph:'dee pah-TSEE-en-tin, DAY-ren BLOOT-drook tsoo hohkh ist, browkht ROO-e'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: relative clauses',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Der Patient, ___ ich betreue, hat Schmerzen."', options:['der', 'den', 'dem', 'dessen'], answer:1,
+         why:'"den" is the accusative relative pronoun for a masculine noun: "den ich betreue" (whom I care for).'},
+        {q:'Fill in: "Die Frau, ___ ich helfe, ist krank."', options:['die', 'den', 'der', 'dem'], answer:2,
+         why:'"helfen" takes the dative, so the relative pronoun is "der" (dative feminine).'},
+        {q:'Fill in: "Die Patientin, ___ Blutdruck zu hoch ist, braucht Ruhe."', options:['deren', 'dessen', 'die', 'der'], answer:0,
+         why:'"deren" is the genitive relative pronoun (feminine): "deren Blutdruck" = whose blood pressure.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: health & nursing',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Die Medikamente, ___ der Arzt verschrieben hat, sind im Schrank."', options:['den', 'die', 'der', 'dem'], answer:1,
+         why:'"die" is the plural relative pronoun here (accusative plural): "die der Arzt verschrieben hat".'},
+        {q:'What does "betreuen" mean?', options:['to visit', 'to care for', 'to examine', 'to treat'], answer:1,
+         why:'betreuen = to care for (a patient). behandeln = to treat, untersuchen = to examine.'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 4 — Travel & Leisure',
 };
 
-/* ---- B2 syllabus chapters 4–12 ---- */
-CHAPTERS['B2-4'] = { id:'B2-4', n:4, level:'B2', title:'Travel & Leisure', time:'10 min', syllabus:true,
+CHAPTERS['B2-4'] = {
+  id:'B2-4',
+  n:4,
+  level:'B2',
+  title:'Travel & Leisure',
+  time:'17 min',
   concept:'Talk about holidays, relaxation and adventures.',
-  learn:['Describe holidays and leisure in detail','Use Konjunktiv II for wishes and dreams','Compare travel experiences'],
-  grammar:{ title:'Konjunktiv II — full (wishes & hypotheticals)',
-    plain:'"Wenn ich mehr Zeit hätte, würde ich mehr reisen." (If I had more time, I would travel more.) Konjunktiv II with "wenn" talks about unreal situations. Form: Präteritum stem + umlaut + -e (hätte, wäre, könnte, würde + infinitive).' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Wenn du mehr Zeit hättest, wohin würdest du reisen?',
+      en:'If you had more time, where would you travel?',
+      ph:'ven doo mair tsait HET-test, voh-HIN VUER-dest doo RAI-zen'
+    },
+    {
+      who:'B',
+      de:'Ich würde nach Italien reisen und am Meer entspannen.',
+      en:'I would travel to Italy and relax by the sea.',
+      ph:'ish VUER-de nahkh ee-TAHL-ee-en RAI-zen oont ahm mair ent-SHPAH-nen'
+    },
+    {
+      who:'A',
+      de:'Ich wäre gern länger geblieben, aber der Urlaub war zu kurz.',
+      en:'I would have liked to stay longer, but the holiday was too short.',
+      ph:'ish VAIR-e gairn LENG-er geh-BLEE-ben, AH-ber dair OOR-lowp vahr tsoo koorts'
+    },
+    {
+      who:'B',
+      de:'Wenn ich könnte, würde ich jedes Jahr eine Kreuzfahrt machen.',
+      en:'If I could, I would take a cruise every year.',
+      ph:'ven ish KOENT-te, VUER-de ish YAY-des yahr AI-ne KROYTS-fahrt MAH-khen'
+    },
+    {
+      who:'A',
+      de:'Am liebsten würde ich wandern und die Aussicht genießen.',
+      en:'Most of all I would like to hike and enjoy the view.',
+      ph:'ahm LEEP-sten VUER-de ish VAHN-dern oont dee OWS-zikht geh-NEE-sen'
+    },
+    {
+      who:'B',
+      de:'Dann buchen wir nächstes Jahr eine Reise in die Berge!',
+      en:'Then next year we will book a trip to the mountains!',
+      ph:'dahn BOO-khen veer NAYKH-stes yahr AI-ne RAI-ze in dee BAIR-ge'
+    }
+  ],
   vocab:[
-    {de:'Erholung', art:'die', pl:'', en:'relaxation, recovery', ph:'air-HOH-lung'},
-    {de:'Sehenswürdigkeit', art:'die', pl:'Sehenswürdigkeiten', en:'sight, attraction', ph:'ZAY-ens-vuer-dish-kait'},
-    {de:'Reiseleiter', art:'der', pl:'Reiseleiter', en:'tour guide', ph:'RAI-ze-lai-ter'},
-    {de:'Abenteuer', art:'das', pl:'Abenteuer', en:'adventure', ph:'AH-ben-toy-er'},
-    {de:'entspannen', art:'', pl:'', en:'to relax', ph:'ent-SHPAH-nen'},
-    {de:'Kreuzfahrt', art:'die', pl:'Kreuzfahrten', en:'cruise', ph:'KROYTS-fahrt'},
-    {de:'Campingplatz', art:'der', pl:'Campingplätze', en:'campsite', ph:'KEM-ping-plahts'},
-    {de:'Aussicht', art:'die', pl:'', en:'view', ph:'OWS-zikht'},
-  ], next:'Next: Chapter 5 — Media & Technology (syllabus)' };
+    {
+      de:'Erholung',
+      art:'die',
+      pl:'',
+      en:'relaxation, recovery',
+      ph:'air-HOH-lung'
+    },
+    {
+      de:'Sehenswürdigkeit',
+      art:'die',
+      pl:'Sehenswürdigkeiten',
+      en:'sight, attraction',
+      ph:'ZAY-ens-vuer-dish-kait'
+    },
+    {
+      de:'Reiseleiter',
+      art:'der',
+      pl:'Reiseleiter',
+      en:'tour guide',
+      ph:'RAI-ze-lai-ter'
+    },
+    {
+      de:'Abenteuer',
+      art:'das',
+      pl:'Abenteuer',
+      en:'adventure',
+      ph:'AH-ben-toy-er'
+    },
+    {
+      de:'entspannen',
+      art:'',
+      pl:'',
+      en:'to relax',
+      ph:'ent-SHPAH-nen'
+    },
+    {
+      de:'Kreuzfahrt',
+      art:'die',
+      pl:'Kreuzfahrten',
+      en:'cruise',
+      ph:'KROYTS-fahrt'
+    },
+    {
+      de:'Campingplatz',
+      art:'der',
+      pl:'Campingplätze',
+      en:'campsite',
+      ph:'KEM-ping-plahts'
+    },
+    {
+      de:'Aussicht',
+      art:'die',
+      pl:'',
+      en:'view',
+      ph:'OWS-zikht'
+    },
+    {
+      de:'Urlaub',
+      art:'der',
+      pl:'Urlaube',
+      en:'holiday, vacation',
+      ph:'OOR-lowp'
+    },
+    {
+      de:'Reise',
+      art:'die',
+      pl:'Reisen',
+      en:'journey, trip',
+      ph:'RAI-ze'
+    },
+    {
+      de:'Ferien',
+      art:'die',
+      pl:'',
+      en:'school holidays',
+      ph:'FAIR-ee-en'
+    },
+    {
+      de:'Hotel',
+      art:'das',
+      pl:'Hotels',
+      en:'hotel',
+      ph:'ho-TEL'
+    },
+    {
+      de:'Unterkunft',
+      art:'die',
+      pl:'Unterkünfte',
+      en:'accommodation',
+      ph:'OON-ter-koonft'
+    },
+    {
+      de:'Strand',
+      art:'der',
+      pl:'Strände',
+      en:'beach',
+      ph:'shtrahnt'
+    },
+    {
+      de:'Meer',
+      art:'das',
+      pl:'Meere',
+      en:'sea',
+      ph:'mair'
+    },
+    {
+      de:'Berg',
+      art:'der',
+      pl:'Berge',
+      en:'mountain',
+      ph:'bairk'
+    },
+    {
+      de:'See',
+      art:'der',
+      pl:'Seen',
+      en:'lake',
+      ph:'zay'
+    },
+    {
+      de:'Insel',
+      art:'die',
+      pl:'Inseln',
+      en:'island',
+      ph:'IN-zel'
+    },
+    {
+      de:'Stadt',
+      art:'die',
+      pl:'Städte',
+      en:'city, town',
+      ph:'shtaht'
+    },
+    {
+      de:'Dorf',
+      art:'das',
+      pl:'Dörfer',
+      en:'village',
+      ph:'dorf'
+    },
+    {
+      de:'Reiseführer',
+      art:'der',
+      pl:'Reiseführer',
+      en:'guidebook, guide',
+      ph:'RAI-ze-fue-rer'
+    },
+    {
+      de:'buchen',
+      art:'',
+      pl:'',
+      en:'to book',
+      ph:'BOO-khen'
+    },
+    {
+      de:'reisen',
+      art:'',
+      pl:'',
+      en:'to travel',
+      ph:'RAI-zen'
+    },
+    {
+      de:'wandern',
+      art:'',
+      pl:'',
+      en:'to hike',
+      ph:'VAHN-dern'
+    },
+    {
+      de:'schwimmen',
+      art:'',
+      pl:'',
+      en:'to swim',
+      ph:'SHVIM-men'
+    },
+    {
+      de:'sich sonnen',
+      art:'',
+      pl:'',
+      en:'to sunbathe',
+      ph:'zish ZON-nen'
+    },
+    {
+      de:'Sonne',
+      art:'die',
+      pl:'',
+      en:'sun',
+      ph:'ZON-ne'
+    },
+    {
+      de:'Sonnencreme',
+      art:'die',
+      pl:'Sonnencremes',
+      en:'sunscreen',
+      ph:'ZON-nen-kray-me'
+    },
+    {
+      de:'Koffer',
+      art:'der',
+      pl:'Koffer',
+      en:'suitcase',
+      ph:'KOF-fer'
+    },
+    {
+      de:'Rucksack',
+      art:'der',
+      pl:'Rucksäcke',
+      en:'backpack',
+      ph:'ROOK-zahk'
+    },
+    {
+      de:'Ticket',
+      art:'das',
+      pl:'Tickets',
+      en:'ticket',
+      ph:'TIK-ket'
+    },
+    {
+      de:'Fahrplan',
+      art:'der',
+      pl:'Fahrpläne',
+      en:'timetable',
+      ph:'FAHR-plahn'
+    },
+    {
+      de:'Verspätung',
+      art:'die',
+      pl:'Verspätungen',
+      en:'delay',
+      ph:'fair-SHPAY-tung'
+    },
+    {
+      de:'Abfahrt',
+      art:'die',
+      pl:'Abfahrten',
+      en:'departure',
+      ph:'AHP-fahrt'
+    },
+    {
+      de:'Ankunft',
+      art:'die',
+      pl:'Ankünfte',
+      en:'arrival',
+      ph:'AHN-koonft'
+    },
+    {
+      de:'Entspannung',
+      art:'die',
+      pl:'',
+      en:'relaxation',
+      ph:'ent-SHPAH-nung'
+    },
+    {
+      de:'Freizeit',
+      art:'die',
+      pl:'',
+      en:'free time',
+      ph:'FRAI-tsite'
+    },
+    {
+      de:'Ausflug',
+      art:'der',
+      pl:'Ausflüge',
+      en:'excursion, day trip',
+      ph:'OWS-flook'
+    },
+    {
+      de:'besichtigen',
+      art:'',
+      pl:'',
+      en:'to visit, to see (sights)',
+      ph:'beh-ZIKH-ti-gen'
+    },
+    {
+      de:'Erinnerung',
+      art:'die',
+      pl:'Erinnerungen',
+      en:'memory',
+      ph:'air-IN-ne-rung'
+    }
+  ],
+  grammar:{
+    title:'Konjunktiv II — full (wishes & hypotheticals)',
+    plain:'"Wenn ich mehr Zeit hätte, würde ich mehr reisen." (If I had more time, I would travel more.) Konjunktiv II with "wenn" talks about unreal situations. Form: Präteritum stem + umlaut + -e (hätte, wäre, könnte, würde + infinitive).',
+    rule:'Wenn ich mehr Zeit hätte, würde ich reisen. · hätte/wäre + Partizip II: Ich wäre gern geblieben. · würde + Infinitiv: Ich würde gern schwimmen. · Wishes: Ich hätte gern ... / Ich wäre gern ...',
+    examples:[
+      {
+        de:'Wenn ich mehr Zeit hätte, würde ich mehr reisen.',
+        en:'If I had more time, I would travel more.',
+        ph:'ven ish mair tsait HET-te, VUER-de ish mair RAI-zen'
+      },
+      {
+        de:'Ich wäre gern länger am Meer geblieben.',
+        en:'I would have liked to stay longer by the sea.',
+        ph:'ish VAIR-e gairn LENG-er ahm mair geh-BLEE-ben'
+      },
+      {
+        de:'Wenn ich könnte, würde ich eine Kreuzfahrt machen.',
+        en:'If I could, I would take a cruise.',
+        ph:'ven ish KOENT-te, VUER-de ish AI-ne KROYTS-fahrt MAH-khen'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Wenn ich mehr Zeit ___, würde ich reisen."', options:['habe', 'hätte', 'hatte', 'haben'], answer:1,
+     why:'"hätte" = Konjunktiv II of haben. "Wenn ich mehr Zeit hätte, würde ich ..."'},
+    {q:'Fill in: "Ich ___ gern länger geblieben."', options:['wäre', 'bin', 'war', 'werde'], answer:0,
+     why:'"wäre + Partizip II" = Konjunktiv II past: "Ich wäre gern geblieben."'},
+    {q:'Fill in: "Wenn ich könnte, ___ ich eine Kreuzfahrt machen."', options:['will', 'würde', 'werde', 'wollte'], answer:1,
+     why:'"würde + infinitive" for hypothetical wishes: "ich würde machen."'},
+    {q:'What does "Ich hätte gern ..." mean?', options:['I had ...', 'I would like ...', 'I have ...', 'I will ...'], answer:1,
+     why:'"Ich hätte gern ..." = I would like ... — the polite wish form.'},
+    {q:'Fill in: "Am liebsten ___ ich wandern."', options:['würde', 'werde', 'will', 'wollte'], answer:0,
+     why:'"Am liebsten würde ich ..." = Most of all I would like to ...'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Wenn ich mehr Zeit hätte, würde ich reisen. Ich wäre gern geblieben."',
+    model:[
+      'Wenn ich mehr Zeit hätte, würde ich mehr reisen.',
+      'Ich wäre gern länger am Meer geblieben.',
+      'Ich würde gern die Sehenswürdigkeiten besichtigen.',
+      'Am liebsten würde ich wandern.'
+    ]
+  },
+  recap:[
+    'Konjunktiv II: hätte/wäre + Partizip II for the past.',
+    'würde + infinitive for wishes and hypotheticals.',
+    '"Ich hätte gern ..." = I would like ...',
+    'Travel words: der Urlaub, die Reise, die Unterkunft, die Aussicht.'
+  ],
+  tip:'Memory tip: wishes start with "Wenn ich ... hätte/wäre/könnte" — the verb "hätte" or "wäre" sits in second place, "würde" starts the second half.',
+  extra:[
+    {
+      q:'Say "If I had more time, I would travel more."',
+      a:'Wenn ich mehr Zeit hätte, würde ich mehr reisen.'
+    },
+    {
+      q:'Say "I would have liked to stay longer."',
+      a:'Ich wäre gern länger geblieben.'
+    },
+    {
+      q:'What does "die Aussicht" mean?',
+      a:'The view.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Travel words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Erholung',
+          art:'die',
+          pl:'',
+          en:'relaxation, recovery',
+          ph:'air-HOH-lung'
+        },
+        {
+          de:'Sehenswürdigkeit',
+          art:'die',
+          pl:'Sehenswürdigkeiten',
+          en:'sight, attraction',
+          ph:'ZAY-ens-vuer-dish-kait'
+        },
+        {
+          de:'Reiseleiter',
+          art:'der',
+          pl:'Reiseleiter',
+          en:'tour guide',
+          ph:'RAI-ze-lai-ter'
+        },
+        {
+          de:'Abenteuer',
+          art:'das',
+          pl:'Abenteuer',
+          en:'adventure',
+          ph:'AH-ben-toy-er'
+        },
+        {
+          de:'entspannen',
+          art:'',
+          pl:'',
+          en:'to relax',
+          ph:'ent-SHPAH-nen'
+        },
+        {
+          de:'Kreuzfahrt',
+          art:'die',
+          pl:'Kreuzfahrten',
+          en:'cruise',
+          ph:'KROYTS-fahrt'
+        },
+        {
+          de:'Campingplatz',
+          art:'der',
+          pl:'Campingplätze',
+          en:'campsite',
+          ph:'KEM-ping-plahts'
+        },
+        {
+          de:'Aussicht',
+          art:'die',
+          pl:'',
+          en:'view',
+          ph:'OWS-zikht'
+        },
+        {
+          de:'Urlaub',
+          art:'der',
+          pl:'Urlaube',
+          en:'holiday, vacation',
+          ph:'OOR-lowp'
+        },
+        {
+          de:'Reise',
+          art:'die',
+          pl:'Reisen',
+          en:'journey, trip',
+          ph:'RAI-ze'
+        },
+        {
+          de:'Ferien',
+          art:'die',
+          pl:'',
+          en:'school holidays',
+          ph:'FAIR-ee-en'
+        },
+        {
+          de:'Hotel',
+          art:'das',
+          pl:'Hotels',
+          en:'hotel',
+          ph:'ho-TEL'
+        },
+        {
+          de:'Unterkunft',
+          art:'die',
+          pl:'Unterkünfte',
+          en:'accommodation',
+          ph:'OON-ter-koonft'
+        },
+        {
+          de:'Strand',
+          art:'der',
+          pl:'Strände',
+          en:'beach',
+          ph:'shtrahnt'
+        },
+        {
+          de:'Meer',
+          art:'das',
+          pl:'Meere',
+          en:'sea',
+          ph:'mair'
+        },
+        {
+          de:'Berg',
+          art:'der',
+          pl:'Berge',
+          en:'mountain',
+          ph:'bairk'
+        },
+        {
+          de:'See',
+          art:'der',
+          pl:'Seen',
+          en:'lake',
+          ph:'zay'
+        },
+        {
+          de:'Insel',
+          art:'die',
+          pl:'Inseln',
+          en:'island',
+          ph:'IN-zel'
+        },
+        {
+          de:'Stadt',
+          art:'die',
+          pl:'Städte',
+          en:'city, town',
+          ph:'shtaht'
+        },
+        {
+          de:'Dorf',
+          art:'das',
+          pl:'Dörfer',
+          en:'village',
+          ph:'dorf'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Holiday words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Reiseführer',
+          art:'der',
+          pl:'Reiseführer',
+          en:'guidebook, guide',
+          ph:'RAI-ze-fue-rer'
+        },
+        {
+          de:'buchen',
+          art:'',
+          pl:'',
+          en:'to book',
+          ph:'BOO-khen'
+        },
+        {
+          de:'reisen',
+          art:'',
+          pl:'',
+          en:'to travel',
+          ph:'RAI-zen'
+        },
+        {
+          de:'wandern',
+          art:'',
+          pl:'',
+          en:'to hike',
+          ph:'VAHN-dern'
+        },
+        {
+          de:'schwimmen',
+          art:'',
+          pl:'',
+          en:'to swim',
+          ph:'SHVIM-men'
+        },
+        {
+          de:'sich sonnen',
+          art:'',
+          pl:'',
+          en:'to sunbathe',
+          ph:'zish ZON-nen'
+        },
+        {
+          de:'Sonne',
+          art:'die',
+          pl:'',
+          en:'sun',
+          ph:'ZON-ne'
+        },
+        {
+          de:'Sonnencreme',
+          art:'die',
+          pl:'Sonnencremes',
+          en:'sunscreen',
+          ph:'ZON-nen-kray-me'
+        },
+        {
+          de:'Koffer',
+          art:'der',
+          pl:'Koffer',
+          en:'suitcase',
+          ph:'KOF-fer'
+        },
+        {
+          de:'Rucksack',
+          art:'der',
+          pl:'Rucksäcke',
+          en:'backpack',
+          ph:'ROOK-zahk'
+        },
+        {
+          de:'Ticket',
+          art:'das',
+          pl:'Tickets',
+          en:'ticket',
+          ph:'TIK-ket'
+        },
+        {
+          de:'Fahrplan',
+          art:'der',
+          pl:'Fahrpläne',
+          en:'timetable',
+          ph:'FAHR-plahn'
+        },
+        {
+          de:'Verspätung',
+          art:'die',
+          pl:'Verspätungen',
+          en:'delay',
+          ph:'fair-SHPAY-tung'
+        },
+        {
+          de:'Abfahrt',
+          art:'die',
+          pl:'Abfahrten',
+          en:'departure',
+          ph:'AHP-fahrt'
+        },
+        {
+          de:'Ankunft',
+          art:'die',
+          pl:'Ankünfte',
+          en:'arrival',
+          ph:'AHN-koonft'
+        },
+        {
+          de:'Entspannung',
+          art:'die',
+          pl:'',
+          en:'relaxation',
+          ph:'ent-SHPAH-nung'
+        },
+        {
+          de:'Freizeit',
+          art:'die',
+          pl:'',
+          en:'free time',
+          ph:'FRAI-tsite'
+        },
+        {
+          de:'Ausflug',
+          art:'der',
+          pl:'Ausflüge',
+          en:'excursion, day trip',
+          ph:'OWS-flook'
+        },
+        {
+          de:'besichtigen',
+          art:'',
+          pl:'',
+          en:'to visit, to see (sights)',
+          ph:'beh-ZIKH-ti-gen'
+        },
+        {
+          de:'Erinnerung',
+          art:'die',
+          pl:'Erinnerungen',
+          en:'memory',
+          ph:'air-IN-ne-rung'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: If I had more time ...',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Wenn du mehr Zeit hättest, wohin würdest du reisen?',
+          en:'If you had more time, where would you travel?',
+          ph:'ven doo mair tsait HET-test, voh-HIN VUER-dest doo RAI-zen'
+        },
+        {
+          who:'B',
+          de:'Ich würde nach Italien reisen und am Meer entspannen.',
+          en:'I would travel to Italy and relax by the sea.',
+          ph:'ish VUER-de nahkh ee-TAHL-ee-en RAI-zen oont ahm mair ent-SHPAH-nen'
+        },
+        {
+          who:'A',
+          de:'Ich wäre gern länger geblieben, aber der Urlaub war zu kurz.',
+          en:'I would have liked to stay longer, but the holiday was too short.',
+          ph:'ish VAIR-e gairn LENG-er geh-BLEE-ben, AH-ber dair OOR-lowp vahr tsoo koorts'
+        },
+        {
+          who:'B',
+          de:'Wenn ich könnte, würde ich jedes Jahr eine Kreuzfahrt machen.',
+          en:'If I could, I would take a cruise every year.',
+          ph:'ven ish KOENT-te, VUER-de ish YAY-des yahr AI-ne KROYTS-fahrt MAH-khen'
+        },
+        {
+          who:'A',
+          de:'Am liebsten würde ich wandern und die Aussicht genießen.',
+          en:'Most of all I would like to hike and enjoy the view.',
+          ph:'ahm LEEP-sten VUER-de ish VAHN-dern oont dee OWS-zikht geh-NEE-sen'
+        },
+        {
+          who:'B',
+          de:'Dann buchen wir nächstes Jahr eine Reise in die Berge!',
+          en:'Then next year we will book a trip to the mountains!',
+          ph:'dahn BOO-khen veer NAYKH-stes yahr AI-ne RAI-ze in dee BAIR-ge'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Wenn ich mehr Zeit hätte, würde ich reisen. Ich wäre gern geblieben."',
+        model:[
+          'Wenn ich mehr Zeit hätte, würde ich mehr reisen.',
+          'Ich wäre gern länger am Meer geblieben.',
+          'Ich würde gern die Sehenswürdigkeiten besichtigen.',
+          'Am liebsten würde ich wandern.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Konjunktiv II full',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Konjunktiv II — full (wishes & hypotheticals)',
+        plain:'"Wenn ich mehr Zeit hätte, würde ich mehr reisen." (If I had more time, I would travel more.) Konjunktiv II with "wenn" talks about unreal situations. Form: Präteritum stem + umlaut + -e (hätte, wäre, könnte, würde + infinitive).',
+        rule:'Wenn ich mehr Zeit hätte, würde ich reisen. · hätte/wäre + Partizip II: Ich wäre gern geblieben. · würde + Infinitiv: Ich würde gern schwimmen. · Wishes: Ich hätte gern ... / Ich wäre gern ...',
+        examples:[
+          {
+            de:'Wenn ich mehr Zeit hätte, würde ich mehr reisen.',
+            en:'If I had more time, I would travel more.',
+            ph:'ven ish mair tsait HET-te, VUER-de ish mair RAI-zen'
+          },
+          {
+            de:'Ich wäre gern länger am Meer geblieben.',
+            en:'I would have liked to stay longer by the sea.',
+            ph:'ish VAIR-e gairn LENG-er ahm mair geh-BLEE-ben'
+          },
+          {
+            de:'Wenn ich könnte, würde ich eine Kreuzfahrt machen.',
+            en:'If I could, I would take a cruise.',
+            ph:'ven ish KOENT-te, VUER-de ish AI-ne KROYTS-fahrt MAH-khen'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: hätte, wäre, würde',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Wenn ich mehr Zeit ___, würde ich reisen."', options:['habe', 'hätte', 'hatte', 'haben'], answer:1,
+         why:'"hätte" = Konjunktiv II of haben. "Wenn ich mehr Zeit hätte, würde ich ..."'},
+        {q:'Fill in: "Ich ___ gern länger geblieben."', options:['wäre', 'bin', 'war', 'werde'], answer:0,
+         why:'"wäre + Partizip II" = Konjunktiv II past: "Ich wäre gern geblieben."'},
+        {q:'Fill in: "Wenn ich könnte, ___ ich eine Kreuzfahrt machen."', options:['will', 'würde', 'werde', 'wollte'], answer:1,
+         why:'"würde + infinitive" for hypothetical wishes: "ich würde machen."'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: travel & wishes',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'What does "Ich hätte gern ..." mean?', options:['I had ...', 'I would like ...', 'I have ...', 'I will ...'], answer:1,
+         why:'"Ich hätte gern ..." = I would like ... — the polite wish form.'},
+        {q:'Fill in: "Am liebsten ___ ich wandern."', options:['würde', 'werde', 'will', 'wollte'], answer:0,
+         why:'"Am liebsten würde ich ..." = Most of all I would like to ...'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 5 — Media & Technology',
+};
 
-CHAPTERS['B2-5'] = { id:'B2-5', n:5, level:'B2', title:'Media & Technology', time:'10 min', syllabus:true,
+CHAPTERS['B2-5'] = {
+  id:'B2-5',
+  n:5,
+  level:'B2',
+  title:'Media & Technology',
+  time:'17 min',
   concept:'Talk about digitalisation, AI and data protection.',
-  learn:['Discuss technology and its effects','Use nominal style (nouns instead of verbs)','Argue about data protection'],
-  grammar:{ title:'Nominalisation — nouns instead of verbs',
-    plain:'Formal German prefers nouns: "die Behandlung des Patienten" (the treatment of the patient) instead of "den Patienten behandeln" (to treat the patient). Build nouns from verbs: behandeln → die Behandlung, entscheiden → die Entscheidung.' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Die Digitalisierung verändert unser Leben.',
+      en:'Digitalisation is changing our life.',
+      ph:'dee dee-gee-tah-lee-ZEE-rung fair-EN-dert OON-zer LAY-ben'
+    },
+    {
+      who:'B',
+      de:'Ja, die Nutzung des Internets wächst jeden Tag.',
+      en:'Yes, the use of the internet grows every day.',
+      ph:'yah, dee NUT-tsung des IN-tair-nets vekst YAY-den tahk'
+    },
+    {
+      who:'A',
+      de:'Der Schutz der Daten ist wichtiger als die Bequemlichkeit.',
+      en:'The protection of data is more important than convenience.',
+      ph:'dair shuts dair DAH-ten ist VIKH-ti-ger ahls dee beh-KVAYM-lish-kait'
+    },
+    {
+      who:'B',
+      de:'Ich stimme zu. Die Speicherung meiner Daten macht mir Sorgen.',
+      en:'I agree. The storing of my data worries me.',
+      ph:'ish SHTIM-me tsoo. dee SHPAI-khe-rung MAI-ner DAH-ten mahkht meer ZOR-gen'
+    },
+    {
+      who:'A',
+      de:'Die Entwicklung der künstlichen Intelligenz geht sehr schnell.',
+      en:'The development of artificial intelligence is going very fast.',
+      ph:'dee ent-VIK-lung dair KUENST-li-khen in-tel-lee-GENTS gayt zair shnel'
+    },
+    {
+      who:'B',
+      de:'Trotzdem: Die Kontrolle der Maschinen bleibt beim Menschen.',
+      en:'Still: the control of the machines stays with humans.',
+      ph:'TROT-dem: dee kon-TROL-le dair mah-SHEE-nen blaipt baim MEN-shen'
+    }
+  ],
   vocab:[
-    {de:'Digitalisierung', art:'die', pl:'', en:'digitalisation', ph:'dee-gee-tah-lee-ZEE-rung'},
-    {de:'Künstliche Intelligenz', art:'die', pl:'', en:'artificial intelligence', ph:'KUENST-li-khe in-tel-lee-GENTS'},
-    {de:'Smartphone', art:'das', pl:'Smartphones', en:'smartphone', ph:'SMAHRT-fohn'},
-    {de:'App', art:'die', pl:'Apps', en:'app', ph:'ahp'},
-    {de:'Daten', art:'die', pl:'', en:'data', ph:'DAH-ten'},
-    {de:'Datenschutz', art:'der', pl:'', en:'data protection', ph:'DAH-ten-shoots'},
-    {de:'Sicherheit', art:'die', pl:'', en:'security, safety', ph:'ZIKH-er-hite'},
-    {de:'programmieren', art:'', pl:'', en:'to program', ph:'pro-grah-MEE-ren'},
-  ], next:'Next: Chapter 6 — Education & Science (syllabus)' };
+    {
+      de:'Digitalisierung',
+      art:'die',
+      pl:'',
+      en:'digitalisation',
+      ph:'dee-gee-tah-lee-ZEE-rung'
+    },
+    {
+      de:'Künstliche Intelligenz',
+      art:'die',
+      pl:'',
+      en:'artificial intelligence',
+      ph:'KUENST-li-khe in-tel-lee-GENTS'
+    },
+    {
+      de:'Smartphone',
+      art:'das',
+      pl:'Smartphones',
+      en:'smartphone',
+      ph:'SMAHRT-fohn'
+    },
+    {
+      de:'App',
+      art:'die',
+      pl:'Apps',
+      en:'app',
+      ph:'ahp'
+    },
+    {
+      de:'Daten',
+      art:'die',
+      pl:'',
+      en:'data',
+      ph:'DAH-ten'
+    },
+    {
+      de:'Datenschutz',
+      art:'der',
+      pl:'',
+      en:'data protection',
+      ph:'DAH-ten-shoots'
+    },
+    {
+      de:'Sicherheit',
+      art:'die',
+      pl:'',
+      en:'security, safety',
+      ph:'ZIKH-er-hite'
+    },
+    {
+      de:'programmieren',
+      art:'',
+      pl:'',
+      en:'to program',
+      ph:'pro-grah-MEE-ren'
+    },
+    {
+      de:'Computer',
+      art:'der',
+      pl:'Computer',
+      en:'computer',
+      ph:'kom-PYOO-ter'
+    },
+    {
+      de:'Internet',
+      art:'das',
+      pl:'',
+      en:'internet',
+      ph:'IN-tair-net'
+    },
+    {
+      de:'Website',
+      art:'die',
+      pl:'Websites',
+      en:'website',
+      ph:'VEP-sait'
+    },
+    {
+      de:'Passwort',
+      art:'das',
+      pl:'Passwörter',
+      en:'password',
+      ph:'PAHS-vort'
+    },
+    {
+      de:'Benutzer',
+      art:'der',
+      pl:'Benutzer',
+      en:'user',
+      ph:'beh-NUT-ser'
+    },
+    {
+      de:'Konto',
+      art:'das',
+      pl:'Konten',
+      en:'account',
+      ph:'KON-toh'
+    },
+    {
+      de:'E-Mail',
+      art:'die',
+      pl:'E-Mails',
+      en:'email',
+      ph:'EE-mayl'
+    },
+    {
+      de:'Video',
+      art:'das',
+      pl:'Videos',
+      en:'video',
+      ph:'VEE-de-oh'
+    },
+    {
+      de:'Foto',
+      art:'das',
+      pl:'Fotos',
+      en:'photo',
+      ph:'FOH-toh'
+    },
+    {
+      de:'Datei',
+      art:'die',
+      pl:'Dateien',
+      en:'file',
+      ph:'dah-TAI'
+    },
+    {
+      de:'Ordner',
+      art:'der',
+      pl:'Ordner',
+      en:'folder',
+      ph:'ORT-ner'
+    },
+    {
+      de:'Bildschirm',
+      art:'der',
+      pl:'Bildschirme',
+      en:'screen',
+      ph:'BILT-shirm'
+    },
+    {
+      de:'Tastatur',
+      art:'die',
+      pl:'Tastaturen',
+      en:'keyboard',
+      ph:'tahs-tah-TOOR'
+    },
+    {
+      de:'Maus',
+      art:'die',
+      pl:'Mäuse',
+      en:'mouse',
+      ph:'mows'
+    },
+    {
+      de:'Drucker',
+      art:'der',
+      pl:'Drucker',
+      en:'printer',
+      ph:'DROOK-er'
+    },
+    {
+      de:'Ladegerät',
+      art:'das',
+      pl:'Ladegeräte',
+      en:'charger',
+      ph:'LAH-de-geh-RAIT'
+    },
+    {
+      de:'Akku',
+      art:'der',
+      pl:'Akkus',
+      en:'battery',
+      ph:'AH-koo'
+    },
+    {
+      de:'Netzwerk',
+      art:'das',
+      pl:'Netzwerke',
+      en:'network',
+      ph:'NETS-vairk'
+    },
+    {
+      de:'Cloud',
+      art:'die',
+      pl:'',
+      en:'cloud',
+      ph:'klowd'
+    },
+    {
+      de:'Virus',
+      art:'der',
+      pl:'Viren',
+      en:'virus',
+      ph:'VEE-roos'
+    },
+    {
+      de:'Hacker',
+      art:'der',
+      pl:'Hacker',
+      en:'hacker',
+      ph:'HAH-ker'
+    },
+    {
+      de:'herunterladen',
+      art:'',
+      pl:'',
+      en:'to download',
+      ph:'hair-OON-ter-lah-den'
+    },
+    {
+      de:'hochladen',
+      art:'',
+      pl:'',
+      en:'to upload',
+      ph:'HOHKH-lah-den'
+    },
+    {
+      de:'speichern',
+      art:'',
+      pl:'',
+      en:'to save',
+      ph:'SHPAI-khern'
+    },
+    {
+      de:'löschen',
+      art:'',
+      pl:'',
+      en:'to delete',
+      ph:'LER-shen'
+    },
+    {
+      de:'installieren',
+      art:'',
+      pl:'',
+      en:'to install',
+      ph:'in-stah-LEE-ren'
+    },
+    {
+      de:'aktualisieren',
+      art:'',
+      pl:'',
+      en:'to update',
+      ph:'ahk-too-ah-lee-ZEE-ren'
+    },
+    {
+      de:'online',
+      art:'',
+      pl:'',
+      en:'online',
+      ph:'ON-lain'
+    },
+    {
+      de:'offline',
+      art:'',
+      pl:'',
+      en:'offline',
+      ph:'OF-lain'
+    },
+    {
+      de:'digital',
+      art:'',
+      pl:'',
+      en:'digital',
+      ph:'dee-gee-TAHL'
+    },
+    {
+      de:'künstlich',
+      art:'',
+      pl:'',
+      en:'artificial',
+      ph:'KUENST-lish'
+    },
+    {
+      de:'intelligent',
+      art:'',
+      pl:'',
+      en:'intelligent',
+      ph:'in-tel-lee-GENT'
+    },
+    {
+      de:'sicher',
+      art:'',
+      pl:'',
+      en:'safe, secure',
+      ph:'ZI-kher'
+    }
+  ],
+  grammar:{
+    title:'Nominalisation — nouns instead of verbs',
+    plain:'Formal German prefers nouns: "die Behandlung des Patienten" (the treatment of the patient) instead of "den Patienten behandeln" (to treat the patient). Build nouns from verbs: behandeln → die Behandlung, entscheiden → die Entscheidung.',
+    rule:'behandeln → die Behandlung (des Patienten) · entscheiden → die Entscheidung · speichern → die Speicherung · Verb + -ung / -ung des ... · Formal style: nouns, not verbs.',
+    examples:[
+      {
+        de:'Die Behandlung des Patienten dauert eine Stunde.',
+        en:'The treatment of the patient takes an hour.',
+        ph:'dee beh-HAHND-lung des pah-TSEE-en-ten DOW-ert AI-ne SHTUN-de'
+      },
+      {
+        de:'Die Speicherung der Daten ist nicht sicher.',
+        en:'The storing of the data is not safe.',
+        ph:'dee SHPAI-khe-rung dair DAH-ten ist nikht ZI-kher'
+      },
+      {
+        de:'Die Entwicklung der künstlichen Intelligenz geht schnell.',
+        en:'The development of artificial intelligence is going fast.',
+        ph:'dee ent-VIK-lung dair KUENST-li-khen in-tel-lee-GENTS gayt shnel'
+      }
+    ]
+  },
+  quiz:[
+    {q:'What is the noun from "behandeln"?', options:['die Behandlung', 'der Behandler', 'das Behandeln', 'die Behandelung'], answer:0,
+     why:'"behandeln → die Behandlung" — verb + -ung makes the noun.'},
+    {q:'Fill in: "Die ___ der Daten ist wichtig."', options:['Speichern', 'Speicherung', 'Speicher', 'Gespeicherte'], answer:1,
+     why:'"die Speicherung" = the storing (noun). Formal German uses nouns.'},
+    {q:'What does "der Datenschutz" mean?', options:['data protection', 'data storage', 'data loss', 'data theft'], answer:0,
+     why:'"Datenschutz" = data protection: Daten + Schutz.'},
+    {q:'Fill in: "Die ___ des Internets wächst."', options:['Nutzung', 'Nutzen', 'Nutzende', 'Nutz'], answer:0,
+     why:'"die Nutzung" = the use — nutzen → die Nutzung.'},
+    {q:'Which sentence is nominal style?', options:[
+      'Man behandelt den Patienten.',
+      'Die Behandlung des Patienten dauert eine Stunde.',
+      'Der Arzt behandelt gut.',
+      'Wir behandeln heute.'
+    ], answer:1,
+     why:'Nominal style uses nouns: "die Behandlung des Patienten" instead of the verb "behandeln".'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Die Digitalisierung verändert unser Leben. Der Schutz der Daten ist wichtig."',
+    model:[
+      'Die Digitalisierung verändert unser Leben.',
+      'Der Schutz der Daten ist wichtiger als die Bequemlichkeit.',
+      'Die Entwicklung der künstlichen Intelligenz geht sehr schnell.'
+    ]
+  },
+  recap:[
+    'Nominal style: verbs become nouns (behandeln → die Behandlung).',
+    'Formal German prefers nouns: "die Speicherung der Daten".',
+    '"-ung" makes nouns from verbs.',
+    'Tech words: das Passwort, der Bildschirm, die Datei, der Akku.'
+  ],
+  tip:'Memory tip: when you write formally, turn verbs into nouns: "Wir behandeln den Patienten" → "die Behandlung des Patienten". It sounds instantly more formal.',
+  extra:[
+    {
+      q:'Say "The treatment of the patient takes an hour."',
+      a:'Die Behandlung des Patienten dauert eine Stunde.'
+    },
+    {
+      q:'What is the noun from "entscheiden"?',
+      a:'die Entscheidung.'
+    },
+    {
+      q:'What does "Datenschutz" mean?',
+      a:'Data protection.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Tech words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Digitalisierung',
+          art:'die',
+          pl:'',
+          en:'digitalisation',
+          ph:'dee-gee-tah-lee-ZEE-rung'
+        },
+        {
+          de:'Künstliche Intelligenz',
+          art:'die',
+          pl:'',
+          en:'artificial intelligence',
+          ph:'KUENST-li-khe in-tel-lee-GENTS'
+        },
+        {
+          de:'Smartphone',
+          art:'das',
+          pl:'Smartphones',
+          en:'smartphone',
+          ph:'SMAHRT-fohn'
+        },
+        {
+          de:'App',
+          art:'die',
+          pl:'Apps',
+          en:'app',
+          ph:'ahp'
+        },
+        {
+          de:'Daten',
+          art:'die',
+          pl:'',
+          en:'data',
+          ph:'DAH-ten'
+        },
+        {
+          de:'Datenschutz',
+          art:'der',
+          pl:'',
+          en:'data protection',
+          ph:'DAH-ten-shoots'
+        },
+        {
+          de:'Sicherheit',
+          art:'die',
+          pl:'',
+          en:'security, safety',
+          ph:'ZIKH-er-hite'
+        },
+        {
+          de:'programmieren',
+          art:'',
+          pl:'',
+          en:'to program',
+          ph:'pro-grah-MEE-ren'
+        },
+        {
+          de:'Computer',
+          art:'der',
+          pl:'Computer',
+          en:'computer',
+          ph:'kom-PYOO-ter'
+        },
+        {
+          de:'Internet',
+          art:'das',
+          pl:'',
+          en:'internet',
+          ph:'IN-tair-net'
+        },
+        {
+          de:'Website',
+          art:'die',
+          pl:'Websites',
+          en:'website',
+          ph:'VEP-sait'
+        },
+        {
+          de:'Passwort',
+          art:'das',
+          pl:'Passwörter',
+          en:'password',
+          ph:'PAHS-vort'
+        },
+        {
+          de:'Benutzer',
+          art:'der',
+          pl:'Benutzer',
+          en:'user',
+          ph:'beh-NUT-ser'
+        },
+        {
+          de:'Konto',
+          art:'das',
+          pl:'Konten',
+          en:'account',
+          ph:'KON-toh'
+        },
+        {
+          de:'E-Mail',
+          art:'die',
+          pl:'E-Mails',
+          en:'email',
+          ph:'EE-mayl'
+        },
+        {
+          de:'Video',
+          art:'das',
+          pl:'Videos',
+          en:'video',
+          ph:'VEE-de-oh'
+        },
+        {
+          de:'Foto',
+          art:'das',
+          pl:'Fotos',
+          en:'photo',
+          ph:'FOH-toh'
+        },
+        {
+          de:'Datei',
+          art:'die',
+          pl:'Dateien',
+          en:'file',
+          ph:'dah-TAI'
+        },
+        {
+          de:'Ordner',
+          art:'der',
+          pl:'Ordner',
+          en:'folder',
+          ph:'ORT-ner'
+        },
+        {
+          de:'Bildschirm',
+          art:'der',
+          pl:'Bildschirme',
+          en:'screen',
+          ph:'BILT-shirm'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Data words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Tastatur',
+          art:'die',
+          pl:'Tastaturen',
+          en:'keyboard',
+          ph:'tahs-tah-TOOR'
+        },
+        {
+          de:'Maus',
+          art:'die',
+          pl:'Mäuse',
+          en:'mouse',
+          ph:'mows'
+        },
+        {
+          de:'Drucker',
+          art:'der',
+          pl:'Drucker',
+          en:'printer',
+          ph:'DROOK-er'
+        },
+        {
+          de:'Ladegerät',
+          art:'das',
+          pl:'Ladegeräte',
+          en:'charger',
+          ph:'LAH-de-geh-RAIT'
+        },
+        {
+          de:'Akku',
+          art:'der',
+          pl:'Akkus',
+          en:'battery',
+          ph:'AH-koo'
+        },
+        {
+          de:'Netzwerk',
+          art:'das',
+          pl:'Netzwerke',
+          en:'network',
+          ph:'NETS-vairk'
+        },
+        {
+          de:'Cloud',
+          art:'die',
+          pl:'',
+          en:'cloud',
+          ph:'klowd'
+        },
+        {
+          de:'Virus',
+          art:'der',
+          pl:'Viren',
+          en:'virus',
+          ph:'VEE-roos'
+        },
+        {
+          de:'Hacker',
+          art:'der',
+          pl:'Hacker',
+          en:'hacker',
+          ph:'HAH-ker'
+        },
+        {
+          de:'herunterladen',
+          art:'',
+          pl:'',
+          en:'to download',
+          ph:'hair-OON-ter-lah-den'
+        },
+        {
+          de:'hochladen',
+          art:'',
+          pl:'',
+          en:'to upload',
+          ph:'HOHKH-lah-den'
+        },
+        {
+          de:'speichern',
+          art:'',
+          pl:'',
+          en:'to save',
+          ph:'SHPAI-khern'
+        },
+        {
+          de:'löschen',
+          art:'',
+          pl:'',
+          en:'to delete',
+          ph:'LER-shen'
+        },
+        {
+          de:'installieren',
+          art:'',
+          pl:'',
+          en:'to install',
+          ph:'in-stah-LEE-ren'
+        },
+        {
+          de:'aktualisieren',
+          art:'',
+          pl:'',
+          en:'to update',
+          ph:'ahk-too-ah-lee-ZEE-ren'
+        },
+        {
+          de:'online',
+          art:'',
+          pl:'',
+          en:'online',
+          ph:'ON-lain'
+        },
+        {
+          de:'offline',
+          art:'',
+          pl:'',
+          en:'offline',
+          ph:'OF-lain'
+        },
+        {
+          de:'digital',
+          art:'',
+          pl:'',
+          en:'digital',
+          ph:'dee-gee-TAHL'
+        },
+        {
+          de:'künstlich',
+          art:'',
+          pl:'',
+          en:'artificial',
+          ph:'KUENST-lish'
+        },
+        {
+          de:'intelligent',
+          art:'',
+          pl:'',
+          en:'intelligent',
+          ph:'in-tel-lee-GENT'
+        },
+        {
+          de:'sicher',
+          art:'',
+          pl:'',
+          en:'safe, secure',
+          ph:'ZI-kher'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Data protection',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Die Digitalisierung verändert unser Leben.',
+          en:'Digitalisation is changing our life.',
+          ph:'dee dee-gee-tah-lee-ZEE-rung fair-EN-dert OON-zer LAY-ben'
+        },
+        {
+          who:'B',
+          de:'Ja, die Nutzung des Internets wächst jeden Tag.',
+          en:'Yes, the use of the internet grows every day.',
+          ph:'yah, dee NUT-tsung des IN-tair-nets vekst YAY-den tahk'
+        },
+        {
+          who:'A',
+          de:'Der Schutz der Daten ist wichtiger als die Bequemlichkeit.',
+          en:'The protection of data is more important than convenience.',
+          ph:'dair shuts dair DAH-ten ist VIKH-ti-ger ahls dee beh-KVAYM-lish-kait'
+        },
+        {
+          who:'B',
+          de:'Ich stimme zu. Die Speicherung meiner Daten macht mir Sorgen.',
+          en:'I agree. The storing of my data worries me.',
+          ph:'ish SHTIM-me tsoo. dee SHPAI-khe-rung MAI-ner DAH-ten mahkht meer ZOR-gen'
+        },
+        {
+          who:'A',
+          de:'Die Entwicklung der künstlichen Intelligenz geht sehr schnell.',
+          en:'The development of artificial intelligence is going very fast.',
+          ph:'dee ent-VIK-lung dair KUENST-li-khen in-tel-lee-GENTS gayt zair shnel'
+        },
+        {
+          who:'B',
+          de:'Trotzdem: Die Kontrolle der Maschinen bleibt beim Menschen.',
+          en:'Still: the control of the machines stays with humans.',
+          ph:'TROT-dem: dee kon-TROL-le dair mah-SHEE-nen blaipt baim MEN-shen'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Die Digitalisierung verändert unser Leben. Der Schutz der Daten ist wichtig."',
+        model:[
+          'Die Digitalisierung verändert unser Leben.',
+          'Der Schutz der Daten ist wichtiger als die Bequemlichkeit.',
+          'Die Entwicklung der künstlichen Intelligenz geht sehr schnell.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Nominalisation',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Nominalisation — nouns instead of verbs',
+        plain:'Formal German prefers nouns: "die Behandlung des Patienten" (the treatment of the patient) instead of "den Patienten behandeln" (to treat the patient). Build nouns from verbs: behandeln → die Behandlung, entscheiden → die Entscheidung.',
+        rule:'behandeln → die Behandlung (des Patienten) · entscheiden → die Entscheidung · speichern → die Speicherung · Verb + -ung / -ung des ... · Formal style: nouns, not verbs.',
+        examples:[
+          {
+            de:'Die Behandlung des Patienten dauert eine Stunde.',
+            en:'The treatment of the patient takes an hour.',
+            ph:'dee beh-HAHND-lung des pah-TSEE-en-ten DOW-ert AI-ne SHTUN-de'
+          },
+          {
+            de:'Die Speicherung der Daten ist nicht sicher.',
+            en:'The storing of the data is not safe.',
+            ph:'dee SHPAI-khe-rung dair DAH-ten ist nikht ZI-kher'
+          },
+          {
+            de:'Die Entwicklung der künstlichen Intelligenz geht schnell.',
+            en:'The development of artificial intelligence is going fast.',
+            ph:'dee ent-VIK-lung dair KUENST-li-khen in-tel-lee-GENTS gayt shnel'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: nouns from verbs',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'What is the noun from "behandeln"?', options:['die Behandlung', 'der Behandler', 'das Behandeln', 'die Behandelung'], answer:0,
+         why:'"behandeln → die Behandlung" — verb + -ung makes the noun.'},
+        {q:'Fill in: "Die ___ der Daten ist wichtig."', options:['Speichern', 'Speicherung', 'Speicher', 'Gespeicherte'], answer:1,
+         why:'"die Speicherung" = the storing (noun). Formal German uses nouns.'},
+        {q:'What does "der Datenschutz" mean?', options:['data protection', 'data storage', 'data loss', 'data theft'], answer:0,
+         why:'"Datenschutz" = data protection: Daten + Schutz.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: media & technology',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Die ___ des Internets wächst."', options:['Nutzung', 'Nutzen', 'Nutzende', 'Nutz'], answer:0,
+         why:'"die Nutzung" = the use — nutzen → die Nutzung.'},
+        {q:'Which sentence is nominal style?', options:[
+          'Man behandelt den Patienten.',
+          'Die Behandlung des Patienten dauert eine Stunde.',
+          'Der Arzt behandelt gut.',
+          'Wir behandeln heute.'
+        ], answer:1,
+         why:'Nominal style uses nouns: "die Behandlung des Patienten" instead of the verb "behandeln".'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 6 — Education & Science',
+};
 
-CHAPTERS['B2-6'] = { id:'B2-6', n:6, level:'B2', title:'Education & Science', time:'10 min', syllabus:true,
+CHAPTERS['B2-6'] = {
+  id:'B2-6',
+  n:6,
+  level:'B2',
+  title:'Education & Science',
+  time:'17 min',
   concept:'Read and discuss research, studies and science.',
-  learn:['Summarise a study or an article','Use participles as adjectives','Present results and conclusions'],
-  grammar:{ title:'Participial attributes — Partizip I/II as adjectives',
-    plain:'"die in Berlin lebenden Menschen" (the people living in Berlin), "das gestern gelesene Buch" (the book read yesterday). Partizip I (lebend) = active, ongoing; Partizip II (gelesen) = passive, finished. The participle goes BEFORE the noun, with an adjective ending.' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Hast du die gestern veröffentlichte Studie gelesen?',
+      en:'Have you read the study published yesterday?',
+      ph:'hahst doo dee GES-tern fair-ER-fent-lish-te SHTOO-dee-e geh-LAY-zen'
+    },
+    {
+      who:'B',
+      de:'Ja, die in Berlin lebenden Forscher haben sie geschrieben.',
+      en:'Yes, the researchers living in Berlin wrote it.',
+      ph:'yah, dee in bair-LEEN LAY-ben-den FOR-sher HAH-ben zee geh-SHREE-ben'
+    },
+    {
+      who:'A',
+      de:'Die untersuchten Daten zeigen ein klares Ergebnis.',
+      en:'The examined data show a clear result.',
+      ph:'dee oon-ter-ZOOKH-ten DAH-ten TSAI-gen ain KLAH-res air-GAYP-nis'
+    },
+    {
+      who:'B',
+      de:'Die Professorin, die die Vorlesung hält, erklärt die Methode.',
+      en:'The professor who gives the lecture explains the method.',
+      ph:'dee pro-fes-SOH-rin, dee dee FOR-lay-zung helt, air-KLAIRT dee meh-TOH-de'
+    },
+    {
+      who:'A',
+      de:'Ich finde die neu entdeckte Erkenntnis sehr bedeutend.',
+      en:'I find the newly discovered finding very significant.',
+      ph:'ish FIN-de dee noy ent-DEK-te air-KENT-nis zair beh-DOY-tent'
+    },
+    {
+      who:'B',
+      de:'Dann schreiben wir die in der Studie genannten Zahlen in den Bericht.',
+      en:'Then we write the numbers named in the study into the report.',
+      ph:'dahn SHRAI-ben veer dee in dair SHTOO-dee-e geh-NAHN-ten TSAH-len in dayn beh-RIKHT'
+    }
+  ],
   vocab:[
-    {de:'Forschung', art:'die', pl:'', en:'research', ph:'FOR-shung'},
-    {de:'Wissenschaft', art:'die', pl:'', en:'science', ph:'VIS-sen-shahft'},
-    {de:'Studie', art:'die', pl:'Studien', en:'study', ph:'SHTOO-dee-e'},
-    {de:'Experiment', art:'das', pl:'Experimente', en:'experiment', ph:'ex-pe-ree-MENT'},
-    {de:'These', art:'die', pl:'Thesen', en:'thesis', ph:'TAY-ze'},
-    {de:'beweisen', art:'', pl:'', en:'to prove', ph:'beh-VAI-zen'},
-    {de:'Erkenntnis', art:'die', pl:'Erkenntnisse', en:'finding, insight', ph:'air-KENT-nis'},
-    {de:'veröffentlichen', art:'', pl:'', en:'to publish', ph:'fair-OEF-fent-li-khen'},
-  ], next:'Next: Chapter 7 — Politics & Society (syllabus)' };
+    {
+      de:'Forschung',
+      art:'die',
+      pl:'',
+      en:'research',
+      ph:'FOR-shung'
+    },
+    {
+      de:'Wissenschaft',
+      art:'die',
+      pl:'',
+      en:'science',
+      ph:'VIS-sen-shahft'
+    },
+    {
+      de:'Studie',
+      art:'die',
+      pl:'Studien',
+      en:'study',
+      ph:'SHTOO-dee-e'
+    },
+    {
+      de:'Experiment',
+      art:'das',
+      pl:'Experimente',
+      en:'experiment',
+      ph:'ex-pe-ree-MENT'
+    },
+    {
+      de:'These',
+      art:'die',
+      pl:'Thesen',
+      en:'thesis',
+      ph:'TAY-ze'
+    },
+    {
+      de:'beweisen',
+      art:'',
+      pl:'',
+      en:'to prove',
+      ph:'beh-VAI-zen'
+    },
+    {
+      de:'Erkenntnis',
+      art:'die',
+      pl:'Erkenntnisse',
+      en:'finding, insight',
+      ph:'air-KENT-nis'
+    },
+    {
+      de:'veröffentlichen',
+      art:'',
+      pl:'',
+      en:'to publish',
+      ph:'fair-OEF-fent-li-khen'
+    },
+    {
+      de:'Universität',
+      art:'die',
+      pl:'Universitäten',
+      en:'university',
+      ph:'oo-nee-vair-zee-TAIT'
+    },
+    {
+      de:'Professor',
+      art:'der',
+      pl:'Professoren',
+      en:'professor',
+      ph:'pro-FES-sor'
+    },
+    {
+      de:'Professorin',
+      art:'die',
+      pl:'Professorinnen',
+      en:'female professor',
+      ph:'pro-fes-SOH-rin'
+    },
+    {
+      de:'Student',
+      art:'der',
+      pl:'Studenten',
+      en:'student (male)',
+      ph:'shtoo-DENT'
+    },
+    {
+      de:'Studentin',
+      art:'die',
+      pl:'Studentinnen',
+      en:'student (female)',
+      ph:'shtoo-DEN-tin'
+    },
+    {
+      de:'Vorlesung',
+      art:'die',
+      pl:'Vorlesungen',
+      en:'lecture',
+      ph:'FOR-lay-zung'
+    },
+    {
+      de:'Seminar',
+      art:'das',
+      pl:'Seminare',
+      en:'seminar',
+      ph:'zeh-mee-NAHR'
+    },
+    {
+      de:'Prüfung',
+      art:'die',
+      pl:'Prüfungen',
+      en:'exam',
+      ph:'PRUE-fung'
+    },
+    {
+      de:'Note',
+      art:'die',
+      pl:'Noten',
+      en:'grade, mark',
+      ph:'NOH-te'
+    },
+    {
+      de:'Abschluss',
+      art:'der',
+      pl:'Abschlüsse',
+      en:'degree, graduation',
+      ph:'AHP-shluss'
+    },
+    {
+      de:'Stipendium',
+      art:'das',
+      pl:'Stipendien',
+      en:'scholarship',
+      ph:'shtee-PEN-dee-um'
+    },
+    {
+      de:'Labor',
+      art:'das',
+      pl:'Labore',
+      en:'laboratory',
+      ph:'lah-BOHR'
+    },
+    {
+      de:'Forscher',
+      art:'der',
+      pl:'Forscher',
+      en:'researcher',
+      ph:'FOR-sher'
+    },
+    {
+      de:'Forscherin',
+      art:'die',
+      pl:'Forscherinnen',
+      en:'female researcher',
+      ph:'FOR-she-rin'
+    },
+    {
+      de:'Ergebnis',
+      art:'das',
+      pl:'Ergebnisse',
+      en:'result',
+      ph:'air-GAYP-nis'
+    },
+    {
+      de:'Methode',
+      art:'die',
+      pl:'Methoden',
+      en:'method',
+      ph:'meh-TOH-de'
+    },
+    {
+      de:'Theorie',
+      art:'die',
+      pl:'Theorien',
+      en:'theory',
+      ph:'teh-oh-REE'
+    },
+    {
+      de:'Beweis',
+      art:'der',
+      pl:'Beweise',
+      en:'proof, evidence',
+      ph:'beh-VAIS'
+    },
+    {
+      de:'Quelle',
+      art:'die',
+      pl:'Quellen',
+      en:'source',
+      ph:'KVEL-le'
+    },
+    {
+      de:'Zitat',
+      art:'das',
+      pl:'Zitate',
+      en:'quotation',
+      ph:'tsee-TAHT'
+    },
+    {
+      de:'forschen',
+      art:'',
+      pl:'',
+      en:'to research',
+      ph:'FOR-shen'
+    },
+    {
+      de:'analysieren',
+      art:'',
+      pl:'',
+      en:'to analyse',
+      ph:'ah-nah-lue-ZEE-ren'
+    },
+    {
+      de:'vergleichen',
+      art:'',
+      pl:'',
+      en:'to compare',
+      ph:'fair-GLAI-khen'
+    },
+    {
+      de:'schließen',
+      art:'',
+      pl:'',
+      en:'to conclude',
+      ph:'SHLEE-sen'
+    },
+    {
+      de:'folgern',
+      art:'',
+      pl:'',
+      en:'to conclude, infer',
+      ph:'FOL-gern'
+    },
+    {
+      de:'wissenschaftlich',
+      art:'',
+      pl:'',
+      en:'scientific',
+      ph:'VIS-sen-shahft-lish'
+    },
+    {
+      de:'genau',
+      art:'',
+      pl:'',
+      en:'exact, precise',
+      ph:'geh-NOW'
+    },
+    {
+      de:'glaubwürdig',
+      art:'',
+      pl:'',
+      en:'credible',
+      ph:'GLOWP-vuer-dish'
+    },
+    {
+      de:'aktuell',
+      art:'',
+      pl:'',
+      en:'current, up to date',
+      ph:'ahk-too-ELL'
+    },
+    {
+      de:'bedeutend',
+      art:'',
+      pl:'',
+      en:'significant',
+      ph:'beh-DOY-tent'
+    },
+    {
+      de:'entscheidend',
+      art:'',
+      pl:'',
+      en:'decisive',
+      ph:'ent-SHAI-dent'
+    },
+    {
+      de:'Anteil',
+      art:'der',
+      pl:'Anteile',
+      en:'share, proportion',
+      ph:'AHN-tile'
+    }
+  ],
+  grammar:{
+    title:'Participial attributes — Partizip I/II as adjectives',
+    plain:'"die in Berlin lebenden Menschen" (the people living in Berlin), "das gestern gelesene Buch" (the book read yesterday). Partizip I (lebend) = active, ongoing; Partizip II (gelesen) = passive, finished. The participle goes BEFORE the noun, with an adjective ending.',
+    rule:'Partizip I (lebend) = active, ongoing: die lebenden Menschen. · Partizip II (gelesen) = passive, finished: das gelesene Buch. · The participle stands BEFORE the noun with an adjective ending.',
+    examples:[
+      {
+        de:'Die in Berlin lebenden Menschen sprechen Deutsch.',
+        en:'The people living in Berlin speak German.',
+        ph:'dee in bair-LEEN LAY-ben-den MEN-shen SHPREH-khen doych'
+      },
+      {
+        de:'Das gestern gelesene Buch war sehr gut.',
+        en:'The book read yesterday was very good.',
+        ph:'dahs GES-tern geh-LAY-ze-ne bookh vahr zair goot'
+      },
+      {
+        de:'Die untersuchten Daten zeigen ein klares Ergebnis.',
+        en:'The examined data show a clear result.',
+        ph:'dee oon-ter-ZOOKH-ten DAH-ten TSAI-gen ain KLAH-res air-GAYP-nis'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Die in Berlin ___ Menschen sprechen Deutsch."', options:['lebend', 'lebenden', 'gelebten', 'leben'], answer:1,
+     why:'Partizip I + adjective ending: "die lebenden Menschen".'},
+    {q:'Fill in: "Das gestern ___ Buch war sehr gut."', options:['lesende', 'gelesene', 'gelesen', 'lesene'], answer:1,
+     why:'Partizip II + ending: "das gelesene Buch".'},
+    {q:'What does Partizip I show?', options:['finished action', 'ongoing, active action', 'past tense', 'passive voice'], answer:1,
+     why:'Partizip I (lebend) = active and ongoing.'},
+    {q:'Fill in: "Die ___ Daten zeigen ein Ergebnis."', options:['untersuchende', 'untersuchten', 'untersuchte', 'untersuchen'], answer:1,
+     why:'"die untersuchten Daten" — Partizip II (passive, finished) + ending -en.'},
+    {q:'Which is correct?', options:['die lebend Menschen', 'die lebenden Menschen', 'die gelebt Menschen', 'die leben Menschen'], answer:1,
+     why:'The participle needs the adjective ending: "die lebenden Menschen".'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Die in Berlin lebenden Menschen sprechen Deutsch. Das gestern gelesene Buch war sehr gut."',
+    model:[
+      'Die in Berlin lebenden Menschen sprechen Deutsch.',
+      'Das gestern gelesene Buch war sehr gut.',
+      'Die untersuchten Daten zeigen ein klares Ergebnis.'
+    ]
+  },
+  recap:[
+    'Partizip I = active, ongoing: die lebenden Menschen.',
+    'Partizip II = passive, finished: das gelesene Buch.',
+    'The participle stands before the noun with an adjective ending.',
+    'Science words: die Studie, das Experiment, die Erkenntnis, die Methode.'
+  ],
+  tip:'Memory tip: Partizip I = still happening (lebend), Partizip II = already done (gelesen). Ask: is it still happening or already finished?',
+  extra:[
+    {
+      q:'Say "The people living in Berlin speak German."',
+      a:'Die in Berlin lebenden Menschen sprechen Deutsch.'
+    },
+    {
+      q:'Say "The book read yesterday was very good."',
+      a:'Das gestern gelesene Buch war sehr gut.'
+    },
+    {
+      q:'What does "die Erkenntnis" mean?',
+      a:'The finding, insight.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Science words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Forschung',
+          art:'die',
+          pl:'',
+          en:'research',
+          ph:'FOR-shung'
+        },
+        {
+          de:'Wissenschaft',
+          art:'die',
+          pl:'',
+          en:'science',
+          ph:'VIS-sen-shahft'
+        },
+        {
+          de:'Studie',
+          art:'die',
+          pl:'Studien',
+          en:'study',
+          ph:'SHTOO-dee-e'
+        },
+        {
+          de:'Experiment',
+          art:'das',
+          pl:'Experimente',
+          en:'experiment',
+          ph:'ex-pe-ree-MENT'
+        },
+        {
+          de:'These',
+          art:'die',
+          pl:'Thesen',
+          en:'thesis',
+          ph:'TAY-ze'
+        },
+        {
+          de:'beweisen',
+          art:'',
+          pl:'',
+          en:'to prove',
+          ph:'beh-VAI-zen'
+        },
+        {
+          de:'Erkenntnis',
+          art:'die',
+          pl:'Erkenntnisse',
+          en:'finding, insight',
+          ph:'air-KENT-nis'
+        },
+        {
+          de:'veröffentlichen',
+          art:'',
+          pl:'',
+          en:'to publish',
+          ph:'fair-OEF-fent-li-khen'
+        },
+        {
+          de:'Universität',
+          art:'die',
+          pl:'Universitäten',
+          en:'university',
+          ph:'oo-nee-vair-zee-TAIT'
+        },
+        {
+          de:'Professor',
+          art:'der',
+          pl:'Professoren',
+          en:'professor',
+          ph:'pro-FES-sor'
+        },
+        {
+          de:'Professorin',
+          art:'die',
+          pl:'Professorinnen',
+          en:'female professor',
+          ph:'pro-fes-SOH-rin'
+        },
+        {
+          de:'Student',
+          art:'der',
+          pl:'Studenten',
+          en:'student (male)',
+          ph:'shtoo-DENT'
+        },
+        {
+          de:'Studentin',
+          art:'die',
+          pl:'Studentinnen',
+          en:'student (female)',
+          ph:'shtoo-DEN-tin'
+        },
+        {
+          de:'Vorlesung',
+          art:'die',
+          pl:'Vorlesungen',
+          en:'lecture',
+          ph:'FOR-lay-zung'
+        },
+        {
+          de:'Seminar',
+          art:'das',
+          pl:'Seminare',
+          en:'seminar',
+          ph:'zeh-mee-NAHR'
+        },
+        {
+          de:'Prüfung',
+          art:'die',
+          pl:'Prüfungen',
+          en:'exam',
+          ph:'PRUE-fung'
+        },
+        {
+          de:'Note',
+          art:'die',
+          pl:'Noten',
+          en:'grade, mark',
+          ph:'NOH-te'
+        },
+        {
+          de:'Abschluss',
+          art:'der',
+          pl:'Abschlüsse',
+          en:'degree, graduation',
+          ph:'AHP-shluss'
+        },
+        {
+          de:'Stipendium',
+          art:'das',
+          pl:'Stipendien',
+          en:'scholarship',
+          ph:'shtee-PEN-dee-um'
+        },
+        {
+          de:'Labor',
+          art:'das',
+          pl:'Labore',
+          en:'laboratory',
+          ph:'lah-BOHR'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Study words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Forscher',
+          art:'der',
+          pl:'Forscher',
+          en:'researcher',
+          ph:'FOR-sher'
+        },
+        {
+          de:'Forscherin',
+          art:'die',
+          pl:'Forscherinnen',
+          en:'female researcher',
+          ph:'FOR-she-rin'
+        },
+        {
+          de:'Ergebnis',
+          art:'das',
+          pl:'Ergebnisse',
+          en:'result',
+          ph:'air-GAYP-nis'
+        },
+        {
+          de:'Methode',
+          art:'die',
+          pl:'Methoden',
+          en:'method',
+          ph:'meh-TOH-de'
+        },
+        {
+          de:'Theorie',
+          art:'die',
+          pl:'Theorien',
+          en:'theory',
+          ph:'teh-oh-REE'
+        },
+        {
+          de:'Beweis',
+          art:'der',
+          pl:'Beweise',
+          en:'proof, evidence',
+          ph:'beh-VAIS'
+        },
+        {
+          de:'Quelle',
+          art:'die',
+          pl:'Quellen',
+          en:'source',
+          ph:'KVEL-le'
+        },
+        {
+          de:'Zitat',
+          art:'das',
+          pl:'Zitate',
+          en:'quotation',
+          ph:'tsee-TAHT'
+        },
+        {
+          de:'forschen',
+          art:'',
+          pl:'',
+          en:'to research',
+          ph:'FOR-shen'
+        },
+        {
+          de:'analysieren',
+          art:'',
+          pl:'',
+          en:'to analyse',
+          ph:'ah-nah-lue-ZEE-ren'
+        },
+        {
+          de:'vergleichen',
+          art:'',
+          pl:'',
+          en:'to compare',
+          ph:'fair-GLAI-khen'
+        },
+        {
+          de:'schließen',
+          art:'',
+          pl:'',
+          en:'to conclude',
+          ph:'SHLEE-sen'
+        },
+        {
+          de:'folgern',
+          art:'',
+          pl:'',
+          en:'to conclude, infer',
+          ph:'FOL-gern'
+        },
+        {
+          de:'wissenschaftlich',
+          art:'',
+          pl:'',
+          en:'scientific',
+          ph:'VIS-sen-shahft-lish'
+        },
+        {
+          de:'genau',
+          art:'',
+          pl:'',
+          en:'exact, precise',
+          ph:'geh-NOW'
+        },
+        {
+          de:'glaubwürdig',
+          art:'',
+          pl:'',
+          en:'credible',
+          ph:'GLOWP-vuer-dish'
+        },
+        {
+          de:'aktuell',
+          art:'',
+          pl:'',
+          en:'current, up to date',
+          ph:'ahk-too-ELL'
+        },
+        {
+          de:'bedeutend',
+          art:'',
+          pl:'',
+          en:'significant',
+          ph:'beh-DOY-tent'
+        },
+        {
+          de:'entscheidend',
+          art:'',
+          pl:'',
+          en:'decisive',
+          ph:'ent-SHAI-dent'
+        },
+        {
+          de:'Anteil',
+          art:'der',
+          pl:'Anteile',
+          en:'share, proportion',
+          ph:'AHN-tile'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: The published study',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Hast du die gestern veröffentlichte Studie gelesen?',
+          en:'Have you read the study published yesterday?',
+          ph:'hahst doo dee GES-tern fair-ER-fent-lish-te SHTOO-dee-e geh-LAY-zen'
+        },
+        {
+          who:'B',
+          de:'Ja, die in Berlin lebenden Forscher haben sie geschrieben.',
+          en:'Yes, the researchers living in Berlin wrote it.',
+          ph:'yah, dee in bair-LEEN LAY-ben-den FOR-sher HAH-ben zee geh-SHREE-ben'
+        },
+        {
+          who:'A',
+          de:'Die untersuchten Daten zeigen ein klares Ergebnis.',
+          en:'The examined data show a clear result.',
+          ph:'dee oon-ter-ZOOKH-ten DAH-ten TSAI-gen ain KLAH-res air-GAYP-nis'
+        },
+        {
+          who:'B',
+          de:'Die Professorin, die die Vorlesung hält, erklärt die Methode.',
+          en:'The professor who gives the lecture explains the method.',
+          ph:'dee pro-fes-SOH-rin, dee dee FOR-lay-zung helt, air-KLAIRT dee meh-TOH-de'
+        },
+        {
+          who:'A',
+          de:'Ich finde die neu entdeckte Erkenntnis sehr bedeutend.',
+          en:'I find the newly discovered finding very significant.',
+          ph:'ish FIN-de dee noy ent-DEK-te air-KENT-nis zair beh-DOY-tent'
+        },
+        {
+          who:'B',
+          de:'Dann schreiben wir die in der Studie genannten Zahlen in den Bericht.',
+          en:'Then we write the numbers named in the study into the report.',
+          ph:'dahn SHRAI-ben veer dee in dair SHTOO-dee-e geh-NAHN-ten TSAH-len in dayn beh-RIKHT'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Die in Berlin lebenden Menschen sprechen Deutsch. Das gestern gelesene Buch war sehr gut."',
+        model:[
+          'Die in Berlin lebenden Menschen sprechen Deutsch.',
+          'Das gestern gelesene Buch war sehr gut.',
+          'Die untersuchten Daten zeigen ein klares Ergebnis.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Participial attributes',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Participial attributes — Partizip I/II as adjectives',
+        plain:'"die in Berlin lebenden Menschen" (the people living in Berlin), "das gestern gelesene Buch" (the book read yesterday). Partizip I (lebend) = active, ongoing; Partizip II (gelesen) = passive, finished. The participle goes BEFORE the noun, with an adjective ending.',
+        rule:'Partizip I (lebend) = active, ongoing: die lebenden Menschen. · Partizip II (gelesen) = passive, finished: das gelesene Buch. · The participle stands BEFORE the noun with an adjective ending.',
+        examples:[
+          {
+            de:'Die in Berlin lebenden Menschen sprechen Deutsch.',
+            en:'The people living in Berlin speak German.',
+            ph:'dee in bair-LEEN LAY-ben-den MEN-shen SHPREH-khen doych'
+          },
+          {
+            de:'Das gestern gelesene Buch war sehr gut.',
+            en:'The book read yesterday was very good.',
+            ph:'dahs GES-tern geh-LAY-ze-ne bookh vahr zair goot'
+          },
+          {
+            de:'Die untersuchten Daten zeigen ein klares Ergebnis.',
+            en:'The examined data show a clear result.',
+            ph:'dee oon-ter-ZOOKH-ten DAH-ten TSAI-gen ain KLAH-res air-GAYP-nis'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: Partizip I & II',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Die in Berlin ___ Menschen sprechen Deutsch."', options:['lebend', 'lebenden', 'gelebten', 'leben'], answer:1,
+         why:'Partizip I + adjective ending: "die lebenden Menschen".'},
+        {q:'Fill in: "Das gestern ___ Buch war sehr gut."', options:['lesende', 'gelesene', 'gelesen', 'lesene'], answer:1,
+         why:'Partizip II + ending: "das gelesene Buch".'},
+        {q:'What does Partizip I show?', options:['finished action', 'ongoing, active action', 'past tense', 'passive voice'], answer:1,
+         why:'Partizip I (lebend) = active and ongoing.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: education & science',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Die ___ Daten zeigen ein Ergebnis."', options:['untersuchende', 'untersuchten', 'untersuchte', 'untersuchen'], answer:1,
+         why:'"die untersuchten Daten" — Partizip II (passive, finished) + ending -en.'},
+        {q:'Which is correct?', options:['die lebend Menschen', 'die lebenden Menschen', 'die gelebt Menschen', 'die leben Menschen'], answer:1,
+         why:'The participle needs the adjective ending: "die lebenden Menschen".'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 7 — Politics & Society',
+};
 
-CHAPTERS['B2-7'] = { id:'B2-7', n:7, level:'B2', title:'Politics & Society', time:'10 min', syllabus:true,
+CHAPTERS['B2-7'] = {
+  id:'B2-7',
+  n:7,
+  level:'B2',
+  title:'Politics & Society',
+  time:'17 min',
   concept:'Discuss politics, democracy and social issues.',
-  learn:['Talk about elections and laws','Give balanced arguments for and against','Use advanced connectors'],
-  grammar:{ title:'Advanced connectors — obwohl, trotzdem, je…desto',
-    plain:'"obwohl" (although): "Obwohl es regnet, gehen wir spazieren." "trotzdem" (nevertheless): "Es regnet, trotzdem gehen wir spazieren." "je … desto" (the … the …): "Je mehr man lernt, desto besser spricht man." (The more you learn, the better you speak.)' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Obwohl die Wahl vorbei ist, diskutieren alle über das Ergebnis.',
+      en:'Although the election is over, everyone is discussing the result.',
+      ph:'op-VOHL dee vahl for-BAI ist, dis-koo-TEE-ren AHL-le UE-ber dahs air-GAYP-nis'
+    },
+    {
+      who:'B',
+      de:'Je mehr Menschen wählen, desto stärker ist die Demokratie.',
+      en:'The more people vote, the stronger democracy is.',
+      ph:'yay mair MEN-shen VAY-len, DES-toh SHTAIR-ker ist dee deh-moh-krah-TEE'
+    },
+    {
+      who:'A',
+      de:'Trotzdem vertrauen viele Bürger der Regierung nicht.',
+      en:'Nevertheless, many citizens do not trust the government.',
+      ph:'TROT-dem fair-TROW-en FEE-le BUER-ger dair reh-GHEE-rung nikht'
+    },
+    {
+      who:'B',
+      de:'Anhand der Zahlen sehen wir: Die Mehrheit will Veränderung.',
+      en:'Based on the numbers we see: the majority wants change.',
+      ph:'AHN-hahnt dair TSAH-len ZAY-en veer: dee MAIR-hait vil fair-EN-de-rung'
+    },
+    {
+      who:'A',
+      de:'Meiner Meinung nach braucht man mehr Transparenz.',
+      en:'In my opinion, we need more transparency.',
+      ph:'MAI-ner MAI-nung nahkh browkht mahn mair trahns-pah-RENTS'
+    },
+    {
+      who:'B',
+      de:'Richtig. Infolge der Debatte wird das Gesetz geändert.',
+      en:'Correct. As a result of the debate, the law will be changed.',
+      ph:'RIKH-tish. in-FOL-ge dair deh-BAHT-te virt dahs geh-ZETS geh-EN-dert'
+    }
+  ],
   vocab:[
-    {de:'Politik', art:'die', pl:'', en:'politics', ph:'po-lee-TEEK'},
-    {de:'Demokratie', art:'die', pl:'', en:'democracy', ph:'deh-mo-krah-TEE'},
-    {de:'Wahl', art:'die', pl:'Wahlen', en:'election', ph:'vahl'},
-    {de:'Bürger', art:'der', pl:'Bürger', en:'citizen', ph:'BUER-ger'},
-    {de:'Gesetz', art:'das', pl:'Gesetze', en:'law', ph:'geh-ZETS'},
-    {de:'Regierung', art:'die', pl:'Regierungen', en:'government', ph:'reh-GHEE-rung'},
-    {de:'Partei', art:'die', pl:'Parteien', en:'party', ph:'pahr-TAI'},
-    {de:'wählen', art:'', pl:'', en:'to vote, to elect', ph:'VAY-len'},
-  ], next:'Next: Chapter 8 — Work & Economy (syllabus)' };
+    {
+      de:'Politik',
+      art:'die',
+      pl:'',
+      en:'politics',
+      ph:'po-lee-TEEK'
+    },
+    {
+      de:'Demokratie',
+      art:'die',
+      pl:'',
+      en:'democracy',
+      ph:'deh-mo-krah-TEE'
+    },
+    {
+      de:'Wahl',
+      art:'die',
+      pl:'Wahlen',
+      en:'election',
+      ph:'vahl'
+    },
+    {
+      de:'Bürger',
+      art:'der',
+      pl:'Bürger',
+      en:'citizen',
+      ph:'BUER-ger'
+    },
+    {
+      de:'Gesetz',
+      art:'das',
+      pl:'Gesetze',
+      en:'law',
+      ph:'geh-ZETS'
+    },
+    {
+      de:'Regierung',
+      art:'die',
+      pl:'Regierungen',
+      en:'government',
+      ph:'reh-GHEE-rung'
+    },
+    {
+      de:'Partei',
+      art:'die',
+      pl:'Parteien',
+      en:'party',
+      ph:'pahr-TAI'
+    },
+    {
+      de:'wählen',
+      art:'',
+      pl:'',
+      en:'to vote, to elect',
+      ph:'VAY-len'
+    },
+    {
+      de:'Wähler',
+      art:'der',
+      pl:'Wähler',
+      en:'voter',
+      ph:'VAY-ler'
+    },
+    {
+      de:'Wählerin',
+      art:'die',
+      pl:'Wählerinnen',
+      en:'female voter',
+      ph:'VAY-le-rin'
+    },
+    {
+      de:'Kanzler',
+      art:'der',
+      pl:'Kanzler',
+      en:'chancellor',
+      ph:'KAHNTS-ler'
+    },
+    {
+      de:'Kanzlerin',
+      art:'die',
+      pl:'Kanzlerinnen',
+      en:'female chancellor',
+      ph:'KAHNTS-le-rin'
+    },
+    {
+      de:'Minister',
+      art:'der',
+      pl:'Minister',
+      en:'minister',
+      ph:'mee-NIS-ter'
+    },
+    {
+      de:'Parlament',
+      art:'das',
+      pl:'Parlamente',
+      en:'parliament',
+      ph:'pahr-lah-MENT'
+    },
+    {
+      de:'Abgeordnete',
+      art:'der',
+      pl:'Abgeordneten',
+      en:'member of parliament',
+      ph:'AHP-geh-ord-neh-te'
+    },
+    {
+      de:'Abstimmung',
+      art:'die',
+      pl:'Abstimmungen',
+      en:'vote, ballot',
+      ph:'AHP-shtim-mung'
+    },
+    {
+      de:'Mehrheit',
+      art:'die',
+      pl:'Mehrheiten',
+      en:'majority',
+      ph:'MAIR-hait'
+    },
+    {
+      de:'Minderheit',
+      art:'die',
+      pl:'Minderheiten',
+      en:'minority',
+      ph:'MIN-der-hait'
+    },
+    {
+      de:'Meinung',
+      art:'die',
+      pl:'Meinungen',
+      en:'opinion',
+      ph:'MAI-nung'
+    },
+    {
+      de:'Argument',
+      art:'das',
+      pl:'Argumente',
+      en:'argument',
+      ph:'ahr-goo-MENT'
+    },
+    {
+      de:'Diskussion',
+      art:'die',
+      pl:'Diskussionen',
+      en:'discussion',
+      ph:'dis-koo-SEE-ohn'
+    },
+    {
+      de:'Debatte',
+      art:'die',
+      pl:'Debatten',
+      en:'debate',
+      ph:'deh-BAHT-te'
+    },
+    {
+      de:'Rede',
+      art:'die',
+      pl:'Reden',
+      en:'speech',
+      ph:'RAY-de'
+    },
+    {
+      de:'Versprechen',
+      art:'das',
+      pl:'Versprechen',
+      en:'promise',
+      ph:'fair-SHPREH-khen'
+    },
+    {
+      de:'Abgabe',
+      art:'die',
+      pl:'Abgaben',
+      en:'levy, charge',
+      ph:'AHP-gah-be'
+    },
+    {
+      de:'Recht',
+      art:'das',
+      pl:'Rechte',
+      en:'right, law',
+      ph:'rekht'
+    },
+    {
+      de:'Freiheit',
+      art:'die',
+      pl:'Freiheiten',
+      en:'freedom',
+      ph:'FRAI-hait'
+    },
+    {
+      de:'Gleichheit',
+      art:'die',
+      pl:'',
+      en:'equality',
+      ph:'GLAIKH-hait'
+    },
+    {
+      de:'Gerechtigkeit',
+      art:'die',
+      pl:'',
+      en:'justice',
+      ph:'geh-REKH-tish-kait'
+    },
+    {
+      de:'Macht',
+      art:'die',
+      pl:'',
+      en:'power',
+      ph:'mahkht'
+    },
+    {
+      de:'Einfluss',
+      art:'der',
+      pl:'',
+      en:'influence',
+      ph:'AIN-flooss'
+    },
+    {
+      de:'Vertrauen',
+      art:'das',
+      pl:'',
+      en:'trust',
+      ph:'fair-TROW-en'
+    },
+    {
+      de:'Korruption',
+      art:'die',
+      pl:'',
+      en:'corruption',
+      ph:'kor-roop-TSEE-ohn'
+    },
+    {
+      de:'Transparenz',
+      art:'die',
+      pl:'',
+      en:'transparency',
+      ph:'trahns-pah-RENTS'
+    },
+    {
+      de:'abstimmen',
+      art:'',
+      pl:'',
+      en:'to vote',
+      ph:'AHP-shtim-men'
+    },
+    {
+      de:'diskutieren',
+      art:'',
+      pl:'',
+      en:'to discuss',
+      ph:'dis-koo-TEE-ren'
+    },
+    {
+      de:'argumentieren',
+      art:'',
+      pl:'',
+      en:'to argue',
+      ph:'ahr-goo-men-TEE-ren'
+    },
+    {
+      de:'entscheiden',
+      art:'',
+      pl:'',
+      en:'to decide',
+      ph:'ent-SHAI-den'
+    },
+    {
+      de:'anhand',
+      art:'',
+      pl:'',
+      en:'on the basis of, using',
+      ph:'AHN-hahnt'
+    },
+    {
+      de:'infolge',
+      art:'',
+      pl:'',
+      en:'as a result of',
+      ph:'in-FOL-ge'
+    }
+  ],
+  grammar:{
+    title:'Advanced connectors — obwohl, trotzdem, je…desto',
+    plain:'"obwohl" (although): "Obwohl es regnet, gehen wir spazieren." "trotzdem" (nevertheless): "Es regnet, trotzdem gehen wir spazieren." "je … desto" (the … the …): "Je mehr man lernt, desto besser spricht man." (The more you learn, the better you speak.)',
+    rule:'obwohl + verb at end · trotzdem = adverb, verb in 2nd place · je + comparative, desto + comparative · anhand/infolge + genitive: anhand der Zahlen, infolge der Debatte.',
+    examples:[
+      {
+        de:'Obwohl es regnet, gehen wir spazieren.',
+        en:'Although it is raining, we go for a walk.',
+        ph:'op-VOHL es RAYG-net, GAY-en veer shpah-TSEE-ren'
+      },
+      {
+        de:'Je mehr man lernt, desto besser spricht man.',
+        en:'The more you learn, the better you speak.',
+        ph:'yay mair mahn lernt, DES-toh BES-ser shprikht mahn'
+      },
+      {
+        de:'Anhand der Zahlen sehen wir die Mehrheit.',
+        en:'Based on the numbers, we see the majority.',
+        ph:'AHN-hahnt dair TSAH-len ZAY-en veer dee MAIR-hait'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "___ es regnet, gehen wir spazieren."', options:['Trotzdem', 'Obwohl', 'Je', 'Während'], answer:1,
+     why:'"Obwohl es regnet ..." = Although it is raining — obwohl starts the clause, verb at the end.'},
+    {q:'Fill in: "Es regnet, ___ gehen wir spazieren."', options:['obwohl', 'trotzdem', 'je', 'dass'], answer:1,
+     why:'"trotzdem" = nevertheless — an adverb, so the verb stays in 2nd place.'},
+    {q:'Fill in: "___ mehr man lernt, ___ besser spricht man."', options:['Je … desto', 'Obwohl … trotzdem', 'Wenn … dann', 'Je … je'], answer:0,
+     why:'"Je mehr man lernt, desto besser spricht man." — the … the …'},
+    {q:'Fill in: "___ der Zahlen sehen wir die Mehrheit."', options:['Trotz', 'Anhand', 'Wegen', 'Während'], answer:1,
+     why:'"Anhand der Zahlen" = based on the numbers (+ genitive).'},
+    {q:'What does "infolge der Debatte" mean?', options:['before the debate', 'as a result of the debate', 'during the debate', 'against the debate'], answer:1,
+     why:'"infolge" = as a result of (+ genitive).'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Obwohl die Wahl vorbei ist, diskutieren alle. Je mehr Menschen wählen, desto stärker ist die Demokratie."',
+    model:[
+      'Obwohl die Wahl vorbei ist, diskutieren alle über das Ergebnis.',
+      'Je mehr Menschen wählen, desto stärker ist die Demokratie.',
+      'Anhand der Zahlen sehen wir die Mehrheit.'
+    ]
+  },
+  recap:[
+    'obwohl = although (verb at the end); trotzdem = nevertheless (verb 2nd).',
+    'je … desto = the … the …',
+    'anhand/infolge + genitive: anhand der Zahlen.',
+    'Politics words: die Wahl, der Bürger, die Mehrheit, die Transparenz.'
+  ],
+  tip:'Memory tip: "obwohl" pushes the verb to the end; "trotzdem" keeps it in second place. Say both sentences out loud and feel the difference.',
+  extra:[
+    {
+      q:'Say "Although it is raining, we go for a walk."',
+      a:'Obwohl es regnet, gehen wir spazieren.'
+    },
+    {
+      q:'Say "The more you learn, the better you speak."',
+      a:'Je mehr man lernt, desto besser spricht man.'
+    },
+    {
+      q:'What does "die Mehrheit" mean?',
+      a:'The majority.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Politics words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Politik',
+          art:'die',
+          pl:'',
+          en:'politics',
+          ph:'po-lee-TEEK'
+        },
+        {
+          de:'Demokratie',
+          art:'die',
+          pl:'',
+          en:'democracy',
+          ph:'deh-mo-krah-TEE'
+        },
+        {
+          de:'Wahl',
+          art:'die',
+          pl:'Wahlen',
+          en:'election',
+          ph:'vahl'
+        },
+        {
+          de:'Bürger',
+          art:'der',
+          pl:'Bürger',
+          en:'citizen',
+          ph:'BUER-ger'
+        },
+        {
+          de:'Gesetz',
+          art:'das',
+          pl:'Gesetze',
+          en:'law',
+          ph:'geh-ZETS'
+        },
+        {
+          de:'Regierung',
+          art:'die',
+          pl:'Regierungen',
+          en:'government',
+          ph:'reh-GHEE-rung'
+        },
+        {
+          de:'Partei',
+          art:'die',
+          pl:'Parteien',
+          en:'party',
+          ph:'pahr-TAI'
+        },
+        {
+          de:'wählen',
+          art:'',
+          pl:'',
+          en:'to vote, to elect',
+          ph:'VAY-len'
+        },
+        {
+          de:'Wähler',
+          art:'der',
+          pl:'Wähler',
+          en:'voter',
+          ph:'VAY-ler'
+        },
+        {
+          de:'Wählerin',
+          art:'die',
+          pl:'Wählerinnen',
+          en:'female voter',
+          ph:'VAY-le-rin'
+        },
+        {
+          de:'Kanzler',
+          art:'der',
+          pl:'Kanzler',
+          en:'chancellor',
+          ph:'KAHNTS-ler'
+        },
+        {
+          de:'Kanzlerin',
+          art:'die',
+          pl:'Kanzlerinnen',
+          en:'female chancellor',
+          ph:'KAHNTS-le-rin'
+        },
+        {
+          de:'Minister',
+          art:'der',
+          pl:'Minister',
+          en:'minister',
+          ph:'mee-NIS-ter'
+        },
+        {
+          de:'Parlament',
+          art:'das',
+          pl:'Parlamente',
+          en:'parliament',
+          ph:'pahr-lah-MENT'
+        },
+        {
+          de:'Abgeordnete',
+          art:'der',
+          pl:'Abgeordneten',
+          en:'member of parliament',
+          ph:'AHP-geh-ord-neh-te'
+        },
+        {
+          de:'Abstimmung',
+          art:'die',
+          pl:'Abstimmungen',
+          en:'vote, ballot',
+          ph:'AHP-shtim-mung'
+        },
+        {
+          de:'Mehrheit',
+          art:'die',
+          pl:'Mehrheiten',
+          en:'majority',
+          ph:'MAIR-hait'
+        },
+        {
+          de:'Minderheit',
+          art:'die',
+          pl:'Minderheiten',
+          en:'minority',
+          ph:'MIN-der-hait'
+        },
+        {
+          de:'Meinung',
+          art:'die',
+          pl:'Meinungen',
+          en:'opinion',
+          ph:'MAI-nung'
+        },
+        {
+          de:'Argument',
+          art:'das',
+          pl:'Argumente',
+          en:'argument',
+          ph:'ahr-goo-MENT'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Argument words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Diskussion',
+          art:'die',
+          pl:'Diskussionen',
+          en:'discussion',
+          ph:'dis-koo-SEE-ohn'
+        },
+        {
+          de:'Debatte',
+          art:'die',
+          pl:'Debatten',
+          en:'debate',
+          ph:'deh-BAHT-te'
+        },
+        {
+          de:'Rede',
+          art:'die',
+          pl:'Reden',
+          en:'speech',
+          ph:'RAY-de'
+        },
+        {
+          de:'Versprechen',
+          art:'das',
+          pl:'Versprechen',
+          en:'promise',
+          ph:'fair-SHPREH-khen'
+        },
+        {
+          de:'Abgabe',
+          art:'die',
+          pl:'Abgaben',
+          en:'levy, charge',
+          ph:'AHP-gah-be'
+        },
+        {
+          de:'Recht',
+          art:'das',
+          pl:'Rechte',
+          en:'right, law',
+          ph:'rekht'
+        },
+        {
+          de:'Freiheit',
+          art:'die',
+          pl:'Freiheiten',
+          en:'freedom',
+          ph:'FRAI-hait'
+        },
+        {
+          de:'Gleichheit',
+          art:'die',
+          pl:'',
+          en:'equality',
+          ph:'GLAIKH-hait'
+        },
+        {
+          de:'Gerechtigkeit',
+          art:'die',
+          pl:'',
+          en:'justice',
+          ph:'geh-REKH-tish-kait'
+        },
+        {
+          de:'Macht',
+          art:'die',
+          pl:'',
+          en:'power',
+          ph:'mahkht'
+        },
+        {
+          de:'Einfluss',
+          art:'der',
+          pl:'',
+          en:'influence',
+          ph:'AIN-flooss'
+        },
+        {
+          de:'Vertrauen',
+          art:'das',
+          pl:'',
+          en:'trust',
+          ph:'fair-TROW-en'
+        },
+        {
+          de:'Korruption',
+          art:'die',
+          pl:'',
+          en:'corruption',
+          ph:'kor-roop-TSEE-ohn'
+        },
+        {
+          de:'Transparenz',
+          art:'die',
+          pl:'',
+          en:'transparency',
+          ph:'trahns-pah-RENTS'
+        },
+        {
+          de:'abstimmen',
+          art:'',
+          pl:'',
+          en:'to vote',
+          ph:'AHP-shtim-men'
+        },
+        {
+          de:'diskutieren',
+          art:'',
+          pl:'',
+          en:'to discuss',
+          ph:'dis-koo-TEE-ren'
+        },
+        {
+          de:'argumentieren',
+          art:'',
+          pl:'',
+          en:'to argue',
+          ph:'ahr-goo-men-TEE-ren'
+        },
+        {
+          de:'entscheiden',
+          art:'',
+          pl:'',
+          en:'to decide',
+          ph:'ent-SHAI-den'
+        },
+        {
+          de:'anhand',
+          art:'',
+          pl:'',
+          en:'on the basis of, using',
+          ph:'AHN-hahnt'
+        },
+        {
+          de:'infolge',
+          art:'',
+          pl:'',
+          en:'as a result of',
+          ph:'in-FOL-ge'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: The election debate',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Obwohl die Wahl vorbei ist, diskutieren alle über das Ergebnis.',
+          en:'Although the election is over, everyone is discussing the result.',
+          ph:'op-VOHL dee vahl for-BAI ist, dis-koo-TEE-ren AHL-le UE-ber dahs air-GAYP-nis'
+        },
+        {
+          who:'B',
+          de:'Je mehr Menschen wählen, desto stärker ist die Demokratie.',
+          en:'The more people vote, the stronger democracy is.',
+          ph:'yay mair MEN-shen VAY-len, DES-toh SHTAIR-ker ist dee deh-moh-krah-TEE'
+        },
+        {
+          who:'A',
+          de:'Trotzdem vertrauen viele Bürger der Regierung nicht.',
+          en:'Nevertheless, many citizens do not trust the government.',
+          ph:'TROT-dem fair-TROW-en FEE-le BUER-ger dair reh-GHEE-rung nikht'
+        },
+        {
+          who:'B',
+          de:'Anhand der Zahlen sehen wir: Die Mehrheit will Veränderung.',
+          en:'Based on the numbers we see: the majority wants change.',
+          ph:'AHN-hahnt dair TSAH-len ZAY-en veer: dee MAIR-hait vil fair-EN-de-rung'
+        },
+        {
+          who:'A',
+          de:'Meiner Meinung nach braucht man mehr Transparenz.',
+          en:'In my opinion, we need more transparency.',
+          ph:'MAI-ner MAI-nung nahkh browkht mahn mair trahns-pah-RENTS'
+        },
+        {
+          who:'B',
+          de:'Richtig. Infolge der Debatte wird das Gesetz geändert.',
+          en:'Correct. As a result of the debate, the law will be changed.',
+          ph:'RIKH-tish. in-FOL-ge dair deh-BAHT-te virt dahs geh-ZETS geh-EN-dert'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Obwohl die Wahl vorbei ist, diskutieren alle. Je mehr Menschen wählen, desto stärker ist die Demokratie."',
+        model:[
+          'Obwohl die Wahl vorbei ist, diskutieren alle über das Ergebnis.',
+          'Je mehr Menschen wählen, desto stärker ist die Demokratie.',
+          'Anhand der Zahlen sehen wir die Mehrheit.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Advanced connectors',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Advanced connectors — obwohl, trotzdem, je…desto',
+        plain:'"obwohl" (although): "Obwohl es regnet, gehen wir spazieren." "trotzdem" (nevertheless): "Es regnet, trotzdem gehen wir spazieren." "je … desto" (the … the …): "Je mehr man lernt, desto besser spricht man." (The more you learn, the better you speak.)',
+        rule:'obwohl + verb at end · trotzdem = adverb, verb in 2nd place · je + comparative, desto + comparative · anhand/infolge + genitive: anhand der Zahlen, infolge der Debatte.',
+        examples:[
+          {
+            de:'Obwohl es regnet, gehen wir spazieren.',
+            en:'Although it is raining, we go for a walk.',
+            ph:'op-VOHL es RAYG-net, GAY-en veer shpah-TSEE-ren'
+          },
+          {
+            de:'Je mehr man lernt, desto besser spricht man.',
+            en:'The more you learn, the better you speak.',
+            ph:'yay mair mahn lernt, DES-toh BES-ser shprikht mahn'
+          },
+          {
+            de:'Anhand der Zahlen sehen wir die Mehrheit.',
+            en:'Based on the numbers, we see the majority.',
+            ph:'AHN-hahnt dair TSAH-len ZAY-en veer dee MAIR-hait'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: obwohl, trotzdem, je…desto',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "___ es regnet, gehen wir spazieren."', options:['Trotzdem', 'Obwohl', 'Je', 'Während'], answer:1,
+         why:'"Obwohl es regnet ..." = Although it is raining — obwohl starts the clause, verb at the end.'},
+        {q:'Fill in: "Es regnet, ___ gehen wir spazieren."', options:['obwohl', 'trotzdem', 'je', 'dass'], answer:1,
+         why:'"trotzdem" = nevertheless — an adverb, so the verb stays in 2nd place.'},
+        {q:'Fill in: "___ mehr man lernt, ___ besser spricht man."', options:['Je … desto', 'Obwohl … trotzdem', 'Wenn … dann', 'Je … je'], answer:0,
+         why:'"Je mehr man lernt, desto besser spricht man." — the … the …'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: politics & society',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "___ der Zahlen sehen wir die Mehrheit."', options:['Trotz', 'Anhand', 'Wegen', 'Während'], answer:1,
+         why:'"Anhand der Zahlen" = based on the numbers (+ genitive).'},
+        {q:'What does "infolge der Debatte" mean?', options:['before the debate', 'as a result of the debate', 'during the debate', 'against the debate'], answer:1,
+         why:'"infolge" = as a result of (+ genitive).'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 8 — Work & Economy',
+};
 
-CHAPTERS['B2-8'] = { id:'B2-8', n:8, level:'B2', title:'Work & Economy', time:'10 min', syllabus:true,
+CHAPTERS['B2-8'] = {
+  id:'B2-8',
+  n:8,
+  level:'B2',
+  title:'Work & Economy',
+  time:'17 min',
   concept:'Talk about the economy, markets and wages.',
-  learn:['Discuss the economy and unemployment','Talk about wages and taxes','Use subjective modal verbs'],
-  grammar:{ title:'Subjective modal verbs — "Er soll reich sein"',
-    plain:'Modal verbs can express rumour or assumption: "Er soll reich sein." (He is said to be rich.) "Er muss krank sein." (He must be ill — I conclude this.) "Er kann nicht zu Hause sein." (He cannot be at home.)' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Die Wirtschaft soll wachsen, sagt der Minister.',
+      en:'The economy is said to grow, says the minister.',
+      ph:'dee VIRT-shahft zol VAHKHS-en, zahkt dair mee-NIS-ter'
+    },
+    {
+      who:'B',
+      de:'Er muss vorsichtig sein. Die Inflation soll steigen.',
+      en:'He must be careful. Inflation is said to rise.',
+      ph:'air mooss FOR-zish-tish zine. dee in-flah-TSEE-ohn zol SHTAI-gen'
+    },
+    {
+      who:'A',
+      de:'Der Chef soll ein neues Unternehmen gründen.',
+      en:'The boss is said to found a new company.',
+      ph:'dair shef zol ain NOY-es oon-ter-NAY-men GRUEN-den'
+    },
+    {
+      who:'B',
+      de:'Das kann nicht stimmen. Die Kosten müssen sinken, nicht steigen.',
+      en:'That cannot be true. Costs must fall, not rise.',
+      ph:'dahs kahn nikht SHTIM-men. dee KOS-ten MUES-sen ZIN-ken, nikht SHTAI-gen'
+    },
+    {
+      who:'A',
+      de:'In der E-Mail steht formell: "Sehr geehrte Damen und Herren ..."',
+      en:'The email says formally: "Dear Sir or Madam ..."',
+      ph:'in dair EE-mayl shtayt for-MELL: zair geh-AIR-te DAH-men oont HAIR-ren'
+    },
+    {
+      who:'B',
+      de:'Und im Chat schreibt man einfach: "Hallo, alles klar?"',
+      en:'And in a chat you simply write: "Hello, all clear?"',
+      ph:'oont im shat shraipt mahn AIN-fahkh: HAH-loh, AHL-les klahr'
+    }
+  ],
   vocab:[
-    {de:'Wirtschaft', art:'die', pl:'', en:'economy', ph:'VIRT-shahft'},
-    {de:'Markt', art:'der', pl:'Märkte', en:'market', ph:'mahrkt'},
-    {de:'Inflation', art:'die', pl:'', en:'inflation', ph:'in-flah-TSEE-ohn'},
-    {de:'Arbeitslosigkeit', art:'die', pl:'', en:'unemployment', ph:'AHR-baits-loh-zish-kait'},
-    {de:'Lohn', art:'der', pl:'Löhne', en:'wage', ph:'lohn'},
-    {de:'Steuer', art:'die', pl:'Steuern', en:'tax', ph:'SHTOY-er'},
-    {de:'Handel', art:'der', pl:'', en:'trade', ph:'HAHN-del'},
-    {de:'investieren', art:'', pl:'', en:'to invest', ph:'in-ves-TEE-ren'},
-  ], next:'Next: Chapter 9 — Culture & Arts (syllabus)' };
+    {
+      de:'Wirtschaft',
+      art:'die',
+      pl:'',
+      en:'economy',
+      ph:'VIRT-shahft'
+    },
+    {
+      de:'Markt',
+      art:'der',
+      pl:'Märkte',
+      en:'market',
+      ph:'mahrkt'
+    },
+    {
+      de:'Inflation',
+      art:'die',
+      pl:'',
+      en:'inflation',
+      ph:'in-flah-TSEE-ohn'
+    },
+    {
+      de:'Arbeitslosigkeit',
+      art:'die',
+      pl:'',
+      en:'unemployment',
+      ph:'AHR-baits-loh-zish-kait'
+    },
+    {
+      de:'Lohn',
+      art:'der',
+      pl:'Löhne',
+      en:'wage',
+      ph:'lohn'
+    },
+    {
+      de:'Steuer',
+      art:'die',
+      pl:'Steuern',
+      en:'tax',
+      ph:'SHTOY-er'
+    },
+    {
+      de:'Handel',
+      art:'der',
+      pl:'',
+      en:'trade',
+      ph:'HAHN-del'
+    },
+    {
+      de:'investieren',
+      art:'',
+      pl:'',
+      en:'to invest',
+      ph:'in-ves-TEE-ren'
+    },
+    {
+      de:'Arbeitgeber',
+      art:'der',
+      pl:'Arbeitgeber',
+      en:'employer',
+      ph:'AHR-bait-gay-ber'
+    },
+    {
+      de:'Arbeitnehmer',
+      art:'der',
+      pl:'Arbeitnehmer',
+      en:'employee',
+      ph:'AHR-bait-nay-mer'
+    },
+    {
+      de:'Verdienst',
+      art:'der',
+      pl:'Verdienste',
+      en:'earnings',
+      ph:'fair-DEENST'
+    },
+    {
+      de:'Rente',
+      art:'die',
+      pl:'Renten',
+      en:'pension',
+      ph:'REN-te'
+    },
+    {
+      de:'Sozialversicherung',
+      art:'die',
+      pl:'Sozialversicherungen',
+      en:'social insurance',
+      ph:'zoh-TSEE-ahl-fair-ZI-khe-rung'
+    },
+    {
+      de:'Krankenkasse',
+      art:'die',
+      pl:'Krankenkassen',
+      en:'health insurance fund',
+      ph:'KRAHN-ken-kahs-se'
+    },
+    {
+      de:'Brutto',
+      art:'das',
+      pl:'',
+      en:'gross (amount)',
+      ph:'BROOT-toh'
+    },
+    {
+      de:'Netto',
+      art:'das',
+      pl:'',
+      en:'net (amount)',
+      ph:'NET-toh'
+    },
+    {
+      de:'Zins',
+      art:'der',
+      pl:'Zinsen',
+      en:'interest',
+      ph:'tsins'
+    },
+    {
+      de:'Kredit',
+      art:'der',
+      pl:'Kredite',
+      en:'loan, credit',
+      ph:'kreh-DEET'
+    },
+    {
+      de:'Schulden',
+      art:'die',
+      pl:'',
+      en:'debts',
+      ph:'SHUL-den'
+    },
+    {
+      de:'Ertrag',
+      art:'der',
+      pl:'Erträge',
+      en:'yield, revenue',
+      ph:'air-TRAHK'
+    },
+    {
+      de:'Defizit',
+      art:'das',
+      pl:'Defizite',
+      en:'deficit',
+      ph:'deh-fee-TSEET'
+    },
+    {
+      de:'Export',
+      art:'der',
+      pl:'Exporte',
+      en:'export',
+      ph:'eks-PORT'
+    },
+    {
+      de:'Import',
+      art:'der',
+      pl:'Importe',
+      en:'import',
+      ph:'im-PORT'
+    },
+    {
+      de:'Branche',
+      art:'die',
+      pl:'Branchen',
+      en:'industry sector',
+      ph:'BRAHN-she'
+    },
+    {
+      de:'Unternehmen',
+      art:'das',
+      pl:'Unternehmen',
+      en:'company',
+      ph:'oon-ter-NAY-men'
+    },
+    {
+      de:'Wettbewerb',
+      art:'der',
+      pl:'',
+      en:'competition',
+      ph:'VET-beh-vairp'
+    },
+    {
+      de:'Nachfrage',
+      art:'die',
+      pl:'',
+      en:'demand',
+      ph:'NAHKH-frah-ge'
+    },
+    {
+      de:'Angebot',
+      art:'das',
+      pl:'Angebote',
+      en:'offer, supply',
+      ph:'AHN-geh-boht'
+    },
+    {
+      de:'Preis',
+      art:'der',
+      pl:'Preise',
+      en:'price',
+      ph:'prais'
+    },
+    {
+      de:'Kosten',
+      art:'die',
+      pl:'',
+      en:'costs',
+      ph:'KOS-ten'
+    },
+    {
+      de:'ausgeben',
+      art:'',
+      pl:'',
+      en:'to spend',
+      ph:'OWS-gay-ben'
+    },
+    {
+      de:'steigen',
+      art:'',
+      pl:'',
+      en:'to rise',
+      ph:'SHTAI-gen'
+    },
+    {
+      de:'sinken',
+      art:'',
+      pl:'',
+      en:'to fall, sink',
+      ph:'ZIN-ken'
+    },
+    {
+      de:'wachsen',
+      art:'',
+      pl:'',
+      en:'to grow',
+      ph:'VAHKH-sen'
+    },
+    {
+      de:'sich erhöhen',
+      art:'',
+      pl:'',
+      en:'to increase (reflexive)',
+      ph:'zish air-HER-hen'
+    },
+    {
+      de:'sich verringern',
+      art:'',
+      pl:'',
+      en:'to decrease',
+      ph:'zish fair-RING-ern'
+    },
+    {
+      de:'annehmen',
+      art:'',
+      pl:'',
+      en:'to assume',
+      ph:'AHN-nay-men'
+    },
+    {
+      de:'vermuten',
+      art:'',
+      pl:'',
+      en:'to suspect, assume',
+      ph:'fair-MOO-ten'
+    },
+    {
+      de:'angeben',
+      art:'',
+      pl:'',
+      en:'to state, declare',
+      ph:'AHN-gay-ben'
+    },
+    {
+      de:'Anstieg',
+      art:'der',
+      pl:'Anstiege',
+      en:'rise, increase',
+      ph:'AHN-shteek'
+    }
+  ],
+  grammar:{
+    title:'Subjective modal verbs — "Er soll reich sein"',
+    plain:'Modal verbs can express rumour or assumption: "Er soll reich sein." (He is said to be rich.) "Er muss krank sein." (He must be ill — I conclude this.) "Er kann nicht zu Hause sein." (He cannot be at home.)',
+    rule:'Er soll reich sein. = he is said to be rich. · Er muss krank sein. = I conclude he is ill. · Er kann nicht zu Hause sein. = he cannot be at home. · Formal: "Sehr geehrte ..." · Informal: "Hallo, ..."',
+    examples:[
+      {
+        de:'Er soll reich sein.',
+        en:'He is said to be rich.',
+        ph:'air zol raikh zine'
+      },
+      {
+        de:'Er muss krank sein.',
+        en:'He must be ill (I conclude).',
+        ph:'air mooss krahnk zine'
+      },
+      {
+        de:'Die Preise sollen steigen.',
+        en:'Prices are said to rise.',
+        ph:'dee PRAI-ze ZOL-len SHTAI-gen'
+      }
+    ]
+  },
+  quiz:[
+    {q:'What does "Er soll reich sein." mean?', options:['He wants to be rich.', 'He is said to be rich.', 'He must become rich.', 'He can be rich.'], answer:1,
+     why:'"sollen + sein" reports a rumour: "Er soll reich sein" = he is said to be rich.'},
+    {q:'Fill in: "Er ___ krank sein. (I conclude this.)"', options:['soll', 'muss', 'kann', 'will'], answer:1,
+     why:'"Er muss krank sein" = I conclude he is ill.'},
+    {q:'Fill in: "Er ___ nicht zu Hause sein."', options:['kann', 'soll', 'will', 'darf'], answer:0,
+     why:'"Er kann nicht zu Hause sein" = he cannot possibly be at home.'},
+    {q:'Which is formal?', options:['Hallo, alles klar?', 'Sehr geehrte Damen und Herren,', 'Hey, was geht?', 'Hi, wie gehts?'], answer:1,
+     why:'"Sehr geehrte Damen und Herren" is the formal letter opening.'},
+    {q:'Fill in: "Die Inflation ___ steigen."', options:['soll', 'sollen', 'sollst', 'sollte'], answer:0,
+     why:'"Die Inflation" is singular: "Die Inflation soll steigen."'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Er soll reich sein. Die Wirtschaft soll wachsen. Die Preise sollen steigen."',
+    model:[
+      'Er soll reich sein.',
+      'Die Wirtschaft soll wachsen.',
+      'Die Preise sollen steigen.',
+      'Sehr geehrte Damen und Herren, ...'
+    ]
+  },
+  recap:[
+    'Subjective modals: soll = rumour, muss = conclusion, kann nicht = impossible.',
+    '"Er soll reich sein" = he is said to be rich.',
+    'Formal: "Sehr geehrte Damen und Herren". Informal: "Hallo".',
+    'Economy words: der Lohn, die Steuer, der Markt, die Inflation.'
+  ],
+  tip:'Memory tip: "soll" = somebody says so; "muss" = I conclude so; "kann nicht" = it cannot be so. Three different kinds of guessing.',
+  extra:[
+    {
+      q:'Say "He is said to be rich."',
+      a:'Er soll reich sein.'
+    },
+    {
+      q:'Say "He must be ill."',
+      a:'Er muss krank sein.'
+    },
+    {
+      q:'What does "der Lohn" mean?',
+      a:'The wage, pay.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Economy words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Wirtschaft',
+          art:'die',
+          pl:'',
+          en:'economy',
+          ph:'VIRT-shahft'
+        },
+        {
+          de:'Markt',
+          art:'der',
+          pl:'Märkte',
+          en:'market',
+          ph:'mahrkt'
+        },
+        {
+          de:'Inflation',
+          art:'die',
+          pl:'',
+          en:'inflation',
+          ph:'in-flah-TSEE-ohn'
+        },
+        {
+          de:'Arbeitslosigkeit',
+          art:'die',
+          pl:'',
+          en:'unemployment',
+          ph:'AHR-baits-loh-zish-kait'
+        },
+        {
+          de:'Lohn',
+          art:'der',
+          pl:'Löhne',
+          en:'wage',
+          ph:'lohn'
+        },
+        {
+          de:'Steuer',
+          art:'die',
+          pl:'Steuern',
+          en:'tax',
+          ph:'SHTOY-er'
+        },
+        {
+          de:'Handel',
+          art:'der',
+          pl:'',
+          en:'trade',
+          ph:'HAHN-del'
+        },
+        {
+          de:'investieren',
+          art:'',
+          pl:'',
+          en:'to invest',
+          ph:'in-ves-TEE-ren'
+        },
+        {
+          de:'Arbeitgeber',
+          art:'der',
+          pl:'Arbeitgeber',
+          en:'employer',
+          ph:'AHR-bait-gay-ber'
+        },
+        {
+          de:'Arbeitnehmer',
+          art:'der',
+          pl:'Arbeitnehmer',
+          en:'employee',
+          ph:'AHR-bait-nay-mer'
+        },
+        {
+          de:'Verdienst',
+          art:'der',
+          pl:'Verdienste',
+          en:'earnings',
+          ph:'fair-DEENST'
+        },
+        {
+          de:'Rente',
+          art:'die',
+          pl:'Renten',
+          en:'pension',
+          ph:'REN-te'
+        },
+        {
+          de:'Sozialversicherung',
+          art:'die',
+          pl:'Sozialversicherungen',
+          en:'social insurance',
+          ph:'zoh-TSEE-ahl-fair-ZI-khe-rung'
+        },
+        {
+          de:'Krankenkasse',
+          art:'die',
+          pl:'Krankenkassen',
+          en:'health insurance fund',
+          ph:'KRAHN-ken-kahs-se'
+        },
+        {
+          de:'Brutto',
+          art:'das',
+          pl:'',
+          en:'gross (amount)',
+          ph:'BROOT-toh'
+        },
+        {
+          de:'Netto',
+          art:'das',
+          pl:'',
+          en:'net (amount)',
+          ph:'NET-toh'
+        },
+        {
+          de:'Zins',
+          art:'der',
+          pl:'Zinsen',
+          en:'interest',
+          ph:'tsins'
+        },
+        {
+          de:'Kredit',
+          art:'der',
+          pl:'Kredite',
+          en:'loan, credit',
+          ph:'kreh-DEET'
+        },
+        {
+          de:'Schulden',
+          art:'die',
+          pl:'',
+          en:'debts',
+          ph:'SHUL-den'
+        },
+        {
+          de:'Ertrag',
+          art:'der',
+          pl:'Erträge',
+          en:'yield, revenue',
+          ph:'air-TRAHK'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Money words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Defizit',
+          art:'das',
+          pl:'Defizite',
+          en:'deficit',
+          ph:'deh-fee-TSEET'
+        },
+        {
+          de:'Export',
+          art:'der',
+          pl:'Exporte',
+          en:'export',
+          ph:'eks-PORT'
+        },
+        {
+          de:'Import',
+          art:'der',
+          pl:'Importe',
+          en:'import',
+          ph:'im-PORT'
+        },
+        {
+          de:'Branche',
+          art:'die',
+          pl:'Branchen',
+          en:'industry sector',
+          ph:'BRAHN-she'
+        },
+        {
+          de:'Unternehmen',
+          art:'das',
+          pl:'Unternehmen',
+          en:'company',
+          ph:'oon-ter-NAY-men'
+        },
+        {
+          de:'Wettbewerb',
+          art:'der',
+          pl:'',
+          en:'competition',
+          ph:'VET-beh-vairp'
+        },
+        {
+          de:'Nachfrage',
+          art:'die',
+          pl:'',
+          en:'demand',
+          ph:'NAHKH-frah-ge'
+        },
+        {
+          de:'Angebot',
+          art:'das',
+          pl:'Angebote',
+          en:'offer, supply',
+          ph:'AHN-geh-boht'
+        },
+        {
+          de:'Preis',
+          art:'der',
+          pl:'Preise',
+          en:'price',
+          ph:'prais'
+        },
+        {
+          de:'Kosten',
+          art:'die',
+          pl:'',
+          en:'costs',
+          ph:'KOS-ten'
+        },
+        {
+          de:'ausgeben',
+          art:'',
+          pl:'',
+          en:'to spend',
+          ph:'OWS-gay-ben'
+        },
+        {
+          de:'steigen',
+          art:'',
+          pl:'',
+          en:'to rise',
+          ph:'SHTAI-gen'
+        },
+        {
+          de:'sinken',
+          art:'',
+          pl:'',
+          en:'to fall, sink',
+          ph:'ZIN-ken'
+        },
+        {
+          de:'wachsen',
+          art:'',
+          pl:'',
+          en:'to grow',
+          ph:'VAHKH-sen'
+        },
+        {
+          de:'sich erhöhen',
+          art:'',
+          pl:'',
+          en:'to increase (reflexive)',
+          ph:'zish air-HER-hen'
+        },
+        {
+          de:'sich verringern',
+          art:'',
+          pl:'',
+          en:'to decrease',
+          ph:'zish fair-RING-ern'
+        },
+        {
+          de:'annehmen',
+          art:'',
+          pl:'',
+          en:'to assume',
+          ph:'AHN-nay-men'
+        },
+        {
+          de:'vermuten',
+          art:'',
+          pl:'',
+          en:'to suspect, assume',
+          ph:'fair-MOO-ten'
+        },
+        {
+          de:'angeben',
+          art:'',
+          pl:'',
+          en:'to state, declare',
+          ph:'AHN-gay-ben'
+        },
+        {
+          de:'Anstieg',
+          art:'der',
+          pl:'Anstiege',
+          en:'rise, increase',
+          ph:'AHN-shteek'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Rumours and registers',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Die Wirtschaft soll wachsen, sagt der Minister.',
+          en:'The economy is said to grow, says the minister.',
+          ph:'dee VIRT-shahft zol VAHKHS-en, zahkt dair mee-NIS-ter'
+        },
+        {
+          who:'B',
+          de:'Er muss vorsichtig sein. Die Inflation soll steigen.',
+          en:'He must be careful. Inflation is said to rise.',
+          ph:'air mooss FOR-zish-tish zine. dee in-flah-TSEE-ohn zol SHTAI-gen'
+        },
+        {
+          who:'A',
+          de:'Der Chef soll ein neues Unternehmen gründen.',
+          en:'The boss is said to found a new company.',
+          ph:'dair shef zol ain NOY-es oon-ter-NAY-men GRUEN-den'
+        },
+        {
+          who:'B',
+          de:'Das kann nicht stimmen. Die Kosten müssen sinken, nicht steigen.',
+          en:'That cannot be true. Costs must fall, not rise.',
+          ph:'dahs kahn nikht SHTIM-men. dee KOS-ten MUES-sen ZIN-ken, nikht SHTAI-gen'
+        },
+        {
+          who:'A',
+          de:'In der E-Mail steht formell: "Sehr geehrte Damen und Herren ..."',
+          en:'The email says formally: "Dear Sir or Madam ..."',
+          ph:'in dair EE-mayl shtayt for-MELL: zair geh-AIR-te DAH-men oont HAIR-ren'
+        },
+        {
+          who:'B',
+          de:'Und im Chat schreibt man einfach: "Hallo, alles klar?"',
+          en:'And in a chat you simply write: "Hello, all clear?"',
+          ph:'oont im shat shraipt mahn AIN-fahkh: HAH-loh, AHL-les klahr'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Er soll reich sein. Die Wirtschaft soll wachsen. Die Preise sollen steigen."',
+        model:[
+          'Er soll reich sein.',
+          'Die Wirtschaft soll wachsen.',
+          'Die Preise sollen steigen.',
+          'Sehr geehrte Damen und Herren, ...'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Subjective modal verbs',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Subjective modal verbs — "Er soll reich sein"',
+        plain:'Modal verbs can express rumour or assumption: "Er soll reich sein." (He is said to be rich.) "Er muss krank sein." (He must be ill — I conclude this.) "Er kann nicht zu Hause sein." (He cannot be at home.)',
+        rule:'Er soll reich sein. = he is said to be rich. · Er muss krank sein. = I conclude he is ill. · Er kann nicht zu Hause sein. = he cannot be at home. · Formal: "Sehr geehrte ..." · Informal: "Hallo, ..."',
+        examples:[
+          {
+            de:'Er soll reich sein.',
+            en:'He is said to be rich.',
+            ph:'air zol raikh zine'
+          },
+          {
+            de:'Er muss krank sein.',
+            en:'He must be ill (I conclude).',
+            ph:'air mooss krahnk zine'
+          },
+          {
+            de:'Die Preise sollen steigen.',
+            en:'Prices are said to rise.',
+            ph:'dee PRAI-ze ZOL-len SHTAI-gen'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: soll, muss, kann',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'What does "Er soll reich sein." mean?', options:['He wants to be rich.', 'He is said to be rich.', 'He must become rich.', 'He can be rich.'], answer:1,
+         why:'"sollen + sein" reports a rumour: "Er soll reich sein" = he is said to be rich.'},
+        {q:'Fill in: "Er ___ krank sein. (I conclude this.)"', options:['soll', 'muss', 'kann', 'will'], answer:1,
+         why:'"Er muss krank sein" = I conclude he is ill.'},
+        {q:'Fill in: "Er ___ nicht zu Hause sein."', options:['kann', 'soll', 'will', 'darf'], answer:0,
+         why:'"Er kann nicht zu Hause sein" = he cannot possibly be at home.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: work & economy',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Which is formal?', options:['Hallo, alles klar?', 'Sehr geehrte Damen und Herren,', 'Hey, was geht?', 'Hi, wie gehts?'], answer:1,
+         why:'"Sehr geehrte Damen und Herren" is the formal letter opening.'},
+        {q:'Fill in: "Die Inflation ___ steigen."', options:['soll', 'sollen', 'sollst', 'sollte'], answer:0,
+         why:'"Die Inflation" is singular: "Die Inflation soll steigen."'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 9 — Culture & Arts',
+};
 
-CHAPTERS['B2-9'] = { id:'B2-9', n:9, level:'B2', title:'Culture & Arts', time:'10 min', syllabus:true,
+CHAPTERS['B2-9'] = {
+  id:'B2-9',
+  n:9,
+  level:'B2',
+  title:'Culture & Arts',
+  time:'17 min',
   concept:'Talk about art, theatre, literature and exhibitions.',
-  learn:['Describe a painting or a play','Give your opinion on art','Discuss literature and film'],
-  grammar:{ title:'Adjective endings mastered + n-declension',
-    plain:'Adjectives before nouns: "der neue Film", "ein neuer Film", "den neuen Film". And the n-declension: some masculine nouns add -n/-en in all cases except nominative: "der Patient, den Patienten, dem Patienten, des Patienten".' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Ich interessiere mich für die neue Ausstellung im Museum.',
+      en:'I am interested in the new exhibition at the museum.',
+      ph:'ish in-teh-res-SEE-re mish fuer dee NOY-e OWS-shtel-lung im moo-ZAY-um'
+    },
+    {
+      who:'B',
+      de:'Ich freue mich auf die Aufführung heute Abend.',
+      en:'I am looking forward to the performance tonight.',
+      ph:'ish FROY-e mish owf dee OWF-fue-rung HOY-te AH-bent'
+    },
+    {
+      who:'A',
+      de:'Erinnerst du dich an das Gemälde des berühmten Künstlers?',
+      en:'Do you remember the painting by the famous artist?',
+      ph:'air-IN-nerst doo dish ahn dahs geh-MAY-le dehs beh-RUEM-ten KUENST-lers'
+    },
+    {
+      who:'B',
+      de:'Ja, das spannende Bild hat mich sehr beeindruckt.',
+      en:'Yes, the exciting picture impressed me very much.',
+      ph:'yah, dahs SHPAH-nen-de bilt haht mish zair beh-AIN-drookt'
+    },
+    {
+      who:'A',
+      de:'Der neue Roman des Autors ist kreativ und spannend.',
+      en:'The author\'s new novel is creative and exciting.',
+      ph:'dair NOY-e roh-MAHN des OW-tohrs ist kray-ah-TEEF oont SHPAH-nent'
+    },
+    {
+      who:'B',
+      de:'Ich nehme an der Vorstellung teil und freue mich über den Beifall.',
+      en:'I take part in the performance and I am happy about the applause.',
+      ph:'ish NAY-me ahn dair FOR-shtel-lung tile oont FROY-e mish UE-ber dayn BAI-fahl'
+    }
+  ],
   vocab:[
-    {de:'Kunst', art:'die', pl:'', en:'art', ph:'koonst'},
-    {de:'Theater', art:'das', pl:'Theater', en:'theatre', ph:'tay-AH-ter'},
-    {de:'Ausstellung', art:'die', pl:'Ausstellungen', en:'exhibition', ph:'OWS-shtel-lung'},
-    {de:'Künstler', art:'der', pl:'Künstler', en:'artist', ph:'KUENST-ler'},
-    {de:'Gemälde', art:'das', pl:'Gemälde', en:'painting', ph:'geh-MAYL-de'},
-    {de:'Literatur', art:'die', pl:'', en:'literature', ph:'lee-te-rah-TOOR'},
-    {de:'Roman', art:'der', pl:'Romane', en:'novel', ph:'ro-MAHN'},
-    {de:'Aufführung', art:'die', pl:'Aufführungen', en:'performance', ph:'OWF-fue-rung'},
-  ], next:'Next: Chapter 10 — Health & Medicine (syllabus)' };
+    {
+      de:'Kunst',
+      art:'die',
+      pl:'',
+      en:'art',
+      ph:'koonst'
+    },
+    {
+      de:'Theater',
+      art:'das',
+      pl:'Theater',
+      en:'theatre',
+      ph:'tay-AH-ter'
+    },
+    {
+      de:'Ausstellung',
+      art:'die',
+      pl:'Ausstellungen',
+      en:'exhibition',
+      ph:'OWS-shtel-lung'
+    },
+    {
+      de:'Künstler',
+      art:'der',
+      pl:'Künstler',
+      en:'artist',
+      ph:'KUENST-ler'
+    },
+    {
+      de:'Gemälde',
+      art:'das',
+      pl:'Gemälde',
+      en:'painting',
+      ph:'geh-MAYL-de'
+    },
+    {
+      de:'Literatur',
+      art:'die',
+      pl:'',
+      en:'literature',
+      ph:'lee-te-rah-TOOR'
+    },
+    {
+      de:'Roman',
+      art:'der',
+      pl:'Romane',
+      en:'novel',
+      ph:'ro-MAHN'
+    },
+    {
+      de:'Aufführung',
+      art:'die',
+      pl:'Aufführungen',
+      en:'performance',
+      ph:'OWF-fue-rung'
+    },
+    {
+      de:'Museum',
+      art:'das',
+      pl:'Museen',
+      en:'museum',
+      ph:'moo-ZAY-um'
+    },
+    {
+      de:'Konzert',
+      art:'das',
+      pl:'Konzerte',
+      en:'concert',
+      ph:'kon-TSAIRT'
+    },
+    {
+      de:'Oper',
+      art:'die',
+      pl:'Opern',
+      en:'opera',
+      ph:'OH-per'
+    },
+    {
+      de:'Ballett',
+      art:'das',
+      pl:'Ballette',
+      en:'ballet',
+      ph:'bah-LET'
+    },
+    {
+      de:'Schauspieler',
+      art:'der',
+      pl:'Schauspieler',
+      en:'actor',
+      ph:'SHOW-shpee-ler'
+    },
+    {
+      de:'Schauspielerin',
+      art:'die',
+      pl:'Schauspielerinnen',
+      en:'actress',
+      ph:'SHOW-shpee-le-rin'
+    },
+    {
+      de:'Sänger',
+      art:'der',
+      pl:'Sänger',
+      en:'singer (male)',
+      ph:'ZENG-er'
+    },
+    {
+      de:'Sängerin',
+      art:'die',
+      pl:'Sängerinnen',
+      en:'singer (female)',
+      ph:'ZENG-e-rin'
+    },
+    {
+      de:'Autor',
+      art:'der',
+      pl:'Autoren',
+      en:'author',
+      ph:'OW-tohr'
+    },
+    {
+      de:'Autorin',
+      art:'die',
+      pl:'Autorinnen',
+      en:'female author',
+      ph:'OW-toh-rin'
+    },
+    {
+      de:'Dichter',
+      art:'der',
+      pl:'Dichter',
+      en:'poet',
+      ph:'DIKH-ter'
+    },
+    {
+      de:'Gedicht',
+      art:'das',
+      pl:'Gedichte',
+      en:'poem',
+      ph:'geh-DIKHT'
+    },
+    {
+      de:'Kapitel',
+      art:'das',
+      pl:'Kapitel',
+      en:'chapter',
+      ph:'kah-PEE-tel'
+    },
+    {
+      de:'Figur',
+      art:'die',
+      pl:'Figuren',
+      en:'character, figure',
+      ph:'fee-GOOR'
+    },
+    {
+      de:'Handlung',
+      art:'die',
+      pl:'Handlungen',
+      en:'plot, action',
+      ph:'HAHND-lung'
+    },
+    {
+      de:'Bühne',
+      art:'die',
+      pl:'Bühnen',
+      en:'stage',
+      ph:'BUE-ne'
+    },
+    {
+      de:'Publikum',
+      art:'das',
+      pl:'',
+      en:'audience',
+      ph:'POO-blee-kum'
+    },
+    {
+      de:'Beifall',
+      art:'der',
+      pl:'',
+      en:'applause',
+      ph:'BAI-fahl'
+    },
+    {
+      de:'Eintrittskarte',
+      art:'die',
+      pl:'Eintrittskarten',
+      en:'ticket',
+      ph:'AIN-tritts-kahr-te'
+    },
+    {
+      de:'Vorstellung',
+      art:'die',
+      pl:'Vorstellungen',
+      en:'performance',
+      ph:'FOR-shtel-lung'
+    },
+    {
+      de:'sich interessieren für',
+      art:'',
+      pl:'',
+      en:'to be interested in',
+      ph:'zish in-teh-res-SEE-ren fuer'
+    },
+    {
+      de:'sich freuen auf',
+      art:'',
+      pl:'',
+      en:'to look forward to',
+      ph:'zish FROY-en owf'
+    },
+    {
+      de:'sich freuen über',
+      art:'',
+      pl:'',
+      en:'to be happy about',
+      ph:'zish FROY-en UE-ber'
+    },
+    {
+      de:'denken an',
+      art:'',
+      pl:'',
+      en:'to think of',
+      ph:'DEN-ken ahn'
+    },
+    {
+      de:'sich erinnern an',
+      art:'',
+      pl:'',
+      en:'to remember',
+      ph:'zish air-IN-nern ahn'
+    },
+    {
+      de:'teilnehmen an',
+      art:'',
+      pl:'',
+      en:'to take part in',
+      ph:'TAIL-nay-men ahn'
+    },
+    {
+      de:'sich gewöhnen an',
+      art:'',
+      pl:'',
+      en:'to get used to',
+      ph:'zish geh-VER-nen ahn'
+    },
+    {
+      de:'berühmt',
+      art:'',
+      pl:'',
+      en:'famous',
+      ph:'beh-RUEMT'
+    },
+    {
+      de:'kreativ',
+      art:'',
+      pl:'',
+      en:'creative',
+      ph:'kray-ah-TEEF'
+    },
+    {
+      de:'beeindruckend',
+      art:'',
+      pl:'',
+      en:'impressive',
+      ph:'beh-AIN-droo-kent'
+    },
+    {
+      de:'langweilig',
+      art:'',
+      pl:'',
+      en:'boring',
+      ph:'LAHNG-vai-lish'
+    },
+    {
+      de:'spannend',
+      art:'',
+      pl:'',
+      en:'exciting',
+      ph:'SHPAH-nent'
+    }
+  ],
+  grammar:{
+    title:'Adjective endings mastered + n-declension',
+    plain:'Adjectives before nouns: "der neue Film", "ein neuer Film", "den neuen Film". And the n-declension: some masculine nouns add -n/-en in all cases except nominative: "der Patient, den Patienten, dem Patienten, des Patienten".',
+    rule:'der neue Film · ein neuer Film · den neuen Film · n-declension: der Patient, den Patienten, dem Patienten, des Patienten · prepositional verbs: sich freuen auf/über, denken an, sich erinnern an.',
+    examples:[
+      {
+        de:'Das ist der neue Film des berühmten Autors.',
+        en:'That is the new film by the famous author.',
+        ph:'dahs ist dair NOY-e film des beh-RUEM-ten OW-tohrs'
+      },
+      {
+        de:'Ich freue mich auf die Aufführung.',
+        en:'I am looking forward to the performance.',
+        ph:'ish FROY-e mish owf dee OWF-fue-rung'
+      },
+      {
+        de:'Der Patient, den Patienten, dem Patienten, des Patienten.',
+        en:'The n-declension: Patient in all four cases.',
+        ph:'dair pah-TSEE-ent, dayn pah-TSEE-en-ten, daym pah-TSEE-en-ten, des pah-TSEE-en-ten'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Das ist der ___ Film."', options:['neue', 'neuer', 'neuen', 'neu'], answer:0,
+     why:'After "der" the ending is -e: "der neue Film".'},
+    {q:'Fill in: "Ich sehe den ___ Film."', options:['neue', 'neuer', 'neuen', 'neu'], answer:2,
+     why:'Accusative masculine after "den": "den neuen Film".'},
+    {q:'Fill in: "Ich freue mich ___ die Aufführung."', options:['auf', 'über', 'an', 'für'], answer:0,
+     why:'"sich freuen auf" = to look forward to.'},
+    {q:'Fill in: "Ich erinnere mich ___ das Gemälde."', options:['auf', 'über', 'an', 'für'], answer:2,
+     why:'"sich erinnern an" = to remember.'},
+    {q:'What is the accusative of "der Patient"?', options:['der Patient', 'den Patienten', 'dem Patienten', 'des Patienten'], answer:1,
+     why:'n-declension: der Patient → den Patienten.'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich interessiere mich für die neue Ausstellung. Ich freue mich auf die Aufführung."',
+    model:[
+      'Ich interessiere mich für die neue Ausstellung.',
+      'Ich freue mich auf die Aufführung.',
+      'Das ist der neue Film des berühmten Autors.'
+    ]
+  },
+  recap:[
+    'Adjective endings: der neue Film, ein neuer Film, den neuen Film.',
+    'n-declension: der Patient, den Patienten, dem Patienten, des Patienten.',
+    'Prepositional verbs: sich freuen auf, denken an, sich erinnern an.',
+    'Culture words: das Gemälde, die Aufführung, der Künstler, das Theater.'
+  ],
+  tip:'Memory tip: prepositional verbs are fixed pairs — learn "sich freuen AUF" as one unit, never just "freuen".',
+  extra:[
+    {
+      q:'Say "I am looking forward to the performance."',
+      a:'Ich freue mich auf die Aufführung.'
+    },
+    {
+      q:'Say "The new film by the famous author."',
+      a:'Der neue Film des berühmten Autors.'
+    },
+    {
+      q:'What does "berühmt" mean?',
+      a:'Famous.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Culture words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Kunst',
+          art:'die',
+          pl:'',
+          en:'art',
+          ph:'koonst'
+        },
+        {
+          de:'Theater',
+          art:'das',
+          pl:'Theater',
+          en:'theatre',
+          ph:'tay-AH-ter'
+        },
+        {
+          de:'Ausstellung',
+          art:'die',
+          pl:'Ausstellungen',
+          en:'exhibition',
+          ph:'OWS-shtel-lung'
+        },
+        {
+          de:'Künstler',
+          art:'der',
+          pl:'Künstler',
+          en:'artist',
+          ph:'KUENST-ler'
+        },
+        {
+          de:'Gemälde',
+          art:'das',
+          pl:'Gemälde',
+          en:'painting',
+          ph:'geh-MAYL-de'
+        },
+        {
+          de:'Literatur',
+          art:'die',
+          pl:'',
+          en:'literature',
+          ph:'lee-te-rah-TOOR'
+        },
+        {
+          de:'Roman',
+          art:'der',
+          pl:'Romane',
+          en:'novel',
+          ph:'ro-MAHN'
+        },
+        {
+          de:'Aufführung',
+          art:'die',
+          pl:'Aufführungen',
+          en:'performance',
+          ph:'OWF-fue-rung'
+        },
+        {
+          de:'Museum',
+          art:'das',
+          pl:'Museen',
+          en:'museum',
+          ph:'moo-ZAY-um'
+        },
+        {
+          de:'Konzert',
+          art:'das',
+          pl:'Konzerte',
+          en:'concert',
+          ph:'kon-TSAIRT'
+        },
+        {
+          de:'Oper',
+          art:'die',
+          pl:'Opern',
+          en:'opera',
+          ph:'OH-per'
+        },
+        {
+          de:'Ballett',
+          art:'das',
+          pl:'Ballette',
+          en:'ballet',
+          ph:'bah-LET'
+        },
+        {
+          de:'Schauspieler',
+          art:'der',
+          pl:'Schauspieler',
+          en:'actor',
+          ph:'SHOW-shpee-ler'
+        },
+        {
+          de:'Schauspielerin',
+          art:'die',
+          pl:'Schauspielerinnen',
+          en:'actress',
+          ph:'SHOW-shpee-le-rin'
+        },
+        {
+          de:'Sänger',
+          art:'der',
+          pl:'Sänger',
+          en:'singer (male)',
+          ph:'ZENG-er'
+        },
+        {
+          de:'Sängerin',
+          art:'die',
+          pl:'Sängerinnen',
+          en:'singer (female)',
+          ph:'ZENG-e-rin'
+        },
+        {
+          de:'Autor',
+          art:'der',
+          pl:'Autoren',
+          en:'author',
+          ph:'OW-tohr'
+        },
+        {
+          de:'Autorin',
+          art:'die',
+          pl:'Autorinnen',
+          en:'female author',
+          ph:'OW-toh-rin'
+        },
+        {
+          de:'Dichter',
+          art:'der',
+          pl:'Dichter',
+          en:'poet',
+          ph:'DIKH-ter'
+        },
+        {
+          de:'Gedicht',
+          art:'das',
+          pl:'Gedichte',
+          en:'poem',
+          ph:'geh-DIKHT'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Art words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Kapitel',
+          art:'das',
+          pl:'Kapitel',
+          en:'chapter',
+          ph:'kah-PEE-tel'
+        },
+        {
+          de:'Figur',
+          art:'die',
+          pl:'Figuren',
+          en:'character, figure',
+          ph:'fee-GOOR'
+        },
+        {
+          de:'Handlung',
+          art:'die',
+          pl:'Handlungen',
+          en:'plot, action',
+          ph:'HAHND-lung'
+        },
+        {
+          de:'Bühne',
+          art:'die',
+          pl:'Bühnen',
+          en:'stage',
+          ph:'BUE-ne'
+        },
+        {
+          de:'Publikum',
+          art:'das',
+          pl:'',
+          en:'audience',
+          ph:'POO-blee-kum'
+        },
+        {
+          de:'Beifall',
+          art:'der',
+          pl:'',
+          en:'applause',
+          ph:'BAI-fahl'
+        },
+        {
+          de:'Eintrittskarte',
+          art:'die',
+          pl:'Eintrittskarten',
+          en:'ticket',
+          ph:'AIN-tritts-kahr-te'
+        },
+        {
+          de:'Vorstellung',
+          art:'die',
+          pl:'Vorstellungen',
+          en:'performance',
+          ph:'FOR-shtel-lung'
+        },
+        {
+          de:'sich interessieren für',
+          art:'',
+          pl:'',
+          en:'to be interested in',
+          ph:'zish in-teh-res-SEE-ren fuer'
+        },
+        {
+          de:'sich freuen auf',
+          art:'',
+          pl:'',
+          en:'to look forward to',
+          ph:'zish FROY-en owf'
+        },
+        {
+          de:'sich freuen über',
+          art:'',
+          pl:'',
+          en:'to be happy about',
+          ph:'zish FROY-en UE-ber'
+        },
+        {
+          de:'denken an',
+          art:'',
+          pl:'',
+          en:'to think of',
+          ph:'DEN-ken ahn'
+        },
+        {
+          de:'sich erinnern an',
+          art:'',
+          pl:'',
+          en:'to remember',
+          ph:'zish air-IN-nern ahn'
+        },
+        {
+          de:'teilnehmen an',
+          art:'',
+          pl:'',
+          en:'to take part in',
+          ph:'TAIL-nay-men ahn'
+        },
+        {
+          de:'sich gewöhnen an',
+          art:'',
+          pl:'',
+          en:'to get used to',
+          ph:'zish geh-VER-nen ahn'
+        },
+        {
+          de:'berühmt',
+          art:'',
+          pl:'',
+          en:'famous',
+          ph:'beh-RUEMT'
+        },
+        {
+          de:'kreativ',
+          art:'',
+          pl:'',
+          en:'creative',
+          ph:'kray-ah-TEEF'
+        },
+        {
+          de:'beeindruckend',
+          art:'',
+          pl:'',
+          en:'impressive',
+          ph:'beh-AIN-droo-kent'
+        },
+        {
+          de:'langweilig',
+          art:'',
+          pl:'',
+          en:'boring',
+          ph:'LAHNG-vai-lish'
+        },
+        {
+          de:'spannend',
+          art:'',
+          pl:'',
+          en:'exciting',
+          ph:'SHPAH-nent'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: The new exhibition',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Ich interessiere mich für die neue Ausstellung im Museum.',
+          en:'I am interested in the new exhibition at the museum.',
+          ph:'ish in-teh-res-SEE-re mish fuer dee NOY-e OWS-shtel-lung im moo-ZAY-um'
+        },
+        {
+          who:'B',
+          de:'Ich freue mich auf die Aufführung heute Abend.',
+          en:'I am looking forward to the performance tonight.',
+          ph:'ish FROY-e mish owf dee OWF-fue-rung HOY-te AH-bent'
+        },
+        {
+          who:'A',
+          de:'Erinnerst du dich an das Gemälde des berühmten Künstlers?',
+          en:'Do you remember the painting by the famous artist?',
+          ph:'air-IN-nerst doo dish ahn dahs geh-MAY-le dehs beh-RUEM-ten KUENST-lers'
+        },
+        {
+          who:'B',
+          de:'Ja, das spannende Bild hat mich sehr beeindruckt.',
+          en:'Yes, the exciting picture impressed me very much.',
+          ph:'yah, dahs SHPAH-nen-de bilt haht mish zair beh-AIN-drookt'
+        },
+        {
+          who:'A',
+          de:'Der neue Roman des Autors ist kreativ und spannend.',
+          en:'The author\'s new novel is creative and exciting.',
+          ph:'dair NOY-e roh-MAHN des OW-tohrs ist kray-ah-TEEF oont SHPAH-nent'
+        },
+        {
+          who:'B',
+          de:'Ich nehme an der Vorstellung teil und freue mich über den Beifall.',
+          en:'I take part in the performance and I am happy about the applause.',
+          ph:'ish NAY-me ahn dair FOR-shtel-lung tile oont FROY-e mish UE-ber dayn BAI-fahl'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich interessiere mich für die neue Ausstellung. Ich freue mich auf die Aufführung."',
+        model:[
+          'Ich interessiere mich für die neue Ausstellung.',
+          'Ich freue mich auf die Aufführung.',
+          'Das ist der neue Film des berühmten Autors.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Adjective endings & n-declension',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Adjective endings mastered + n-declension',
+        plain:'Adjectives before nouns: "der neue Film", "ein neuer Film", "den neuen Film". And the n-declension: some masculine nouns add -n/-en in all cases except nominative: "der Patient, den Patienten, dem Patienten, des Patienten".',
+        rule:'der neue Film · ein neuer Film · den neuen Film · n-declension: der Patient, den Patienten, dem Patienten, des Patienten · prepositional verbs: sich freuen auf/über, denken an, sich erinnern an.',
+        examples:[
+          {
+            de:'Das ist der neue Film des berühmten Autors.',
+            en:'That is the new film by the famous author.',
+            ph:'dahs ist dair NOY-e film des beh-RUEM-ten OW-tohrs'
+          },
+          {
+            de:'Ich freue mich auf die Aufführung.',
+            en:'I am looking forward to the performance.',
+            ph:'ish FROY-e mish owf dee OWF-fue-rung'
+          },
+          {
+            de:'Der Patient, den Patienten, dem Patienten, des Patienten.',
+            en:'The n-declension: Patient in all four cases.',
+            ph:'dair pah-TSEE-ent, dayn pah-TSEE-en-ten, daym pah-TSEE-en-ten, des pah-TSEE-en-ten'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: endings & prepositions',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Das ist der ___ Film."', options:['neue', 'neuer', 'neuen', 'neu'], answer:0,
+         why:'After "der" the ending is -e: "der neue Film".'},
+        {q:'Fill in: "Ich sehe den ___ Film."', options:['neue', 'neuer', 'neuen', 'neu'], answer:2,
+         why:'Accusative masculine after "den": "den neuen Film".'},
+        {q:'Fill in: "Ich freue mich ___ die Aufführung."', options:['auf', 'über', 'an', 'für'], answer:0,
+         why:'"sich freuen auf" = to look forward to.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: culture & arts',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich erinnere mich ___ das Gemälde."', options:['auf', 'über', 'an', 'für'], answer:2,
+         why:'"sich erinnern an" = to remember.'},
+        {q:'What is the accusative of "der Patient"?', options:['der Patient', 'den Patienten', 'dem Patienten', 'des Patienten'], answer:1,
+         why:'n-declension: der Patient → den Patienten.'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 10 — Health & Medicine',
+};
 
-CHAPTERS['B2-10'] = { id:'B2-10', n:10, level:'B2', title:'Health & Medicine', time:'10 min', syllabus:true,
+CHAPTERS['B2-10'] = {
+  id:'B2-10',
+  n:10,
+  level:'B2',
+  title:'Health & Medicine',
+  time:'17 min',
   concept:'Medical German: diagnosis, therapy and treatment.',
-  learn:['Talk about diagnoses and therapies','Use noun-verb collocations','Describe treatments precisely'],
-  grammar:{ title:'Noun-verb collocations',
-    plain:'Fixed pairs: "einen Antrag stellen" (to submit an application), "eine Entscheidung treffen" (to make a decision), "eine Frage stellen" (to ask a question), "in Kraft treten" (to come into force). Learn them as whole phrases — they are the building blocks of formal German.' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Sehr geehrte Frau Doktor, ich möchte einen Termin vereinbaren.',
+      en:'Dear Doctor, I would like to arrange an appointment.',
+      ph:'zair geh-AIR-te frow DOK-tor, ish MERKH-te AI-nen tair-MEEN fair-AIN-bah-ren'
+    },
+    {
+      who:'B',
+      de:'Gern. Der Facharzt stellt eine Diagnose und beginnt eine Therapie.',
+      en:'With pleasure. The specialist makes a diagnosis and starts a therapy.',
+      ph:'gairn. dair FAHKH-ahrtst shtelt AI-ne dee-ahg-NOH-ze oont beh-GINT AI-ne teh-rah-PEE'
+    },
+    {
+      who:'A',
+      de:'Muss ich einen Antrag stellen, um die Behandlung zu bekommen?',
+      en:'Do I have to submit an application to get the treatment?',
+      ph:'mooss ish AI-nen AHN-trahk SHTEL-len, oom dee beh-HAHND-lung tsoo beh-KOM-men'
+    },
+    {
+      who:'B',
+      de:'Ja, und das neue Gesetz tritt am ersten Januar in Kraft.',
+      en:'Yes, and the new law comes into force on the first of January.',
+      ph:'yah, oont dahs NOY-e geh-ZETS trit ahm AIR-sten yah-noo-AHR in krahft'
+    },
+    {
+      who:'A',
+      de:'Ich habe Fieber und starke Beschwerden. Ist das dringend?',
+      en:'I have a fever and strong symptoms. Is it urgent?',
+      ph:'ish HAH-be FEE-ber oont SHTAHR-ke beh-SHVAIR-den. ist dahs DRING-ent'
+    },
+    {
+      who:'B',
+      de:'Kommen Sie bitte sofort in die Notaufnahme. Wir überweisen Sie an den Facharzt.',
+      en:'Please come to the emergency department at once. We refer you to the specialist.',
+      ph:'KOM-men zee BIT-te zoh-FORT in dee NOHT-owf-nah-me. veer ue-ber-VAI-zen zee ahn dayn FAHKH-ahrtst'
+    }
+  ],
   vocab:[
-    {de:'Diagnose', art:'die', pl:'Diagnosen', en:'diagnosis', ph:'dee-ahg-NOH-ze'},
-    {de:'Therapie', art:'die', pl:'Therapien', en:'therapy', ph:'teh-rah-PEE'},
-    {de:'Operation', art:'die', pl:'Operationen', en:'surgery, operation', ph:'o-pe-rah-TSEE-ohn'},
-    {de:'Eingriff', art:'der', pl:'Eingriffe', en:'procedure, intervention', ph:'INE-grif'},
-    {de:'Heilung', art:'die', pl:'', en:'healing, recovery', ph:'HAI-lung'},
-    {de:'Vorsorge', art:'die', pl:'', en:'prevention, precaution', ph:'FOR-zor-ge'},
-    {de:'behandeln', art:'', pl:'', en:'to treat', ph:'beh-HAHN-deln'},
-    {de:'Krankheit', art:'die', pl:'Krankheiten', en:'illness, disease', ph:'KRAHNK-hite'},
-  ], next:'Next: Chapter 11 — Environment & Sustainability (syllabus)' };
+    {
+      de:'Diagnose',
+      art:'die',
+      pl:'Diagnosen',
+      en:'diagnosis',
+      ph:'dee-ahg-NOH-ze'
+    },
+    {
+      de:'Therapie',
+      art:'die',
+      pl:'Therapien',
+      en:'therapy',
+      ph:'teh-rah-PEE'
+    },
+    {
+      de:'Operation',
+      art:'die',
+      pl:'Operationen',
+      en:'surgery, operation',
+      ph:'o-pe-rah-TSEE-ohn'
+    },
+    {
+      de:'Eingriff',
+      art:'der',
+      pl:'Eingriffe',
+      en:'procedure, intervention',
+      ph:'INE-grif'
+    },
+    {
+      de:'Heilung',
+      art:'die',
+      pl:'',
+      en:'healing, recovery',
+      ph:'HAI-lung'
+    },
+    {
+      de:'Vorsorge',
+      art:'die',
+      pl:'',
+      en:'prevention, precaution',
+      ph:'FOR-zor-ge'
+    },
+    {
+      de:'behandeln',
+      art:'',
+      pl:'',
+      en:'to treat',
+      ph:'beh-HAHN-deln'
+    },
+    {
+      de:'Krankheit',
+      art:'die',
+      pl:'Krankheiten',
+      en:'illness, disease',
+      ph:'KRAHNK-hite'
+    },
+    {
+      de:'Facharzt',
+      art:'der',
+      pl:'Fachärzte',
+      en:'specialist',
+      ph:'FAHKH-ahrtst'
+    },
+    {
+      de:'Notfall',
+      art:'der',
+      pl:'Notfälle',
+      en:'emergency',
+      ph:'NOHT-fahl'
+    },
+    {
+      de:'Blut',
+      art:'das',
+      pl:'',
+      en:'blood',
+      ph:'bloot'
+    },
+    {
+      de:'Puls',
+      art:'der',
+      pl:'',
+      en:'pulse',
+      ph:'pools'
+    },
+    {
+      de:'Fieber',
+      art:'das',
+      pl:'',
+      en:'fever',
+      ph:'FEE-ber'
+    },
+    {
+      de:'Beschwerde',
+      art:'die',
+      pl:'Beschwerden',
+      en:'complaint, symptom',
+      ph:'beh-SHVAIR-de'
+    },
+    {
+      de:'Impfung',
+      art:'die',
+      pl:'Impfungen',
+      en:'vaccination',
+      ph:'IMP-fung'
+    },
+    {
+      de:'Rezept',
+      art:'das',
+      pl:'Rezepte',
+      en:'prescription',
+      ph:'reh-TSEPT'
+    },
+    {
+      de:'Krankenhaus',
+      art:'das',
+      pl:'Krankenhäuser',
+      en:'hospital',
+      ph:'KRAHN-ken-hows'
+    },
+    {
+      de:'Notaufnahme',
+      art:'die',
+      pl:'Notaufnahmen',
+      en:'emergency department',
+      ph:'NOHT-owf-nah-me'
+    },
+    {
+      de:'Intensivstation',
+      art:'die',
+      pl:'Intensivstationen',
+      en:'intensive care unit',
+      ph:'in-ten-ZEEF-shtah-tsee-ohn'
+    },
+    {
+      de:'Ambulanz',
+      art:'die',
+      pl:'Ambulanzen',
+      en:'ambulance, outpatient clinic',
+      ph:'ahm-boo-LAHNTS'
+    },
+    {
+      de:'Röntgen',
+      art:'das',
+      pl:'',
+      en:'X-ray',
+      ph:'RERNT-gen'
+    },
+    {
+      de:'Bluttest',
+      art:'der',
+      pl:'Bluttests',
+      en:'blood test',
+      ph:'BLOOT-test'
+    },
+    {
+      de:'Befund',
+      art:'der',
+      pl:'Befunde',
+      en:'finding, result',
+      ph:'beh-FUNT'
+    },
+    {
+      de:'Antrag',
+      art:'der',
+      pl:'Anträge',
+      en:'application',
+      ph:'AHN-trahk'
+    },
+    {
+      de:'Genehmigung',
+      art:'die',
+      pl:'Genehmigungen',
+      en:'approval, permit',
+      ph:'geh-NAY-mi-gung'
+    },
+    {
+      de:'Attest',
+      art:'das',
+      pl:'Atteste',
+      en:'medical certificate',
+      ph:'ah-TEST'
+    },
+    {
+      de:'einen Antrag stellen',
+      art:'',
+      pl:'',
+      en:'to submit an application',
+      ph:'AI-nen AHN-trahk SHTEL-len'
+    },
+    {
+      de:'eine Entscheidung treffen',
+      art:'',
+      pl:'',
+      en:'to make a decision',
+      ph:'AI-ne ent-SHAI-dung TREF-fen'
+    },
+    {
+      de:'eine Frage stellen',
+      art:'',
+      pl:'',
+      en:'to ask a question',
+      ph:'AI-ne FRAH-ge SHTEL-len'
+    },
+    {
+      de:'in Kraft treten',
+      art:'',
+      pl:'',
+      en:'to come into force',
+      ph:'in krahft TRAY-ten'
+    },
+    {
+      de:'eine Diagnose stellen',
+      art:'',
+      pl:'',
+      en:'to make a diagnosis',
+      ph:'AI-ne dee-ahg-NOH-ze SHTEL-len'
+    },
+    {
+      de:'eine Therapie beginnen',
+      art:'',
+      pl:'',
+      en:'to start a therapy',
+      ph:'AI-ne teh-rah-PEE beh-GIN-nen'
+    },
+    {
+      de:'einen Termin vereinbaren',
+      art:'',
+      pl:'',
+      en:'to arrange an appointment',
+      ph:'AI-nen tair-MEEN fair-AIN-bah-ren'
+    },
+    {
+      de:'sich anmelden',
+      art:'',
+      pl:'',
+      en:'to register',
+      ph:'zish AHN-mel-den'
+    },
+    {
+      de:'sich abmelden',
+      art:'',
+      pl:'',
+      en:'to deregister, sign off',
+      ph:'zish AHP-mel-den'
+    },
+    {
+      de:'überweisen',
+      art:'',
+      pl:'',
+      en:'to refer (a patient)',
+      ph:'ue-ber-VAI-zen'
+    },
+    {
+      de:'vorbeugen',
+      art:'',
+      pl:'',
+      en:'to prevent',
+      ph:'FOR-boy-gen'
+    },
+    {
+      de:'gesundheitlich',
+      art:'',
+      pl:'',
+      en:'in terms of health',
+      ph:'geh-ZUNT-hait-lish'
+    },
+    {
+      de:'dringend',
+      art:'',
+      pl:'',
+      en:'urgent',
+      ph:'DRING-ent'
+    },
+    {
+      de:'Sprechstunde',
+      art:'die',
+      pl:'Sprechstunden',
+      en:'consultation hours',
+      ph:'SHPREKH-shtun-de'
+    }
+  ],
+  grammar:{
+    title:'Noun-verb collocations',
+    plain:'Fixed pairs: "einen Antrag stellen" (to submit an application), "eine Entscheidung treffen" (to make a decision), "eine Frage stellen" (to ask a question), "in Kraft treten" (to come into force). Learn them as whole phrases — they are the building blocks of formal German.',
+    rule:'einen Antrag stellen · eine Entscheidung treffen · eine Frage stellen · in Kraft treten · eine Diagnose stellen · Learn them as whole phrases.',
+    examples:[
+      {
+        de:'Ich möchte einen Antrag stellen.',
+        en:'I would like to submit an application.',
+        ph:'ish MERKH-te AI-nen AHN-trahk SHTEL-len'
+      },
+      {
+        de:'Das Gesetz tritt am ersten Januar in Kraft.',
+        en:'The law comes into force on the first of January.',
+        ph:'dahs geh-ZETS trit ahm AIR-sten yah-noo-AHR in krahft'
+      },
+      {
+        de:'Der Arzt stellt eine Diagnose und beginnt eine Therapie.',
+        en:'The doctor makes a diagnosis and starts a therapy.',
+        ph:'dair ahrtst shtelt AI-ne dee-ahg-NOH-ze oont beh-GINT AI-ne teh-rah-PEE'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Which is the correct collocation?', options:['einen Antrag machen', 'einen Antrag stellen', 'einen Antrag geben', 'einen Antrag nehmen'], answer:1,
+     why:'"einen Antrag stellen" = to submit an application — a fixed pair.'},
+    {q:'Fill in: "Das Gesetz tritt am ersten Januar ___ Kraft."', options:['in', 'an', 'auf', 'zu'], answer:0,
+     why:'"in Kraft treten" = to come into force.'},
+    {q:'What does "eine Entscheidung treffen" mean?', options:['to ask a decision', 'to make a decision', 'to change a decision', 'to take a decision away'], answer:1,
+     why:'"eine Entscheidung treffen" = to make a decision.'},
+    {q:'Fill in: "Ich möchte einen Termin ___."', options:['vereinbaren', 'stellen', 'treffen', 'treten'], answer:0,
+     why:'"einen Termin vereinbaren" = to arrange an appointment.'},
+    {q:'Which is formal?', options:[
+      'Hey, ich brauch einen Termin!',
+      'Sehr geehrte Frau Doktor, ich möchte einen Termin vereinbaren.',
+      'Hallo, gib mir einen Termin.',
+      'Ich will einen Termin, okay?'
+    ], answer:1,
+     why:'"Sehr geehrte Frau Doktor ..." is the formal register.'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Sehr geehrte Frau Doktor, ich möchte einen Termin vereinbaren. Ich möchte einen Antrag stellen."',
+    model:[
+      'Sehr geehrte Frau Doktor, ich möchte einen Termin vereinbaren.',
+      'Ich möchte einen Antrag stellen.',
+      'Das Gesetz tritt am ersten Januar in Kraft.'
+    ]
+  },
+  recap:[
+    'Collocations are fixed pairs: einen Antrag stellen, eine Entscheidung treffen.',
+    '"in Kraft treten" = to come into force.',
+    'Formal: "Sehr geehrte Frau Doktor".',
+    'Medical words: die Diagnose, die Therapie, der Notfall, die Impfung.'
+  ],
+  tip:'Memory tip: never translate collocations word by word. Learn "einen Antrag stellen" as one chunk — stellen, not machen.',
+  extra:[
+    {
+      q:'Say "I would like to submit an application."',
+      a:'Ich möchte einen Antrag stellen.'
+    },
+    {
+      q:'Say "The law comes into force on the first of January."',
+      a:'Das Gesetz tritt am ersten Januar in Kraft.'
+    },
+    {
+      q:'What does "der Notfall" mean?',
+      a:'The emergency.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Medical words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Diagnose',
+          art:'die',
+          pl:'Diagnosen',
+          en:'diagnosis',
+          ph:'dee-ahg-NOH-ze'
+        },
+        {
+          de:'Therapie',
+          art:'die',
+          pl:'Therapien',
+          en:'therapy',
+          ph:'teh-rah-PEE'
+        },
+        {
+          de:'Operation',
+          art:'die',
+          pl:'Operationen',
+          en:'surgery, operation',
+          ph:'o-pe-rah-TSEE-ohn'
+        },
+        {
+          de:'Eingriff',
+          art:'der',
+          pl:'Eingriffe',
+          en:'procedure, intervention',
+          ph:'INE-grif'
+        },
+        {
+          de:'Heilung',
+          art:'die',
+          pl:'',
+          en:'healing, recovery',
+          ph:'HAI-lung'
+        },
+        {
+          de:'Vorsorge',
+          art:'die',
+          pl:'',
+          en:'prevention, precaution',
+          ph:'FOR-zor-ge'
+        },
+        {
+          de:'behandeln',
+          art:'',
+          pl:'',
+          en:'to treat',
+          ph:'beh-HAHN-deln'
+        },
+        {
+          de:'Krankheit',
+          art:'die',
+          pl:'Krankheiten',
+          en:'illness, disease',
+          ph:'KRAHNK-hite'
+        },
+        {
+          de:'Facharzt',
+          art:'der',
+          pl:'Fachärzte',
+          en:'specialist',
+          ph:'FAHKH-ahrtst'
+        },
+        {
+          de:'Notfall',
+          art:'der',
+          pl:'Notfälle',
+          en:'emergency',
+          ph:'NOHT-fahl'
+        },
+        {
+          de:'Blut',
+          art:'das',
+          pl:'',
+          en:'blood',
+          ph:'bloot'
+        },
+        {
+          de:'Puls',
+          art:'der',
+          pl:'',
+          en:'pulse',
+          ph:'pools'
+        },
+        {
+          de:'Fieber',
+          art:'das',
+          pl:'',
+          en:'fever',
+          ph:'FEE-ber'
+        },
+        {
+          de:'Beschwerde',
+          art:'die',
+          pl:'Beschwerden',
+          en:'complaint, symptom',
+          ph:'beh-SHVAIR-de'
+        },
+        {
+          de:'Impfung',
+          art:'die',
+          pl:'Impfungen',
+          en:'vaccination',
+          ph:'IMP-fung'
+        },
+        {
+          de:'Rezept',
+          art:'das',
+          pl:'Rezepte',
+          en:'prescription',
+          ph:'reh-TSEPT'
+        },
+        {
+          de:'Krankenhaus',
+          art:'das',
+          pl:'Krankenhäuser',
+          en:'hospital',
+          ph:'KRAHN-ken-hows'
+        },
+        {
+          de:'Notaufnahme',
+          art:'die',
+          pl:'Notaufnahmen',
+          en:'emergency department',
+          ph:'NOHT-owf-nah-me'
+        },
+        {
+          de:'Intensivstation',
+          art:'die',
+          pl:'Intensivstationen',
+          en:'intensive care unit',
+          ph:'in-ten-ZEEF-shtah-tsee-ohn'
+        },
+        {
+          de:'Ambulanz',
+          art:'die',
+          pl:'Ambulanzen',
+          en:'ambulance, outpatient clinic',
+          ph:'ahm-boo-LAHNTS'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Treatment words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Röntgen',
+          art:'das',
+          pl:'',
+          en:'X-ray',
+          ph:'RERNT-gen'
+        },
+        {
+          de:'Bluttest',
+          art:'der',
+          pl:'Bluttests',
+          en:'blood test',
+          ph:'BLOOT-test'
+        },
+        {
+          de:'Befund',
+          art:'der',
+          pl:'Befunde',
+          en:'finding, result',
+          ph:'beh-FUNT'
+        },
+        {
+          de:'Antrag',
+          art:'der',
+          pl:'Anträge',
+          en:'application',
+          ph:'AHN-trahk'
+        },
+        {
+          de:'Genehmigung',
+          art:'die',
+          pl:'Genehmigungen',
+          en:'approval, permit',
+          ph:'geh-NAY-mi-gung'
+        },
+        {
+          de:'Attest',
+          art:'das',
+          pl:'Atteste',
+          en:'medical certificate',
+          ph:'ah-TEST'
+        },
+        {
+          de:'einen Antrag stellen',
+          art:'',
+          pl:'',
+          en:'to submit an application',
+          ph:'AI-nen AHN-trahk SHTEL-len'
+        },
+        {
+          de:'eine Entscheidung treffen',
+          art:'',
+          pl:'',
+          en:'to make a decision',
+          ph:'AI-ne ent-SHAI-dung TREF-fen'
+        },
+        {
+          de:'eine Frage stellen',
+          art:'',
+          pl:'',
+          en:'to ask a question',
+          ph:'AI-ne FRAH-ge SHTEL-len'
+        },
+        {
+          de:'in Kraft treten',
+          art:'',
+          pl:'',
+          en:'to come into force',
+          ph:'in krahft TRAY-ten'
+        },
+        {
+          de:'eine Diagnose stellen',
+          art:'',
+          pl:'',
+          en:'to make a diagnosis',
+          ph:'AI-ne dee-ahg-NOH-ze SHTEL-len'
+        },
+        {
+          de:'eine Therapie beginnen',
+          art:'',
+          pl:'',
+          en:'to start a therapy',
+          ph:'AI-ne teh-rah-PEE beh-GIN-nen'
+        },
+        {
+          de:'einen Termin vereinbaren',
+          art:'',
+          pl:'',
+          en:'to arrange an appointment',
+          ph:'AI-nen tair-MEEN fair-AIN-bah-ren'
+        },
+        {
+          de:'sich anmelden',
+          art:'',
+          pl:'',
+          en:'to register',
+          ph:'zish AHN-mel-den'
+        },
+        {
+          de:'sich abmelden',
+          art:'',
+          pl:'',
+          en:'to deregister, sign off',
+          ph:'zish AHP-mel-den'
+        },
+        {
+          de:'überweisen',
+          art:'',
+          pl:'',
+          en:'to refer (a patient)',
+          ph:'ue-ber-VAI-zen'
+        },
+        {
+          de:'vorbeugen',
+          art:'',
+          pl:'',
+          en:'to prevent',
+          ph:'FOR-boy-gen'
+        },
+        {
+          de:'gesundheitlich',
+          art:'',
+          pl:'',
+          en:'in terms of health',
+          ph:'geh-ZUNT-hait-lish'
+        },
+        {
+          de:'dringend',
+          art:'',
+          pl:'',
+          en:'urgent',
+          ph:'DRING-ent'
+        },
+        {
+          de:'Sprechstunde',
+          art:'die',
+          pl:'Sprechstunden',
+          en:'consultation hours',
+          ph:'SHPREKH-shtun-de'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: At the doctor (formal)',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Sehr geehrte Frau Doktor, ich möchte einen Termin vereinbaren.',
+          en:'Dear Doctor, I would like to arrange an appointment.',
+          ph:'zair geh-AIR-te frow DOK-tor, ish MERKH-te AI-nen tair-MEEN fair-AIN-bah-ren'
+        },
+        {
+          who:'B',
+          de:'Gern. Der Facharzt stellt eine Diagnose und beginnt eine Therapie.',
+          en:'With pleasure. The specialist makes a diagnosis and starts a therapy.',
+          ph:'gairn. dair FAHKH-ahrtst shtelt AI-ne dee-ahg-NOH-ze oont beh-GINT AI-ne teh-rah-PEE'
+        },
+        {
+          who:'A',
+          de:'Muss ich einen Antrag stellen, um die Behandlung zu bekommen?',
+          en:'Do I have to submit an application to get the treatment?',
+          ph:'mooss ish AI-nen AHN-trahk SHTEL-len, oom dee beh-HAHND-lung tsoo beh-KOM-men'
+        },
+        {
+          who:'B',
+          de:'Ja, und das neue Gesetz tritt am ersten Januar in Kraft.',
+          en:'Yes, and the new law comes into force on the first of January.',
+          ph:'yah, oont dahs NOY-e geh-ZETS trit ahm AIR-sten yah-noo-AHR in krahft'
+        },
+        {
+          who:'A',
+          de:'Ich habe Fieber und starke Beschwerden. Ist das dringend?',
+          en:'I have a fever and strong symptoms. Is it urgent?',
+          ph:'ish HAH-be FEE-ber oont SHTAHR-ke beh-SHVAIR-den. ist dahs DRING-ent'
+        },
+        {
+          who:'B',
+          de:'Kommen Sie bitte sofort in die Notaufnahme. Wir überweisen Sie an den Facharzt.',
+          en:'Please come to the emergency department at once. We refer you to the specialist.',
+          ph:'KOM-men zee BIT-te zoh-FORT in dee NOHT-owf-nah-me. veer ue-ber-VAI-zen zee ahn dayn FAHKH-ahrtst'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Sehr geehrte Frau Doktor, ich möchte einen Termin vereinbaren. Ich möchte einen Antrag stellen."',
+        model:[
+          'Sehr geehrte Frau Doktor, ich möchte einen Termin vereinbaren.',
+          'Ich möchte einen Antrag stellen.',
+          'Das Gesetz tritt am ersten Januar in Kraft.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Noun-verb collocations',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Noun-verb collocations',
+        plain:'Fixed pairs: "einen Antrag stellen" (to submit an application), "eine Entscheidung treffen" (to make a decision), "eine Frage stellen" (to ask a question), "in Kraft treten" (to come into force). Learn them as whole phrases — they are the building blocks of formal German.',
+        rule:'einen Antrag stellen · eine Entscheidung treffen · eine Frage stellen · in Kraft treten · eine Diagnose stellen · Learn them as whole phrases.',
+        examples:[
+          {
+            de:'Ich möchte einen Antrag stellen.',
+            en:'I would like to submit an application.',
+            ph:'ish MERKH-te AI-nen AHN-trahk SHTEL-len'
+          },
+          {
+            de:'Das Gesetz tritt am ersten Januar in Kraft.',
+            en:'The law comes into force on the first of January.',
+            ph:'dahs geh-ZETS trit ahm AIR-sten yah-noo-AHR in krahft'
+          },
+          {
+            de:'Der Arzt stellt eine Diagnose und beginnt eine Therapie.',
+            en:'The doctor makes a diagnosis and starts a therapy.',
+            ph:'dair ahrtst shtelt AI-ne dee-ahg-NOH-ze oont beh-GINT AI-ne teh-rah-PEE'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: fixed phrases',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Which is the correct collocation?', options:['einen Antrag machen', 'einen Antrag stellen', 'einen Antrag geben', 'einen Antrag nehmen'], answer:1,
+         why:'"einen Antrag stellen" = to submit an application — a fixed pair.'},
+        {q:'Fill in: "Das Gesetz tritt am ersten Januar ___ Kraft."', options:['in', 'an', 'auf', 'zu'], answer:0,
+         why:'"in Kraft treten" = to come into force.'},
+        {q:'What does "eine Entscheidung treffen" mean?', options:['to ask a decision', 'to make a decision', 'to change a decision', 'to take a decision away'], answer:1,
+         why:'"eine Entscheidung treffen" = to make a decision.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: health & medicine',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Ich möchte einen Termin ___."', options:['vereinbaren', 'stellen', 'treffen', 'treten'], answer:0,
+         why:'"einen Termin vereinbaren" = to arrange an appointment.'},
+        {q:'Which is formal?', options:[
+          'Hey, ich brauch einen Termin!',
+          'Sehr geehrte Frau Doktor, ich möchte einen Termin vereinbaren.',
+          'Hallo, gib mir einen Termin.',
+          'Ich will einen Termin, okay?'
+        ], answer:1,
+         why:'"Sehr geehrte Frau Doktor ..." is the formal register.'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 11 — Environment & Sustainability',
+};
 
-CHAPTERS['B2-11'] = { id:'B2-11', n:11, level:'B2', title:'Environment & Sustainability', time:'10 min', syllabus:true,
+CHAPTERS['B2-11'] = {
+  id:'B2-11',
+  n:11,
+  level:'B2',
+  title:'Environment & Sustainability',
+  time:'17 min',
   concept:'Discuss sustainability, energy and climate change.',
-  learn:['Argue about sustainability','Talk about renewable energy','Use the passive in all tenses'],
-  grammar:{ title:'Passive in all tenses',
-    plain:'Present: "Die Energie wird gespart." Past: "Die Energie wurde gespart." Perfect: "Die Energie ist gespart worden." The passive works in every tense — the Partizip II stays at the end, "werden" changes.' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Die Energie wird gespart, wenn wir weniger verbrauchen.',
+      en:'Energy is saved when we consume less.',
+      ph:'dee en-air-GHEE virt geh-SHPAHRT, ven veer VAY-ni-ger fair-BROO-khen'
+    },
+    {
+      who:'B',
+      de:'Früher wurde viel mehr Kohle verbrannt.',
+      en:'In the past much more coal was burned.',
+      ph:'FRUE-er VOOR-de feel mair KOH-le fair-BRAHNT'
+    },
+    {
+      who:'A',
+      de:'Die Emission ist in den letzten Jahren gesenkt worden.',
+      en:'Emissions have been lowered in recent years.',
+      ph:'dee eh-mee-SEE-ohn ist in dayn LETS-ten YAH-ren geh-ZENKT VOR-den'
+    },
+    {
+      who:'B',
+      de:'Der Meeresspiegel wird steigen, wenn die Temperatur steigt.',
+      en:'The sea level will rise when the temperature rises.',
+      ph:'dair MAIR-es-shpee-gel virt SHTAI-gen, ven dee tem-peh-rah-TOOR shtaikt'
+    },
+    {
+      who:'A',
+      de:'Die Windkraft muss gefördert werden.',
+      en:'Wind power must be promoted.',
+      ph:'dee VINT-krahft mooss geh-FER-dert VAIR-den'
+    },
+    {
+      who:'B',
+      de:'Ja, die Umwelt kann nur gemeinsam geschützt werden.',
+      en:'Yes, the environment can only be protected together.',
+      ph:'yah, dee OOM-velt kahn noor geh-MAI-zahm geh-SHUETST VAIR-den'
+    }
+  ],
   vocab:[
-    {de:'Nachhaltigkeit', art:'die', pl:'', en:'sustainability', ph:'NAHKH-hahl-tish-kait'},
-    {de:'Energie', art:'die', pl:'Energien', en:'energy', ph:'en-air-GHEE'},
-    {de:'erneuerbar', art:'', pl:'', en:'renewable', ph:'air-NOY-er-bahr'},
-    {de:'Klimawandel', art:'der', pl:'', en:'climate change', ph:'KLEE-mah-vahn-del'},
-    {de:'Emission', art:'die', pl:'Emissionen', en:'emission', ph:'eh-mee-SEE-ohn'},
-    {de:'CO2-Ausstoß', art:'der', pl:'', en:'CO2 emissions', ph:'tseh-oh-TSVAI-OWS-shtohss'},
-    {de:'Ressource', art:'die', pl:'Ressourcen', en:'resource', ph:'reh-SOOR-se'},
-    {de:'umweltfreundlich', art:'', pl:'', en:'environmentally friendly', ph:'OOM-velt-froynt-lish'},
-  ], next:'Next: Chapter 12 — Review & B2 Mock (syllabus)' };
+    {
+      de:'Nachhaltigkeit',
+      art:'die',
+      pl:'',
+      en:'sustainability',
+      ph:'NAHKH-hahl-tish-kait'
+    },
+    {
+      de:'Energie',
+      art:'die',
+      pl:'Energien',
+      en:'energy',
+      ph:'en-air-GHEE'
+    },
+    {
+      de:'erneuerbar',
+      art:'',
+      pl:'',
+      en:'renewable',
+      ph:'air-NOY-er-bahr'
+    },
+    {
+      de:'Klimawandel',
+      art:'der',
+      pl:'',
+      en:'climate change',
+      ph:'KLEE-mah-vahn-del'
+    },
+    {
+      de:'Emission',
+      art:'die',
+      pl:'Emissionen',
+      en:'emission',
+      ph:'eh-mee-SEE-ohn'
+    },
+    {
+      de:'CO2-Ausstoß',
+      art:'der',
+      pl:'',
+      en:'CO2 emissions',
+      ph:'tseh-oh-TSVAI-OWS-shtohss'
+    },
+    {
+      de:'Ressource',
+      art:'die',
+      pl:'Ressourcen',
+      en:'resource',
+      ph:'reh-SOOR-se'
+    },
+    {
+      de:'umweltfreundlich',
+      art:'',
+      pl:'',
+      en:'environmentally friendly',
+      ph:'OOM-velt-froynt-lish'
+    },
+    {
+      de:'Naturschutz',
+      art:'der',
+      pl:'',
+      en:'nature conservation',
+      ph:'nah-TOOR-shuts'
+    },
+    {
+      de:'Energiewende',
+      art:'die',
+      pl:'',
+      en:'energy transition',
+      ph:'en-air-GHEE-ven-de'
+    },
+    {
+      de:'Windkraft',
+      art:'die',
+      pl:'',
+      en:'wind power',
+      ph:'VINT-krahft'
+    },
+    {
+      de:'Solarenergie',
+      art:'die',
+      pl:'',
+      en:'solar energy',
+      ph:'zoh-LAHR-en-air-ghee'
+    },
+    {
+      de:'Wasserkraft',
+      art:'die',
+      pl:'',
+      en:'hydropower',
+      ph:'VAHS-ser-krahft'
+    },
+    {
+      de:'Kohle',
+      art:'die',
+      pl:'',
+      en:'coal',
+      ph:'KOH-le'
+    },
+    {
+      de:'Atomkraft',
+      art:'die',
+      pl:'',
+      en:'nuclear power',
+      ph:'ah-TOHM-krahft'
+    },
+    {
+      de:'Verbrauch',
+      art:'der',
+      pl:'',
+      en:'consumption',
+      ph:'fair-BROOKH'
+    },
+    {
+      de:'Recycling',
+      art:'das',
+      pl:'',
+      en:'recycling',
+      ph:'ree-SAI-kling'
+    },
+    {
+      de:'Kreislaufwirtschaft',
+      art:'die',
+      pl:'',
+      en:'circular economy',
+      ph:'KRAIS-lowf-virt-shahft'
+    },
+    {
+      de:'Rohstoff',
+      art:'der',
+      pl:'Rohstoffe',
+      en:'raw material',
+      ph:'ROH-shtof'
+    },
+    {
+      de:'Verpackung',
+      art:'die',
+      pl:'Verpackungen',
+      en:'packaging',
+      ph:'fair-PAH-kung'
+    },
+    {
+      de:'Plastik',
+      art:'das',
+      pl:'',
+      en:'plastic',
+      ph:'PLAHSS-tik'
+    },
+    {
+      de:'Glas',
+      art:'das',
+      pl:'',
+      en:'glass',
+      ph:'glahs'
+    },
+    {
+      de:'Papier',
+      art:'das',
+      pl:'',
+      en:'paper',
+      ph:'pah-PEER'
+    },
+    {
+      de:'Metall',
+      art:'das',
+      pl:'Metalle',
+      en:'metal',
+      ph:'meh-TAHL'
+    },
+    {
+      de:'Treibhausgas',
+      art:'das',
+      pl:'Treibhausgase',
+      en:'greenhouse gas',
+      ph:'TRAIP-hows-gahs'
+    },
+    {
+      de:'Ozon',
+      art:'das',
+      pl:'',
+      en:'ozone',
+      ph:'oh-TSOHN'
+    },
+    {
+      de:'Temperatur',
+      art:'die',
+      pl:'Temperaturen',
+      en:'temperature',
+      ph:'tem-peh-rah-TOOR'
+    },
+    {
+      de:'Meeresspiegel',
+      art:'der',
+      pl:'',
+      en:'sea level',
+      ph:'MAIR-es-shpee-gel'
+    },
+    {
+      de:'Dürre',
+      art:'die',
+      pl:'Dürren',
+      en:'drought',
+      ph:'DUER-re'
+    },
+    {
+      de:'Überschwemmung',
+      art:'die',
+      pl:'Überschwemmungen',
+      en:'flood',
+      ph:'ue-ber-SHVEM-mung'
+    },
+    {
+      de:'Katastrophe',
+      art:'die',
+      pl:'Katastrophen',
+      en:'disaster',
+      ph:'kah-tah-STROH-fe'
+    },
+    {
+      de:'verursachen',
+      art:'',
+      pl:'',
+      en:'to cause',
+      ph:'fair-OOR-zah-khen'
+    },
+    {
+      de:'verhindern',
+      art:'',
+      pl:'',
+      en:'to prevent',
+      ph:'fair-HIN-dern'
+    },
+    {
+      de:'reduzieren',
+      art:'',
+      pl:'',
+      en:'to reduce',
+      ph:'reh-doo-TSEE-ren'
+    },
+    {
+      de:'erhöhen',
+      art:'',
+      pl:'',
+      en:'to increase',
+      ph:'air-HER-hen'
+    },
+    {
+      de:'senken',
+      art:'',
+      pl:'',
+      en:'to lower',
+      ph:'ZEN-ken'
+    },
+    {
+      de:'fördern',
+      art:'',
+      pl:'',
+      en:'to promote, support',
+      ph:'FER-dern'
+    },
+    {
+      de:'unterstützen',
+      art:'',
+      pl:'',
+      en:'to support',
+      ph:'oon-ter-SHTUET-tsen'
+    },
+    {
+      de:'gefährdet',
+      art:'',
+      pl:'',
+      en:'endangered',
+      ph:'geh-FAIR-det'
+    },
+    {
+      de:'verantwortungsvoll',
+      art:'',
+      pl:'',
+      en:'responsible',
+      ph:'fair-AHNT-vor-tungs-fol'
+    }
+  ],
+  grammar:{
+    title:'Passive in all tenses',
+    plain:'Present: "Die Energie wird gespart." Past: "Die Energie wurde gespart." Perfect: "Die Energie ist gespart worden." The passive works in every tense — the Partizip II stays at the end, "werden" changes.',
+    rule:'Present: wird gespart · Past: wurde gespart · Perfect: ist gespart worden · Future: wird gespart werden · Modal: muss gefördert werden.',
+    examples:[
+      {
+        de:'Die Energie wird gespart.',
+        en:'Energy is saved.',
+        ph:'dee en-air-GHEE virt geh-SHPAHRT'
+      },
+      {
+        de:'Die Energie wurde gespart.',
+        en:'Energy was saved.',
+        ph:'dee en-air-GHEE VOOR-de geh-SHPAHRT'
+      },
+      {
+        de:'Die Energie ist gespart worden.',
+        en:'Energy has been saved.',
+        ph:'dee en-air-GHEE ist geh-SHPAHRT VOR-den'
+      },
+      {
+        de:'Die Windkraft muss gefördert werden.',
+        en:'Wind power must be promoted.',
+        ph:'dee VINT-krahft mooss geh-FER-dert VAIR-den'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Die Energie ___ gespart." (present)', options:['wird', 'wurde', 'ist', 'werden'], answer:0,
+     why:'Present passive: "wird + Partizip II".'},
+    {q:'Fill in: "Früher ___ viel mehr Kohle verbrannt."', options:['wird', 'wurde', 'ist', 'werden'], answer:1,
+     why:'Past passive: "wurde + Partizip II" — "Früher wurde viel mehr Kohle verbrannt."'},
+    {q:'Fill in: "Die Emission ___ gesenkt worden."', options:['ist', 'wird', 'wurde', 'werden'], answer:0,
+     why:'Perfect passive: "ist + Partizip II + worden".'},
+    {q:'Fill in: "Die Windkraft ___ gefördert werden."', options:['muss', 'müssen', 'musst', 'müsste'], answer:0,
+     why:'"Die Windkraft" is singular: "muss gefördert werden" — modal + passive.'},
+    {q:'Fill in: "Die Emission ist ___ worden."', options:['gesenkt', 'senken', 'gesenken', 'senkt'], answer:0,
+     why:'"gesenkt worden" — Partizip II of "senken" is "gesenkt".'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Die Energie wird gespart. Die Energie wurde gespart. Die Windkraft muss gefördert werden."',
+    model:[
+      'Die Energie wird gespart.',
+      'Die Energie wurde gespart.',
+      'Die Windkraft muss gefördert werden.',
+      'Die Umwelt kann nur gemeinsam geschützt werden.'
+    ]
+  },
+  recap:[
+    'Passive present: wird gespart. Past: wurde gespart.',
+    'Perfect: ist gespart worden. Future: wird gespart werden.',
+    'Modal + passive: muss gefördert werden.',
+    'Environment words: die Nachhaltigkeit, die Emission, die Ressource, erneuerbar.'
+  ],
+  tip:'Memory tip: the Partizip II never changes — only "werden" changes: wird, wurde, ist ... worden, wird ... werden.',
+  extra:[
+    {
+      q:'Say "Energy is saved."',
+      a:'Die Energie wird gespart.'
+    },
+    {
+      q:'Say "Energy has been saved."',
+      a:'Die Energie ist gespart worden.'
+    },
+    {
+      q:'What does "erneuerbar" mean?',
+      a:'Renewable.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Energy words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Nachhaltigkeit',
+          art:'die',
+          pl:'',
+          en:'sustainability',
+          ph:'NAHKH-hahl-tish-kait'
+        },
+        {
+          de:'Energie',
+          art:'die',
+          pl:'Energien',
+          en:'energy',
+          ph:'en-air-GHEE'
+        },
+        {
+          de:'erneuerbar',
+          art:'',
+          pl:'',
+          en:'renewable',
+          ph:'air-NOY-er-bahr'
+        },
+        {
+          de:'Klimawandel',
+          art:'der',
+          pl:'',
+          en:'climate change',
+          ph:'KLEE-mah-vahn-del'
+        },
+        {
+          de:'Emission',
+          art:'die',
+          pl:'Emissionen',
+          en:'emission',
+          ph:'eh-mee-SEE-ohn'
+        },
+        {
+          de:'CO2-Ausstoß',
+          art:'der',
+          pl:'',
+          en:'CO2 emissions',
+          ph:'tseh-oh-TSVAI-OWS-shtohss'
+        },
+        {
+          de:'Ressource',
+          art:'die',
+          pl:'Ressourcen',
+          en:'resource',
+          ph:'reh-SOOR-se'
+        },
+        {
+          de:'umweltfreundlich',
+          art:'',
+          pl:'',
+          en:'environmentally friendly',
+          ph:'OOM-velt-froynt-lish'
+        },
+        {
+          de:'Naturschutz',
+          art:'der',
+          pl:'',
+          en:'nature conservation',
+          ph:'nah-TOOR-shuts'
+        },
+        {
+          de:'Energiewende',
+          art:'die',
+          pl:'',
+          en:'energy transition',
+          ph:'en-air-GHEE-ven-de'
+        },
+        {
+          de:'Windkraft',
+          art:'die',
+          pl:'',
+          en:'wind power',
+          ph:'VINT-krahft'
+        },
+        {
+          de:'Solarenergie',
+          art:'die',
+          pl:'',
+          en:'solar energy',
+          ph:'zoh-LAHR-en-air-ghee'
+        },
+        {
+          de:'Wasserkraft',
+          art:'die',
+          pl:'',
+          en:'hydropower',
+          ph:'VAHS-ser-krahft'
+        },
+        {
+          de:'Kohle',
+          art:'die',
+          pl:'',
+          en:'coal',
+          ph:'KOH-le'
+        },
+        {
+          de:'Atomkraft',
+          art:'die',
+          pl:'',
+          en:'nuclear power',
+          ph:'ah-TOHM-krahft'
+        },
+        {
+          de:'Verbrauch',
+          art:'der',
+          pl:'',
+          en:'consumption',
+          ph:'fair-BROOKH'
+        },
+        {
+          de:'Recycling',
+          art:'das',
+          pl:'',
+          en:'recycling',
+          ph:'ree-SAI-kling'
+        },
+        {
+          de:'Kreislaufwirtschaft',
+          art:'die',
+          pl:'',
+          en:'circular economy',
+          ph:'KRAIS-lowf-virt-shahft'
+        },
+        {
+          de:'Rohstoff',
+          art:'der',
+          pl:'Rohstoffe',
+          en:'raw material',
+          ph:'ROH-shtof'
+        },
+        {
+          de:'Verpackung',
+          art:'die',
+          pl:'Verpackungen',
+          en:'packaging',
+          ph:'fair-PAH-kung'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Climate words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Plastik',
+          art:'das',
+          pl:'',
+          en:'plastic',
+          ph:'PLAHSS-tik'
+        },
+        {
+          de:'Glas',
+          art:'das',
+          pl:'',
+          en:'glass',
+          ph:'glahs'
+        },
+        {
+          de:'Papier',
+          art:'das',
+          pl:'',
+          en:'paper',
+          ph:'pah-PEER'
+        },
+        {
+          de:'Metall',
+          art:'das',
+          pl:'Metalle',
+          en:'metal',
+          ph:'meh-TAHL'
+        },
+        {
+          de:'Treibhausgas',
+          art:'das',
+          pl:'Treibhausgase',
+          en:'greenhouse gas',
+          ph:'TRAIP-hows-gahs'
+        },
+        {
+          de:'Ozon',
+          art:'das',
+          pl:'',
+          en:'ozone',
+          ph:'oh-TSOHN'
+        },
+        {
+          de:'Temperatur',
+          art:'die',
+          pl:'Temperaturen',
+          en:'temperature',
+          ph:'tem-peh-rah-TOOR'
+        },
+        {
+          de:'Meeresspiegel',
+          art:'der',
+          pl:'',
+          en:'sea level',
+          ph:'MAIR-es-shpee-gel'
+        },
+        {
+          de:'Dürre',
+          art:'die',
+          pl:'Dürren',
+          en:'drought',
+          ph:'DUER-re'
+        },
+        {
+          de:'Überschwemmung',
+          art:'die',
+          pl:'Überschwemmungen',
+          en:'flood',
+          ph:'ue-ber-SHVEM-mung'
+        },
+        {
+          de:'Katastrophe',
+          art:'die',
+          pl:'Katastrophen',
+          en:'disaster',
+          ph:'kah-tah-STROH-fe'
+        },
+        {
+          de:'verursachen',
+          art:'',
+          pl:'',
+          en:'to cause',
+          ph:'fair-OOR-zah-khen'
+        },
+        {
+          de:'verhindern',
+          art:'',
+          pl:'',
+          en:'to prevent',
+          ph:'fair-HIN-dern'
+        },
+        {
+          de:'reduzieren',
+          art:'',
+          pl:'',
+          en:'to reduce',
+          ph:'reh-doo-TSEE-ren'
+        },
+        {
+          de:'erhöhen',
+          art:'',
+          pl:'',
+          en:'to increase',
+          ph:'air-HER-hen'
+        },
+        {
+          de:'senken',
+          art:'',
+          pl:'',
+          en:'to lower',
+          ph:'ZEN-ken'
+        },
+        {
+          de:'fördern',
+          art:'',
+          pl:'',
+          en:'to promote, support',
+          ph:'FER-dern'
+        },
+        {
+          de:'unterstützen',
+          art:'',
+          pl:'',
+          en:'to support',
+          ph:'oon-ter-SHTUET-tsen'
+        },
+        {
+          de:'gefährdet',
+          art:'',
+          pl:'',
+          en:'endangered',
+          ph:'geh-FAIR-det'
+        },
+        {
+          de:'verantwortungsvoll',
+          art:'',
+          pl:'',
+          en:'responsible',
+          ph:'fair-AHNT-vor-tungs-fol'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: Save energy',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Die Energie wird gespart, wenn wir weniger verbrauchen.',
+          en:'Energy is saved when we consume less.',
+          ph:'dee en-air-GHEE virt geh-SHPAHRT, ven veer VAY-ni-ger fair-BROO-khen'
+        },
+        {
+          who:'B',
+          de:'Früher wurde viel mehr Kohle verbrannt.',
+          en:'In the past much more coal was burned.',
+          ph:'FRUE-er VOOR-de feel mair KOH-le fair-BRAHNT'
+        },
+        {
+          who:'A',
+          de:'Die Emission ist in den letzten Jahren gesenkt worden.',
+          en:'Emissions have been lowered in recent years.',
+          ph:'dee eh-mee-SEE-ohn ist in dayn LETS-ten YAH-ren geh-ZENKT VOR-den'
+        },
+        {
+          who:'B',
+          de:'Der Meeresspiegel wird steigen, wenn die Temperatur steigt.',
+          en:'The sea level will rise when the temperature rises.',
+          ph:'dair MAIR-es-shpee-gel virt SHTAI-gen, ven dee tem-peh-rah-TOOR shtaikt'
+        },
+        {
+          who:'A',
+          de:'Die Windkraft muss gefördert werden.',
+          en:'Wind power must be promoted.',
+          ph:'dee VINT-krahft mooss geh-FER-dert VAIR-den'
+        },
+        {
+          who:'B',
+          de:'Ja, die Umwelt kann nur gemeinsam geschützt werden.',
+          en:'Yes, the environment can only be protected together.',
+          ph:'yah, dee OOM-velt kahn noor geh-MAI-zahm geh-SHUETST VAIR-den'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Die Energie wird gespart. Die Energie wurde gespart. Die Windkraft muss gefördert werden."',
+        model:[
+          'Die Energie wird gespart.',
+          'Die Energie wurde gespart.',
+          'Die Windkraft muss gefördert werden.',
+          'Die Umwelt kann nur gemeinsam geschützt werden.'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: Passive in all tenses',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'Passive in all tenses',
+        plain:'Present: "Die Energie wird gespart." Past: "Die Energie wurde gespart." Perfect: "Die Energie ist gespart worden." The passive works in every tense — the Partizip II stays at the end, "werden" changes.',
+        rule:'Present: wird gespart · Past: wurde gespart · Perfect: ist gespart worden · Future: wird gespart werden · Modal: muss gefördert werden.',
+        examples:[
+          {
+            de:'Die Energie wird gespart.',
+            en:'Energy is saved.',
+            ph:'dee en-air-GHEE virt geh-SHPAHRT'
+          },
+          {
+            de:'Die Energie wurde gespart.',
+            en:'Energy was saved.',
+            ph:'dee en-air-GHEE VOOR-de geh-SHPAHRT'
+          },
+          {
+            de:'Die Energie ist gespart worden.',
+            en:'Energy has been saved.',
+            ph:'dee en-air-GHEE ist geh-SHPAHRT VOR-den'
+          },
+          {
+            de:'Die Windkraft muss gefördert werden.',
+            en:'Wind power must be promoted.',
+            ph:'dee VINT-krahft mooss geh-FER-dert VAIR-den'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: passive tenses',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Die Energie ___ gespart." (present)', options:['wird', 'wurde', 'ist', 'werden'], answer:0,
+         why:'Present passive: "wird + Partizip II".'},
+        {q:'Fill in: "Früher ___ viel mehr Kohle verbrannt."', options:['wird', 'wurde', 'ist', 'werden'], answer:1,
+         why:'Past passive: "wurde + Partizip II" — "Früher wurde viel mehr Kohle verbrannt."'},
+        {q:'Fill in: "Die Emission ___ gesenkt worden."', options:['ist', 'wird', 'wurde', 'werden'], answer:0,
+         why:'Perfect passive: "ist + Partizip II + worden".'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: environment',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Die Windkraft ___ gefördert werden."', options:['muss', 'müssen', 'musst', 'müsste'], answer:0,
+         why:'"Die Windkraft" is singular: "muss gefördert werden" — modal + passive.'},
+        {q:'Fill in: "Die Emission ist ___ worden."', options:['gesenkt', 'senken', 'gesenken', 'senkt'], answer:0,
+         why:'"gesenkt worden" — Partizip II of "senken" is "gesenkt".'}
+      ]
+    }
+  ],
+  next:'Next: Chapter 12 — Review & B2 Mock',
+};
 
-CHAPTERS['B2-12'] = { id:'B2-12', n:12, level:'B2', title:'Review & B2 Mock (Goethe/telc)', time:'12 min', syllabus:true,
+CHAPTERS['B2-12'] = {
+  id:'B2-12',
+  n:12,
+  level:'B2',
+  title:'Review & B2 Mock (Goethe/telc)',
+  time:'17 min',
   concept:'Review all of B2 and test yourself, Goethe/telc-style.',
-  learn:['Review Konjunktiv I, passive, relative clauses and nominal style','Practise all B2 topics in one test','See your score per module — pass is 60% per module'],
-  grammar:{ title:'B2 review — the four big steps',
-    plain:'B2 gave you four big tools: (1) Konjunktiv I — "Er sagt, er sei ..." (2) Passive and its substitutes — "lässt sich lösen", "ist zu schaffen". (3) Relative clauses in all cases. (4) Nominal style — "die Behandlung des Patienten". The Goethe B2 exam has 4 modules, each 100 points, pass 60 per module. The telc B1·B2 Pflege exam is the nursing exam.' },
+  dialogue:[
+    {
+      who:'A',
+      de:'Was hast du in B2 gelernt?',
+      en:'What did you learn in B2?',
+      ph:'vahs hahst doo in bay tsvai geh-LAIRNT'
+    },
+    {
+      who:'B',
+      de:'Ich habe viel gelernt! Konjunktiv I, das Passiv und die Nominalisierung.',
+      en:'I learned a lot! Konjunktiv I, the passive and nominalisation.',
+      ph:'ish HAH-be feel geh-LAIRNT! kon-yunk-TEEF ains, dahs PAH-seef oont dee noh-mee-nah-lee-ZEE-rung'
+    },
+    {
+      who:'A',
+      de:'Er sagt, er sei bereit für die Prüfung.',
+      en:'He says he is ready for the exam.',
+      ph:'air zahkt, air zai beh-RAIT fuer dee PRUE-fung'
+    },
+    {
+      who:'B',
+      de:'Das Problem lässt sich lösen, und die Energie wird gespart.',
+      en:'The problem can be solved, and energy is saved.',
+      ph:'dahs pro-BLAYM lesst zish LER-zen, oont dee en-air-GHEE virt geh-SHPAHRT'
+    },
+    {
+      who:'A',
+      de:'Die Behandlung des Patienten dauert eine Stunde.',
+      en:'The treatment of the patient takes an hour.',
+      ph:'dee beh-HAHND-lung des pah-TSEE-en-ten DOW-ert AI-ne SHTUN-de'
+    },
+    {
+      who:'B',
+      de:'Ich werde bestehen! Die Vorbereitung war gut.',
+      en:'I will pass! The preparation was good.',
+      ph:'ish VAIR-de beh-SHTAY-en! dee FOR-beh-rai-tung vahr goot'
+    }
+  ],
   vocab:[
-    {de:'Zertifikat', art:'das', pl:'Zertifikate', en:'certificate', ph:'tsair-tee-fee-KAHT'},
-    {de:'Vorbereitung', art:'die', pl:'Vorbereitungen', en:'preparation', ph:'FOR-bai-rai-tung'},
-    {de:'Anmeldung', art:'die', pl:'Anmeldungen', en:'registration', ph:'AHN-mel-dung'},
-    {de:'Gebühr', art:'die', pl:'Gebühren', en:'fee', ph:'geh-BUEHR'},
-    {de:'Ergebnis', art:'das', pl:'Ergebnisse', en:'result', ph:'air-GAYP-nis'},
-    {de:'bestehen', art:'', pl:'', en:'to pass (an exam)', ph:'beh-SHTAY-en'},
-    {de:'Bewertung', art:'die', pl:'Bewertungen', en:'assessment', ph:'beh-VAIR-tung'},
-    {de:'Prüfung', art:'die', pl:'Prüfungen', en:'exam', ph:'PRUE-fung'},
-  ], next:'Next: C1 — Advanced (stretch goal)' };
-
-/* ================= C1 ================= */
+    {
+      de:'Zertifikat',
+      art:'das',
+      pl:'Zertifikate',
+      en:'certificate',
+      ph:'tsair-tee-fee-KAHT'
+    },
+    {
+      de:'Vorbereitung',
+      art:'die',
+      pl:'Vorbereitungen',
+      en:'preparation',
+      ph:'FOR-bai-rai-tung'
+    },
+    {
+      de:'Anmeldung',
+      art:'die',
+      pl:'Anmeldungen',
+      en:'registration',
+      ph:'AHN-mel-dung'
+    },
+    {
+      de:'Gebühr',
+      art:'die',
+      pl:'Gebühren',
+      en:'fee',
+      ph:'geh-BUEHR'
+    },
+    {
+      de:'Ergebnis',
+      art:'das',
+      pl:'Ergebnisse',
+      en:'result',
+      ph:'air-GAYP-nis'
+    },
+    {
+      de:'bestehen',
+      art:'',
+      pl:'',
+      en:'to pass (an exam)',
+      ph:'beh-SHTAY-en'
+    },
+    {
+      de:'Bewertung',
+      art:'die',
+      pl:'Bewertungen',
+      en:'assessment',
+      ph:'beh-VAIR-tung'
+    },
+    {
+      de:'Prüfung',
+      art:'die',
+      pl:'Prüfungen',
+      en:'exam',
+      ph:'PRUE-fung'
+    },
+    {
+      de:'Modul',
+      art:'das',
+      pl:'Module',
+      en:'module',
+      ph:'moh-DOOL'
+    },
+    {
+      de:'Lesen',
+      art:'das',
+      pl:'',
+      en:'reading',
+      ph:'LAY-zen'
+    },
+    {
+      de:'Hören',
+      art:'das',
+      pl:'',
+      en:'listening',
+      ph:'HER-ren'
+    },
+    {
+      de:'Schreiben',
+      art:'das',
+      pl:'',
+      en:'writing',
+      ph:'SHRAI-ben'
+    },
+    {
+      de:'Sprechen',
+      art:'das',
+      pl:'',
+      en:'speaking',
+      ph:'SHPREH-khen'
+    },
+    {
+      de:'Punktzahl',
+      art:'die',
+      pl:'Punktzahlen',
+      en:'score',
+      ph:'POONKT-tsahl'
+    },
+    {
+      de:'Lernerfolg',
+      art:'der',
+      pl:'Lernerfolge',
+      en:'learning success',
+      ph:'LAIRN-air-folk'
+    },
+    {
+      de:'Prüfungsangst',
+      art:'die',
+      pl:'',
+      en:'exam anxiety',
+      ph:'PRUE-fungs-ahngst'
+    },
+    {
+      de:'Wiederholung',
+      art:'die',
+      pl:'Wiederholungen',
+      en:'repetition, retake',
+      ph:'VEE-der-hoh-lung'
+    },
+    {
+      de:'Übung',
+      art:'die',
+      pl:'Übungen',
+      en:'exercise, practice',
+      ph:'UE-bung'
+    },
+    {
+      de:'Lernplan',
+      art:'der',
+      pl:'Lernpläne',
+      en:'study plan',
+      ph:'LAIRN-plahn'
+    },
+    {
+      de:'Ziel',
+      art:'das',
+      pl:'Ziele',
+      en:'goal',
+      ph:'tseel'
+    },
+    {
+      de:'Erfolg',
+      art:'der',
+      pl:'Erfolge',
+      en:'success',
+      ph:'air-FOLK'
+    },
+    {
+      de:'Misserfolg',
+      art:'der',
+      pl:'Misserfolge',
+      en:'failure',
+      ph:'MIS-air-folk'
+    },
+    {
+      de:'Fortschritt',
+      art:'der',
+      pl:'Fortschritte',
+      en:'progress',
+      ph:'FORT-shrit'
+    },
+    {
+      de:'Schwierigkeit',
+      art:'die',
+      pl:'Schwierigkeiten',
+      en:'difficulty',
+      ph:'SHVEE-rish-kait'
+    },
+    {
+      de:'Selbstvertrauen',
+      art:'das',
+      pl:'',
+      en:'self-confidence',
+      ph:'ZELPST-fair-trow-en'
+    },
+    {
+      de:'Motivation',
+      art:'die',
+      pl:'',
+      en:'motivation',
+      ph:'moh-tee-vah-TSEE-ohn'
+    },
+    {
+      de:'Konzentration',
+      art:'die',
+      pl:'',
+      en:'concentration',
+      ph:'kon-tsen-trah-TSEE-ohn'
+    },
+    {
+      de:'Geduld',
+      art:'die',
+      pl:'',
+      en:'patience',
+      ph:'geh-DULT'
+    },
+    {
+      de:'Fleiß',
+      art:'der',
+      pl:'',
+      en:'diligence',
+      ph:'flais'
+    },
+    {
+      de:'wiederholen',
+      art:'',
+      pl:'',
+      en:'to repeat, revise',
+      ph:'VEE-der-hoh-len'
+    },
+    {
+      de:'üben',
+      art:'',
+      pl:'',
+      en:'to practise',
+      ph:'UE-ben'
+    },
+    {
+      de:'vorbereiten',
+      art:'',
+      pl:'',
+      en:'to prepare',
+      ph:'FOR-beh-rai-ten'
+    },
+    {
+      de:'sich vorbereiten auf',
+      art:'',
+      pl:'',
+      en:'to prepare for',
+      ph:'zish FOR-beh-rai-ten owf'
+    },
+    {
+      de:'sich anstrengen',
+      art:'',
+      pl:'',
+      en:'to make an effort',
+      ph:'zish AHN-shtreng-en'
+    },
+    {
+      de:'sich konzentrieren auf',
+      art:'',
+      pl:'',
+      en:'to concentrate on',
+      ph:'zish kon-tsen-TREE-ren owf'
+    },
+    {
+      de:'sich merken',
+      art:'',
+      pl:'',
+      en:'to remember, note',
+      ph:'zish MAIR-ken'
+    },
+    {
+      de:'vergessen',
+      art:'',
+      pl:'',
+      en:'to forget',
+      ph:'fair-GES-sen'
+    },
+    {
+      de:'Prüfungsvorbereitung',
+      art:'die',
+      pl:'Prüfungsvorbereitungen',
+      en:'exam preparation',
+      ph:'PRUE-fungs-for-beh-rai-tung'
+    },
+    {
+      de:'Lernmethode',
+      art:'die',
+      pl:'Lernmethoden',
+      en:'learning method',
+      ph:'LAIRN-meh-toh-de'
+    },
+    {
+      de:'Vokabelheft',
+      art:'das',
+      pl:'Vokabelhefte',
+      en:'vocabulary notebook',
+      ph:'voh-kah-BEL-heft'
+    }
+  ],
+  grammar:{
+    title:'B2 review — the four big steps',
+    plain:'B2 gave you four big tools: (1) Konjunktiv I — "Er sagt, er sei ..." (2) Passive and its substitutes — "lässt sich lösen", "ist zu schaffen". (3) Relative clauses in all cases. (4) Nominal style — "die Behandlung des Patienten". The Goethe B2 exam has 4 modules, each 100 points, pass 60 per module. The telc B1·B2 Pflege exam is the nursing exam.',
+    rule:'(1) Konjunktiv I — Er sagt, er sei ... (2) Passive — wird/wurde/ist ... worden + lässt sich / ist zu ... (3) Relative clauses — der/den/dem/dessen. (4) Nominal style — die Behandlung des Patienten.',
+    examples:[
+      {
+        de:'Er sagt, er sei mit der Arbeit zufrieden.',
+        en:'He says he is satisfied with the work.',
+        ph:'air zahkt, air zai mit dair AHR-bait tsoo-FREE-den'
+      },
+      {
+        de:'Das Problem lässt sich lösen.',
+        en:'The problem can be solved.',
+        ph:'dahs pro-BLAYM lesst zish LER-zen'
+      },
+      {
+        de:'Die Behandlung des Patienten dauert eine Stunde.',
+        en:'The treatment of the patient takes an hour.',
+        ph:'dee beh-HAHND-lung des pah-TSEE-en-ten DOW-ert AI-ne SHTUN-de'
+      }
+    ]
+  },
+  quiz:[
+    {q:'Fill in: "Er sagt, er ___ zufrieden."', options:['ist', 'sei', 'wäre', 'war'], answer:1,
+     why:'Konjunktiv I: "Er sagt, er sei zufrieden." B2 step 1.'},
+    {q:'Fill in: "Das Problem lässt sich ___."', options:['lösen', 'gelöst', 'löst', 'gelösen'], answer:0,
+     why:'"sich lassen + infinitive": "Das Problem lässt sich lösen." B2 step 2.'},
+    {q:'Fill in: "Die Behandlung ___ Patienten dauert eine Stunde."', options:['der', 'des', 'dem', 'den'], answer:1,
+     why:'Nominal style + genitive: "die Behandlung des Patienten". B2 step 4.'},
+    {q:'Fill in: "Die Energie ___ gespart worden."', options:['wird', 'wurde', 'ist', 'werden'], answer:2,
+     why:'Perfect passive: "ist gespart worden".'},
+    {q:'How many modules does the Goethe B2 exam have, and what is the pass mark?', options:['2 modules, 50%', '4 modules, 60% each', '3 modules, 60%', '4 modules, 50% each'], answer:1,
+     why:'Goethe B2: 4 modules (Lesen, Hören, Schreiben, Sprechen), pass 60 per module. The telc B1·B2 Pflege is the nursing exam.'}
+  ],
+  speak:{
+    prompt:'Say out loud: "Ich habe viel gelernt! Das Problem lässt sich lösen. Die Behandlung des Patienten dauert eine Stunde."',
+    model:[
+      'Ich habe viel gelernt!',
+      'Das Problem lässt sich lösen.',
+      'Die Behandlung des Patienten dauert eine Stunde.',
+      'Ich werde bestehen!'
+    ]
+  },
+  recap:[
+    'B2 in four tools: Konjunktiv I, passive + substitutes, relative clauses, nominal style.',
+    'Plus: Konjunktiv II past, participles, connectors, collocations.',
+    'Goethe B2: 4 modules, pass 60 per module. telc Pflege for nursing.',
+    'You are ready for C1 when all four feel easy.'
+  ],
+  tip:'Memory tip: before C1, say these four sentences out loud every day: "Er sagt, er sei ..." "Das lässt sich lösen." "Die Behandlung des Patienten." "Je mehr man lernt, desto besser spricht man."',
+  extra:[
+    {
+      q:'Say "I learned a lot!"',
+      a:'Ich habe viel gelernt!'
+    },
+    {
+      q:'Say "The problem can be solved."',
+      a:'Das Problem lässt sich lösen.'
+    },
+    {
+      q:'What are the four big B2 tools?',
+      a:'Konjunktiv I, passive + substitutes, relative clauses, nominal style.'
+    }
+  ],
+  topics:[
+    {
+      id:'t1',
+      title:'Review words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Zertifikat',
+          art:'das',
+          pl:'Zertifikate',
+          en:'certificate',
+          ph:'tsair-tee-fee-KAHT'
+        },
+        {
+          de:'Vorbereitung',
+          art:'die',
+          pl:'Vorbereitungen',
+          en:'preparation',
+          ph:'FOR-bai-rai-tung'
+        },
+        {
+          de:'Anmeldung',
+          art:'die',
+          pl:'Anmeldungen',
+          en:'registration',
+          ph:'AHN-mel-dung'
+        },
+        {
+          de:'Gebühr',
+          art:'die',
+          pl:'Gebühren',
+          en:'fee',
+          ph:'geh-BUEHR'
+        },
+        {
+          de:'Ergebnis',
+          art:'das',
+          pl:'Ergebnisse',
+          en:'result',
+          ph:'air-GAYP-nis'
+        },
+        {
+          de:'bestehen',
+          art:'',
+          pl:'',
+          en:'to pass (an exam)',
+          ph:'beh-SHTAY-en'
+        },
+        {
+          de:'Bewertung',
+          art:'die',
+          pl:'Bewertungen',
+          en:'assessment',
+          ph:'beh-VAIR-tung'
+        },
+        {
+          de:'Prüfung',
+          art:'die',
+          pl:'Prüfungen',
+          en:'exam',
+          ph:'PRUE-fung'
+        },
+        {
+          de:'Modul',
+          art:'das',
+          pl:'Module',
+          en:'module',
+          ph:'moh-DOOL'
+        },
+        {
+          de:'Lesen',
+          art:'das',
+          pl:'',
+          en:'reading',
+          ph:'LAY-zen'
+        },
+        {
+          de:'Hören',
+          art:'das',
+          pl:'',
+          en:'listening',
+          ph:'HER-ren'
+        },
+        {
+          de:'Schreiben',
+          art:'das',
+          pl:'',
+          en:'writing',
+          ph:'SHRAI-ben'
+        },
+        {
+          de:'Sprechen',
+          art:'das',
+          pl:'',
+          en:'speaking',
+          ph:'SHPREH-khen'
+        },
+        {
+          de:'Punktzahl',
+          art:'die',
+          pl:'Punktzahlen',
+          en:'score',
+          ph:'POONKT-tsahl'
+        },
+        {
+          de:'Lernerfolg',
+          art:'der',
+          pl:'Lernerfolge',
+          en:'learning success',
+          ph:'LAIRN-air-folk'
+        },
+        {
+          de:'Prüfungsangst',
+          art:'die',
+          pl:'',
+          en:'exam anxiety',
+          ph:'PRUE-fungs-ahngst'
+        },
+        {
+          de:'Wiederholung',
+          art:'die',
+          pl:'Wiederholungen',
+          en:'repetition, retake',
+          ph:'VEE-der-hoh-lung'
+        },
+        {
+          de:'Übung',
+          art:'die',
+          pl:'Übungen',
+          en:'exercise, practice',
+          ph:'UE-bung'
+        },
+        {
+          de:'Lernplan',
+          art:'der',
+          pl:'Lernpläne',
+          en:'study plan',
+          ph:'LAIRN-plahn'
+        },
+        {
+          de:'Ziel',
+          art:'das',
+          pl:'Ziele',
+          en:'goal',
+          ph:'tseel'
+        }
+      ]
+    },
+    {
+      id:'t2',
+      title:'Exam words',
+      time:'3 min',
+      kind:'words',
+      vocab:[
+        {
+          de:'Erfolg',
+          art:'der',
+          pl:'Erfolge',
+          en:'success',
+          ph:'air-FOLK'
+        },
+        {
+          de:'Misserfolg',
+          art:'der',
+          pl:'Misserfolge',
+          en:'failure',
+          ph:'MIS-air-folk'
+        },
+        {
+          de:'Fortschritt',
+          art:'der',
+          pl:'Fortschritte',
+          en:'progress',
+          ph:'FORT-shrit'
+        },
+        {
+          de:'Schwierigkeit',
+          art:'die',
+          pl:'Schwierigkeiten',
+          en:'difficulty',
+          ph:'SHVEE-rish-kait'
+        },
+        {
+          de:'Selbstvertrauen',
+          art:'das',
+          pl:'',
+          en:'self-confidence',
+          ph:'ZELPST-fair-trow-en'
+        },
+        {
+          de:'Motivation',
+          art:'die',
+          pl:'',
+          en:'motivation',
+          ph:'moh-tee-vah-TSEE-ohn'
+        },
+        {
+          de:'Konzentration',
+          art:'die',
+          pl:'',
+          en:'concentration',
+          ph:'kon-tsen-trah-TSEE-ohn'
+        },
+        {
+          de:'Geduld',
+          art:'die',
+          pl:'',
+          en:'patience',
+          ph:'geh-DULT'
+        },
+        {
+          de:'Fleiß',
+          art:'der',
+          pl:'',
+          en:'diligence',
+          ph:'flais'
+        },
+        {
+          de:'wiederholen',
+          art:'',
+          pl:'',
+          en:'to repeat, revise',
+          ph:'VEE-der-hoh-len'
+        },
+        {
+          de:'üben',
+          art:'',
+          pl:'',
+          en:'to practise',
+          ph:'UE-ben'
+        },
+        {
+          de:'vorbereiten',
+          art:'',
+          pl:'',
+          en:'to prepare',
+          ph:'FOR-beh-rai-ten'
+        },
+        {
+          de:'sich vorbereiten auf',
+          art:'',
+          pl:'',
+          en:'to prepare for',
+          ph:'zish FOR-beh-rai-ten owf'
+        },
+        {
+          de:'sich anstrengen',
+          art:'',
+          pl:'',
+          en:'to make an effort',
+          ph:'zish AHN-shtreng-en'
+        },
+        {
+          de:'sich konzentrieren auf',
+          art:'',
+          pl:'',
+          en:'to concentrate on',
+          ph:'zish kon-tsen-TREE-ren owf'
+        },
+        {
+          de:'sich merken',
+          art:'',
+          pl:'',
+          en:'to remember, note',
+          ph:'zish MAIR-ken'
+        },
+        {
+          de:'vergessen',
+          art:'',
+          pl:'',
+          en:'to forget',
+          ph:'fair-GES-sen'
+        },
+        {
+          de:'Prüfungsvorbereitung',
+          art:'die',
+          pl:'Prüfungsvorbereitungen',
+          en:'exam preparation',
+          ph:'PRUE-fungs-for-beh-rai-tung'
+        },
+        {
+          de:'Lernmethode',
+          art:'die',
+          pl:'Lernmethoden',
+          en:'learning method',
+          ph:'LAIRN-meh-toh-de'
+        },
+        {
+          de:'Vokabelheft',
+          art:'das',
+          pl:'Vokabelhefte',
+          en:'vocabulary notebook',
+          ph:'voh-kah-BEL-heft'
+        }
+      ]
+    },
+    {
+      id:'t3',
+      title:'Dialogue: What did you learn?',
+      time:'3 min',
+      kind:'dialogue',
+      lines:[
+        {
+          who:'A',
+          de:'Was hast du in B2 gelernt?',
+          en:'What did you learn in B2?',
+          ph:'vahs hahst doo in bay tsvai geh-LAIRNT'
+        },
+        {
+          who:'B',
+          de:'Ich habe viel gelernt! Konjunktiv I, das Passiv und die Nominalisierung.',
+          en:'I learned a lot! Konjunktiv I, the passive and nominalisation.',
+          ph:'ish HAH-be feel geh-LAIRNT! kon-yunk-TEEF ains, dahs PAH-seef oont dee noh-mee-nah-lee-ZEE-rung'
+        },
+        {
+          who:'A',
+          de:'Er sagt, er sei bereit für die Prüfung.',
+          en:'He says he is ready for the exam.',
+          ph:'air zahkt, air zai beh-RAIT fuer dee PRUE-fung'
+        },
+        {
+          who:'B',
+          de:'Das Problem lässt sich lösen, und die Energie wird gespart.',
+          en:'The problem can be solved, and energy is saved.',
+          ph:'dahs pro-BLAYM lesst zish LER-zen, oont dee en-air-GHEE virt geh-SHPAHRT'
+        },
+        {
+          who:'A',
+          de:'Die Behandlung des Patienten dauert eine Stunde.',
+          en:'The treatment of the patient takes an hour.',
+          ph:'dee beh-HAHND-lung des pah-TSEE-en-ten DOW-ert AI-ne SHTUN-de'
+        },
+        {
+          who:'B',
+          de:'Ich werde bestehen! Die Vorbereitung war gut.',
+          en:'I will pass! The preparation was good.',
+          ph:'ish VAIR-de beh-SHTAY-en! dee FOR-beh-rai-tung vahr goot'
+        }
+      ],
+      speak:{
+        prompt:'Say out loud: "Ich habe viel gelernt! Das Problem lässt sich lösen. Die Behandlung des Patienten dauert eine Stunde."',
+        model:[
+          'Ich habe viel gelernt!',
+          'Das Problem lässt sich lösen.',
+          'Die Behandlung des Patienten dauert eine Stunde.',
+          'Ich werde bestehen!'
+        ]
+      }
+    },
+    {
+      id:'t4',
+      title:'Grammar: B2 review',
+      time:'3 min',
+      kind:'grammar',
+      grammar:{
+        title:'B2 review — the four big steps',
+        plain:'B2 gave you four big tools: (1) Konjunktiv I — "Er sagt, er sei ..." (2) Passive and its substitutes — "lässt sich lösen", "ist zu schaffen". (3) Relative clauses in all cases. (4) Nominal style — "die Behandlung des Patienten". The Goethe B2 exam has 4 modules, each 100 points, pass 60 per module. The telc B1·B2 Pflege exam is the nursing exam.',
+        rule:'(1) Konjunktiv I — Er sagt, er sei ... (2) Passive — wird/wurde/ist ... worden + lässt sich / ist zu ... (3) Relative clauses — der/den/dem/dessen. (4) Nominal style — die Behandlung des Patienten.',
+        examples:[
+          {
+            de:'Er sagt, er sei mit der Arbeit zufrieden.',
+            en:'He says he is satisfied with the work.',
+            ph:'air zahkt, air zai mit dair AHR-bait tsoo-FREE-den'
+          },
+          {
+            de:'Das Problem lässt sich lösen.',
+            en:'The problem can be solved.',
+            ph:'dahs pro-BLAYM lesst zish LER-zen'
+          },
+          {
+            de:'Die Behandlung des Patienten dauert eine Stunde.',
+            en:'The treatment of the patient takes an hour.',
+            ph:'dee beh-HAHND-lung des pah-TSEE-en-ten DOW-ert AI-ne SHTUN-de'
+          }
+        ]
+      }
+    },
+    {
+      id:'t5',
+      title:'Quiz: B2 review',
+      time:'3 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Er sagt, er ___ zufrieden."', options:['ist', 'sei', 'wäre', 'war'], answer:1,
+         why:'Konjunktiv I: "Er sagt, er sei zufrieden." B2 step 1.'},
+        {q:'Fill in: "Das Problem lässt sich ___."', options:['lösen', 'gelöst', 'löst', 'gelösen'], answer:0,
+         why:'"sich lassen + infinitive": "Das Problem lässt sich lösen." B2 step 2.'},
+        {q:'Fill in: "Die Behandlung ___ Patienten dauert eine Stunde."', options:['der', 'des', 'dem', 'den'], answer:1,
+         why:'Nominal style + genitive: "die Behandlung des Patienten". B2 step 4.'}
+      ]
+    },
+    {
+      id:'t6',
+      title:'Quiz: ready for C1?',
+      time:'2 min',
+      kind:'quiz',
+      questions:[
+        {q:'Fill in: "Die Energie ___ gespart worden."', options:['wird', 'wurde', 'ist', 'werden'], answer:2,
+         why:'Perfect passive: "ist gespart worden".'},
+        {q:'How many modules does the Goethe B2 exam have, and what is the pass mark?', options:['2 modules, 50%', '4 modules, 60% each', '3 modules, 60%', '4 modules, 50% each'], answer:1,
+         why:'Goethe B2: 4 modules (Lesen, Hören, Schreiben, Sprechen), pass 60 per module. The telc B1·B2 Pflege is the nursing exam.'}
+      ]
+    }
+  ],
+  next:'Next: C1 — Advanced (stretch goal)',
+};
 
 CHAPTERS['C1-1'] = {
   id:'C1-1', n:1, level:'C1', title:'Science & Research', time:'10 min',
