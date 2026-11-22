@@ -1,0 +1,902 @@
+/* ============================================================
+   Deutsch Lernen — app engine
+   English + German only. Static, no backend, no login.
+   Progress in localStorage. Speech via Web Speech API (de-DE).
+   ============================================================ */
+
+/* ================= Speech (Web Speech API) ================= */
+const Speech = {
+  supported: ('speechSynthesis' in window),
+  voice: null, noVoice: false, ready: false,
+  init() {
+    if (!this.supported) { this.noVoice = true; return; }
+    const pick = () => {
+      const vs = window.speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('de'));
+      if (!vs.length) { this.noVoice = true; return; }
+      const score = v => {
+        let s = 0;
+        if (/google deutsch/i.test(v.name)) s += 3;
+        if (/microsoft/i.test(v.name)) s += 2;
+        if (/katja|anna|conrad|petra|stefan/i.test(v.name)) s += 1;
+        if (v.lang === 'de-DE') s += 1;
+        return s;
+      };
+      vs.sort((a, b) => score(b) - score(a));
+      this.voice = vs[0]; this.ready = true; this.noVoice = false;
+    };
+    pick();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = pick;
+    }
+    // voices may load a moment later — retry once
+    setTimeout(pick, 800);
+  },
+  rate() { return (store.data && store.data.speed === 'normal') ? 1 : 0.7; },
+};
+
+let speakToken = 0;
+function stopSpeak() { speakToken++; if (Speech.supported) { try { window.speechSynthesis.cancel(); } catch (e) {} } }
+function speakOne(text, onend) {
+  if (!Speech.supported) { toast('Speech is not supported on this device.'); return; }
+  if (Speech.noVoice) { toast('German voice not found on this device. Install a German voice in your system text-to-speech settings.'); }
+  const token = ++speakToken;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'de-DE';
+  if (Speech.voice) u.voice = Speech.voice;
+  u.rate = Speech.rate();
+  u.onend = () => { if (token === speakToken && onend) onend(); };
+  u.onerror = () => { if (token === speakToken && onend) onend(); };
+  window.speechSynthesis.speak(u);
+}
+function speakText(text) { stopSpeak(); speakOne(text); }
+function speakDialogue(chId, loop) {
+  const ch = CHAPTERS[chId]; if (!ch || !ch.dialogue) return;
+  stopSpeak();
+  const lines = ch.dialogue.map(d => d.de);
+  const token = ++speakToken;
+  let i = 0;
+  const next = () => {
+    if (token !== speakToken) return;
+    if (i >= lines.length) { if (loop) { i = 0; next(); } return; }
+    const u = new SpeechSynthesisUtterance(lines[i]);
+    u.lang = 'de-DE'; if (Speech.voice) u.voice = Speech.voice; u.rate = Speech.rate();
+    u.onend = () => { i++; next(); };
+    u.onerror = () => { i++; next(); };
+    window.speechSynthesis.speak(u);
+  };
+  next();
+  toast(loop ? 'Playing dialogue on loop — tap any speaker to stop.' : 'Playing dialogue…');
+}
+function toggleSpeed() {
+  store.data.speed = (store.data.speed === 'normal') ? 'slow' : 'normal';
+  store.save(); updateSpeedBtn();
+  toast(store.data.speed === 'slow' ? 'Speech speed: slow (0.7×) — best for learning.' : 'Speech speed: normal (1×).');
+}
+function updateSpeedBtn() {
+  const b = document.getElementById('speedBtn');
+  if (!b) return;
+  b.textContent = (store.data.speed === 'normal') ? '▶️ 1×' : '🐢 0.7×';
+}
+
+/* ================= Progress store (localStorage) ================= */
+const store = {
+  key: 'gla_v1',
+  data: null,
+  fresh() {
+    return { xp: 0, streak: 0, lastVisit: null, days: {}, completed: {}, read: {},
+      quizBest: {}, cards: {}, speed: 'slow', podcastDone: false, mockBest: null, trainerBest: 0 };
+  },
+  load() {
+    try { this.data = JSON.parse(localStorage.getItem(this.key)) || this.fresh(); }
+    catch (e) { this.data = this.fresh(); }
+    this.touch();
+  },
+  save() { try { localStorage.setItem(this.key, JSON.stringify(this.data)); } catch (e) {} },
+  touch() {
+    const today = new Date().toDateString();
+    const d = this.data;
+    if (d.lastVisit !== today) {
+      const y = new Date(Date.now() - 864e5).toDateString();
+      d.streak = (d.lastVisit === y) ? d.streak + 1 : 1;
+      d.lastVisit = today; d.days[today] = true; this.save();
+    }
+  },
+  addXP(n) { this.data.xp += n; this.save(); },
+  completeChapter(chId, score) {
+    if (!this.data.completed[chId]) { this.data.completed[chId] = { score: score || 0, at: Date.now() }; this.addXP(10); }
+    else if (score && score > this.data.completed[chId].score) { this.data.completed[chId].score = score; this.save(); }
+  },
+  markRead(chId) { if (!this.data.read[chId]) { this.data.read[chId] = Date.now(); this.addXP(5); } },
+};
+
+/* ================= Helpers ================= */
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function escAttr(s) { return esc(s).replace(/'/g, '&#39;'); }
+function go(route) { location.hash = '#/' + route; }
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+function speakBtn(text, cls) {
+  return '<button class="speak-btn ' + (cls || '') + '" data-say="' + escAttr(text) + '" aria-label="Listen to pronunciation">🔊</button>';
+}
+function chapterList(levelId) {
+  return Object.values(CHAPTERS).filter(c => c.level === levelId).sort((a, b) => a.n - b.n);
+}
+function levelProgress(levelId) {
+  const list = chapterList(levelId);
+  const full = list.filter(c => !c.syllabus);
+  const done = full.filter(c => store.data.completed[c.id]).length;
+  const read = list.filter(c => c.syllabus && store.data.read[c.id]).length;
+  return { total: list.length, full: full.length, done, read, syllabus: list.length - full.length };
+}
+function allVocab() {
+  const out = [];
+  Object.values(CHAPTERS).forEach(ch => {
+    (ch.vocab || []).forEach((v, i) => out.push({ key: ch.id + ':' + i, ch: ch.id, level: ch.level, title: ch.title, ...v }));
+  });
+  NURSING.words.forEach((v, i) => out.push({ key: 'nursing:' + i, ch: 'nursing', level: 'Pflege', title: 'Nursing words', ...v }));
+  PODCAST.glossary.forEach((v, i) => out.push({ key: 'podcast:' + i, ch: 'podcast', level: 'A1', title: 'Podcast glossary', ...v }));
+  return out;
+}
+function nextIncomplete() {
+  for (const lv of LEVELS) {
+    for (const ch of chapterList(lv.id)) {
+      if (!ch.syllabus && !store.data.completed[ch.id]) return ch;
+    }
+  }
+  return null;
+}
+function nextBar(text, route, label) {
+  return '<div class="nextbar"><p class="small">' + esc(text) + '</p>' +
+    '<button class="btn red" style="margin-top:8px" onclick="go(\'' + route + '\')">' + esc(label) + ' →</button></div>';
+}
+function voiceNote() {
+  if (!Speech.noVoice) return '';
+  return '<div class="voice-note">⚠️ <b>German voice not found on this device.</b> The speaker buttons will try your default voice. To hear real German pronunciation, install a German voice in your system text-to-speech settings (Android: Settings → Language → Text-to-speech → German). <button class="btn small ghost" onclick="speakText(\'Guten Tag! Ich heiße Anna.\')">Test voice</button></div>';
+}
+
+/* ================= Router ================= */
+let state = { tab: 'listen', quiz: {}, quizDone: {}, trainer: null, mock: null, cardFilter: 'due', cardIdx: 0, cardFlipped: false, cardQueue: [], cardSession: 0, searchQ: '' };
+let lastPage = '';
+
+function render() {
+  stopSpeak();
+  const hash = (location.hash || '#/home').replace(/^#\//, '');
+  const parts = hash.split('/');
+  const page = parts[0] || 'home';
+  const view = document.getElementById('view');
+  document.querySelectorAll('#bottomnav button').forEach(b => {
+    b.classList.toggle('active', b.dataset.nav === page || (page === 'chapter' && b.dataset.nav === 'learn') || (page === 'level' && b.dataset.nav === 'learn'));
+  });
+  const st = document.getElementById('streakTop'); if (st) st.textContent = store.data.streak;
+  updateSpeedBtn();
+  if (page === 'home') view.innerHTML = viewHome();
+  else if (page === 'learn') view.innerHTML = viewLearn();
+  else if (page === 'level') view.innerHTML = viewLevel(parts[1]);
+  else if (page === 'chapter') view.innerHTML = viewChapter(parts[1]);
+  else if (page === 'cards') {
+    // rebuild the queue when arriving from another screen, so words added
+    // since the last visit (e.g. "Add to flashcards") show up
+    if (lastPage !== 'cards') { state.cardQueue = buildCardQueue(state.cardFilter); state.cardIdx = 0; state.cardFlipped = false; }
+    view.innerHTML = viewCards();
+  }
+  else if (page === 'trainer') view.innerHTML = viewTrainer();
+  else if (page === 'podcast') view.innerHTML = viewPodcast();
+  else if (page === 'nursing') view.innerHTML = viewNursing();
+  else if (page === 'mock') view.innerHTML = viewMock();
+  else if (page === 'search') view.innerHTML = viewSearch();
+  else if (page === 'progress') view.innerHTML = viewProgress();
+  else view.innerHTML = viewHome();
+  window.scrollTo(0, 0);
+  lastPage = page;
+  if (page === 'mock' && state.mock && state.mock.running) startMockTimer();
+}
+window.addEventListener('hashchange', render);
+
+/* Global click delegation: speaker buttons + flashcard flip */
+document.addEventListener('click', (e) => {
+  const say = e.target.closest('[data-say]');
+  if (say) { speakText(say.dataset.say); return; }
+  const flip = e.target.closest('[data-flip]');
+  if (flip) { state.cardFlipped = !state.cardFlipped; render(); return; }
+});
+
+/* ================= Home ================= */
+function viewHome() {
+  const next = nextIncomplete();
+  const totalFull = Object.values(CHAPTERS).filter(c => !c.syllabus).length;
+  const doneFull = Object.values(CHAPTERS).filter(c => !c.syllabus && store.data.completed[c.id]).length;
+  const dueCount = dueCards().length;
+  const wordsKnown = Object.keys(store.data.cards).length;
+  let h = '';
+  h += voiceNote();
+  h += '<div class="hero"><p class="kicker" style="color:var(--gold)">Learn German A1 – C1</p>' +
+    '<h1>Speak German, step by step.</h1>' +
+    '<p>Short lessons. Real sentences. Tap the speaker to hear every word. Free — no login, no ads.</p>' +
+    (next
+      ? '<button class="btn gold" onclick="go(\'chapter/' + next.id + '\')">Continue: ' + esc(next.level + ' · Chapter ' + next.n + ' — ' + next.title) + ' →</button>'
+      : '<button class="btn gold" onclick="go(\'learn\')">Start learning →</button>') +
+    '</div>';
+  h += '<div class="stat-row">' +
+    '<div class="stat"><b>' + store.data.xp + '</b><span>XP</span></div>' +
+    '<div class="stat"><b>🔥 ' + store.data.streak + '</b><span>day streak</span></div>' +
+    '<div class="stat"><b>' + doneFull + '/' + totalFull + '</b><span>lessons done</span></div>' +
+    '<div class="stat"><b>' + wordsKnown + '</b><span>words in cards</span></div></div>';
+  h += '<div class="card tight"><div class="row"><div class="grow"><b>Your progress</b><div class="small">' + doneFull + ' of ' + totalFull + ' full lessons complete</div></div><b>' + Math.round(doneFull / totalFull * 100) + '%</b></div>' +
+    '<div class="progress-track mt"><div class="progress-fill" style="width:' + Math.round(doneFull / totalFull * 100) + '%"></div></div></div>';
+  h += '<h2>Your path — A1 to C1</h2>';
+  LEVELS.forEach(lv => {
+    const p = levelProgress(lv.id);
+    const pct = p.full ? Math.round(p.done / p.full * 100) : 0;
+    const status = lv.status === 'complete' ? '<span class="tag green">Complete content</span>'
+      : '<span class="tag">Full content: ' + p.done + ' of ' + p.full + ' chapters</span>';
+    h += '<div class="card level-card" onclick="go(\'level/' + lv.id + '\')" style="cursor:pointer">' +
+      '<div class="level-badge ' + (p.done === p.full && p.full ? 'done' : (p.done > 0 ? 'open' : 'locked')) + '">' + lv.id + '</div>' +
+      '<div class="grow"><h3>' + esc(lv.name) + '</h3><p>' + esc(lv.desc) + '</p>' + status +
+      '<div class="progress-track" style="margin-top:8px"><div class="progress-fill gold" style="width:' + pct + '%"></div></div></div></div>';
+  });
+  h += '<div class="card"><h3 style="margin-top:0">Do this today</h3>' +
+    '<p>1. Finish one lesson (5–10 minutes).<br>2. Review ' + dueCount + ' flashcards due now.<br>3. Listen to the Day 1 podcast once.</p>' +
+    '<div class="btn-row"><button class="btn small" onclick="go(\'cards\')">🗂️ Flashcards (' + dueCount + ' due)</button>' +
+    '<button class="btn small ghost" onclick="go(\'podcast\')">🎧 Podcast</button></div></div>';
+  h += nextBar('Not sure where to start? Start at A1 Chapter 1 — it begins from absolute zero.', 'chapter/A1-1', 'Start A1 Chapter 1');
+  return h;
+}
+
+/* ================= Learn (level list) ================= */
+function viewLearn() {
+  let h = '<p class="kicker">Learn</p><h1>Choose your level</h1>' +
+    '<p class="lead">A1 is fully complete. A2–C1 have full lessons for the first 3 chapters of each level, plus the full syllabus, core words and grammar for the rest. Honest progress is shown on every level.</p>';
+  LEVELS.forEach(lv => {
+    const p = levelProgress(lv.id);
+    h += '<div class="card level-card" onclick="go(\'level/' + lv.id + '\')" style="cursor:pointer">' +
+      '<div class="level-badge ' + (p.done === p.full && p.full ? 'done' : (p.done > 0 ? 'open' : 'locked')) + '">' + lv.id + '</div>' +
+      '<div class="grow"><h3>' + esc(lv.name) + '</h3><p>' + esc(lv.goal) + '</p>' +
+      '<span class="tag">' + p.done + ' / ' + p.full + ' full chapters done</span>' +
+      (p.read ? '<span class="tag green">' + p.read + ' syllabus chapters read</span>' : '') +
+      '<div class="chip-row"><span class="chip">📚 ' + esc(lv.vocab) + '</span><span class="chip">⏱ ' + esc(lv.hours) + '</span><span class="chip">📖 ' + esc(lv.book) + '</span></div></div></div>';
+  });
+  h += nextBar('Finished a level? Take its mock test to check your score before moving on.', 'mock', 'Take the A1 mock test');
+  return h;
+}
+
+/* ================= Level page ================= */
+function viewLevel(levelId) {
+  const lv = LEVELS.find(l => l.id === levelId);
+  if (!lv) return '<p class="empty">Level not found.</p>';
+  const rev = REVISION[levelId];
+  const p = levelProgress(levelId);
+  let h = '<p class="kicker">' + esc(lv.id) + ' · ' + esc(lv.book) + '</p><h1>' + esc(lv.name) + '</h1>' +
+    '<p class="lead">' + esc(lv.desc) + '</p>' +
+    '<div class="chip-row mb"><span class="chip">📚 ' + esc(lv.vocab) + '</span><span class="chip">⏱ ' + esc(lv.hours) + '</span><span class="chip">🎯 ' + esc(lv.goal) + '</span></div>';
+  h += '<div class="recap-box"><h3>⚡ ' + esc(rev.title) + '</h3><p style="color:#d8d2c2">' + esc(rev.sub) + '</p><ul>' +
+    rev.points.map(pt => '<li>' + esc(pt) + '</li>').join('') + '</ul></div>';
+  h += '<h2>Chapters</h2>';
+  chapterList(levelId).forEach(ch => {
+    const done = store.data.completed[ch.id];
+    const read = store.data.read[ch.id];
+    h += '<button class="chapter-row ' + (done ? 'done' : '') + '" onclick="go(\'chapter/' + ch.id + '\')">' +
+      '<span class="ch-num">' + ch.n + '</span>' +
+      '<span class="t"><b>' + esc(ch.title) + ' ' + (done ? '<span class="done-mark">✓</span>' : '') + (ch.syllabus ? ' <span class="tag grey">Syllabus</span>' : '') + '</b>' +
+      '<span>' + esc(ch.concept) + ' · ' + esc(ch.time) + (ch.syllabus ? ' · core words + grammar' : '') + (read && ch.syllabus ? ' · read ✓' : '') + '</span></span>' +
+      '<span class="arrow">›</span></button>';
+  });
+  if (levelId === 'A1') {
+    h += '<div class="card"><h3 style="margin-top:0">🎓 A1 Mock Test</h3><p>Goethe-style practice test: 20 questions, 20 minutes, pass at 60%. Practice only — not an official certificate.' +
+      (store.data.mockBest !== null ? ' Your best score: <b>' + store.data.mockBest + '/100</b>.' : '') + '</p>' +
+      '<button class="btn red" onclick="go(\'mock\')">Start the mock test →</button></div>';
+  }
+  h += nextBar('What to do next: finish one chapter, then review its words in flashcards.', 'cards', 'Review flashcards');
+  return h;
+}
+
+/* ================= Chapter page ================= */
+function viewChapter(chId) {
+  const ch = CHAPTERS[chId];
+  if (!ch) return '<p class="empty">Chapter not found.</p>';
+  const tabs = ch.syllabus ? ['words', 'grammar'] : ['listen', 'words', 'grammar', 'quiz', 'speak'];
+  const tabNames = { listen: '🎧 Listen', words: '📝 Words', grammar: '📐 Grammar', quiz: '✅ Quiz', speak: '🗣️ Speak' };
+  if (!tabs.includes(state.tab)) state.tab = tabs[0];
+  let h = '<p class="kicker">' + esc(ch.level) + ' · Chapter ' + ch.n + ' · ' + esc(ch.time) + '</p>' +
+    '<h1>' + esc(ch.title) + '</h1><p class="lead">' + esc(ch.concept) + '</p>';
+  if (ch.syllabus) {
+    h += '<div class="note-box"><b>Syllabus chapter.</b> The full lesson is coming soon. For now, learn the core words and the grammar point below — they are the real content of this chapter, not an empty page.</div>';
+  }
+  h += '<div class="tabs">' + tabs.map(t =>
+    '<button class="tab ' + (state.tab === t ? 'active' : '') + '" onclick="setTab(\'' + t + '\')">' + tabNames[t] + '</button>').join('') + '</div>';
+  if (state.tab === 'listen' && !ch.syllabus) h += tabListen(ch);
+  if (state.tab === 'words') h += tabWords(ch);
+  if (state.tab === 'grammar') h += tabGrammar(ch);
+  if (state.tab === 'quiz' && !ch.syllabus) h += tabQuiz(ch);
+  if (state.tab === 'speak' && !ch.syllabus) h += tabSpeak(ch);
+  const done = store.data.completed[ch.id];
+  if (!ch.syllabus) {
+    h += '<div class="card tight"><div class="row"><div class="grow"><b>' + (done ? '✓ Lesson complete — well done!' : 'Finished this lesson?') + '</b><div class="small">' + (done ? 'Score: ' + done.score + '/5 on the quiz.' : 'Tap below when you finish — it saves your progress.') + '</div></div>' +
+      '<button class="btn small ' + (done ? 'ghost' : 'gold') + '" onclick="finishChapter(\'' + ch.id + '\')">' + (done ? 'Done ✓' : 'Finish lesson ✓') + '</button></div></div>';
+  } else {
+    h += '<div class="card tight"><div class="row"><div class="grow"><b>Read the core words?</b><div class="small">Mark this syllabus chapter as read to track it.</div></div>' +
+      '<button class="btn small ' + (store.data.read[ch.id] ? 'ghost' : 'gold') + '" onclick="markRead(\'' + ch.id + '\')">' + (store.data.read[ch.id] ? 'Read ✓' : 'Mark as read') + '</button></div></div>';
+  }
+  h += nextBar(ch.next || 'What to do next: review these words in flashcards.', 'cards', 'Review flashcards');
+  return h;
+}
+function setTab(t) { state.tab = t; render(); }
+function finishChapter(chId) {
+  const score = (state.quizDone[chId] && state.quizDone[chId].score) || (store.data.completed[chId] ? store.data.completed[chId].score : 0);
+  store.completeChapter(chId, score);
+  toast('Lesson complete! +10 XP 🎉');
+  render();
+}
+function markRead(chId) { store.markRead(chId); toast('Marked as read. +5 XP'); render(); }
+
+/* ---- Chapter tab: Listen (dialogue) ---- */
+function tabListen(ch) {
+  let h = '<div class="card"><h3 style="margin-top:0">🎧 Listen & repeat</h3>' +
+    '<p class="small">Tap 🔊 on any line to hear it. Tap "Play all" to hear the whole dialogue. Say each line out loud after you hear it.</p>' +
+    '<div class="btn-row mb"><button class="btn small" onclick="speakDialogue(\'' + ch.id + '\', false)">▶️ Play all</button>' +
+    '<button class="btn small ghost" onclick="speakDialogue(\'' + ch.id + '\', true)">🔁 Loop</button>' +
+    '<button class="btn small ghost" onclick="stopSpeak()">⏹ Stop</button></div>';
+  ch.dialogue.forEach((d, i) => {
+    h += '<div class="dialogue-line"><div class="who ' + (d.who === 'B' ? 'b' : '') + '">' + d.who + '</div>' +
+      '<div class="txt"><div class="de">' + esc(d.de) + '</div><div class="ph">' + esc(d.ph) + '</div><div class="en">' + esc(d.en) + '</div></div>' +
+      speakBtn(d.de) + '</div>';
+  });
+  h += '</div>';
+  if (ch.sounds) {
+    h += '<div class="card"><h3 style="margin-top:0">🔤 Sounds to learn first</h3>';
+    ch.sounds.forEach(s => {
+      h += '<div class="kv"><div><b>' + esc(s.de) + '</b><div class="small">' + esc(s.en) + '</div></div><span class="small" style="color:var(--red);font-weight:700">' + esc(s.ph) + '</span></div>';
+    });
+    h += '<p class="small mt">Three golden rules: (1) W = V, V = F, J = Y. (2) Every noun starts with a capital letter. (3) What is written is spoken — almost no silent letters.</p></div>';
+  }
+  h += '<button class="btn" onclick="setTab(\'words\')">Next: Words →</button>';
+  return h;
+}
+
+/* ---- Chapter tab: Words ---- */
+function tabWords(ch) {
+  let h = '<div class="card"><h3 style="margin-top:0">📝 Words — ' + ch.vocab.length + ' new words</h3>' +
+    '<p class="small">Every word has a pronunciation hint (how it sounds in English letters) and a speaker button. Tap 🔊 to hear it. Say each word out loud 3 times.</p>';
+  ch.vocab.forEach(v => {
+    h += '<div class="vocab-row"><div class="txt"><div class="de">' +
+      (v.art ? '<span class="art">' + esc(v.art) + '</span> ' : '') + esc(v.de) +
+      (v.pl ? ' <span class="plural">· plural: die ' + esc(v.pl) + '</span>' : '') + '</div>' +
+      '<div class="ph">' + esc(v.ph) + '</div><div class="en">' + esc(v.en) + '</div></div>' +
+      speakBtn((v.art ? v.art + ' ' : '') + v.de) + '</div>';
+  });
+  h += '</div>';
+  h += '<button class="btn" onclick="addChapterToCards(\'' + ch.id + '\')">Add these words to flashcards →</button>';
+  if (!ch.syllabus) h += '<button class="btn ghost mt" onclick="setTab(\'grammar\')">Next: Grammar →</button>';
+  return h;
+}
+function addChapterToCards(chId) {
+  const ch = CHAPTERS[chId];
+  let added = 0;
+  (ch.vocab || []).forEach((v, i) => {
+    const key = chId + ':' + i;
+    if (!store.data.cards[key]) { store.data.cards[key] = { ivl: 0, due: 0, again: 0 }; added++; }
+  });
+  store.save();
+  toast(added ? added + ' words added to flashcards.' : 'These words are already in your flashcards.');
+}
+
+/* ---- Chapter tab: Grammar ---- */
+function tabGrammar(ch) {
+  const g = ch.grammar;
+  let h = '<div class="grammar-box"><h3>📐 ' + esc(g.title) + '</h3>' +
+    '<p>' + esc(g.plain) + '</p><p class="rule">' + esc(g.rule) + '</p></div>';
+  if (g.examples) {
+    h += '<div class="card"><h3 style="margin-top:0">Examples — tap to hear</h3>';
+    g.examples.forEach(ex => {
+      h += '<div class="example"><div class="row"><div class="grow"><div class="de">' + esc(ex.de) + '</div><div class="ph" style="color:var(--red);font-weight:600;font-size:14px">' + esc(ex.ph) + '</div><div class="en">' + esc(ex.en) + '</div></div>' + speakBtn(ex.de, 'small') + '</div></div>';
+    });
+    h += '</div>';
+  }
+  if (ch.tip) h += '<div class="tip-box">💡 <b>Memory tip:</b> ' + esc(ch.tip) + '</div>';
+  if (!ch.syllabus) h += '<button class="btn" onclick="setTab(\'quiz\')">Next: Quiz →</button>';
+  return h;
+}
+
+/* ---- Chapter tab: Quiz ---- */
+function tabQuiz(ch) {
+  const qz = state.quiz[ch.id] || (state.quiz[ch.id] = { answers: {}, score: 0, finished: false });
+  const done = state.quizDone[ch.id];
+  let h = '<div class="card"><h3 style="margin-top:0">✅ Quiz — 5 questions</h3>' +
+    '<p class="small">Wrong answers explain <b>why</b> — read the explanation before moving on. Pass: 3 of 5.</p>';
+  ch.quiz.forEach((q, qi) => {
+    const picked = qz.answers[qi];
+    h += '<div class="quiz-q"><p><b>' + (qi + 1) + '.</b> ' + esc(q.q) + ' ' + speakBtn(q.q) + '</p>';
+    q.options.forEach((opt, oi) => {
+      let cls = 'opt';
+      if (picked !== undefined) {
+        if (oi === q.answer) cls += ' correct';
+        else if (oi === picked) cls += ' wrong';
+        else cls += ' dim';
+      }
+      h += '<button class="' + cls + '" ' + (picked !== undefined ? 'disabled' : '') + ' onclick="answerQuiz(\'' + ch.id + '\',' + qi + ',' + oi + ',this)">' + esc(opt) + '</button>';
+    });
+    if (picked !== undefined) {
+      h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>';
+    }
+    h += '</div>';
+  });
+  const answered = Object.keys(qz.answers).length;
+  if (answered === ch.quiz.length && !done) {
+    const score = qz.score;
+    state.quizDone[ch.id] = { score };
+    store.data.quizBest[ch.id] = Math.max(store.data.quizBest[ch.id] || 0, score);
+    store.save();
+    h += '<div class="result-box ' + (score >= 3 ? 'pass' : 'fail') + '"><b>Your score: ' + score + ' / 5</b><br>' +
+      (score >= 3 ? '🎉 Well done! You passed this chapter. Mark the lesson complete below.' : 'Keep going — read the explanations above, then try the quiz again. Tap "Restart quiz" to retry.') + '</div>' +
+      '<button class="btn small ghost mt" onclick="restartQuiz(\'' + ch.id + '\')">Restart quiz</button>';
+  }
+  h += '</div>';
+  if (answered === ch.quiz.length) h += '<button class="btn" onclick="setTab(\'speak\')">Next: Speak & Recap →</button>';
+  return h;
+}
+function answerQuiz(chId, qi, oi, el) {
+  const qz = state.quiz[chId];
+  if (!qz || qz.answers[qi] !== undefined) return;
+  const ch = CHAPTERS[chId];
+  qz.answers[qi] = oi;
+  if (oi === ch.quiz[qi].answer) { qz.score++; store.addXP(2); }
+  render();
+}
+function restartQuiz(chId) {
+  state.quiz[chId] = { answers: {}, score: 0, finished: false };
+  delete state.quizDone[chId];
+  render();
+}
+
+/* ---- Chapter tab: Speak & Recap ---- */
+function tabSpeak(ch) {
+  let h = '<div class="card"><h3 style="margin-top:0">🗣️ Speak — say it out loud</h3>' +
+    '<p class="small">Speaking is the fastest way to remember. Tap a line, listen, then repeat it — 3 times each.</p>';
+  ch.speak.model.forEach(line => {
+    h += '<div class="kv"><div><b>' + esc(line) + '</b></div>' + speakBtn(line) + '</div>';
+  });
+  h += '<p class="small mt"><b>Your task:</b> ' + esc(ch.speak.prompt) + '</p></div>';
+  h += '<div class="recap-box"><h3>⚡ 1-minute recap</h3><ul>' +
+    ch.recap.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></div>';
+  if (ch.extra) {
+    h += '<div class="card"><h3 style="margin-top:0">🔁 Extra practice — try these</h3>';
+    ch.extra.forEach(ex => {
+      h += '<div class="kv"><div><b>' + esc(ex.q) + '</b><div class="small">Answer: ' + esc(ex.a) + '</div></div>' + speakBtn(ex.a) + '</div>';
+    });
+    h += '</div>';
+  }
+  h += '<button class="btn gold" onclick="finishChapter(\'' + ch.id + '\')">Finish lesson ✓ (+10 XP)</button>';
+  return h;
+}
+
+/* ================= Flashcards (SRS) ================= */
+function cardState(key) { return store.data.cards[key] || null; }
+function dueCards() {
+  const now = Date.now();
+  return allVocab().filter(v => {
+    const c = store.data.cards[v.key];
+    return c && c.due <= now;
+  });
+}
+function buildCardQueue(filter) {
+  const now = Date.now();
+  let items = allVocab();
+  if (filter === 'due') items = items.filter(v => { const c = store.data.cards[v.key]; return c && c.due <= now; });
+  else if (filter === 'weak') items = items.filter(v => { const c = store.data.cards[v.key]; return c && c.again >= 2; });
+  else if (filter === 'new') items = items.filter(v => !store.data.cards[v.key]);
+  else if (filter.startsWith('level:')) { const lv = filter.split(':')[1]; items = items.filter(v => v.level === lv); }
+  // weak words first, then most overdue
+  items.sort((a, b) => {
+    const ca = store.data.cards[a.key], cb = store.data.cards[b.key];
+    const wa = ca ? ca.again : 0, wb = cb ? cb.again : 0;
+    if (wa !== wb) return wb - wa;
+    const da = ca ? ca.due : 0, db = cb ? cb.due : 0;
+    return da - db;
+  });
+  return items.slice(0, 30);
+}
+function viewCards() {
+  const filters = [
+    { id: 'due', label: 'Due now (' + dueCards().length + ')' },
+    { id: 'weak', label: 'Weak words' },
+    { id: 'new', label: 'New words' },
+    { id: 'all', label: 'All words' },
+  ];
+  ['A1', 'A2', 'B1', 'B2', 'C1', 'Pflege'].forEach(lv => filters.push({ id: 'level:' + lv, label: lv }));
+  let h = '<p class="kicker">Flashcards</p><h1>Flashcards</h1>' +
+    '<p class="lead">Tap a card to see the answer. Words you mark "Again" come back first — that is how spaced repetition works.</p>' +
+    '<div class="chip-row mb">' + filters.map(f =>
+      '<button class="chip ' + (state.cardFilter === f.id ? 'active' : '') + '" onclick="setCardFilter(\'' + f.id + '\')">' + f.label + '</button>').join('') + '</div>';
+  const queue = state.cardQueue;
+  if (!queue.length) {
+    h += '<div class="card empty">No cards in this view.' +
+      (state.cardFilter === 'due' ? ' You are all caught up — great work! 🎉' : ' Learn a chapter first, then add its words here.') + '</div>';
+    h += nextBar('What to do next: learn a new chapter to add more words.', 'learn', 'Go to lessons');
+    return h;
+  }
+  const card = queue[state.cardIdx];
+  const cs = store.data.cards[card.key];
+  h += '<div class="flashcard" data-flip>' +
+    '<p class="small" style="color:var(--gold)">' + esc(card.level) + ' · ' + esc(card.title) + ' · Card ' + (state.cardIdx + 1) + ' of ' + queue.length + '</p>' +
+    '<div class="card-front"><div class="de big">' + (card.art ? '<span class="art">' + esc(card.art) + '</span> ' : '') + esc(card.de) + '</div>' +
+    '<div class="ph">' + esc(card.ph) + '</div>' +
+    '<div class="mt">' + speakBtn((card.art ? card.art + ' ' : '') + card.de) + '</div>' +
+    (state.cardFlipped
+      ? '<div class="card-back"><div class="en big">' + esc(card.en) + '</div>' +
+        (card.pl ? '<div class="small">plural: die ' + esc(card.pl) + '</div>' : '') +
+        (cs ? '<div class="small">reviewed ' + (cs.again + (cs.ivl ? 1 : 0)) + '× · interval ' + (cs.ivl || 0) + ' day(s)</div>' : '') + '</div>'
+      : '<p class="small mt">Tap the card to see the answer</p>') +
+    '</div></div>';
+  h += '<div class="srs-row">' +
+    '<button class="btn red" onclick="gradeCard(0)">Again</button>' +
+    '<button class="btn" onclick="gradeCard(1)">Good</button>' +
+    '<button class="btn gold" onclick="gradeCard(2)">Easy</button></div>';
+  h += '<p class="small" style="text-align:center">Session: ' + state.cardSession + ' reviewed · +1 XP per card</p>';
+  h += nextBar('What to do next: after cards, practise in the vocabulary trainer.', 'trainer', 'Open trainer');
+  return h;
+}
+function setCardFilter(f) {
+  state.cardFilter = f; state.cardIdx = 0; state.cardFlipped = false; state.cardSession = 0;
+  state.cardQueue = buildCardQueue(f);
+  render();
+}
+function gradeCard(grade) {
+  const queue = state.cardQueue;
+  const card = queue[state.cardIdx];
+  if (!card) return;
+  const now = Date.now();
+  const c = store.data.cards[card.key] || { ivl: 0, due: 0, again: 0 };
+  const steps = [1, 3, 7, 14, 30, 60];
+  if (grade === 0) { c.ivl = 0; c.due = now + 10 * 60 * 1000; c.again++; }
+  else if (grade === 1) { const i = steps.indexOf(c.ivl); c.ivl = i < 0 ? 1 : steps[Math.min(i + 1, steps.length - 1)]; c.due = now + c.ivl * 864e5; }
+  else { c.ivl = c.ivl ? Math.min(c.ivl * 2, 90) : 3; c.due = now + c.ivl * 864e5; }
+  store.data.cards[card.key] = c; store.addXP(1); state.cardSession++;
+  store.save();
+  state.cardFlipped = false;
+  state.cardIdx++;
+  if (state.cardIdx >= queue.length) {
+    toast('Deck finished! ' + state.cardSession + ' cards reviewed. 🎉');
+    state.cardQueue = buildCardQueue(state.cardFilter);
+    state.cardIdx = 0; state.cardSession = 0;
+    if (!state.cardQueue.length) { render(); return; }
+  }
+  render();
+}
+
+/* ================= Vocabulary trainer ================= */
+function startTrainer(mode) {
+  const pool = allVocab().filter(v => store.data.cards[v.key]);
+  const usePool = pool.length >= 10 ? pool : allVocab();
+  const qs = [];
+  const shuffled = [...usePool].sort(() => Math.random() - 0.5).slice(0, 10);
+  shuffled.forEach(item => {
+    const wrongs = [...usePool].filter(v => v.key !== item.key).sort(() => Math.random() - 0.5).slice(0, 3);
+    const opts = mode === 'de-en'
+      ? [item.en, ...wrongs.map(w => w.en)]
+      : [item.de, ...wrongs.map(w => w.de)];
+    const order = opts.map((o, i) => i).sort(() => Math.random() - 0.5);
+    const options = order.map(i => opts[i]);
+    qs.push({ item, options, answer: order.indexOf(0), mode });
+  });
+  state.trainer = { mode, qs, idx: 0, score: 0, picked: null, finished: false };
+  render();
+}
+function viewTrainer() {
+  let h = '<p class="kicker">Trainer</p><h1>Vocabulary trainer</h1>' +
+    '<p class="lead">10 quick questions. Two directions — pick one and start.</p>' +
+    '<div class="btn-row mb"><button class="btn ' + (state.trainer && state.trainer.mode === 'de-en' ? 'red' : 'gold') + '" onclick="startTrainer(\'de-en\')">🇩🇪 German → English</button>' +
+    '<button class="btn ' + (state.trainer && state.trainer.mode === 'en-de' ? 'red' : 'gold') + '" onclick="startTrainer(\'en-de\')">🇬🇧 English → German</button></div>';
+  const t = state.trainer;
+  if (!t) {
+    h += '<div class="card"><p>Your best trainer score: <b>' + (store.data.trainerBest || 0) + ' / 10</b></p>' +
+      '<p class="small">Tip: words you have added to flashcards appear first. New words come from all chapters.</p></div>';
+    h += nextBar('What to do next: review flashcards before your next trainer round.', 'cards', 'Review flashcards');
+    return h;
+  }
+  if (t.finished) {
+    h += '<div class="result-box ' + (t.score >= 7 ? 'pass' : 'fail') + '"><b>Score: ' + t.score + ' / 10</b><br>' +
+      (t.score >= 7 ? '🎉 Strong round! Your German is growing.' : 'Good effort — review the words below and try again.') + '</div>';
+    store.data.trainerBest = Math.max(store.data.trainerBest || 0, t.score);
+    store.save();
+    h += '<button class="btn" onclick="startTrainer(\'' + t.mode + '\')">Play again →</button>';
+    h += nextBar('What to do next: open a lesson to learn new words.', 'learn', 'Go to lessons');
+    return h;
+  }
+  const q = t.qs[t.idx];
+  h += '<div class="card"><p class="small">Question ' + (t.idx + 1) + ' of 10 · Score: ' + t.score + '</p>' +
+    '<p class="big">' + (q.mode === 'de-en' ? '<b>' + (q.item.art ? esc(q.item.art) + ' ' : '') + esc(q.item.de) + '</b> ' + speakBtn((q.item.art ? q.item.art + ' ' : '') + q.item.de) : '<b>' + esc(q.item.en) + '</b>') + '</p>' +
+    '<p class="small">' + (q.mode === 'de-en' ? 'What does it mean in English?' : 'What is it in German?') + '</p>';
+  q.options.forEach((opt, oi) => {
+    let cls = 'opt';
+    if (t.picked !== null) {
+      if (oi === q.answer) cls += ' correct';
+      else if (oi === t.picked) cls += ' wrong';
+      else cls += ' dim';
+    }
+    h += '<button class="' + cls + '" ' + (t.picked !== null ? 'disabled' : '') + ' onclick="answerTrainer(' + oi + ')">' + esc(opt) + '</button>';
+  });
+  if (t.picked !== null) {
+    h += '<div class="feedback ' + (t.picked === q.answer ? 'good' : 'bad') + '"><b>' + (t.picked === q.answer ? '✅ Correct!' : '❌ The answer is: ' + esc(q.options[q.answer])) + '</b> ' + esc(q.item.de) + ' — ' + esc(q.item.en) + ' (' + esc(q.item.ph) + ')</div>' +
+      '<button class="btn mt" onclick="nextTrainer()">' + (t.idx === 9 ? 'See result →' : 'Next →') + '</button>';
+  }
+  h += '</div>';
+  return h;
+}
+function answerTrainer(oi) {
+  const t = state.trainer; if (!t || t.picked !== null) return;
+  t.picked = oi;
+  if (oi === t.qs[t.idx].answer) { t.score++; store.addXP(2); }
+  render();
+}
+function nextTrainer() {
+  const t = state.trainer; if (!t) return;
+  t.picked = null; t.idx++;
+  if (t.idx >= 10) { t.finished = true; store.addXP(5); }
+  render();
+}
+
+/* ================= Search ================= */
+function viewSearch() {
+  const q = (state.searchQ || '').trim().toLowerCase();
+  let h = '<p class="kicker">Search</p><h1>Search words & lessons</h1>' +
+    '<input class="search-input" type="text" placeholder="Type a German or English word…" value="' + escAttr(state.searchQ || '') + '" oninput="state.searchQ=this.value;renderSearchResults()" autofocus>';
+  h += '<div id="searchResults">' + searchResultsHTML(q) + '</div>';
+  return h;
+}
+function searchResultsHTML(q) {
+  if (!q) return '<p class="empty">Try "Wasser", "water", "Krankenhaus" or "hello".</p>';
+  const hits = allVocab().filter(v => v.de.toLowerCase().includes(q) || v.en.toLowerCase().includes(q)).slice(0, 40);
+  const chHits = Object.values(CHAPTERS).filter(c => c.title.toLowerCase().includes(q) || c.concept.toLowerCase().includes(q)).slice(0, 5);
+  let h = '';
+  if (chHits.length) {
+    h += '<h3>Lessons</h3>';
+    chHits.forEach(c => { h += '<button class="chapter-row" onclick="go(\'chapter/' + c.id + '\')"><span class="ch-num">' + c.level + '</span><span class="t"><b>' + esc(c.title) + '</b><span>' + esc(c.concept) + '</span></span><span class="arrow">›</span></button>'; });
+  }
+  if (hits.length) {
+    h += '<h3>Words (' + hits.length + ')</h3>';
+    hits.forEach(v => {
+      h += '<div class="vocab-row"><div class="txt"><div class="de">' + (v.art ? '<span class="art">' + esc(v.art) + '</span> ' : '') + esc(v.de) + '</div><div class="en">' + esc(v.en) + ' · ' + esc(v.level) + ' · ' + esc(v.title) + '</div></div>' + speakBtn((v.art ? v.art + ' ' : '') + v.de) + '</div>';
+    });
+  } else if (!chHits.length) {
+    h += '<p class="empty">No results for "' + esc(q) + '". Try a shorter word.</p>';
+  }
+  return h;
+}
+function renderSearchResults() {
+  const el = document.getElementById('searchResults');
+  if (el) el.innerHTML = searchResultsHTML((state.searchQ || '').trim().toLowerCase());
+}
+
+/* ================= Podcast ================= */
+function viewPodcast() {
+  const p = PODCAST;
+  let h = '<p class="kicker">Podcast · German Day 1</p><h1>' + esc(p.title) + '</h1>' +
+    '<p class="lead">' + esc(p.desc) + '</p>' +
+    '<div class="audio-box"><audio controls preload="metadata" src="' + escAttr(p.file) + '" style="width:100%"></audio>' +
+    '<p class="small mt">Duration: ' + esc(p.duration) + ' · Listen with headphones. You can download it for offline listening.</p></div>' +
+    '<div class="note-box"><b>How to use it (4-pass routine):</b><br>' + esc(p.routine) + '</div>';
+  h += '<div class="card"><h3 style="margin-top:0">⭐ Key lines from the episode</h3>';
+  p.highlights.forEach(l => {
+    h += '<div class="vocab-row"><div class="txt"><div class="de">' + esc(l.de) + '</div><div class="ph">' + esc(l.ph) + '</div><div class="en">' + esc(l.en) + '</div></div>' + speakBtn(l.de) + '</div>';
+  });
+  h += '</div>';
+  h += '<div class="card"><h3 style="margin-top:0">📖 Glossary — 5 words</h3>';
+  p.glossary.forEach(v => {
+    h += '<div class="vocab-row"><div class="txt"><div class="de">' + (v.art ? '<span class="art">' + esc(v.art) + '</span> ' : '') + esc(v.de) + '</div><div class="ph">' + esc(v.ph) + '</div><div class="en">' + esc(v.en) + '</div></div>' + speakBtn((v.art ? v.art + ' ' : '') + v.de) + '</div>';
+  });
+  h += '</div>';
+  h += '<div class="card"><h3 style="margin-top:0">✅ Quick check — 3 questions</h3>';
+  p.quiz.forEach((q, qi) => {
+    const picked = state.quiz['podcast'] && state.quiz['podcast'].answers[qi];
+    h += '<div class="quiz-q"><p><b>' + (qi + 1) + '.</b> ' + esc(q.q) + '</p>';
+    q.options.forEach((opt, oi) => {
+      let cls = 'opt';
+      if (picked !== undefined) { if (oi === q.answer) cls += ' correct'; else if (oi === picked) cls += ' wrong'; else cls += ' dim'; }
+      h += '<button class="' + cls + '" ' + (picked !== undefined ? 'disabled' : '') + ' onclick="answerPodcastQuiz(' + qi + ',' + oi + ')">' + esc(opt) + '</button>';
+    });
+    if (picked !== undefined) h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  h += nextBar('What to do next: open A1 Chapter 1 and practise the same words in the lesson.', 'chapter/A1-1', 'Open A1 Chapter 1');
+  return h;
+}
+function answerPodcastQuiz(qi, oi) {
+  const qz = state.quiz['podcast'] || (state.quiz['podcast'] = { answers: {}, score: 0 });
+  if (qz.answers[qi] !== undefined) return;
+  qz.answers[qi] = oi;
+  if (oi === PODCAST.quiz[qi].answer) { qz.score++; store.addXP(2); }
+  render();
+}
+
+/* ================= Nursing (Pflege) ================= */
+function viewNursing() {
+  const n = NURSING;
+  let h = '<p class="kicker">Bonus · Nursing German (Pflege)</p><h1>Nursing German</h1>' +
+    '<p class="lead">' + esc(n.intro) + '</p>' +
+    '<div class="card"><h3 style="margin-top:0">🏥 Hospital words — ' + n.words.length + '</h3>';
+  n.words.forEach(v => {
+    h += '<div class="vocab-row"><div class="txt"><div class="de"><span class="art">' + esc(v.art) + '</span> ' + esc(v.de) + (v.pl ? ' <span class="plural">· plural: die ' + esc(v.pl) + '</span>' : '') + '</div><div class="ph">' + esc(v.ph) + '</div><div class="en">' + esc(v.en) + '</div></div>' + speakBtn(v.art + ' ' + v.de) + '</div>';
+  });
+  h += '<button class="btn mt" onclick="addNursingToCards()">Add all nursing words to flashcards →</button></div>';
+  h += '<div class="card"><h3 style="margin-top:0">🗣️ Patient phrases — always Sie-form</h3>' +
+    '<p class="small">With patients, always use "Sie" (formal you) — never "du". Tap 🔊 to hear each phrase.</p>';
+  n.phrases.forEach(p => {
+    h += '<div class="vocab-row"><div class="txt"><div class="de">' + esc(p.de) + '</div><div class="ph">' + esc(p.ph) + '</div><div class="en">' + esc(p.en) + '</div></div>' + speakBtn(p.de) + '</div>';
+  });
+  h += '</div>';
+  h += '<div class="card"><h3 style="margin-top:0">🎧 Dialogue — morning round</h3>' +
+    '<div class="btn-row mb"><button class="btn small" onclick="speakNursingDialogue(false)">▶️ Play all</button>' +
+    '<button class="btn small ghost" onclick="speakNursingDialogue(true)">🔁 Loop</button>' +
+    '<button class="btn small ghost" onclick="stopSpeak()">⏹ Stop</button></div>';
+  n.dialogue.forEach(d => {
+    h += '<div class="dialogue-line"><div class="who ' + (d.who === 'B' ? 'b' : '') + '">' + d.who + '</div>' +
+      '<div class="txt"><div class="de">' + esc(d.de) + '</div><div class="ph">' + esc(d.ph) + '</div><div class="en">' + esc(d.en) + '</div></div>' +
+      speakBtn(d.de) + '</div>';
+  });
+  h += '</div>';
+  h += '<div class="note-box"><b>Exam to aim for:</b> ' + esc(n.exam) + '</div>';
+  h += nextBar('What to do next: finish B2 Chapter 3 (Health & Nursing) — it covers the grammar for hospital German.', 'chapter/B2-3', 'Open B2 Chapter 3');
+  return h;
+}
+function speakNursingDialogue(loop) {
+  stopSpeak();
+  const lines = NURSING.dialogue.map(d => d.de);
+  const token = ++speakToken;
+  let i = 0;
+  const next = () => {
+    if (token !== speakToken) return;
+    if (i >= lines.length) { if (loop) { i = 0; next(); } return; }
+    const u = new SpeechSynthesisUtterance(lines[i]);
+    u.lang = 'de-DE'; if (Speech.voice) u.voice = Speech.voice; u.rate = Speech.rate();
+    u.onend = () => { i++; next(); }; u.onerror = () => { i++; next(); };
+    window.speechSynthesis.speak(u);
+  };
+  next();
+}
+function addNursingToCards() {
+  let added = 0;
+  NURSING.words.forEach((v, i) => {
+    const key = 'nursing:' + i;
+    if (!store.data.cards[key]) { store.data.cards[key] = { ivl: 0, due: 0, again: 0 }; added++; }
+  });
+  store.save();
+  toast(added ? added + ' nursing words added to flashcards.' : 'Nursing words are already in your flashcards.');
+}
+
+/* ================= A1 Mock Test ================= */
+function startMock() {
+  const qs = [...MOCK_A1.questions];
+  state.mock = { qs, idx: 0, answers: {}, score: 0, remaining: MOCK_A1.time || 20 * 60, running: true, finished: false };
+  render();
+}
+function viewMock() {
+  const m = state.mock;
+  if (!m) {
+    return '<p class="kicker">Mock test · A1</p><h1>Goethe-style A1 Mock Test</h1>' +
+      '<p class="lead">20 questions. 20 minutes. Pass at 60% (12 correct). Each question is worth 5 points. Practice only — not an official certificate.</p>' +
+      '<div class="card"><h3 style="margin-top:0">Rules</h3><ul><li>One question at a time — no going back.</li><li>The timer starts when you tap Start.</li><li>When time runs out, the test submits itself.</li><li>Your best score is saved: <b>' + (store.data.mockBest !== null ? store.data.mockBest + ' / 100' : 'not taken yet') + '</b></li></ul>' +
+      '<button class="btn red" onclick="startMock()">▶️ Start the mock test</button></div>' +
+      nextBar('Not ready yet? Finish A1 Chapter 12 first — it covers travel and the exam basics.', 'chapter/A1-12', 'Open A1 Chapter 12');
+  }
+  if (m.finished) {
+    const pct = m.score * 5;
+    return '<p class="kicker">Mock test · A1</p><h1>Your result</h1>' +
+      '<div class="result-box ' + (pct >= 60 ? 'pass' : 'fail') + '"><b>Score: ' + pct + ' / 100 (' + m.score + ' of 20 correct)</b><br>' +
+      (pct >= 60 ? '🎉 You passed! Goethe B1-style pass mark is 60% — you are at A1 exam level.' : 'Not yet — 60% is the pass mark. Review the answers below, revise the weak chapters, and try again.') + '</div>' +
+      m.qs.map((q, i) => {
+        const picked = m.answers[i];
+        return '<div class="card tight"><p><b>' + (i + 1) + '.</b> ' + esc(q.q) + '</p>' +
+          '<p class="' + (picked === q.answer ? 'ok' : 'bad-text') + '">' + (picked === q.answer ? '✅ You answered: ' : '❌ You answered: ') + esc(q.options[picked] !== undefined ? q.options[picked] : '—') + '</p>' +
+          (picked !== q.answer ? '<p class="ok">✅ Correct answer: ' + esc(q.options[q.answer]) + '</p>' : '') +
+          (q.why ? '<p class="small">' + esc(q.why) + '</p>' : '') + '</div>';
+      }).join('') +
+      '<button class="btn mt" onclick="startMock()">Try again →</button>' +
+      nextBar('What to do next: revise your weakest chapter, then retake the test.', 'learn', 'Go to lessons');
+  }
+  const q = m.qs[m.idx];
+  const mm = Math.floor(m.remaining / 60), ss = String(m.remaining % 60).padStart(2, '0');
+  let h = '<p class="kicker">Mock test · A1</p><h1>Question ' + (m.idx + 1) + ' of 20</h1>' +
+    '<div class="timer ' + (m.remaining <= 120 ? 'low' : '') + '">⏱ ' + mm + ':' + ss + ' left</div>' +
+    '<div class="progress-track mb"><div class="progress-fill" style="width:' + (m.idx / 20 * 100) + '%"></div></div>' +
+    '<div class="card"><p class="big">' + esc(q.q) + ' ' + speakBtn(q.q) + '</p>';
+  q.options.forEach((opt, oi) => {
+    h += '<button class="opt" onclick="answerMock(' + oi + ')">' + esc(opt) + '</button>';
+  });
+  h += '</div><p class="small">Tip: read the question slowly. Tap 🔊 to hear it in German.</p>';
+  return h;
+}
+function answerMock(oi) {
+  const m = state.mock; if (!m || m.finished) return;
+  m.answers[m.idx] = oi;
+  if (oi === m.qs[m.idx].answer) m.score++;
+  m.idx++;
+  if (m.idx >= 20) finishMock();
+  render();
+}
+function finishMock() {
+  const m = state.mock; if (!m) return;
+  m.running = false; m.finished = true;
+  const pct = m.score * 5;
+  store.data.mockBest = Math.max(store.data.mockBest || 0, pct);
+  store.addXP(20);
+  store.save();
+  toast(pct >= 60 ? 'Mock test passed! +20 XP 🎉' : 'Mock test finished. +20 XP');
+}
+function startMockTimer() {
+  clearInterval(startMockTimer._t);
+  startMockTimer._t = setInterval(() => {
+    const m = state.mock;
+    if (!m || !m.running) { clearInterval(startMockTimer._t); return; }
+    m.remaining--;
+    const el = document.querySelector('.timer');
+    if (el) {
+      const mm = Math.floor(m.remaining / 60), ss = String(m.remaining % 60).padStart(2, '0');
+      el.textContent = '⏱ ' + mm + ':' + ss + ' left';
+      if (m.remaining <= 120) el.classList.add('low');
+    }
+    if (m.remaining <= 0) { clearInterval(startMockTimer._t); finishMock(); render(); }
+  }, 1000);
+}
+
+/* ================= Progress (export / import) ================= */
+function viewProgress() {
+  const d = store.data;
+  const doneChs = Object.keys(d.completed).length;
+  const readChs = Object.keys(d.read).length;
+  let h = '<p class="kicker">Progress</p><h1>Your progress</h1>' +
+    '<div class="stat-row">' +
+    '<div class="stat"><b>' + d.xp + '</b><span>XP</span></div>' +
+    '<div class="stat"><b>🔥 ' + d.streak + '</b><span>day streak</span></div>' +
+    '<div class="stat"><b>' + doneChs + '</b><span>lessons done</span></div>' +
+    '<div class="stat"><b>' + Object.keys(d.cards).length + '</b><span>flashcards</span></div></div>';
+  h += '<div class="card"><h3 style="margin-top:0">Per level</h3>';
+  LEVELS.forEach(lv => {
+    const p = levelProgress(lv.id);
+    h += '<div class="kv"><div><b>' + lv.id + ' — ' + esc(lv.name) + '</b><div class="small">' + p.done + '/' + p.full + ' full chapters · ' + p.read + ' syllabus read</div></div><b>' + Math.round(p.full ? p.done / p.full * 100 : 0) + '%</b></div>';
+  });
+  h += '<p class="small mt">Quiz best: A1 Mock ' + (d.mockBest !== null ? d.mockBest + '/100' : 'not taken') + ' · Trainer ' + (d.trainerBest || 0) + '/10</p></div>';
+  h += '<div class="card"><h3 style="margin-top:0">💾 Save your progress</h3>' +
+    '<p class="small">Progress lives on this device. Export a backup file now — if you clear browser data, you can import it back.</p>' +
+    '<div class="btn-row"><button class="btn small" onclick="exportProgress()">⬇️ Export (JSON)</button>' +
+    '<button class="btn small ghost" onclick="document.getElementById(\'importFile\').click()">⬆️ Import (JSON)</button></div>' +
+    '<button class="btn small ghost mt" onclick="if(confirm(\'Delete ALL progress? This cannot be undone.\')){localStorage.removeItem(store.key);location.reload();}">🗑️ Reset all progress</button></div>';
+  h += '<div class="card"><h3 style="margin-top:0">🔊 Pronunciation voice</h3>' +
+    '<p class="small">' + (Speech.noVoice ? '⚠️ No German voice found on this device. Install a German voice in system text-to-speech settings.' : 'German voice ready: <b>' + esc(Speech.voice ? Speech.voice.name : 'default') + '</b>') + '</p>' +
+    '<div class="btn-row"><button class="btn small" onclick="speakText(\'Guten Tag! Ich heiße Anna. Ich lerne Deutsch.\')">▶️ Test voice</button>' +
+    '<button class="btn small ghost" onclick="toggleSpeed()">Speed: ' + (d.speed === 'normal' ? 'normal (1×)' : 'slow (0.7×)') + '</button></div></div>';
+  h += nextBar('What to do next: keep your streak alive — finish one lesson today.', 'home', 'Back to Home');
+  return h;
+}
+function exportProgress() {
+  const blob = new Blob([JSON.stringify(store.data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'german-learning-progress.json';
+  a.click();
+  toast('Progress exported.');
+}
+function importProgressFile(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (typeof data.xp !== 'number') throw new Error('bad file');
+      store.data = Object.assign(store.fresh(), data);
+      store.save();
+      toast('Progress imported. Welcome back!');
+      render();
+    } catch (e) { toast('That file is not a valid progress backup.'); }
+  };
+  reader.readAsText(file);
+}
+
+/* ================= Init ================= */
+Speech.init();
+store.load();
+if (!location.hash) location.hash = '#/home';
+state.cardQueue = buildCardQueue('due');
+render();

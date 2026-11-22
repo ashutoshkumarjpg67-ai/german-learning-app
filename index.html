@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<meta name="description" content="Learn German A1 to C1 — free self-study app. Lessons, vocabulary, grammar, quizzes, flashcards and podcasts. For Nursing Ausbildung in Germany.">
+<title>Deutsch Lernen — German A1 to C1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div class="brand" onclick="go('home')">
+      <span class="flag" aria-hidden="true"><span class="f-black"></span><span class="f-red"></span><span class="f-gold"></span></span>
+      <span class="brand-text"><strong>Deutsch Lernen</strong><small>German A1 – C1 • Free</small></span>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn speed-btn" id="speedBtn" aria-label="Speech speed" onclick="toggleSpeed()">🐢 0.7×</button>
+      <button class="icon-btn" id="searchBtn" aria-label="Search" onclick="go('search')">🔍</button>
+      <button class="icon-btn streak-btn" aria-label="Streak" onclick="go('progress')">🔥 <span id="streakTop">0</span></button>
+    </div>
+  </header>
+
+  <main id="view"></main>
+
+  <nav id="bottomnav" aria-label="Main navigation">
+    <button data-nav="home" onclick="go('home')"><span class="nav-ic">🏠</span><span>Home</span></button>
+    <button data-nav="learn" onclick="go('learn')"><span class="nav-ic">📖</span><span>Learn</span></button>
+    <button data-nav="cards" onclick="go('cards')"><span class="nav-ic">🗂️</span><span>Cards</span></button>
+    <button data-nav="podcast" onclick="go('podcast')"><span class="nav-ic">🎧</span><span>Podcast</span></button>
+    <button data-nav="nursing" onclick="go('nursing')"><span class="nav-ic">🏥</span><span>Pflege</span></button>
+  </nav>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importProgressFile(this)">
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
