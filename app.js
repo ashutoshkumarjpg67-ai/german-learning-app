@@ -1069,7 +1069,8 @@ function startMock(level) {
   if (!src) { toast('This mock test is not ready yet — it arrives when the level is complete.'); return; }
   const qs = [...src.questions];
   state.mock = { level: level || 'A1', qs, idx: 0, answers: {}, score: 0, remaining: src.time || 20 * 60, running: true, finished: false };
-  render();
+  go('mock/' + (level || 'A1'));
+  render(); // render() too: go() alone does nothing when already on #/mock/<level> (no hashchange fires)
 }
 function viewMocks() {
   let h = '<p class="kicker">Mock tests</p><h1>Mock tests</h1>' +
