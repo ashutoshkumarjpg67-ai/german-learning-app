@@ -49,10 +49,8 @@ function speakOne(text, onend) {
   window.speechSynthesis.speak(u);
 }
 function speakText(text) { stopSpeak(); speakOne(text); }
-function speakDialogue(chId, loop) {
-  const ch = CHAPTERS[chId]; if (!ch || !ch.dialogue) return;
+function speakLines(lines, loop) {
   stopSpeak();
-  const lines = ch.dialogue.map(d => d.de);
   const token = ++speakToken;
   let i = 0;
   const next = () => {
@@ -65,6 +63,10 @@ function speakDialogue(chId, loop) {
     window.speechSynthesis.speak(u);
   };
   next();
+}
+function speakDialogue(chId, loop) {
+  const ch = CHAPTERS[chId]; if (!ch || !ch.dialogue) return;
+  speakLines(ch.dialogue.map(d => d.de), loop);
   toast(loop ? 'Playing dialogue on loop — tap any speaker to stop.' : 'Playing dialogue…');
 }
 function toggleSpeed() {
@@ -83,7 +85,7 @@ const store = {
   key: 'gla_v1',
   data: null,
   fresh() {
-    return { xp: 0, streak: 0, lastVisit: null, days: {}, completed: {}, read: {},
+    return { xp: 0, streak: 0, lastVisit: null, days: {}, completed: {}, read: {}, topicsDone: {},
       quizBest: {}, cards: {}, speed: 'slow', podcastDone: false, mockBest: null, trainerBest: 0 };
   },
   load() {
@@ -131,6 +133,39 @@ function levelProgress(levelId) {
   const read = list.filter(c => c.syllabus && store.data.read[c.id]).length;
   return { total: list.length, full: full.length, done, read, syllabus: list.length - full.length };
 }
+/* ================= Tiny topics (A1 chapters split into micro-lessons) ================= */
+function topicKey(chId, topicId) { return chId + ':' + topicId; }
+function topicDoneMap() {
+  if (!store.data.topicsDone) store.data.topicsDone = {};
+  return store.data.topicsDone;
+}
+function topicProgress(ch) {
+  if (!ch.topics) return null;
+  const done = topicDoneMap();
+  const d = ch.topics.filter(t => done[topicKey(ch.id, t.id)]).length;
+  return { done: d, total: ch.topics.length };
+}
+function topicKindLabel(kind) {
+  return { words: '📝 Words', sounds: '🔤 Sounds', dialogue: '🎧 Dialogue', grammar: '📐 Grammar', quiz: '✅ Quiz', speak: '🗣️ Speak' }[kind] || kind;
+}
+function completeTopic(chId, topicId) {
+  const done = topicDoneMap();
+  const key = topicKey(chId, topicId);
+  if (!done[key]) { done[key] = Date.now(); store.addXP(5); toast('Topic done! +5 XP 🎉'); }
+  const ch = CHAPTERS[chId];
+  if (ch && ch.topics && ch.topics.every(t => done[topicKey(chId, t.id)]) && !store.data.completed[chId]) {
+    store.data.completed[chId] = { score: 0, at: Date.now() };
+    store.save();
+    toast('Chapter complete! 🎉');
+  } else store.save();
+  render();
+}
+function speakTopicDialogue(chId, topicId) {
+  const ch = CHAPTERS[chId]; if (!ch || !ch.topics) return;
+  const t = ch.topics.find(x => x.id === topicId); if (!t || !t.lines) return;
+  speakLines(t.lines.map(d => d.de), false);
+  toast('Playing dialogue…');
+}
 function allVocab() {
   const out = [];
   Object.values(CHAPTERS).forEach(ch => {
@@ -158,7 +193,7 @@ function voiceNote() {
 }
 
 /* ================= Router ================= */
-let state = { tab: 'listen', quiz: {}, quizDone: {}, trainer: null, mock: null, cardFilter: 'due', cardIdx: 0, cardFlipped: false, cardQueue: [], cardSession: 0, searchQ: '' };
+let state = { tab: 'listen', quiz: {}, quizDone: {}, trainer: null, mock: null, topicQuiz: null, cardFilter: 'due', cardIdx: 0, cardFlipped: false, cardQueue: [], cardSession: 0, searchQ: '' };
 let lastPage = '';
 
 function render() {
@@ -168,7 +203,7 @@ function render() {
   const page = parts[0] || 'home';
   const view = document.getElementById('view');
   document.querySelectorAll('#bottomnav button').forEach(b => {
-    b.classList.toggle('active', b.dataset.nav === page || (page === 'chapter' && b.dataset.nav === 'learn') || (page === 'level' && b.dataset.nav === 'learn'));
+    b.classList.toggle('active', b.dataset.nav === page || (page === 'chapter' && b.dataset.nav === 'learn') || (page === 'topic' && b.dataset.nav === 'learn') || (page === 'level' && b.dataset.nav === 'learn'));
   });
   const st = document.getElementById('streakTop'); if (st) st.textContent = store.data.streak;
   updateSpeedBtn();
@@ -176,6 +211,7 @@ function render() {
   else if (page === 'learn') view.innerHTML = viewLearn();
   else if (page === 'level') view.innerHTML = viewLevel(parts[1]);
   else if (page === 'chapter') view.innerHTML = viewChapter(parts[1]);
+  else if (page === 'topic') view.innerHTML = viewTopic(parts[1], parts[2]);
   else if (page === 'cards') {
     // rebuild the queue when arriving from another screen, so words added
     // since the last visit (e.g. "Add to flashcards") show up
@@ -238,7 +274,7 @@ function viewHome() {
       '<div class="progress-track" style="margin-top:8px"><div class="progress-fill gold" style="width:' + pct + '%"></div></div></div></div>';
   });
   h += '<div class="card"><h3 style="margin-top:0">Do this today</h3>' +
-    '<p>1. Finish one lesson (5–10 minutes).<br>2. Review ' + dueCount + ' flashcards due now.<br>3. Listen to the Day 1 podcast once.</p>' +
+    '<p>1. Finish one tiny topic (2–4 minutes).<br>2. Review ' + dueCount + ' flashcards due now.<br>3. Listen to the Day 1 podcast once.</p>' +
     '<div class="btn-row"><button class="btn small" onclick="go(\'cards\')">🗂️ Flashcards (' + dueCount + ' due)</button>' +
     '<button class="btn small ghost" onclick="go(\'podcast\')">🎧 Podcast</button></div></div>';
   h += nextBar('Not sure where to start? Start at A1 Chapter 1 — it begins from absolute zero.', 'chapter/A1-1', 'Start A1 Chapter 1');
@@ -277,10 +313,11 @@ function viewLevel(levelId) {
   chapterList(levelId).forEach(ch => {
     const done = store.data.completed[ch.id];
     const read = store.data.read[ch.id];
+    const tp = topicProgress(ch);
     h += '<button class="chapter-row ' + (done ? 'done' : '') + '" onclick="go(\'chapter/' + ch.id + '\')">' +
       '<span class="ch-num">' + ch.n + '</span>' +
       '<span class="t"><b>' + esc(ch.title) + ' ' + (done ? '<span class="done-mark">✓</span>' : '') + (ch.syllabus ? ' <span class="tag grey">Syllabus</span>' : '') + '</b>' +
-      '<span>' + esc(ch.concept) + ' · ' + esc(ch.time) + (ch.syllabus ? ' · core words + grammar' : '') + (read && ch.syllabus ? ' · read ✓' : '') + '</span></span>' +
+      '<span>' + esc(ch.concept) + ' · ' + esc(ch.time) + (tp ? ' · ' + tp.done + '/' + tp.total + ' topics' : '') + (ch.syllabus ? ' · core words + grammar' : '') + (read && ch.syllabus ? ' · read ✓' : '') + '</span></span>' +
       '<span class="arrow">›</span></button>';
   });
   if (levelId === 'A1') {
@@ -296,6 +333,7 @@ function viewLevel(levelId) {
 function viewChapter(chId) {
   const ch = CHAPTERS[chId];
   if (!ch) return '<p class="empty">Chapter not found.</p>';
+  if (ch.topics) return viewChapterTopics(ch);
   const tabs = ch.syllabus ? ['words', 'grammar'] : ['listen', 'words', 'grammar', 'quiz', 'speak'];
   const tabNames = { listen: '🎧 Listen', words: '📝 Words', grammar: '📐 Grammar', quiz: '✅ Quiz', speak: '🗣️ Speak' };
   if (!tabs.includes(state.tab)) state.tab = tabs[0];
@@ -321,6 +359,187 @@ function viewChapter(chId) {
   }
   h += nextBar(ch.next || 'What to do next: review these words in flashcards.', 'cards', 'Review flashcards');
   return h;
+}
+/* ---- Chapter page for topic chapters (A1): organised topic list, no long page ---- */
+function viewChapterTopics(ch) {
+  const tp = topicProgress(ch);
+  const list = chapterList(ch.level);
+  const idx = list.findIndex(c => c.id === ch.id);
+  const nextCh = list[idx + 1];
+  const nextRoute = nextCh ? 'chapter/' + nextCh.id : (ch.level === 'A1' ? 'mock' : 'learn');
+  const nextLabel = nextCh ? 'Next: ' + nextCh.title : (ch.level === 'A1' ? 'Take the A1 mock test' : 'Back to lessons');
+  let h = '<p class="kicker">' + esc(ch.level) + ' · Chapter ' + ch.n + ' · ' + esc(ch.time) + '</p>' +
+    '<h1>' + esc(ch.title) + '</h1><p class="lead">' + esc(ch.concept) + '</p>';
+  h += '<div class="card tight"><div class="row"><div class="grow"><b>' + tp.done + ' of ' + tp.total + ' topics done</b><div class="small">Each topic takes 2–4 minutes. Finish all ' + tp.total + ' to complete the chapter.</div></div><b>' + Math.round(tp.done / tp.total * 100) + '%</b></div>' +
+    '<div class="progress-track mt"><div class="progress-fill gold" style="width:' + Math.round(tp.done / tp.total * 100) + '%"></div></div></div>';
+  h += '<h2>Topics</h2>';
+  ch.topics.forEach((t, i) => {
+    const done = topicDoneMap()[topicKey(ch.id, t.id)];
+    h += '<button class="chapter-row ' + (done ? 'done' : '') + '" onclick="go(\'topic/' + ch.id + '/' + t.id + '\')">' +
+      '<span class="ch-num">' + (i + 1) + '</span>' +
+      '<span class="t"><b>' + esc(t.title) + ' ' + (done ? '<span class="done-mark">✓</span>' : '') + '</b>' +
+      '<span>' + esc(topicKindLabel(t.kind)) + ' · ' + esc(t.time) + '</span></span>' +
+      '<span class="arrow">›</span></button>';
+  });
+  h += '<div class="recap-box"><h3>⚡ 1-minute recap</h3><ul>' + ch.recap.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></div>';
+  if (ch.tip) h += '<div class="tip-box">💡 <b>Memory tip:</b> ' + esc(ch.tip) + '</div>';
+  if (ch.extra) {
+    h += '<div class="card"><h3 style="margin-top:0">🔁 Extra practice — try these</h3>';
+    ch.extra.forEach(ex => {
+      h += '<div class="kv"><div><b>' + esc(ex.q) + '</b><div class="small">Answer: ' + esc(ex.a) + '</div></div>' + speakBtn(ex.a) + '</div>';
+    });
+    h += '</div>';
+  }
+  h += '<button class="btn" onclick="addChapterToCards(\'' + ch.id + '\')">Add these words to flashcards →</button>';
+  if (store.data.completed[ch.id]) h += '<div class="card tight"><div class="row"><div class="grow"><b>✓ Chapter complete — well done!</b><div class="small">All ' + tp.total + ' topics done.</div></div></div></div>';
+  h += nextBar(ch.next || 'What to do next: review these words in flashcards.', nextRoute, nextLabel);
+  return h;
+}
+
+/* ---- One tiny topic: a single focused screen ---- */
+function viewTopic(chId, topicId) {
+  const ch = CHAPTERS[chId];
+  if (!ch || !ch.topics) return '<p class="empty">Topic not found.</p>';
+  const idx = ch.topics.findIndex(t => t.id === topicId);
+  if (idx < 0) return '<p class="empty">Topic not found.</p>';
+  const t = ch.topics[idx];
+  const tp = topicProgress(ch);
+  const done = !!topicDoneMap()[topicKey(chId, topicId)];
+  const prev = ch.topics[idx - 1], next = ch.topics[idx + 1];
+  const quizGate = t.kind === 'quiz' && !(state.topicQuiz && state.topicQuiz.key === topicKey(chId, t.id) && state.topicQuiz.finished);
+  let h = '<p class="kicker">' + esc(ch.level) + ' · Chapter ' + ch.n + ' · Topic ' + (idx + 1) + ' of ' + ch.topics.length + '</p>' +
+    '<h1>' + esc(t.title) + '</h1>' +
+    '<p class="lead">' + esc(topicKindLabel(t.kind)) + ' · ' + esc(t.time) + ' · ' + tp.done + '/' + tp.total + ' topics done in this chapter</p>' +
+    '<div class="progress-track mb"><div class="progress-fill gold" style="width:' + Math.round(tp.done / tp.total * 100) + '%"></div></div>';
+  h += topicContentHTML(ch, t);
+  h += '<div class="card tight"><div class="row"><div class="grow"><b>' + (done ? '✓ Topic done!' : (quizGate ? 'Answer the quiz first' : 'Finished this topic?')) + '</b><div class="small">' + (done ? 'Nice work — this topic is ticked off.' : (quizGate ? 'Answer all the questions above to finish this topic.' : 'Tap below to tick it off and earn +5 XP.')) + '</div></div>' +
+    '<button class="btn small ' + (done ? 'ghost' : 'gold') + '" ' + (quizGate ? 'disabled' : '') + ' onclick="completeTopic(\'' + chId + '\',\'' + t.id + '\')">' + (done ? 'Done ✓' : 'Mark as done ✓ (+5 XP)') + '</button></div></div>';
+  h += '<div class="btn-row">' +
+    (prev ? '<button class="btn small ghost" onclick="go(\'topic/' + chId + '/' + prev.id + '\')">← ' + esc(prev.title) + '</button>' : '') +
+    (next ? '<button class="btn small" onclick="go(\'topic/' + chId + '/' + next.id + '\')">Next topic: ' + esc(next.title) + ' →</button>'
+      : '<button class="btn small gold" onclick="go(\'chapter/' + chId + '\')">Back to chapter ✓</button>') +
+    '</div>';
+  h += '<p class="small mt" style="text-align:center"><a href="javascript:void(0)" onclick="go(\'chapter/' + chId + '\')">← Back to ' + esc(ch.title) + '</a></p>';
+  return h;
+}
+function topicContentHTML(ch, t) {
+  if (t.kind === 'words') {
+    let h = '<div class="card"><h3 style="margin-top:0">📝 Words — ' + t.vocab.length + ' new words</h3>' +
+      '<p class="small">Every word has a pronunciation hint and a speaker button. Tap 🔊 to hear it. Say each word out loud 3 times.</p>';
+    t.vocab.forEach(v => {
+      h += '<div class="vocab-row"><div class="txt"><div class="de">' +
+        (v.art ? '<span class="art">' + esc(v.art) + '</span> ' : '') + esc(v.de) +
+        (v.pl ? ' <span class="plural">· plural: die ' + esc(v.pl) + '</span>' : '') + '</div>' +
+        '<div class="ph">' + esc(v.ph) + '</div><div class="en">' + esc(v.en) + '</div></div>' +
+        speakBtn((v.art ? v.art + ' ' : '') + v.de) + '</div>';
+    });
+    return h + '</div>';
+  }
+  if (t.kind === 'sounds') {
+    let h = '<div class="card"><h3 style="margin-top:0">🔤 Sounds to learn first</h3>';
+    t.sounds.forEach(s => {
+      h += '<div class="kv"><div><b>' + esc(s.de) + '</b><div class="small">' + esc(s.en) + '</div></div><span class="small" style="color:var(--red);font-weight:700">' + esc(s.ph) + '</span></div>';
+    });
+    h += '<p class="small mt">Three golden rules: (1) W = V, V = F, J = Y. (2) Every noun starts with a capital letter. (3) What is written is spoken — almost no silent letters.</p></div>';
+    if (t.grammar) h += topicGrammarHTML(t.grammar);
+    return h;
+  }
+  if (t.kind === 'dialogue') {
+    let h = '<div class="card"><h3 style="margin-top:0">🎧 Listen & repeat</h3>' +
+      '<p class="small">Tap 🔊 on any line to hear it. Tap "Play all" to hear the whole dialogue. Say each line out loud after you hear it.</p>' +
+      '<div class="btn-row mb"><button class="btn small" onclick="speakTopicDialogue(\'' + ch.id + '\',\'' + t.id + '\')">▶️ Play all</button>' +
+      '<button class="btn small ghost" onclick="stopSpeak()">⏹ Stop</button></div>';
+    t.lines.forEach(d => {
+      h += '<div class="dialogue-line"><div class="who ' + (d.who === 'B' ? 'b' : '') + '">' + d.who + '</div>' +
+        '<div class="txt"><div class="de">' + esc(d.de) + '</div><div class="ph">' + esc(d.ph) + '</div><div class="en">' + esc(d.en) + '</div></div>' +
+        speakBtn(d.de) + '</div>';
+    });
+    h += '</div>';
+    if (t.speak) {
+      const lines = Array.isArray(t.speak.model) ? t.speak.model : [t.speak.model];
+      h += '<div class="card"><h3 style="margin-top:0">🗣️ Speak — say it out loud</h3>' +
+        '<p class="small">Speaking is the fastest way to remember. Tap a line, listen, then repeat it — 3 times each.</p>';
+      lines.forEach(line => {
+        h += '<div class="kv"><div><b>' + esc(line) + '</b></div>' + speakBtn(line) + '</div>';
+      });
+      h += '<p class="small mt"><b>Your task:</b> ' + esc(t.speak.prompt) + '</p></div>';
+    }
+    return h;
+  }
+  if (t.kind === 'grammar') return topicGrammarHTML(t.grammar);
+  if (t.kind === 'quiz') return topicQuizHTML(ch, t);
+  return '<p class="empty">Nothing here yet.</p>';
+}
+function topicGrammarHTML(g) {
+  let h = '<div class="grammar-box"><h3>📐 ' + esc(g.title) + '</h3>' +
+    '<p>' + esc(g.plain) + '</p><p class="rule">' + esc(g.rule) + '</p></div>';
+  if (g.examples) {
+    h += '<div class="card"><h3 style="margin-top:0">Examples — tap to hear</h3>';
+    g.examples.forEach(ex => {
+      h += '<div class="example"><div class="row"><div class="grow"><div class="de">' + esc(ex.de) + '</div><div class="ph" style="color:var(--red);font-weight:600;font-size:14px">' + esc(ex.ph) + '</div><div class="en">' + esc(ex.en) + '</div></div>' + speakBtn(ex.de, 'small') + '</div></div>';
+    });
+    h += '</div>';
+  }
+  return h;
+}
+function topicQuizState(chId, t) {
+  const key = topicKey(chId, t.id);
+  if (!state.topicQuiz || state.topicQuiz.key !== key) {
+    state.topicQuiz = { key, idx: 0, answers: {}, score: 0, picked: null, finished: false };
+  }
+  return state.topicQuiz;
+}
+function topicQuizHTML(ch, t) {
+  const qz = topicQuizState(ch.id, t);
+  const total = t.questions.length;
+  let h = '<div class="card"><h3 style="margin-top:0">✅ Quick quiz — ' + total + ' questions</h3>' +
+    '<p class="small">Wrong answers explain <b>why</b> — read the explanation before moving on.</p>';
+  if (qz.finished) {
+    const pass = qz.score >= Math.ceil(total / 2);
+    h += '<div class="result-box ' + (pass ? 'pass' : 'fail') + '"><b>Your score: ' + qz.score + ' / ' + total + '</b><br>' +
+      (pass ? '🎉 Well done! Mark this topic done below.' : 'Keep going — read the explanations, then try again.') + '</div>' +
+      '<button class="btn small ghost mt" onclick="restartTopicQuiz()">Restart quiz</button></div>';
+    return h;
+  }
+  const q = t.questions[qz.idx];
+  const picked = qz.picked;
+  h += '<p class="small">Question ' + (qz.idx + 1) + ' of ' + total + ' · Score: ' + qz.score + '</p>' +
+    '<div class="quiz-q"><p><b>' + (qz.idx + 1) + '.</b> ' + esc(q.q) + ' ' + speakBtn(q.q) + '</p>';
+  q.options.forEach((opt, oi) => {
+    let cls = 'opt';
+    if (picked !== null) {
+      if (oi === q.answer) cls += ' correct';
+      else if (oi === picked) cls += ' wrong';
+      else cls += ' dim';
+    }
+    h += '<button class="' + cls + '" ' + (picked !== null ? 'disabled' : '') + ' onclick="answerTopicQuiz(' + oi + ')">' + esc(opt) + '</button>';
+  });
+  if (picked !== null) {
+    h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>' +
+      '<button class="btn mt" onclick="nextTopicQuiz()">' + (qz.idx === total - 1 ? 'See result →' : 'Next →') + '</button>';
+  }
+  h += '</div></div>';
+  return h;
+}
+function answerTopicQuiz(oi) {
+  const qz = state.topicQuiz; if (!qz || qz.picked !== null || qz.finished) return;
+  const parts = qz.key.split(':');
+  const ch = CHAPTERS[parts[0]]; const t = ch.topics.find(x => x.id === parts[1]);
+  qz.picked = oi; qz.answers[qz.idx] = oi;
+  if (oi === t.questions[qz.idx].answer) { qz.score++; store.addXP(2); }
+  render();
+}
+function nextTopicQuiz() {
+  const qz = state.topicQuiz; if (!qz) return;
+  qz.picked = null; qz.idx++;
+  const parts = qz.key.split(':');
+  const ch = CHAPTERS[parts[0]]; const t = ch.topics.find(x => x.id === parts[1]);
+  if (qz.idx >= t.questions.length) qz.finished = true;
+  render();
+}
+function restartTopicQuiz() {
+  if (state.topicQuiz) state.topicQuiz = { key: state.topicQuiz.key, idx: 0, answers: {}, score: 0, picked: null, finished: false };
+  render();
 }
 function setTab(t) { state.tab = t; render(); }
 function finishChapter(chId) {
@@ -454,7 +673,8 @@ function restartQuiz(chId) {
 function tabSpeak(ch) {
   let h = '<div class="card"><h3 style="margin-top:0">🗣️ Speak — say it out loud</h3>' +
     '<p class="small">Speaking is the fastest way to remember. Tap a line, listen, then repeat it — 3 times each.</p>';
-  ch.speak.model.forEach(line => {
+  const lines = Array.isArray(ch.speak.model) ? ch.speak.model : [ch.speak.model];
+  lines.forEach(line => {
     h += '<div class="kv"><div><b>' + esc(line) + '</b></div>' + speakBtn(line) + '</div>';
   });
   h += '<p class="small mt"><b>Your task:</b> ' + esc(ch.speak.prompt) + '</p></div>';

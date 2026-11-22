@@ -1,26 +1,42 @@
-/* Deutsch Lernen — German A1–C1 learning app
+/* ============================================================
+   Deutsch Lernen — German A1–C1 learning app
    Phone-first, premium black / red / gold theme.
-   English + German only. Large tap targets, one clear action per screen. */
+   English + German only. Large tap targets, one clear action per screen.
+
+   Design tokens: spacing scale 4/8/12/16/24/32, type scale, radius,
+   shadows. One card language everywhere; sections separated by
+   labelled headers; nothing floats over content (see .nextbar).
+
+   REMOVED as dead (0 uses in app.js / index.html, verified 23 Nov 2026):
+   .key, .score-big, .score-sub, .flash-wrap, .flash-card, .mode-row,
+   .audio-player, .podcast-cover, .speak-btn.playing, .flashcard .hint.
+   ============================================================ */
 :root{
+  /* Colours */
   --ink:#141414; --ink2:#3d3d3d; --muted:#6f6a5e;
   --red:#d40000; --red-dark:#a80000; --gold:#ffce00; --gold-soft:#fff3bf;
   --paper:#fbf8f1; --card:#ffffff; --line:#e9e2d2; --soft:#f4efe3;
   --green:#157347; --green-soft:#e3f4e8; --amber:#8a5a00; --amber-soft:#fff3d6;
+  /* Spacing scale */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px;
+  /* Type scale */
+  --fs-xs:12px; --fs-sm:14px; --fs-base:17px; --fs-lg:18px; --fs-xl:21px; --fs-2xl:26px;
   --radius:16px; --radius-sm:12px;
   --shadow:0 2px 10px rgba(20,20,20,.07);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.18);
   --font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{font-family:var(--font);background:#efe9db;color:var(--ink);font-size:17px;line-height:1.55}
+body{font-family:var(--font);background:#efe9db;color:var(--ink);font-size:var(--fs-base);line-height:1.55}
 #app{max-width:560px;margin:0 auto;background:var(--paper);min-height:100vh;position:relative;box-shadow:0 0 0 1px rgba(0,0,0,.04)}
 a{color:var(--red);text-decoration:none}
 button{font-family:var(--font);cursor:pointer;border:none;background:none;color:inherit}
-input,select{font-family:var(--font);font-size:17px}
+input,select{font-family:var(--font);font-size:var(--fs-base)}
 
 /* ---------- Top bar ---------- */
 #topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
-  padding:12px 16px;background:#111;color:#fff;border-bottom:3px solid var(--gold)}
+  padding:calc(10px + env(safe-area-inset-top)) 16px 12px;background:#111;color:#fff;border-bottom:3px solid var(--gold)}
 .brand{display:flex;align-items:center;gap:10px;cursor:pointer}
 .flag{display:flex;flex-direction:column;width:26px;height:19px;border-radius:3px;overflow:hidden;flex:none}
 .flag span{flex:1}
@@ -36,24 +52,26 @@ input,select{font-family:var(--font);font-size:17px}
 .streak-btn{font-size:16px;font-weight:700}
 
 /* ---------- Layout ---------- */
-#view{padding:16px 16px 110px}
-h1{font-size:26px;line-height:1.25;font-weight:800;margin:6px 0 8px}
-h2{font-size:21px;font-weight:800;margin:22px 0 10px}
-h3{font-size:18px;font-weight:700;margin:16px 0 8px}
+#view{padding:16px 16px calc(118px + env(safe-area-inset-bottom))}
+h1{font-size:var(--fs-2xl);line-height:1.25;font-weight:800;margin:4px 0 8px}
+h2{font-size:var(--fs-xl);font-weight:800;margin:26px 0 12px}
+h3{font-size:var(--fs-lg);font-weight:700;margin:16px 0 8px}
 p{margin:0 0 10px}
-.lead{color:var(--ink2);font-size:17px}
-.small{font-size:14px;color:var(--muted)}
-.kicker{font-size:13px;font-weight:700;text-transform:uppercase;color:var(--red)}
+#view > h1 + .lead{margin-bottom:20px}
+.lead{color:var(--ink2);font-size:var(--fs-base)}
+.small{font-size:var(--fs-sm);color:var(--muted)}
+.kicker{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--red);margin:0 0 4px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
   padding:16px;margin:0 0 14px;box-shadow:var(--shadow)}
-.card.tight{padding:12px 14px}
+.card.tight{padding:14px 16px}
 .row{display:flex;gap:10px;align-items:center}
-.grow{flex:1}
+.grow{flex:1;min-width:0}
 .mt{margin-top:14px}.mb{margin-bottom:14px}
 
 /* ---------- Buttons ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:12px 20px;
-  border-radius:14px;background:#111;color:#fff;font-size:17px;font-weight:700;border:1px solid #111;width:100%}
+  border-radius:14px;background:#111;color:#fff;font-size:var(--fs-base);font-weight:700;border:1px solid #111;
+  width:100%;text-align:center;text-wrap:balance;line-height:1.35}
 .btn:active{transform:scale(.98)}
 .btn.red{background:var(--red);border-color:var(--red)}
 .btn.gold{background:var(--gold);border-color:var(--gold);color:#111}
@@ -62,40 +80,89 @@ p{margin:0 0 10px}
 .btn:disabled{opacity:.45}
 .btn-row{display:flex;gap:10px}
 .btn-row .btn{flex:1}
+/* Same-level controls in a row share one style (Play/Loop/Stop,
+   Export/Import, Flashcards/Podcast) — no white-vs-yellow mix. */
+.btn-row .btn.small{background:#111;border-color:#111;color:#fff}
 
-/* ---------- Hero / progress ---------- */
-.hero{background:#111;color:#fff;border-radius:20px;padding:20px 18px;margin-bottom:14px;position:relative;overflow:hidden}
+/* ---------- Hero / stats / progress ---------- */
+.hero{background:#111;color:#fff;border-radius:20px;padding:22px 18px;margin-bottom:16px;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,206,0,.35),transparent 70%)}
+  background:radial-gradient(circle,rgba(255,206,0,.35),transparent 70%);pointer-events:none}
 .hero h1{color:#fff;margin:0 0 6px}
-.hero p{color:#d8d2c2;margin:0 0 14px}
-.stat-row{display:flex;gap:10px;margin:0 0 14px}
-.stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px;text-align:center}
-.stat b{display:block;font-size:22px}
-.stat span{font-size:13px;color:var(--muted)}
+.hero p{color:#d8d2c2;margin:0 0 16px}
+/* The hero CTA is the one dominant first action: big, balanced so the
+   arrow never sits alone on a line. */
+.hero .btn{min-height:58px;font-size:18px;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.stat-row{display:flex;margin:0 0 14px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.stat{flex:1;min-width:0;padding:12px 2px;text-align:center;display:flex;flex-direction:column;
+  justify-content:center;gap:2px}
+.stat + .stat{border-left:1px solid var(--line)}
+.stat b{display:block;font-size:20px;line-height:1.2}
+.stat span{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
+.card.tight .progress-track{margin-top:8px}
 .progress-track{height:10px;background:#e7dfcb;border-radius:99px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),#f0574f);border-radius:99px;transition:width .4s}
 .progress-fill.gold{background:linear-gradient(90deg,#d9a400,var(--gold))}
 
 /* ---------- Level map ---------- */
-.level-card{display:flex;gap:14px;align-items:flex-start}
+.level-card{position:relative;display:flex;gap:14px;align-items:flex-start;cursor:pointer}
+.level-card .grow{display:flex;flex-direction:column;padding-right:18px}
 .level-badge{width:58px;height:58px;border-radius:16px;flex:none;display:flex;align-items:center;justify-content:center;
   font-size:22px;font-weight:800;color:#fff;background:#111}
 .level-badge.open{background:var(--red)}
 .level-badge.done{background:var(--green)}
 .level-badge.locked{background:#b9b2a0}
-.level-card h3{margin:0 0 2px}
-.level-card p{margin:0 0 8px;font-size:15px;color:var(--ink2)}
-.tag{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--gold-soft);color:var(--amber);margin-right:6px}
+.level-card h3{margin:0 0 3px}
+.level-card p{margin:0 0 8px;font-size:15px;color:var(--ink2);line-height:1.45}
+.level-card .tag{align-self:flex-start}
+.level-card .chip-row{margin-top:8px}
+.level-card .progress-track{margin-top:10px}
+.level-card::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  font-size:26px;line-height:1;color:var(--muted);font-weight:700}
+/* One pill style for every level status — the badge (not the pill)
+   carries the state (green = done, red = in progress, grey = locked). */
+.level-card .tag,.level-card .tag.green{background:var(--soft);color:var(--ink2);border:1px solid var(--line)}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;
+  background:var(--gold-soft);color:var(--amber);margin-right:6px}
 .tag.green{background:var(--green-soft);color:var(--green)}
 .tag.grey{background:#ece7da;color:var(--muted)}
 .chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.chip{font-size:13px;font-weight:600;background:var(--soft);border:1px solid var(--line);border-radius:99px;padding:5px 11px}
+.chip{font-size:13px;font-weight:600;background:var(--soft);border:1px solid var(--line);border-radius:99px;padding:6px 11px}
+.chip.active{background:#111;color:#fff;border-color:#111}
+/* Flashcards filter (10 chips: 4 views + 6 levels) — two balanced rows,
+   never an orphan chip on its own row. Browsers without :has() fall
+   back to the flex-wrap row above. */
+.chip-row:has(> .chip:nth-child(9)){display:grid;grid-template-columns:repeat(12,1fr);gap:6px}
+.chip-row:has(> .chip:nth-child(9)) .chip{grid-column:span 3;text-align:center;padding:7px 2px;
+  font-size:12px;white-space:nowrap;min-width:0}
+.chip-row:has(> .chip:nth-child(9)) .chip:nth-child(n+5){grid-column:span 2}
 
-/* ---------- Chapter list ---------- */
-.chapter-row{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:var(--radius);
-  background:#fff;margin-bottom:10px;box-shadow:var(--shadow);width:100%;text-align:left}
+/* ---------- START FROM ZERO: the first action is dominant ---------- */
+/* First level card on Home (after "Your path") and on Learn (after the
+   lead): bigger, gold-framed, with a START HERE ribbon. Generic to
+   chapter order — no chapter names are hard-coded. */
+h2 + .level-card,.lead + .level-card{margin-top:16px;border:2px solid var(--gold);
+  background:linear-gradient(180deg,#fffdf3,#fff);box-shadow:0 6px 20px rgba(217,164,0,.28)}
+h2 + .level-card .level-badge,.lead + .level-card .level-badge{width:66px;height:66px;font-size:26px;border-radius:18px}
+h2 + .level-card h3,.lead + .level-card h3{font-size:20px}
+h2 + .level-card::before,.lead + .level-card::before{content:"★ START HERE · FROM ZERO";
+  position:absolute;top:-12px;left:16px;z-index:2;background:var(--gold);color:#111;
+  font-size:11.5px;font-weight:800;letter-spacing:.5px;padding:5px 12px;border-radius:99px;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);white-space:nowrap}
+
+/* ---------- Chapter list: strict 1 → 2 → 3 order ---------- */
+.chapter-row{position:relative;display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);
+  border-radius:var(--radius);background:#fff;margin-bottom:10px;box-shadow:var(--shadow);width:100%;text-align:left}
 .chapter-row:active{background:var(--soft)}
+/* Connector line through the number badges — the progression reads down. */
+.chapter-row + .chapter-row::before{content:"";position:absolute;left:37px;top:-10px;
+  width:2px;height:10px;background:#ddd2b8;border-radius:2px}
+/* First chapter on a level page gets the START pill. */
+h2 + .chapter-row{margin-top:16px}
+h2 + .chapter-row::before{content:"▶ START HERE";position:absolute;top:-11px;right:12px;z-index:2;
+  background:var(--gold);color:#111;font-size:11px;font-weight:800;letter-spacing:.5px;
+  padding:4px 10px;border-radius:99px;box-shadow:0 2px 8px rgba(0,0,0,.18);white-space:nowrap}
 .ch-num{width:46px;height:46px;border-radius:13px;background:#111;color:#fff;flex:none;display:flex;
   align-items:center;justify-content:center;font-weight:800;font-size:17px}
 .chapter-row.done .ch-num{background:var(--green)}
@@ -105,30 +172,67 @@ p{margin:0 0 10px}
 .chapter-row .arrow{font-size:20px;color:var(--muted);flex:none}
 .done-mark{color:var(--green);font-weight:800}
 
-/* ---------- Tabs ---------- */
-.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;-webkit-overflow-scrolling:touch}
-.tab{flex:none;min-height:44px;padding:10px 16px;border-radius:99px;background:#fff;border:1px solid #cfc7b4;
-  font-size:15px;font-weight:700;white-space:nowrap}
+/* ---------- Topic micro-lessons (chapter → tiny topics) ---------- */
+/* Content agent: render a chapter's 4–6 tiny topics with this markup:
+     <div class="topic-list">
+       <button class="topic-row" onclick="go('topic/CH-ID/1')">
+         <span class="topic-num">1</span>
+         <span class="topic-main"><b>Topic title</b><span>One concept, in one line</span></span>
+         <span class="topic-time">3 min</span><span class="topic-done">✓</span>
+       </button> … </div>
+   Topic screen: <p class="topic-crumb">Chapter 1 · Topic 2 of 5</p><h1>…</h1> …content…
+   <div class="topic-next"><button class="btn gold">Next topic →</button></div>
+   (in-flow, never floating). Add class "done" to a finished .topic-row. */
+.topic-list{margin:0 0 14px}
+.topic-row{position:relative;display:flex;gap:12px;align-items:center;width:100%;text-align:left;
+  padding:14px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;
+  margin-bottom:10px;box-shadow:var(--shadow)}
+.topic-row:active{background:var(--soft)}
+.topic-row + .topic-row::before{content:"";position:absolute;left:37px;top:-10px;
+  width:2px;height:10px;background:#ddd2b8;border-radius:2px}
+.topic-list > .topic-row:first-child{margin-top:16px}
+.topic-list > .topic-row:first-child::before{content:"▶ START HERE";position:absolute;top:-11px;right:12px;z-index:2;
+  background:var(--gold);color:#111;font-size:11px;font-weight:800;letter-spacing:.5px;
+  padding:4px 10px;border-radius:99px;box-shadow:0 2px 8px rgba(0,0,0,.18);white-space:nowrap}
+.topic-num{width:46px;height:46px;border-radius:13px;background:#111;color:#fff;flex:none;display:flex;
+  align-items:center;justify-content:center;font-weight:800;font-size:17px}
+.topic-row.done .topic-num{background:var(--green)}
+.topic-main{flex:1;min-width:0}
+.topic-main b{display:block;font-size:16px;line-height:1.3}
+.topic-main span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.topic-time{font-size:13px;font-weight:700;color:var(--muted);flex:none;white-space:nowrap}
+.topic-done{color:var(--green);font-weight:800;font-size:18px;flex:none;min-width:20px;text-align:center}
+.topic-row:not(.done) .topic-done{visibility:hidden}
+.topic-crumb{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--red);margin:0 0 4px}
+.topic-next{margin-top:22px}
+
+/* ---------- Tabs: all fit, no horizontal scroll, no cut-off tab ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 14px}
+.tab{flex:1 1 28%;min-height:48px;padding:10px 8px;border-radius:99px;background:#fff;
+  border:1px solid #cfc7b4;font-size:15px;font-weight:700;white-space:nowrap;text-align:center}
 .tab.active{background:#111;color:#fff;border-color:#111}
 
 /* ---------- Dialogue ---------- */
-.dialogue-line{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.dialogue-line{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
 .dialogue-line:last-child{border-bottom:none}
-.who{width:38px;height:38px;border-radius:50%;background:var(--gold);color:#111;flex:none;display:flex;
+/* One colour for both speakers — the letter (A / B) is the distinction. */
+.who{width:38px;height:38px;border-radius:50%;background:#111;color:#fff;flex:none;display:flex;
   align-items:center;justify-content:center;font-weight:800;font-size:15px}
 .who.b{background:#111;color:#fff}
 .dialogue-line .txt{flex:1;min-width:0}
 .dialogue-line .de{font-size:18px;font-weight:700;line-height:1.4}
 .dialogue-line .ph{font-size:14px;color:var(--red);font-weight:600}
 .dialogue-line .en{font-size:15px;color:var(--ink2)}
-.speak-btn{min-width:48px;min-height:48px;border-radius:14px;background:var(--soft);border:1px solid var(--line);
-  font-size:22px;flex:none;display:flex;align-items:center;justify-content:center}
+.speak-btn{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:48px;
+  border-radius:14px;background:var(--soft);border:1px solid var(--line);font-size:22px;flex:none;
+  align-self:center;vertical-align:middle}
 .speak-btn:active{background:var(--gold-soft)}
-.speak-btn.playing{background:var(--gold)}
 .speak-btn.small{min-width:44px;min-height:44px;font-size:19px}
+.quiz-q p .speak-btn,p.big .speak-btn{margin-left:8px}
 
 /* ---------- Vocabulary ---------- */
-.vocab-row{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.vocab-row{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
 .vocab-row:last-child{border-bottom:none}
 .vocab-row .txt{flex:1;min-width:0}
 .vocab-row .de{font-size:18px;font-weight:700}
@@ -152,98 +256,83 @@ p{margin:0 0 10px}
 .note-box{background:var(--amber-soft);border:1px solid #f0dc9a;border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;font-size:15px}
 .note-box b{color:var(--amber)}
 
-/* ---------- Quiz ---------- */
-/* (quiz-q container styles are defined in the app.js additions block at the end) */
+/* ---------- Quiz: every question is its own separated block ---------- */
+.quiz-q{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;
+  margin-bottom:14px;box-shadow:0 1px 4px rgba(20,20,20,.05)}
+.quiz-q:last-child{margin-bottom:0}
+.quiz-q > p{font-size:18px;font-weight:700;margin-bottom:12px;line-height:1.4}
 .opt{display:flex;gap:10px;align-items:center;width:100%;text-align:left;min-height:54px;padding:12px 14px;
   background:#fff;border:2px solid var(--line);border-radius:14px;font-size:16px;margin-bottom:10px}
 .opt:active{border-color:#111}
 .opt.correct{border-color:var(--green);background:var(--green-soft)}
 .opt.wrong{border-color:var(--red);background:#fdeaea}
-.opt .key{width:28px;height:28px;border-radius:50%;background:var(--soft);flex:none;display:flex;
-  align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.opt.dim{opacity:.45}
 .feedback{border-radius:var(--radius);padding:14px 16px;margin:12px 0;font-size:16px}
 .feedback.good{background:var(--green-soft);border:1px solid #bfe3c8}
 .feedback.bad{background:#fdeaea;border:1px solid #f3b8b8}
-.score-big{font-size:44px;font-weight:800;text-align:center}
-.score-sub{text-align:center;color:var(--muted);margin-bottom:14px}
+.result-box{border-radius:var(--radius);padding:16px;margin:12px 0;font-size:17px;font-weight:600}
+.result-box.pass{background:var(--green-soft);border:1px solid #bfe3c8}
+.result-box.fail{background:#fdeaea;border:1px solid #f3b8b8}
+.ok{color:var(--green);font-weight:700}
+.bad-text{color:var(--red);font-weight:700}
 
 /* ---------- Flashcards ---------- */
-.flash-wrap{display:flex;flex-direction:column;align-items:center}
-.flash-card{width:100%;min-height:300px;background:#111;color:#fff;border-radius:22px;padding:26px 20px;
+.flashcard{width:100%;min-height:240px;background:#111;color:#fff;border-radius:22px;padding:26px 20px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;
-  box-shadow:0 8px 24px rgba(0,0,0,.18);margin-bottom:14px}
-.flash-card .de{font-size:34px;font-weight:800;line-height:1.3}
-.flash-card .ph{font-size:16px;color:var(--gold);margin-top:8px;font-weight:600}
-.flash-card .en{font-size:22px;font-weight:700}
-.flash-card .hint{font-size:14px;color:#c9c2b2;margin-top:14px}
-.flash-card.flipped{background:#fff;color:var(--ink);border:2px solid var(--gold)}
-
-/* ---------- Trainer / misc ---------- */
-.mode-row{display:flex;gap:10px;margin-bottom:14px}
-.mode-row .btn{flex:1}
-.search-input{width:100%;min-height:54px;border:2px solid var(--line);border-radius:14px;padding:12px 16px;background:#fff}
-.search-input:focus{outline:none;border-color:#111}
-.audio-player{width:100%;margin:10px 0}
-.podcast-cover{width:100%;border-radius:18px;margin-bottom:12px}
-.kv{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:16px}
-.kv:last-child{border-bottom:none}
-.kv b{font-weight:700}
-.nextbar{position:sticky;bottom:86px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);
-  padding:12px 14px;margin-top:18px;box-shadow:var(--shadow)}
-.nextbar .small{margin:0}
-.timer{font-size:15px;font-weight:800;color:var(--red)}
-.empty{text-align:center;color:var(--muted);padding:28px 10px}
-.voice-note{background:#fff;border:1px dashed #c9bfa5;border-radius:var(--radius);padding:12px 14px;font-size:14px;margin-bottom:14px}
-
-/* ---------- Bottom nav ---------- */
-#bottomnav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;z-index:50;
-  display:flex;background:#111;border-top:3px solid var(--gold);padding:6px 4px calc(8px + env(safe-area-inset-bottom))}
-#bottomnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;color:#b9b2a0;
-  font-size:12px;font-weight:600;min-height:52px;padding:6px 2px}
-#bottomnav button.active{color:var(--gold)}
-#bottomnav .nav-ic{font-size:21px}
-
-/* ---------- Toast ---------- */
-#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#111;color:#fff;
-  padding:12px 18px;border-radius:99px;font-size:15px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:99;
-  max-width:90vw;text-align:center}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-@media (min-width:600px){
-  body{font-size:18px}
-  #view{padding:22px 24px 120px}
-}
-
-/* ---------- App.js additions (patched 22 Nov 2026) ---------- */
-/* Flashcards (used by viewCards) */
-.flashcard{width:100%;min-height:300px;background:#111;color:#fff;border-radius:22px;padding:26px 20px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;
-  box-shadow:0 8px 24px rgba(0,0,0,.18);margin-bottom:14px}
-.flashcard .de{font-size:34px;font-weight:800;line-height:1.3}
+  box-shadow:var(--shadow-lg);margin-bottom:14px}
+.flashcard .de{font-size:34px;font-weight:800;line-height:1.3;overflow-wrap:break-word;max-width:100%}
 .flashcard .ph{font-size:16px;color:var(--gold);margin-top:8px;font-weight:600}
 .flashcard .en{font-size:22px;font-weight:700}
-.card-front{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%}
+.card-front{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%}
 .card-back{margin-top:14px;border-top:1px solid #3a3a3a;padding-top:14px;width:100%}
 .card-back .en{font-size:24px;color:var(--gold)}
 .big{font-size:20px;font-weight:700;line-height:1.45}
 .en.big{font-size:22px}
 .srs-row{display:flex;gap:10px;margin-bottom:10px}
 .srs-row .btn{flex:1}
-/* Quiz / mock result boxes */
-.result-box{border-radius:var(--radius);padding:16px;margin:12px 0;font-size:17px;font-weight:600}
-.result-box.pass{background:var(--green-soft);border:1px solid #bfe3c8}
-.result-box.fail{background:#fdeaea;border:1px solid #f3b8b8}
-.opt.dim{opacity:.45}
-.ok{color:var(--green);font-weight:700}
-.bad-text{color:var(--red);font-weight:700}
-/* Podcast audio box */
+/* Clear visual order: Good = primary (dark), Easy = secondary (gold),
+   Again = tertiary (red outline, de-emphasised but reachable). */
+.srs-row .btn.red{background:#fff;color:var(--red);border:2px solid #e7b6b6}
+.srs-row .btn.red:active{background:#fdeaea}
+.srs-row + p.small{font-size:15px;color:var(--ink2);font-weight:600;margin-top:6px}
+
+/* ---------- Trainer / misc ---------- */
+.search-input{width:100%;min-height:54px;border:2px solid var(--line);border-radius:14px;padding:12px 16px;background:#fff}
+.search-input:focus{outline:none;border-color:#111}
 .audio-box{background:#111;border-radius:var(--radius);padding:16px;margin-bottom:14px}
-.audio-box audio{width:100%}
+.audio-box audio{display:block;width:100%}
 .audio-box .small{color:#d8d2c2}
-/* Chip active state (flashcard filters) */
-.chip.active{background:#111;color:#fff;border-color:#111}
-/* Mock timer low-time warning */
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:16px}
+.kv:last-child{border-bottom:none}
+.kv b{font-weight:700}
+
+/* ---------- Next action bar: IN-FLOW, never floating over content ---------- */
+.nextbar{position:static;background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;margin-top:20px;box-shadow:var(--shadow)}
+.nextbar .small{margin:0 0 2px}
+.timer{font-size:15px;font-weight:800;color:var(--red)}
 .timer.low{color:#fff;background:var(--red);padding:4px 10px;border-radius:99px;display:inline-block}
-/* Quiz question container (text styles live on the inner <p>) */
-.quiz-q{margin-bottom:18px}
-.quiz-q>p{font-size:18px;font-weight:700;margin-bottom:12px}
+.empty{text-align:center;color:var(--muted);padding:28px 10px}
+.voice-note{display:flex;flex-direction:column;align-items:flex-start;gap:12px;background:#fff;
+  border:1px dashed #c9bfa5;border-radius:var(--radius);padding:16px;font-size:15px;
+  line-height:1.55;margin-bottom:14px}
+.voice-note .btn{width:100%;min-height:48px}
+
+/* ---------- Bottom nav ---------- */
+#bottomnav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;z-index:50;
+  display:flex;background:#111;border-top:3px solid var(--gold);padding:6px 4px calc(8px + env(safe-area-inset-bottom))}
+#bottomnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;color:#b9b2a0;
+  font-size:12px;font-weight:600;min-height:52px;padding:6px 2px}
+#bottomnav button.active{color:var(--gold);box-shadow:inset 0 3px 0 var(--gold)}
+#bottomnav .nav-ic{font-size:21px}
+
+/* ---------- Toast ---------- */
+#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
+  background:#111;color:#fff;padding:12px 18px;border-radius:99px;font-size:15px;font-weight:600;opacity:0;
+  pointer-events:none;transition:.25s;z-index:99;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (min-width:600px){
+  body{font-size:18px}
+  #view{padding:22px 24px calc(128px + env(safe-area-inset-bottom))}
+}
