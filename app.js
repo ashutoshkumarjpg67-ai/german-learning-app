@@ -195,12 +195,16 @@ function voiceNote() {
 /* ================= Router ================= */
 let state = { tab: 'listen', quiz: {}, quizDone: {}, trainer: null, mock: null, topicQuiz: null, cardFilter: 'due', cardIdx: 0, cardFlipped: false, cardQueue: [], cardSession: 0, searchQ: '', vocabFilter: 'all', vocabQ: '' };
 let lastPage = '';
+let lastHash = '';
+const scrollPos = {}; // route -> scrollY, so Back returns to where you were instead of the top
 
 function render() {
   stopSpeak();
   const hash = (location.hash || '#/home').replace(/^#\//, '');
   const parts = hash.split('/');
   const page = parts[0] || 'home';
+  const routeChanged = hash !== lastHash;
+  if (routeChanged && lastHash) scrollPos[lastHash] = window.scrollY || 0;
   const view = document.getElementById('view');
   const navPage = page === 'trainer' ? 'vocab' : page;
   document.querySelectorAll('#bottomnav button').forEach(b => {
@@ -228,8 +232,16 @@ function render() {
   else if (page === 'search') view.innerHTML = viewSearch();
   else if (page === 'progress') view.innerHTML = viewProgress();
   else view.innerHTML = viewHome();
-  window.scrollTo(0, 0);
+  // Only move the scroll when the route actually changed. Same-screen
+  // re-renders (answering a quiz, flipping a card, switching a tab) must
+  // leave the user exactly where they were. On a route change, go back to
+  // the saved position for a visited route, else to the top.
+  if (routeChanged) {
+    if (scrollPos[hash] !== undefined) window.scrollTo(0, scrollPos[hash]);
+    else window.scrollTo(0, 0);
+  }
   lastPage = page;
+  lastHash = hash;
   if (page === 'mock' && state.mock && state.mock.running) startMockTimer();
 }
 window.addEventListener('hashchange', render);
