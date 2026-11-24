@@ -77,7 +77,7 @@ function toggleSpeed() {
 function updateSpeedBtn() {
   const b = document.getElementById('speedBtn');
   if (!b) return;
-  b.textContent = (store.data.speed === 'normal') ? '▶️ 1×' : '🐢 0.7×';
+  b.textContent = (store.data.speed === 'normal') ? '1×' : '0.7×';
 }
 
 /* ================= Progress store (localStorage) ================= */
@@ -121,8 +121,22 @@ function toast(msg) {
   t.textContent = msg; t.classList.add('show');
   clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2600);
 }
+/* ================= Inline SVG icons (one consistent set) ================= */
+/* Feather-style stroke icons + one filled flame. No emoji in the chrome —
+   the speaker button, nav, section tiles and streak all draw from here. */
+const IC = {
+  flame: '<svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.177A7.547 7.547 0 016.648 6.61a.75.75 0 00-1.152-.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 011.925-3.545 3.75 3.75 0 013.255 3.717z"/></svg>',
+  speaker: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+  learn: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  cards: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+  vocab: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+  mock: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="10" x2="22" y2="16"/></svg>',
+  podcast: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>',
+  nursing: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+  progress: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
+};
 function speakBtn(text, cls) {
-  return '<button class="speak-btn ' + (cls || '') + '" data-say="' + escAttr(text) + '" aria-label="Listen to pronunciation">🔊</button>';
+  return '<button class="speak-btn ' + (cls || '') + '" data-say="' + escAttr(text) + '" aria-label="Listen to pronunciation">' + IC.speaker + '</button>';
 }
 function chapterList(levelId) {
   return Object.values(CHAPTERS).filter(c => c.level === levelId).sort((a, b) => a.n - b.n);
@@ -147,17 +161,17 @@ function topicProgress(ch) {
   return { done: d, total: ch.topics.length };
 }
 function topicKindLabel(kind) {
-  return { words: '📝 Words', sounds: '🔤 Sounds', dialogue: '🎧 Dialogue', grammar: '📐 Grammar', quiz: '✅ Quiz', speak: '🗣️ Speak' }[kind] || kind;
+  return { words: 'Words', sounds: 'Sounds', dialogue: 'Dialogue', grammar: 'Grammar', quiz: 'Quiz', speak: 'Speak' }[kind] || kind;
 }
 function completeTopic(chId, topicId) {
   const done = topicDoneMap();
   const key = topicKey(chId, topicId);
-  if (!done[key]) { done[key] = Date.now(); store.addXP(5); toast('Topic done! +5 XP 🎉'); }
+  if (!done[key]) { done[key] = Date.now(); store.addXP(5); toast('Topic done! +5 XP '); }
   const ch = CHAPTERS[chId];
   if (ch && ch.topics && ch.topics.every(t => done[topicKey(chId, t.id)]) && !store.data.completed[chId]) {
     store.data.completed[chId] = { score: 0, at: Date.now() };
     store.save();
-    toast('Chapter complete! 🎉');
+    toast('Chapter complete! ');
   } else store.save();
   render();
 }
@@ -190,7 +204,7 @@ function nextBar(text, route, label) {
 }
 function voiceNote() {
   if (!Speech.noVoice) return '';
-  return '<div class="voice-note">⚠️ <b>German voice not found on this device.</b> The speaker buttons will try your default voice. To hear real German pronunciation, install a German voice in your system text-to-speech settings (Android: Settings → Language → Text-to-speech → German). <button class="btn small ghost" onclick="speakText(\'Guten Tag! Ich heiße Anna.\')">Test voice</button></div>';
+  return '<div class="voice-note"><b>German voice not found on this device.</b> The speaker buttons will try your default voice. To hear real German pronunciation, install a German voice in your system text-to-speech settings (Android: Settings → Language → Text-to-speech → German). <button class="btn small ghost" onclick="speakText(\'Guten Tag! Ich heiße Anna.\')">Test voice</button></div>';
 }
 
 /* ================= Router ================= */
@@ -264,16 +278,16 @@ function viewHome() {
   const wordsKnown = Object.keys(store.data.cards).length;
   let h = '';
   h += voiceNote();
-  h += '<div class="hero"><p class="kicker" style="color:var(--gold)">Learn German A1 – C1</p>' +
+  h += '<div class="hero"><div class="hero-rule" aria-hidden="true"></div><p class="hero-eyebrow">Deutsch Lernen · A1 – C1</p>' +
     '<h1>Speak German, step by step.</h1>' +
     '<p>Short lessons. Real sentences. Tap the speaker to hear every word. Free — no login, no ads.</p>' +
     (next
-      ? '<button class="btn gold" onclick="go(\'chapter/' + next.id + '\')">Continue: ' + esc(next.level + ' · Chapter ' + next.n + ' — ' + next.title) + ' →</button>'
-      : '<button class="btn gold" onclick="go(\'learn\')">Start learning →</button>') +
+      ? '<button class="btn red" onclick="go(\'chapter/' + next.id + '\')">Continue: ' + esc(next.level + ' · Chapter ' + next.n + ' — ' + next.title) + ' →</button>'
+      : '<button class="btn red" onclick="go(\'learn\')">Start learning →</button>') +
     '</div>';
   h += '<div class="stat-row">' +
     '<div class="stat"><b>' + store.data.xp + '</b><span>XP</span></div>' +
-    '<div class="stat"><b>🔥 ' + store.data.streak + '</b><span>Streak</span></div>' +
+    '<div class="stat"><b>' + IC.flame + ' ' + store.data.streak + '</b><span>Streak</span></div>' +
     '<div class="stat"><b>' + doneFull + '/' + totalFull + '</b><span>Lessons</span></div>' +
     '<div class="stat"><b>' + wordsKnown + '</b><span>Cards</span></div></div>';
   h += '<div class="card tight"><div class="row"><div class="grow"><b>Your progress</b><div class="small">' + doneFull + ' of ' + totalFull + ' full lessons complete</div></div><b>' + Math.round(doneFull / totalFull * 100) + '%</b></div>' +
@@ -290,13 +304,13 @@ function viewHome() {
   });
   h += '<h2>All sections</h2>';
   h += '<div class="sections-grid">' +
-    sectionCard('📖', 'Learn', 'Lessons in tiny topics, A1 to C1.', doneFull + '/' + totalFull + ' lessons done', 'learn') +
-    sectionCard('🗂️', 'Flashcards', 'Spaced repetition for every word you learn.', dueCount + ' due now', 'cards') +
-    sectionCard('📝', 'Vocabulary', 'Every word, searchable by level and chapter.', allVocab().length + ' words', 'vocab') +
-    sectionCard('🎓', 'Mock tests', 'Goethe-style practice tests, one per level.', store.data.mockBest !== null ? 'A1 best: ' + store.data.mockBest + '/100' : 'A1 mock ready', 'mocks') +
-    sectionCard('🎧', 'Podcast', 'German Day 1 — Zero se Start.', '10:08 · listen & repeat', 'podcast') +
-    sectionCard('🏥', 'Nursing', 'Hospital German for Pflege.', '26 words · 14 phrases', 'nursing') +
-    sectionCard('📊', 'Progress', 'XP, streak and per-level progress.', store.data.xp + ' XP · 🔥 ' + store.data.streak + '-day streak', 'progress') +
+    sectionCard('learn', 'Learn', 'Lessons in tiny topics, A1 to C1.', doneFull + '/' + totalFull + ' lessons done', 'learn') +
+    sectionCard('cards', 'Flashcards', 'Spaced repetition for every word you learn.', dueCount + ' due now', 'cards') +
+    sectionCard('vocab', 'Vocabulary', 'Every word, searchable by level and chapter.', allVocab().length + ' words', 'vocab') +
+    sectionCard('mock', 'Mock tests', 'Goethe-style practice tests, one per level.', store.data.mockBest !== null ? 'A1 best: ' + store.data.mockBest + '/100' : 'A1 mock ready', 'mocks') +
+    sectionCard('podcast', 'Podcast', 'German Day 1 — Zero se Start.', '10:08 · listen & repeat', 'podcast') +
+    sectionCard('nursing', 'Nursing', 'Hospital German for Pflege.', '26 words · 14 phrases', 'nursing') +
+    sectionCard('progress', 'Progress', 'XP, streak and per-level progress.', store.data.xp + ' XP · ' + store.data.streak + '-day streak', 'progress') +
     '</div>';
   h += nextBar('Not sure where to start? Start at A1 Chapter 1 — it begins from absolute zero.', 'chapter/A1-1', 'Start A1 Chapter 1');
   h += '<p class="app-footer">All 5 levels complete · 60 chapters · 360 tiny topics · Free forever — no login, no ads.</p>';
@@ -304,7 +318,7 @@ function viewHome() {
 }
 function sectionCard(icon, title, desc, status, route) {
   return '<button class="section-card" onclick="go(\'' + route + '\')">' +
-    '<span class="section-ic">' + icon + '</span><b>' + esc(title) + '</b>' +
+    '<span class="section-ic">' + IC[icon] + '</span><b>' + esc(title) + '</b>' +
     '<span class="section-desc">' + esc(desc) + '</span>' +
     '<span class="section-status">' + esc(status) + '</span></button>';
 }
@@ -320,7 +334,7 @@ function viewLearn() {
       '<div class="grow"><h3>' + esc(lv.name) + '</h3><p>' + esc(lv.goal) + '</p>' +
       '<span class="tag">' + p.done + ' / ' + p.full + ' full chapters done</span>' +
       (p.read ? '<span class="tag green">' + p.read + ' syllabus chapters read</span>' : '') +
-      '<div class="chip-row"><span class="chip">📚 ' + esc(lv.vocab) + '</span><span class="chip">⏱ ' + esc(lv.hours) + '</span><span class="chip">📖 ' + esc(lv.book) + '</span></div></div></div>';
+      '<div class="chip-row"><span class="chip">' + esc(lv.vocab) + '</span><span class="chip">' + esc(lv.hours) + '</span><span class="chip">' + esc(lv.book) + '</span></div></div></div>';
   });
   h += nextBar('Finished a level? Take its mock test to check your score before moving on.', 'mocks', 'Take a mock test');
   return h;
@@ -334,8 +348,8 @@ function viewLevel(levelId) {
   const p = levelProgress(levelId);
   let h = '<p class="kicker">' + esc(lv.id) + ' · ' + esc(lv.book) + '</p><h1>' + esc(lv.name) + '</h1>' +
     '<p class="lead">' + esc(lv.desc) + '</p>' +
-    '<div class="chip-row mb"><span class="chip">📚 ' + esc(lv.vocab) + '</span><span class="chip">⏱ ' + esc(lv.hours) + '</span><span class="chip">🎯 ' + esc(lv.goal) + '</span></div>';
-  h += '<div class="recap-box"><h3>⚡ ' + esc(rev.title) + '</h3><p style="color:#d8d2c2">' + esc(rev.sub) + '</p><ul>' +
+    '<div class="chip-row mb"><span class="chip">' + esc(lv.vocab) + '</span><span class="chip">' + esc(lv.hours) + '</span><span class="chip">' + esc(lv.goal) + '</span></div>';
+  h += '<div class="recap-box"><h3>' + esc(rev.title) + '</h3><p style="color:#d8d2c2">' + esc(rev.sub) + '</p><ul>' +
     rev.points.map(pt => '<li>' + esc(pt) + '</li>').join('') + '</ul></div>';
   h += '<h2>Chapters</h2>';
   chapterList(levelId).forEach(ch => {
@@ -350,7 +364,7 @@ function viewLevel(levelId) {
   });
   if (mockFor(levelId)) {
     const best = store.data.mockBests ? store.data.mockBests[levelId] : null;
-    h += '<div class="card"><h3 style="margin-top:0">🎓 ' + levelId + ' Mock Test</h3><p>Goethe-style practice test: 20 questions, 20 minutes, pass at 60%. Practice only — not an official certificate.' +
+    h += '<div class="card"><h3 style="margin-top:0">' + levelId + ' Mock Test</h3><p>Goethe-style practice test: 20 questions, 20 minutes, pass at 60%. Practice only — not an official certificate.' +
       (best !== null && best !== undefined ? ' Your best score: <b>' + best + '/100</b>.' : '') + '</p>' +
       '<button class="btn red" onclick="startMock(\'' + levelId + '\')">Start the mock test →</button></div>';
   }
@@ -364,7 +378,7 @@ function viewChapter(chId) {
   if (!ch) return '<p class="empty">Chapter not found.</p>';
   if (ch.topics) return viewChapterTopics(ch);
   const tabs = ch.syllabus ? ['words', 'grammar'] : ['listen', 'words', 'grammar', 'quiz', 'speak'];
-  const tabNames = { listen: '🎧 Listen', words: '📝 Words', grammar: '📐 Grammar', quiz: '✅ Quiz', speak: '🗣️ Speak' };
+  const tabNames = { listen: 'Listen', words: 'Words', grammar: 'Grammar', quiz: 'Quiz', speak: 'Speak' };
   if (!tabs.includes(state.tab)) state.tab = tabs[0];
   let h = '<p class="kicker">' + esc(ch.level) + ' · Chapter ' + ch.n + ' · ' + esc(ch.time) + '</p>' +
     '<h1>' + esc(ch.title) + '</h1><p class="lead">' + esc(ch.concept) + '</p>';
@@ -410,10 +424,10 @@ function viewChapterTopics(ch) {
       '<span>' + esc(topicKindLabel(t.kind)) + ' · ' + esc(t.time) + '</span></span>' +
       '<span class="arrow">›</span></button>';
   });
-  h += '<div class="recap-box"><h3>⚡ 1-minute recap</h3><ul>' + ch.recap.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></div>';
-  if (ch.tip) h += '<div class="tip-box">💡 <b>Memory tip:</b> ' + esc(ch.tip) + '</div>';
+  h += '<div class="recap-box"><h3>1-minute recap</h3><ul>' + ch.recap.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></div>';
+  if (ch.tip) h += '<div class="tip-box"><b>Memory tip:</b> ' + esc(ch.tip) + '</div>';
   if (ch.extra) {
-    h += '<div class="card"><h3 style="margin-top:0">🔁 Extra practice — try these</h3>';
+    h += '<div class="card"><h3 style="margin-top:0">Extra practice — try these</h3>';
     ch.extra.forEach(ex => {
       h += '<div class="kv"><div><b>' + esc(ex.q) + '</b><div class="small">Answer: ' + esc(ex.a) + '</div></div>' + speakBtn(ex.a) + '</div>';
     });
@@ -453,8 +467,8 @@ function viewTopic(chId, topicId) {
 }
 function topicContentHTML(ch, t) {
   if (t.kind === 'words') {
-    let h = '<div class="card"><h3 style="margin-top:0">📝 Words — ' + t.vocab.length + ' new words</h3>' +
-      '<p class="small">Every word has a pronunciation hint and a speaker button. Tap 🔊 to hear it. Say each word out loud 3 times.</p>';
+    let h = '<div class="card"><h3 style="margin-top:0">Words — ' + t.vocab.length + ' new words</h3>' +
+      '<p class="small">Every word has a pronunciation hint and a speaker button. Tap the speaker button to hear it. Say each word out loud 3 times.</p>';
     t.vocab.forEach(v => {
       h += '<div class="vocab-row"><div class="txt"><div class="de">' +
         (v.art ? '<span class="art">' + esc(v.art) + '</span> ' : '') + esc(v.de) +
@@ -465,7 +479,7 @@ function topicContentHTML(ch, t) {
     return h + '</div>';
   }
   if (t.kind === 'sounds') {
-    let h = '<div class="card"><h3 style="margin-top:0">🔤 Sounds to learn first</h3>';
+    let h = '<div class="card"><h3 style="margin-top:0">Sounds to learn first</h3>';
     t.sounds.forEach(s => {
       h += '<div class="kv"><div><b>' + esc(s.de) + '</b><div class="small">' + esc(s.en) + '</div></div><span class="small" style="color:var(--red);font-weight:700">' + esc(s.ph) + '</span></div>';
     });
@@ -474,10 +488,10 @@ function topicContentHTML(ch, t) {
     return h;
   }
   if (t.kind === 'dialogue') {
-    let h = '<div class="card"><h3 style="margin-top:0">🎧 Listen & repeat</h3>' +
-      '<p class="small">Tap 🔊 on any line to hear it. Tap "Play all" to hear the whole dialogue. Say each line out loud after you hear it.</p>' +
-      '<div class="btn-row mb"><button class="btn small" onclick="speakTopicDialogue(\'' + ch.id + '\',\'' + t.id + '\')">▶️ Play all</button>' +
-      '<button class="btn small ghost" onclick="stopSpeak()">⏹ Stop</button></div>';
+    let h = '<div class="card"><h3 style="margin-top:0">Listen & repeat</h3>' +
+      '<p class="small">Tap the speaker button on any line to hear it. Tap "Play all" to hear the whole dialogue. Say each line out loud after you hear it.</p>' +
+      '<div class="btn-row mb"><button class="btn small" onclick="speakTopicDialogue(\'' + ch.id + '\',\'' + t.id + '\')">Play all</button>' +
+      '<button class="btn small ghost" onclick="stopSpeak()">Stop</button></div>';
     t.lines.forEach(d => {
       h += '<div class="dialogue-line"><div class="who ' + (d.who === 'B' ? 'b' : '') + '">' + d.who + '</div>' +
         '<div class="txt"><div class="de">' + esc(d.de) + '</div><div class="ph">' + esc(d.ph) + '</div><div class="en">' + esc(d.en) + '</div></div>' +
@@ -486,7 +500,7 @@ function topicContentHTML(ch, t) {
     h += '</div>';
     if (t.speak) {
       const lines = Array.isArray(t.speak.model) ? t.speak.model : [t.speak.model];
-      h += '<div class="card"><h3 style="margin-top:0">🗣️ Speak — say it out loud</h3>' +
+      h += '<div class="card"><h3 style="margin-top:0">Speak — say it out loud</h3>' +
         '<p class="small">Speaking is the fastest way to remember. Tap a line, listen, then repeat it — 3 times each.</p>';
       lines.forEach(line => {
         h += '<div class="kv"><div><b>' + esc(line) + '</b></div>' + speakBtn(line) + '</div>';
@@ -500,7 +514,7 @@ function topicContentHTML(ch, t) {
   return '<p class="empty">Nothing here yet.</p>';
 }
 function topicGrammarHTML(g) {
-  let h = '<div class="grammar-box"><h3>📐 ' + esc(g.title) + '</h3>' +
+  let h = '<div class="grammar-box"><h3>' + esc(g.title) + '</h3>' +
     '<p>' + esc(g.plain) + '</p><p class="rule">' + esc(g.rule) + '</p></div>';
   if (g.examples) {
     h += '<div class="card"><h3 style="margin-top:0">Examples — tap to hear</h3>';
@@ -521,12 +535,12 @@ function topicQuizState(chId, t) {
 function topicQuizHTML(ch, t) {
   const qz = topicQuizState(ch.id, t);
   const total = t.questions.length;
-  let h = '<div class="card"><h3 style="margin-top:0">✅ Quick quiz — ' + total + ' questions</h3>' +
+  let h = '<div class="card"><h3 style="margin-top:0">Quick quiz — ' + total + ' questions</h3>' +
     '<p class="small">Wrong answers explain <b>why</b> — read the explanation before moving on.</p>';
   if (qz.finished) {
     const pass = qz.score >= Math.ceil(total / 2);
     h += '<div class="result-box ' + (pass ? 'pass' : 'fail') + '"><b>Your score: ' + qz.score + ' / ' + total + '</b><br>' +
-      (pass ? '🎉 Well done! Mark this topic done below.' : 'Keep going — read the explanations, then try again.') + '</div>' +
+      (pass ? ' Well done! Mark this topic done below.' : 'Keep going — read the explanations, then try again.') + '</div>' +
       '<button class="btn small ghost mt" onclick="restartTopicQuiz()">Restart quiz</button></div>';
     return h;
   }
@@ -574,18 +588,18 @@ function setTab(t) { state.tab = t; render(); }
 function finishChapter(chId) {
   const score = (state.quizDone[chId] && state.quizDone[chId].score) || (store.data.completed[chId] ? store.data.completed[chId].score : 0);
   store.completeChapter(chId, score);
-  toast('Lesson complete! +10 XP 🎉');
+  toast('Lesson complete! +10 XP ');
   render();
 }
 function markRead(chId) { store.markRead(chId); toast('Marked as read. +5 XP'); render(); }
 
 /* ---- Chapter tab: Listen (dialogue) ---- */
 function tabListen(ch) {
-  let h = '<div class="card"><h3 style="margin-top:0">🎧 Listen & repeat</h3>' +
-    '<p class="small">Tap 🔊 on any line to hear it. Tap "Play all" to hear the whole dialogue. Say each line out loud after you hear it.</p>' +
-    '<div class="btn-row mb"><button class="btn small" onclick="speakDialogue(\'' + ch.id + '\', false)">▶️ Play all</button>' +
-    '<button class="btn small ghost" onclick="speakDialogue(\'' + ch.id + '\', true)">🔁 Loop</button>' +
-    '<button class="btn small ghost" onclick="stopSpeak()">⏹ Stop</button></div>';
+  let h = '<div class="card"><h3 style="margin-top:0">Listen & repeat</h3>' +
+    '<p class="small">Tap the speaker button on any line to hear it. Tap "Play all" to hear the whole dialogue. Say each line out loud after you hear it.</p>' +
+    '<div class="btn-row mb"><button class="btn small" onclick="speakDialogue(\'' + ch.id + '\', false)">Play all</button>' +
+    '<button class="btn small ghost" onclick="speakDialogue(\'' + ch.id + '\', true)">Loop</button>' +
+    '<button class="btn small ghost" onclick="stopSpeak()">Stop</button></div>';
   ch.dialogue.forEach((d, i) => {
     h += '<div class="dialogue-line"><div class="who ' + (d.who === 'B' ? 'b' : '') + '">' + d.who + '</div>' +
       '<div class="txt"><div class="de">' + esc(d.de) + '</div><div class="ph">' + esc(d.ph) + '</div><div class="en">' + esc(d.en) + '</div></div>' +
@@ -593,7 +607,7 @@ function tabListen(ch) {
   });
   h += '</div>';
   if (ch.sounds) {
-    h += '<div class="card"><h3 style="margin-top:0">🔤 Sounds to learn first</h3>';
+    h += '<div class="card"><h3 style="margin-top:0">Sounds to learn first</h3>';
     ch.sounds.forEach(s => {
       h += '<div class="kv"><div><b>' + esc(s.de) + '</b><div class="small">' + esc(s.en) + '</div></div><span class="small" style="color:var(--red);font-weight:700">' + esc(s.ph) + '</span></div>';
     });
@@ -605,8 +619,8 @@ function tabListen(ch) {
 
 /* ---- Chapter tab: Words ---- */
 function tabWords(ch) {
-  let h = '<div class="card"><h3 style="margin-top:0">📝 Words — ' + ch.vocab.length + ' new words</h3>' +
-    '<p class="small">Every word has a pronunciation hint (how it sounds in English letters) and a speaker button. Tap 🔊 to hear it. Say each word out loud 3 times.</p>';
+  let h = '<div class="card"><h3 style="margin-top:0">Words — ' + ch.vocab.length + ' new words</h3>' +
+    '<p class="small">Every word has a pronunciation hint (how it sounds in English letters) and a speaker button. Tap the speaker button to hear it. Say each word out loud 3 times.</p>';
   ch.vocab.forEach(v => {
     h += '<div class="vocab-row"><div class="txt"><div class="de">' +
       (v.art ? '<span class="art">' + esc(v.art) + '</span> ' : '') + esc(v.de) +
@@ -633,7 +647,7 @@ function addChapterToCards(chId) {
 /* ---- Chapter tab: Grammar ---- */
 function tabGrammar(ch) {
   const g = ch.grammar;
-  let h = '<div class="grammar-box"><h3>📐 ' + esc(g.title) + '</h3>' +
+  let h = '<div class="grammar-box"><h3>' + esc(g.title) + '</h3>' +
     '<p>' + esc(g.plain) + '</p><p class="rule">' + esc(g.rule) + '</p></div>';
   if (g.examples) {
     h += '<div class="card"><h3 style="margin-top:0">Examples — tap to hear</h3>';
@@ -642,7 +656,7 @@ function tabGrammar(ch) {
     });
     h += '</div>';
   }
-  if (ch.tip) h += '<div class="tip-box">💡 <b>Memory tip:</b> ' + esc(ch.tip) + '</div>';
+  if (ch.tip) h += '<div class="tip-box"><b>Memory tip:</b> ' + esc(ch.tip) + '</div>';
   if (!ch.syllabus) h += '<button class="btn" onclick="setTab(\'quiz\')">Next: Quiz →</button>';
   return h;
 }
@@ -651,7 +665,7 @@ function tabGrammar(ch) {
 function tabQuiz(ch) {
   const qz = state.quiz[ch.id] || (state.quiz[ch.id] = { answers: {}, score: 0, finished: false });
   const done = state.quizDone[ch.id];
-  let h = '<div class="card"><h3 style="margin-top:0">✅ Quiz — 5 questions</h3>' +
+  let h = '<div class="card"><h3 style="margin-top:0">Quiz — 5 questions</h3>' +
     '<p class="small">Wrong answers explain <b>why</b> — read the explanation before moving on. Pass: 3 of 5.</p>';
   ch.quiz.forEach((q, qi) => {
     const picked = qz.answers[qi];
@@ -677,7 +691,7 @@ function tabQuiz(ch) {
     store.data.quizBest[ch.id] = Math.max(store.data.quizBest[ch.id] || 0, score);
     store.save();
     h += '<div class="result-box ' + (score >= 3 ? 'pass' : 'fail') + '"><b>Your score: ' + score + ' / 5</b><br>' +
-      (score >= 3 ? '🎉 Well done! You passed this chapter. Mark the lesson complete below.' : 'Keep going — read the explanations above, then try the quiz again. Tap "Restart quiz" to retry.') + '</div>' +
+      (score >= 3 ? ' Well done! You passed this chapter. Mark the lesson complete below.' : 'Keep going — read the explanations above, then try the quiz again. Tap "Restart quiz" to retry.') + '</div>' +
       '<button class="btn small ghost mt" onclick="restartQuiz(\'' + ch.id + '\')">Restart quiz</button>';
   }
   h += '</div>';
@@ -700,17 +714,17 @@ function restartQuiz(chId) {
 
 /* ---- Chapter tab: Speak & Recap ---- */
 function tabSpeak(ch) {
-  let h = '<div class="card"><h3 style="margin-top:0">🗣️ Speak — say it out loud</h3>' +
+  let h = '<div class="card"><h3 style="margin-top:0">Speak — say it out loud</h3>' +
     '<p class="small">Speaking is the fastest way to remember. Tap a line, listen, then repeat it — 3 times each.</p>';
   const lines = Array.isArray(ch.speak.model) ? ch.speak.model : [ch.speak.model];
   lines.forEach(line => {
     h += '<div class="kv"><div><b>' + esc(line) + '</b></div>' + speakBtn(line) + '</div>';
   });
   h += '<p class="small mt"><b>Your task:</b> ' + esc(ch.speak.prompt) + '</p></div>';
-  h += '<div class="recap-box"><h3>⚡ 1-minute recap</h3><ul>' +
+  h += '<div class="recap-box"><h3>1-minute recap</h3><ul>' +
     ch.recap.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></div>';
   if (ch.extra) {
-    h += '<div class="card"><h3 style="margin-top:0">🔁 Extra practice — try these</h3>';
+    h += '<div class="card"><h3 style="margin-top:0">Extra practice — try these</h3>';
     ch.extra.forEach(ex => {
       h += '<div class="kv"><div><b>' + esc(ex.q) + '</b><div class="small">Answer: ' + esc(ex.a) + '</div></div>' + speakBtn(ex.a) + '</div>';
     });
@@ -762,12 +776,12 @@ function viewCards() {
   if (!queue.length) {
     const hasAnyCards = Object.keys(store.data.cards).length > 0;
     if (!hasAnyCards) {
-      h += '<div class="card"><h3 style="margin-top:0">🗂️ No flashcards yet — start here</h3>' +
+      h += '<div class="card"><h3 style="margin-top:0">No flashcards yet — start here</h3>' +
         '<p>Flashcards are built from the words you learn. Finish A1 Chapter 1 (Letters &amp; Sounds), then tap "Add these words to flashcards" — your first cards will appear here.</p>' +
         '<button class="btn gold" onclick="go(\'chapter/A1-1\')">Start A1 Chapter 1 →</button></div>';
       return h;
     }
-    h += '<div class="card empty">No cards in this view. You are all caught up — great work! 🎉</div>';
+    h += '<div class="card empty">No cards in this view. You are all caught up — great work! </div>';
     h += nextBar('What to do next: learn a new chapter to add more words.', 'learn', 'Go to lessons');
     return h;
   }
@@ -812,7 +826,7 @@ function gradeCard(grade) {
   state.cardFlipped = false;
   state.cardIdx++;
   if (state.cardIdx >= queue.length) {
-    toast('Deck finished! ' + state.cardSession + ' cards reviewed. 🎉');
+    toast('Deck finished! ' + state.cardSession + ' cards reviewed. ');
     state.cardQueue = buildCardQueue(state.cardFilter);
     state.cardIdx = 0; state.cardSession = 0;
     if (!state.cardQueue.length) { render(); return; }
@@ -841,8 +855,8 @@ function startTrainer(mode) {
 function viewTrainer() {
   let h = '<p class="kicker">Trainer</p><h1>Vocabulary trainer</h1>' +
     '<p class="lead">10 quick questions. Two directions — pick one and start.</p>' +
-    '<div class="btn-row mb"><button class="btn ' + (state.trainer && state.trainer.mode === 'de-en' ? 'red' : 'gold') + '" onclick="startTrainer(\'de-en\')">🇩🇪 German → English</button>' +
-    '<button class="btn ' + (state.trainer && state.trainer.mode === 'en-de' ? 'red' : 'gold') + '" onclick="startTrainer(\'en-de\')">🇬🇧 English → German</button></div>';
+    '<div class="btn-row mb"><button class="btn ' + (state.trainer && state.trainer.mode === 'de-en' ? '' : 'ghost') + '" onclick="startTrainer(\'de-en\')">German → English</button>' +
+    '<button class="btn ' + (state.trainer && state.trainer.mode === 'en-de' ? '' : 'ghost') + '" onclick="startTrainer(\'en-de\')">English → German</button></div>';
   const t = state.trainer;
   if (!t) {
     h += '<div class="card"><p>Your best trainer score: <b>' + (store.data.trainerBest || 0) + ' / 10</b></p>' +
@@ -852,7 +866,7 @@ function viewTrainer() {
   }
   if (t.finished) {
     h += '<div class="result-box ' + (t.score >= 7 ? 'pass' : 'fail') + '"><b>Score: ' + t.score + ' / 10</b><br>' +
-      (t.score >= 7 ? '🎉 Strong round! Your German is growing.' : 'Good effort — review the words below and try again.') + '</div>';
+      (t.score >= 7 ? ' Strong round! Your German is growing.' : 'Good effort — review the words below and try again.') + '</div>';
     store.data.trainerBest = Math.max(store.data.trainerBest || 0, t.score);
     store.save();
     h += '<button class="btn" onclick="startTrainer(\'' + t.mode + '\')">Play again →</button>';
@@ -923,11 +937,11 @@ function viewVocab() {
   const all = allVocab();
   const levels = ['all', 'A1', 'A2', 'B1', 'B2', 'C1', 'Pflege'];
   let h = '<p class="kicker">Vocabulary</p><h1>Vocabulary</h1>' +
-    '<p class="lead">Every word in the app — ' + all.length + ' words. Filter by level, search, tap 🔊 to hear each one.</p>' +
+    '<p class="lead">Every word in the app — ' + all.length + ' words. Filter by level, search, tap the speaker button to hear each one.</p>' +
     '<input class="search-input mb" type="text" placeholder="Search German or English…" value="' + escAttr(state.vocabQ || '') + '" oninput="state.vocabQ=this.value;state.vocabShown=200;renderVocabList()">' +
     '<div class="chip-row mb">' + levels.map(lv => '<button class="chip ' + (state.vocabFilter === lv ? 'active' : '') + '" onclick="setVocabFilter(\'' + lv + '\')">' + (lv === 'all' ? 'All levels' : lv) + '</button>').join('') + '</div>' +
     '<div id="vocabList">' + vocabListHTML(vocabItems()) + '</div>' +
-    '<div class="card"><h3 style="margin-top:0">🎯 Test yourself</h3><p>10 quick questions, German → English or English → German.</p>' +
+    '<div class="card"><h3 style="margin-top:0">Test yourself</h3><p>10 quick questions, German → English or English → German.</p>' +
     '<button class="btn" onclick="go(\'trainer\')">Open the vocabulary trainer →</button></div>';
   return h;
 }
@@ -977,17 +991,17 @@ function viewPodcast() {
     '<div class="audio-box"><audio controls preload="metadata" src="' + escAttr(p.file) + '" style="width:100%"></audio>' +
     '<p class="small mt">Duration: ' + esc(p.duration) + ' · Listen with headphones. You can download it for offline listening.</p></div>' +
     '<div class="note-box"><b>How to use it (4-pass routine):</b><br>' + esc(p.routine) + '</div>';
-  h += '<div class="card"><h3 style="margin-top:0">⭐ Key lines from the episode</h3>';
+  h += '<div class="card"><h3 style="margin-top:0">Key lines from the episode</h3>';
   p.highlights.forEach(l => {
     h += '<div class="vocab-row"><div class="txt"><div class="de">' + esc(l.de) + '</div><div class="ph">' + esc(l.ph) + '</div><div class="en">' + esc(l.en) + '</div></div>' + speakBtn(l.de) + '</div>';
   });
   h += '</div>';
-  h += '<div class="card"><h3 style="margin-top:0">📖 Glossary — 5 words</h3>';
+  h += '<div class="card"><h3 style="margin-top:0">Glossary — 5 words</h3>';
   p.glossary.forEach(v => {
     h += '<div class="vocab-row"><div class="txt"><div class="de">' + (v.art ? '<span class="art">' + esc(v.art) + '</span> ' : '') + esc(v.de) + '</div><div class="ph">' + esc(v.ph) + '</div><div class="en">' + esc(v.en) + '</div></div>' + speakBtn((v.art ? v.art + ' ' : '') + v.de) + '</div>';
   });
   h += '</div>';
-  h += '<div class="card"><h3 style="margin-top:0">✅ Quick check — 3 questions</h3>';
+  h += '<div class="card"><h3 style="margin-top:0">Quick check — 3 questions</h3>';
   p.quiz.forEach((q, qi) => {
     const picked = state.quiz['podcast'] && state.quiz['podcast'].answers[qi];
     h += '<div class="quiz-q"><p><b>' + (qi + 1) + '.</b> ' + esc(q.q) + '</p>';
@@ -1016,21 +1030,21 @@ function viewNursing() {
   const n = NURSING;
   let h = '<p class="kicker">Bonus · Nursing German (Pflege)</p><h1>Nursing German</h1>' +
     '<p class="lead">' + esc(n.intro) + '</p>' +
-    '<div class="card"><h3 style="margin-top:0">🏥 Hospital words — ' + n.words.length + '</h3>';
+    '<div class="card"><h3 style="margin-top:0">Hospital words — ' + n.words.length + '</h3>';
   n.words.forEach(v => {
     h += '<div class="vocab-row"><div class="txt"><div class="de"><span class="art">' + esc(v.art) + '</span> ' + esc(v.de) + (v.pl ? ' <span class="plural">· plural: die ' + esc(v.pl) + '</span>' : '') + '</div><div class="ph">' + esc(v.ph) + '</div><div class="en">' + esc(v.en) + '</div></div>' + speakBtn(v.art + ' ' + v.de) + '</div>';
   });
   h += '<button class="btn mt" onclick="addNursingToCards()">Add all nursing words to flashcards →</button></div>';
-  h += '<div class="card"><h3 style="margin-top:0">🗣️ Patient phrases — always Sie-form</h3>' +
-    '<p class="small">With patients, always use "Sie" (formal you) — never "du". Tap 🔊 to hear each phrase.</p>';
+  h += '<div class="card"><h3 style="margin-top:0">Patient phrases — always Sie-form</h3>' +
+    '<p class="small">With patients, always use "Sie" (formal you) — never "du". Tap the speaker button to hear each phrase.</p>';
   n.phrases.forEach(p => {
     h += '<div class="vocab-row"><div class="txt"><div class="de">' + esc(p.de) + '</div><div class="ph">' + esc(p.ph) + '</div><div class="en">' + esc(p.en) + '</div></div>' + speakBtn(p.de) + '</div>';
   });
   h += '</div>';
-  h += '<div class="card"><h3 style="margin-top:0">🎧 Dialogue — morning round</h3>' +
-    '<div class="btn-row mb"><button class="btn small" onclick="speakNursingDialogue(false)">▶️ Play all</button>' +
-    '<button class="btn small ghost" onclick="speakNursingDialogue(true)">🔁 Loop</button>' +
-    '<button class="btn small ghost" onclick="stopSpeak()">⏹ Stop</button></div>';
+  h += '<div class="card"><h3 style="margin-top:0">Dialogue — morning round</h3>' +
+    '<div class="btn-row mb"><button class="btn small" onclick="speakNursingDialogue(false)">Play all</button>' +
+    '<button class="btn small ghost" onclick="speakNursingDialogue(true)">Loop</button>' +
+    '<button class="btn small ghost" onclick="stopSpeak()">Stop</button></div>';
   n.dialogue.forEach(d => {
     h += '<div class="dialogue-line"><div class="who ' + (d.who === 'B' ? 'b' : '') + '">' + d.who + '</div>' +
       '<div class="txt"><div class="de">' + esc(d.de) + '</div><div class="ph">' + esc(d.ph) + '</div><div class="en">' + esc(d.en) + '</div></div>' +
@@ -1093,11 +1107,11 @@ function viewMocks() {
     const m = mockFor(lv.id);
     const best = mockBest(lv.id);
     if (m) {
-      h += '<div class="card"><h3 style="margin-top:0">🎓 ' + lv.id + ' Mock Test</h3><p>20 questions · 20 minutes · pass 12/20.' +
+      h += '<div class="card"><h3 style="margin-top:0">' + lv.id + ' Mock Test</h3><p>20 questions · 20 minutes · pass 12/20.' +
         (best !== null && best !== undefined ? ' Your best: <b>' + best + '/100</b>.' : '') + '</p>' +
         '<button class="btn red" onclick="startMock(\'' + lv.id + '\')">Start the ' + lv.id + ' mock test →</button></div>';
     } else {
-      h += '<div class="card"><h3 style="margin-top:0">🎓 ' + lv.id + ' Mock Test</h3>' +
+      h += '<div class="card"><h3 style="margin-top:0">' + lv.id + ' Mock Test</h3>' +
         '<p class="small">This mock test arrives when ' + lv.id + ' is complete. Finish the level first — then test yourself here.</p></div>';
     }
   });
@@ -1113,14 +1127,14 @@ function viewMock(level) {
     return '<p class="kicker">Mock test · ' + lv + '</p><h1>Goethe-style ' + lv + ' Mock Test</h1>' +
       '<p class="lead">20 questions. 20 minutes. Pass at 60% (12 correct). Each question is worth 5 points. Practice only — not an official certificate.</p>' +
       '<div class="card"><h3 style="margin-top:0">Rules</h3><ul><li>One question at a time — no going back.</li><li>The timer starts when you tap Start.</li><li>When time runs out, the test submits itself.</li><li>Your best score is saved: <b>' + (best !== null && best !== undefined ? best + ' / 100' : 'not taken yet') + '</b></li></ul>' +
-      '<button class="btn red" onclick="startMock(\'' + lv + '\')">▶️ Start the mock test</button></div>' +
+      '<button class="btn red" onclick="startMock(\'' + lv + '\')">Start the mock test</button></div>' +
       nextBar('Not ready yet? Finish ' + lv + ' Chapter 12 first — it reviews the whole level.', 'chapter/' + lv + '-12', 'Open ' + lv + ' Chapter 12');
   }
   if (m.finished) {
     const pct = m.score * 5;
     return '<p class="kicker">Mock test · ' + m.level + '</p><h1>Your result</h1>' +
       '<div class="result-box ' + (pct >= 60 ? 'pass' : 'fail') + '"><b>Score: ' + pct + ' / 100 (' + m.score + ' of ' + m.qs.length + ' correct)</b><br>' +
-      (pct >= 60 ? '🎉 You passed! The pass mark is 60% — you are at ' + m.level + ' exam level.' : 'Not yet — 60% is the pass mark. Review the answers below, revise the weak chapters, and try again.') + '</div>' +
+      (pct >= 60 ? ' You passed! The pass mark is 60% — you are at ' + m.level + ' exam level.' : 'Not yet — 60% is the pass mark. Review the answers below, revise the weak chapters, and try again.') + '</div>' +
       m.qs.map((q, i) => {
         const picked = m.answers[i];
         return '<div class="card tight"><p><b>' + (i + 1) + '.</b> ' + esc(q.q) + '</p>' +
@@ -1134,13 +1148,13 @@ function viewMock(level) {
   const q = m.qs[m.idx];
   const mm = Math.floor(m.remaining / 60), ss = String(m.remaining % 60).padStart(2, '0');
   let h = '<p class="kicker">Mock test · ' + m.level + '</p><h1>Question ' + (m.idx + 1) + ' of ' + m.qs.length + '</h1>' +
-    '<div class="timer ' + (m.remaining <= 120 ? 'low' : '') + '">⏱ ' + mm + ':' + ss + ' left</div>' +
+    '<div class="timer ' + (m.remaining <= 120 ? 'low' : '') + '">' + mm + ':' + ss + ' left</div>' +
     '<div class="progress-track mb"><div class="progress-fill" style="width:' + (m.idx / m.qs.length * 100) + '%"></div></div>' +
     '<div class="card"><p class="big">' + esc(q.q) + ' ' + speakBtn(q.q) + '</p>';
   q.options.forEach((opt, oi) => {
     h += '<button class="opt" onclick="answerMock(' + oi + ')">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
   });
-  h += '</div><p class="small">Tip: read the question slowly. Tap 🔊 to hear it in German.</p>';
+  h += '</div><p class="small">Tip: read the question slowly. Tap the speaker button to hear it in German.</p>';
   return h;
 }
 function answerMock(oi) {
@@ -1160,7 +1174,7 @@ function finishMock() {
   if (m.level === 'A1') store.data.mockBest = store.data.mockBests.A1;
   store.addXP(20);
   store.save();
-  toast(pct >= 60 ? 'Mock test passed! +20 XP 🎉' : 'Mock test finished. +20 XP');
+  toast(pct >= 60 ? 'Mock test passed! +20 XP ' : 'Mock test finished. +20 XP');
 }
 function startMockTimer() {
   clearInterval(startMockTimer._t);
@@ -1171,7 +1185,7 @@ function startMockTimer() {
     const el = document.querySelector('.timer');
     if (el) {
       const mm = Math.floor(m.remaining / 60), ss = String(m.remaining % 60).padStart(2, '0');
-      el.textContent = '⏱ ' + mm + ':' + ss + ' left';
+      el.textContent = '' + mm + ':' + ss + ' left';
       if (m.remaining <= 120) el.classList.add('low');
     }
     if (m.remaining <= 0) { clearInterval(startMockTimer._t); finishMock(); render(); }
@@ -1186,7 +1200,7 @@ function viewProgress() {
   let h = '<p class="kicker">Progress</p><h1>Your progress</h1>' +
     '<div class="stat-row">' +
     '<div class="stat"><b>' + d.xp + '</b><span>XP</span></div>' +
-    '<div class="stat"><b>🔥 ' + d.streak + '</b><span>Streak</span></div>' +
+    '<div class="stat"><b>' + IC.flame + ' ' + d.streak + '</b><span>Streak</span></div>' +
     '<div class="stat"><b>' + doneChs + '</b><span>Lessons</span></div>' +
     '<div class="stat"><b>' + Object.keys(d.cards).length + '</b><span>Cards</span></div></div>';
   h += '<div class="card"><h3 style="margin-top:0">Per level</h3>';
@@ -1195,14 +1209,14 @@ function viewProgress() {
     h += '<div class="kv"><div><b>' + lv.id + ' — ' + esc(lv.name) + '</b><div class="small">' + p.done + '/' + p.full + ' full chapters · ' + p.read + ' syllabus read</div></div><b>' + Math.round(p.full ? p.done / p.full * 100 : 0) + '%</b></div>';
   });
   h += '<p class="small mt">Quiz best: A1 Mock ' + (d.mockBest !== null ? d.mockBest + '/100' : 'not taken') + ' · Trainer ' + (d.trainerBest || 0) + '/10</p></div>';
-  h += '<div class="card"><h3 style="margin-top:0">💾 Save your progress</h3>' +
+  h += '<div class="card"><h3 style="margin-top:0">Save your progress</h3>' +
     '<p class="small">Progress lives on this device. Export a backup file now — if you clear browser data, you can import it back.</p>' +
-    '<div class="btn-row"><button class="btn small" onclick="exportProgress()">⬇️ Export (JSON)</button>' +
-    '<button class="btn small ghost" onclick="document.getElementById(\'importFile\').click()">⬆️ Import (JSON)</button></div>' +
-    '<button class="btn small ghost mt" onclick="if(confirm(\'Delete ALL progress? This cannot be undone.\')){localStorage.removeItem(store.key);location.reload();}">🗑️ Reset all progress</button></div>';
-  h += '<div class="card"><h3 style="margin-top:0">🔊 Pronunciation voice</h3>' +
-    '<p class="small">' + (Speech.noVoice ? '⚠️ No German voice found on this device. Install a German voice in system text-to-speech settings.' : 'German voice ready: <b>' + esc(Speech.voice ? Speech.voice.name : 'default') + '</b>') + '</p>' +
-    '<div class="btn-row"><button class="btn small" onclick="speakText(\'Guten Tag! Ich heiße Anna. Ich lerne Deutsch.\')">▶️ Test voice</button>' +
+    '<div class="btn-row"><button class="btn small" onclick="exportProgress()">Export (JSON)</button>' +
+    '<button class="btn small ghost" onclick="document.getElementById(\'importFile\').click()">Import (JSON)</button></div>' +
+    '<button class="btn small ghost mt" onclick="if(confirm(\'Delete ALL progress? This cannot be undone.\')){localStorage.removeItem(store.key);location.reload();}">Reset all progress</button></div>';
+  h += '<div class="card"><h3 style="margin-top:0">Pronunciation voice</h3>' +
+    '<p class="small">' + (Speech.noVoice ? 'No German voice found on this device. Install a German voice in system text-to-speech settings.' : 'German voice ready: <b>' + esc(Speech.voice ? Speech.voice.name : 'default') + '</b>') + '</p>' +
+    '<div class="btn-row"><button class="btn small" onclick="speakText(\'Guten Tag! Ich heiße Anna. Ich lerne Deutsch.\')">Test voice</button>' +
     '<button class="btn small ghost" onclick="toggleSpeed()">Speed: ' + (d.speed === 'normal' ? 'normal (1×)' : 'slow (0.7×)') + '</button></div></div>';
   h += nextBar('What to do next: keep your streak alive — finish one lesson today.', 'home', 'Back to Home');
   return h;
