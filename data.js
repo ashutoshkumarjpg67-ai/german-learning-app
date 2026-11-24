@@ -439,7 +439,7 @@ CHAPTERS['A1-1'] = {
     'Tricky sounds: J = Y, V = F, W = V, Z = TS.',
     'Every noun starts with a capital letter, and words sound as they are written.'
   ],
-  tip:'Memory tip: say every letter OUT LOUD 3 times. Reading silently does not train your mouth — speaking does.',
+  tip:'say every letter OUT LOUD 3 times. Reading silently does not train your mouth — speaking does.',
   extra:[
     {
       q:'Spell "Anna" out loud.',
@@ -1254,7 +1254,7 @@ CHAPTERS['A1-2'] = {
     '"Ich bin ... Jahre alt" = I am ... years old.',
     'Prices: "Was kostet das?" — "Das kostet zwei Euro."'
   ],
-  tip:'Memory tip: count out loud everywhere — stairs, plates, minutes. Numbers only stick when you say them.',
+  tip:'count out loud everywhere — stairs, plates, minutes. Numbers only stick when you say them.',
   extra:[
     {
       q:'Count backwards from 20 to 0.',
@@ -2056,7 +2056,7 @@ CHAPTERS['A1-3'] = {
     'Use Sie (formal) for strangers, seniors and patients — du is only for friends and family.',
     '"Wie geht es dir?" = How are you? Answer: "Mir geht es gut, danke."'
   ],
-  tip:'Memory tip: say every German word OUT LOUD 3 times. Reading silently does not train your mouth — speaking does.',
+  tip:'say every German word OUT LOUD 3 times. Reading silently does not train your mouth — speaking does.',
   extra:[
     {
       q:'Say "good evening" in German.',
@@ -2948,7 +2948,7 @@ CHAPTERS['A1-4'] = {
     '"sprechen" is special: du sprichst, er spricht (e becomes i).',
     '"Ich komme aus ..." = I come from ... "Ich spreche ..." = I speak ...'
   ],
-  tip:'Memory tip: sing the endings as a little song — e, st, t, en, t, en. Say it with wohnen, lernen, kommen.',
+  tip:'sing the endings as a little song — e, st, t, en, t, en. Say it with wohnen, lernen, kommen.',
   extra:[
     {
       q:'Conjugate "lernen" for du and wir.',
@@ -3812,7 +3812,7 @@ CHAPTERS['A1-5'] = {
     'Directions: links (left), rechts (right), geradeaus (straight ahead).',
     '"Gern geschehen!" = You are welcome!'
   ],
-  tip:'Memory tip: never learn a noun alone. Say "der Bahnhof, die Straße, das Hotel" — article + word, always together.',
+  tip:'never learn a noun alone. Say "der Bahnhof, die Straße, das Hotel" — article + word, always together.',
   extra:[
     {
       q:'Say "Where is the hospital?"',
@@ -4804,7 +4804,7 @@ CHAPTERS['A1-6'] = {
     'Clothes: die Jacke, das Hemd, die Hose — colours: rot, blau, grün.',
     'Comparative: billiger (cheaper), besser (better) — "billiger als ..." = cheaper than ...'
   ],
-  tip:'Memory tip: the accusative trick — only masculine changes. der → den, ein → einen. die and das never change. That is the whole rule!',
+  tip:'the accusative trick — only masculine changes. der → den, ein → einen. die and das never change. That is the whole rule!',
   extra:[
     {
       q:'Say "I would like a coffee."',
@@ -5834,7 +5834,7 @@ CHAPTERS['A1-7'] = {
     'Days: am Montag, am Dienstag ... am Sonntag.',
     'Routine verbs: aufstehen, frühstücken, arbeiten, schlafen, kochen.'
   ],
-  tip:'Memory tip: "halb" is a trap! halb acht = 7:30, not 8:30. Think: half of the way TO eight.',
+  tip:'"halb" is a trap! halb acht = 7:30, not 8:30. Think: half of the way TO eight.',
   extra:[
     {
       q:'Say "It is half past six."',
@@ -6761,7 +6761,7 @@ CHAPTERS['A1-8'] = {
     'Months: Januar, Februar, März ... Dezember. "Mein Geburtstag ist im Mai."',
     'Phone start: "Hallo, Anna? Hier ist Ben."'
   ],
-  tip:'Memory tip: "gern" is your friend — "Ich lese gern" (I like reading), "Ja, gern!" (Yes, gladly!). Use it everywhere. Months are easy: Januar, Februar, März — say your birthday month in German today.',
+  tip:'"gern" is your friend — "Ich lese gern" (I like reading), "Ja, gern!" (Yes, gladly!). Use it everywhere. Months are easy: Januar, Februar, März — say your birthday month in German today.',
   extra:[
     {
       q:'Say "I can swim well."',
@@ -7655,7 +7655,7 @@ CHAPTERS['A1-9'] = {
     '"im" = in the: im Wohnzimmer, im Schlafzimmer.',
     'Adjectives after "ist" never change: Das Zimmer ist groß.'
   ],
-  tip:'Memory tip: walk through your home and name everything in German — "der Tisch, der Stuhl, das Bett". Your home is your classroom.',
+  tip:'walk through your home and name everything in German — "der Tisch, der Stuhl, das Bett". Your home is your classroom.',
   extra:[
     {
       q:'Say "The kitchen is on the left."',
@@ -8381,7 +8381,7 @@ CHAPTERS['A1-10'] = {
     'müssen (must), sollen (should), dürfen (may).',
     '"von ... bis ..." = from ... to ... (time).'
   ],
-  tip:'Memory tip: job words come in pairs — Lehrer/Lehrerin, Arzt/Ärztin, Koch/Köchin. Learn both forms together.',
+  tip:'job words come in pairs — Lehrer/Lehrerin, Arzt/Ärztin, Koch/Köchin. Learn both forms together.',
   extra:[
     {
       q:'Say "I must work on Saturday."',
@@ -9095,7 +9095,7 @@ CHAPTERS['A1-11'] = {
     'Imperative: Trink! (friend) / Trinken Sie! (formal).',
     '"seit" = since: Seit gestern = since yesterday.'
   ],
-  tip:'Memory tip: body words are your first nursing words. Point at each part and say it in German — der Kopf, der Arm, das Bein...',
+  tip:'body words are your first nursing words. Point at each part and say it in German — der Kopf, der Arm, das Bein...',
   extra:[
     {
       q:'Say "Drink a lot of water!" (formal)',
@@ -9901,7 +9901,7 @@ CHAPTERS['A1-12'] = {
     'Weather: Es ist kalt / warm / heiß. Es regnet. Es schneit.',
     'You finished A1! Take the A1 mock test next.'
   ],
-  tip:'Memory tip: you now know about 510 A1 words. Read this chapter\'s dialogue out loud once more — it should feel easy. That is real progress.',
+  tip:'you now know about 510 A1 words. Read this chapter\'s dialogue out loud once more — it should feel easy. That is real progress.',
   extra:[
     {
       q:'Say "I am travelling to Italy."',
@@ -10835,7 +10835,7 @@ CHAPTERS['A2-1'] = {
     'No "ge-" for be-/ver-/er- verbs: besucht, verkauft, erzählt.',
     'Family: der Vater, die Mutter, der Bruder, die Schwester.'
   ],
-  tip:'Memory tip: learn the Partizip II WITH the verb — "lernen, gelernt", "essen, gegessen". Always as a pair.',
+  tip:'learn the Partizip II WITH the verb — "lernen, gelernt", "essen, gegessen". Always as a pair.',
   extra:[
     {
       q:'Say "I learned a lot yesterday."',
@@ -11632,7 +11632,7 @@ CHAPTERS['A2-2'] = {
     '"mit" always takes the dative: mit dem Auto, mit der Karte.',
     'Restaurant: die Speisekarte, die Rechnung, das Trinkgeld.'
   ],
-  tip:'Memory tip: "Mir geht es gut" — you have known the dative since A1! "mir" was dative all along.',
+  tip:'"Mir geht es gut" — you have known the dative since A1! "mir" was dative all along.',
   extra:[
     {
       q:'Say "The soup tastes good to me."',
@@ -12430,7 +12430,7 @@ CHAPTERS['A2-3'] = {
     'Use war/hatte in stories — not the Perfekt.',
     'Travel: der Strand, die Insel, der See, der Fluss, der Wald.'
   ],
-  tip:'Memory tip: "war" and "hatte" are the two most useful past words in German. Learn them by heart — you will use them every day.',
+  tip:'"war" and "hatte" are the two most useful past words in German. Learn them by heart — you will use them every day.',
   extra:[
     {
       q:'Say "I was in Italy."',
@@ -13299,7 +13299,7 @@ CHAPTERS['A2-4'] = {
     'Adjective endings: ein rotes Kleid, der rote Rock, die rote Bluse.',
     'Shopping: die Größe, anprobieren, passen, der Preis, die Kasse, der Rabatt.'
   ],
-  tip:'Memory tip: always learn clothes WITH the colour and the ending — "ein rotes Kleid", "der blaue Mantel". The ending sticks to the phrase.',
+  tip:'always learn clothes WITH the colour and the ending — "ein rotes Kleid", "der blaue Mantel". The ending sticks to the phrase.',
   extra:[
     {
       q:'Say "This jacket is cheaper than the red one."',
@@ -14209,7 +14209,7 @@ CHAPTERS['A2-5'] = {
     'Wohin? (movement) = accusative: an die Wand, ins Wohnzimmer.',
     'Home: der Teppich, das Bild, die Lampe, der Balkon, die Miete.'
   ],
-  tip:'Memory tip: ask "Wo?" or "Wohin?" before you choose the case. "Wo ist es?" → dative. "Wohin geht es?" → accusative.',
+  tip:'ask "Wo?" or "Wohin?" before you choose the case. "Wo ist es?" → dative. "Wohin geht es?" → accusative.',
   extra:[
     {
       q:'Say "The picture hangs on the wall."',
@@ -15091,7 +15091,7 @@ CHAPTERS['A2-6'] = {
     'Doctor words: der Termin, die Praxis, die Krankenkasse, das Rezept.',
     'Symptoms: das Fieber, der Husten, der Schnupfen, die Kopfschmerzen.'
   ],
-  tip:'Memory tip: at the doctor, start with "Ich fühle mich nicht gut." and "Ich habe ..." — then name the symptom: Fieber, Husten, Kopfschmerzen.',
+  tip:'at the doctor, start with "Ich fühle mich nicht gut." and "Ich habe ..." — then name the symptom: Fieber, Husten, Kopfschmerzen.',
   extra:[
     {
       q:'Say "I could not sleep last night."',
@@ -15966,7 +15966,7 @@ CHAPTERS['A2-7'] = {
     '"Ich weiß, dass du Deutsch lernst."',
     'Work: die Bewerbung, der Lebenslauf, das Vorstellungsgespräch, das Gehalt.'
   ],
-  tip:'Memory tip: in a "weil" sentence, put the verb last and check it: "Ich lerne Deutsch, weil ich ... will." Say it out loud 3 times.',
+  tip:'in a "weil" sentence, put the verb last and check it: "Ich lerne Deutsch, weil ich ... will." Say it out loud 3 times.',
   extra:[
     {
       q:'Say "I learn German because I want to work in Germany."',
@@ -16826,7 +16826,7 @@ CHAPTERS['A2-8'] = {
     '"zu" sits right before the infinitive, at the end.',
     'Hobbies: der Sport, das Hobby, der Verein, die Mannschaft, das Training.'
   ],
-  tip:'Memory tip: learn "Lust haben" and "sich freuen" as fixed phrases with "zu": "Ich habe Lust zu ..." — then just add any verb.',
+  tip:'learn "Lust haben" and "sich freuen" as fixed phrases with "zu": "Ich habe Lust zu ..." — then just add any verb.',
   extra:[
     {
       q:'Say "I feel like playing football."',
@@ -17689,7 +17689,7 @@ CHAPTERS['A2-9'] = {
     'At the station: der Fahrplan, die Fahrkarte, der Bahnsteig, das Gleis.',
     'Ask: "Wann fährt der Zug ab?" — "Muss ich umsteigen?"'
   ],
-  tip:'Memory tip: if the verb moves you (fahren, gehen, kommen, ankommen, aufstehen), use "sein". If it stays in one place (lernen, kochen, arbeiten), use "haben".',
+  tip:'if the verb moves you (fahren, gehen, kommen, ankommen, aufstehen), use "sein". If it stays in one place (lernen, kochen, arbeiten), use "haben".',
   extra:[
     {
       q:'Say "I travelled to Berlin."',
@@ -18566,7 +18566,7 @@ CHAPTERS['A2-10'] = {
     'Verbs: liken, teilen, posten, folgen, abonnieren.',
     'Media: die Schlagzeile, der Artikel, die Sendung, der Podcast.'
   ],
-  tip:'Memory tip: never translate media prepositions word by word. Learn the whole phrase: "im Internet", "in der Zeitung", "am Handy".',
+  tip:'never translate media prepositions word by word. Learn the whole phrase: "im Internet", "in der Zeitung", "am Handy".',
   extra:[
     {
       q:'Say "I read the news on the internet."',
@@ -19447,7 +19447,7 @@ CHAPTERS['A2-11'] = {
     'Use time expressions with the Perfekt.',
     'Celebrations: das Fest, der Geburtstag, Weihnachten, Ostern.'
   ],
-  tip:'Memory tip: "als" is for ONE moment in the past ("Als ich klein war ..."). "wenn" is for repeats ("Wenn ich Zeit habe ..."). One moment = als.',
+  tip:'"als" is for ONE moment in the past ("Als ich klein war ..."). "wenn" is for repeats ("Wenn ich Zeit habe ..."). One moment = als.',
   extra:[
     {
       q:'Say "Last week I celebrated my birthday."',
@@ -20217,7 +20217,7 @@ CHAPTERS['A2-12'] = {
     'war/hatte for stories. weil/dass — verb at the end.',
     'You are ready for B1 when all four feel easy.'
   ],
-  tip:'Memory tip: before B1, say these four sentences out loud every day: "Ich habe gelernt." "Mir geht es gut." "Ich war in Italien." "Ich lerne Deutsch, weil ich arbeiten will."',
+  tip:'before B1, say these four sentences out loud every day: "Ich habe gelernt." "Mir geht es gut." "Ich war in Italien." "Ich lerne Deutsch, weil ich arbeiten will."',
   extra:[
     {
       q:'Say "I have learned a lot."',
@@ -21002,7 +21002,7 @@ CHAPTERS['B1-1'] = {
     'Use weil/dass to give reasons and opinions — this is B1 German.',
     'Work words: die Bewerbung, der Lebenslauf, die Erfahrung, das Gehalt.'
   ],
-  tip:'Memory tip: every time you say "because" in English, try "weil" in German — and push the verb to the end. It feels strange for one week, then it becomes automatic.',
+  tip:'every time you say "because" in English, try "weil" in German — and push the verb to the end. It feels strange for one week, then it becomes automatic.',
   extra:[
     {
       q:'Say "I learn German because I want to work in Germany."',
@@ -21810,7 +21810,7 @@ CHAPTERS['B1-2'] = {
     'Health words: der Termin, das Rezept, die Behandlung, der Blutdruck.',
     'In a hospital, polite forms are essential — use them with every patient.'
   ],
-  tip:'Memory tip: "Ich hätte gern ..." is the magic phrase for polite German. Use it for appointments, orders and wishes.',
+  tip:'"Ich hätte gern ..." is the magic phrase for polite German. Use it for appointments, orders and wishes.',
   extra:[
     {
       q:'Say "I would like an appointment."',
@@ -22608,7 +22608,7 @@ CHAPTERS['B1-3'] = {
     'Media words: das Fernsehen, die Nachrichten, die Zeitung, der Untertitel.',
     'B1 is the visa level — you are more than halfway to B2!'
   ],
-  tip:'Memory tip: passive = "wird + -t/-en word at the end". Spot it in the news: "wird gezeigt", "wird berichtet", "wird gesendet".',
+  tip:'passive = "wird + -t/-en word at the end". Spot it in the news: "wird gezeigt", "wird berichtet", "wird gesendet".',
   extra:[
     {
       q:'Say "The film is shown in German."',
@@ -23405,7 +23405,7 @@ CHAPTERS['B1-4'] = {
     '"Meiner Meinung nach" = In my opinion — use it for B1 opinions.',
     'Environment: der Klimawandel, die Umwelt, recyceln, der Müll.'
   ],
-  tip:'Memory tip: the relative pronoun is just the article of the noun: der Mann → der, die Frau → die, das Kind → das. Then push the verb to the end.',
+  tip:'the relative pronoun is just the article of the noun: der Mann → der, die Frau → die, das Kind → das. Then push the verb to the end.',
   extra:[
     {
       q:'Say "That is the man who lives in Berlin."',
@@ -24202,7 +24202,7 @@ CHAPTERS['B1-5'] = {
     '"bevor" introduces the later event: "bevor wir fuhren".',
     'Travel: die Unterkunft, buchen, die Reservierung, die Sehenswürdigkeit.'
   ],
-  tip:'Memory tip: for stories, learn the Präteritum of the 10 most common verbs by heart: war, hatte, ging, kam, sah, fuhr, machte, sagte, gab, nahm.',
+  tip:'for stories, learn the Präteritum of the 10 most common verbs by heart: war, hatte, ging, kam, sah, fuhr, machte, sagte, gab, nahm.',
   extra:[
     {
       q:'Say "We went to Rome by train."',
@@ -24999,7 +24999,7 @@ CHAPTERS['B1-6'] = {
     'N-declension: der Student → den Studenten, dem Studenten.',
     'School: die Prüfung, bestehen, das Zeugnis, der Student.'
   ],
-  tip:'Memory tip: learn adjectives WITH the article: "der neue Kurs", "ein guter Student". The ending sticks to the phrase.',
+  tip:'learn adjectives WITH the article: "der neue Kurs", "ein guter Student". The ending sticks to the phrase.',
   extra:[
     {
       q:'Say "The new teacher is very nice."',
@@ -25796,7 +25796,7 @@ CHAPTERS['B1-7'] = {
     '"um … zu" shows a purpose: "Ich komme, um dich zu sehen."',
     'Family: die Hochzeit, die Verlobung, die Beziehung, die Ehe.'
   ],
-  tip:'Memory tip: learn the pairs as one chunk — "sowohl als auch", "entweder oder", "weder noch". Say them as a pair, never alone.',
+  tip:'learn the pairs as one chunk — "sowohl als auch", "entweder oder", "weder noch". Say them as a pair, never alone.',
   extra:[
     {
       q:'Say "I speak both German and English."',
@@ -26593,7 +26593,7 @@ CHAPTERS['B1-8'] = {
     'wegen, trotz, während + genitive: wegen des Preises.',
     'Money: das Konto, überweisen, die Rechnung, das Gehalt.'
   ],
-  tip:'Memory tip: learn genitive prepositions as a set — "wegen, trotz, während" — and always say the -s: "wegen des Wetters", "trotz des Regens".',
+  tip:'learn genitive prepositions as a set — "wegen, trotz, während" — and always say the -s: "wegen des Wetters", "trotz des Regens".',
   extra:[
     {
       q:'Say "That is my father\'s car."',
@@ -27390,7 +27390,7 @@ CHAPTERS['B1-9'] = {
     '"ob" = whether, verb at the end.',
     'Housing: die Kaution, der Mietvertrag, der Vermieter, die Nebenkosten.'
   ],
-  tip:'Memory tip: for polite questions, use "Könnten Sie mir sagen, ob ...?" — it sounds friendly and gives you time to think.',
+  tip:'for polite questions, use "Könnten Sie mir sagen, ob ...?" — it sounds friendly and gives you time to think.',
   extra:[
     {
       q:'Say "The flat that you mean is still free."',
@@ -28187,7 +28187,7 @@ CHAPTERS['B1-10'] = {
     'Both verbs go to the end of their clauses.',
     'Health: die Ernährung, das Gewicht, abnehmen, das Fitnessstudio.'
   ],
-  tip:'Memory tip: wishes always start with "Wenn ich ... hätte" and answer with "würde ich ...". Practise with your own wishes.',
+  tip:'wishes always start with "Wenn ich ... hätte" and answer with "würde ich ...". Practise with your own wishes.',
   extra:[
     {
       q:'Say "If I had more time, I would do more sport."',
@@ -28984,7 +28984,7 @@ CHAPTERS['B1-11'] = {
     '"Ich werde ..." for plans, "Das Arbeiten ..." for goals.',
     'Future: die Zukunft, das Ziel, der Traum, die Chance.'
   ],
-  tip:'Memory tip: turn your goals into nouns — "das Lernen", "das Arbeiten", "das Helfen". It makes your German sound much more B1.',
+  tip:'turn your goals into nouns — "das Lernen", "das Arbeiten", "das Helfen". It makes your German sound much more B1.',
   extra:[
     {
       q:'Say "I will work in Germany."',
@@ -29712,7 +29712,7 @@ CHAPTERS['B1-12'] = {
     'Goethe B1: 4 modules, pass 60 per module.',
     'You are ready for B2 when all four feel easy.'
   ],
-  tip:'Memory tip: before B2, say these four sentences out loud every day: "Ich lerne Deutsch, weil ich arbeiten will." "Ich hätte gern ..." "Der Film wird gezeigt." "Das Auto meines Vaters."',
+  tip:'before B2, say these four sentences out loud every day: "Ich lerne Deutsch, weil ich arbeiten will." "Ich hätte gern ..." "Der Film wird gezeigt." "Das Auto meines Vaters."',
   extra:[
     {
       q:'Say "I learned a lot!"',
@@ -30486,7 +30486,7 @@ CHAPTERS['B2-1'] = {
     'It shows the words belong to someone else, not to you.',
     'Work words: die Besprechung, der Vorschlag, die Entscheidung, der Umsatz.'
   ],
-  tip:'Memory tip: in newspapers and meetings, Konjunktiv I is everywhere. Listen for "sei", "habe", "werde" — they signal reported speech.',
+  tip:'in newspapers and meetings, Konjunktiv I is everywhere. Listen for "sei", "habe", "werde" — they signal reported speech.',
   extra:[
     {
       q:'Say "He says he is satisfied."',
@@ -31283,7 +31283,7 @@ CHAPTERS['B2-2'] = {
     '"sein + zu + infinitive" = is to be done / can be done.',
     'Environment words: die Umwelt, die Verschmutzung, der Abfall, die Maßnahme.'
   ],
-  tip:'Memory tip: "lässt sich" is your B2 superpower — "Das lässt sich machen", "Das lässt sich ändern", "Das lässt sich nicht vermeiden". Use it in every discussion.',
+  tip:'"lässt sich" is your B2 superpower — "Das lässt sich machen", "Das lässt sich ändern", "Das lässt sich nicht vermeiden". Use it in every discussion.',
   extra:[
     {
       q:'Say "The problem can be solved."',
@@ -32081,7 +32081,7 @@ CHAPTERS['B2-3'] = {
     'Nursing words: betreuen, die Übergabe, die Dokumentation, der Verband.',
     'This is telc Pflege language — handovers are built from these sentences.'
   ],
-  tip:'Memory tip: in a handover, start with the patient: "Der Patient, den ich betreue, ..." — then add the facts. One sentence, all the information.',
+  tip:'in a handover, start with the patient: "Der Patient, den ich betreue, ..." — then add the facts. One sentence, all the information.',
   extra:[
     {
       q:'Say "The patient whom I care for has severe pain."',
@@ -32879,7 +32879,7 @@ CHAPTERS['B2-4'] = {
     '"Ich hätte gern ..." = I would like ...',
     'Travel words: der Urlaub, die Reise, die Unterkunft, die Aussicht.'
   ],
-  tip:'Memory tip: wishes start with "Wenn ich ... hätte/wäre/könnte" — the verb "hätte" or "wäre" sits in second place, "würde" starts the second half.',
+  tip:'wishes start with "Wenn ich ... hätte/wäre/könnte" — the verb "hätte" or "wäre" sits in second place, "würde" starts the second half.',
   extra:[
     {
       q:'Say "If I had more time, I would travel more."',
@@ -33689,7 +33689,7 @@ CHAPTERS['B2-5'] = {
     '"-ung" makes nouns from verbs.',
     'Tech words: das Passwort, der Bildschirm, die Datei, der Akku.'
   ],
-  tip:'Memory tip: when you write formally, turn verbs into nouns: "Wir behandeln den Patienten" → "die Behandlung des Patienten". It sounds instantly more formal.',
+  tip:'when you write formally, turn verbs into nouns: "Wir behandeln den Patienten" → "die Behandlung des Patienten". It sounds instantly more formal.',
   extra:[
     {
       q:'Say "The treatment of the patient takes an hour."',
@@ -34498,7 +34498,7 @@ CHAPTERS['B2-6'] = {
     'The participle stands before the noun with an adjective ending.',
     'Science words: die Studie, das Experiment, die Erkenntnis, die Methode.'
   ],
-  tip:'Memory tip: Partizip I = still happening (lebend), Partizip II = already done (gelesen). Ask: is it still happening or already finished?',
+  tip:'Partizip I = still happening (lebend), Partizip II = already done (gelesen). Ask: is it still happening or already finished?',
   extra:[
     {
       q:'Say "The people living in Berlin speak German."',
@@ -35295,7 +35295,7 @@ CHAPTERS['B2-7'] = {
     'anhand/infolge + genitive: anhand der Zahlen.',
     'Politics words: die Wahl, der Bürger, die Mehrheit, die Transparenz.'
   ],
-  tip:'Memory tip: "obwohl" pushes the verb to the end; "trotzdem" keeps it in second place. Say both sentences out loud and feel the difference.',
+  tip:'"obwohl" pushes the verb to the end; "trotzdem" keeps it in second place. Say both sentences out loud and feel the difference.',
   extra:[
     {
       q:'Say "Although it is raining, we go for a walk."',
@@ -36093,7 +36093,7 @@ CHAPTERS['B2-8'] = {
     'Formal: "Sehr geehrte Damen und Herren". Informal: "Hallo".',
     'Economy words: der Lohn, die Steuer, der Markt, die Inflation.'
   ],
-  tip:'Memory tip: "soll" = somebody says so; "muss" = I conclude so; "kann nicht" = it cannot be so. Three different kinds of guessing.',
+  tip:'"soll" = somebody says so; "muss" = I conclude so; "kann nicht" = it cannot be so. Three different kinds of guessing.',
   extra:[
     {
       q:'Say "He is said to be rich."',
@@ -36891,7 +36891,7 @@ CHAPTERS['B2-9'] = {
     'Prepositional verbs: sich freuen auf, denken an, sich erinnern an.',
     'Culture words: das Gemälde, die Aufführung, der Künstler, das Theater.'
   ],
-  tip:'Memory tip: prepositional verbs are fixed pairs — learn "sich freuen AUF" as one unit, never just "freuen".',
+  tip:'prepositional verbs are fixed pairs — learn "sich freuen AUF" as one unit, never just "freuen".',
   extra:[
     {
       q:'Say "I am looking forward to the performance."',
@@ -37693,7 +37693,7 @@ CHAPTERS['B2-10'] = {
     'Formal: "Sehr geehrte Frau Doktor".',
     'Medical words: die Diagnose, die Therapie, der Notfall, die Impfung.'
   ],
-  tip:'Memory tip: never translate collocations word by word. Learn "einen Antrag stellen" as one chunk — stellen, not machen.',
+  tip:'never translate collocations word by word. Learn "einen Antrag stellen" as one chunk — stellen, not machen.',
   extra:[
     {
       q:'Say "I would like to submit an application."',
@@ -38501,7 +38501,7 @@ CHAPTERS['B2-11'] = {
     'Modal + passive: muss gefördert werden.',
     'Environment words: die Nachhaltigkeit, die Emission, die Ressource, erneuerbar.'
   ],
-  tip:'Memory tip: the Partizip II never changes — only "werden" changes: wird, wurde, ist ... worden, wird ... werden.',
+  tip:'the Partizip II never changes — only "werden" changes: wird, wurde, ist ... worden, wird ... werden.',
   extra:[
     {
       q:'Say "Energy is saved."',
@@ -39305,7 +39305,7 @@ CHAPTERS['B2-12'] = {
     'Goethe B2: 4 modules, pass 60 per module. telc Pflege for nursing.',
     'You are ready for C1 when all four feel easy.'
   ],
-  tip:'Memory tip: before C1, say these four sentences out loud every day: "Er sagt, er sei ..." "Das lässt sich lösen." "Die Behandlung des Patienten." "Je mehr man lernt, desto besser spricht man."',
+  tip:'before C1, say these four sentences out loud every day: "Er sagt, er sei ..." "Das lässt sich lösen." "Die Behandlung des Patienten." "Je mehr man lernt, desto besser spricht man."',
   extra:[
     {
       q:'Say "I learned a lot!"',
@@ -40165,7 +40165,7 @@ CHAPTERS['C1-1'] = {
     'Verbs become nouns: behandeln → die Behandlung, entscheiden → die Entscheidung.',
     'This is the language of reports, studies and official documents.'
   ],
-  tip:'Memory tip: when you write a report, turn your verbs into nouns. "Wir behandeln den Patienten" becomes "die Behandlung des Patienten" — instantly more formal.',
+  tip:'when you write a report, turn your verbs into nouns. "Wir behandeln den Patienten" becomes "die Behandlung des Patienten" — instantly more formal.',
   extra:[
     {
       q:'Say "The treatment of the patient takes an hour."',
@@ -40968,7 +40968,7 @@ CHAPTERS['C1-2'] = {
     'Idioms: in aller Munde sein, jemanden umhauen, atemberaubend.',
     'C1 German is about HOW you say it — register matters as much as grammar.'
   ],
-  tip:'Memory tip: collect one idiom per day. "In aller Munde", "umhauen", "atemberaubend" — use each one in a real sentence today.',
+  tip:'collect one idiom per day. "In aller Munde", "umhauen", "atemberaubend" — use each one in a real sentence today.',
   extra:[
     {
       q:'Say "In my opinion, that is the best film of the year."',
@@ -41775,7 +41775,7 @@ CHAPTERS['C1-3'] = {
     'The participle goes BEFORE the noun, with an adjective ending.',
     'This is C1: long, precise sentences that pack a whole clause into one phrase.'
   ],
-  tip:'Memory tip: read one German news article per day and underline every participle before a noun — "die geplanten Reformen", "die steigenden Zahlen". You will see them everywhere.',
+  tip:'read one German news article per day and underline every participle before a noun — "die geplanten Reformen", "die steigenden Zahlen". You will see them everywhere.',
   extra:[
     {
       q:'Say "The people living in care homes need good care."',
@@ -42582,7 +42582,7 @@ CHAPTERS['C1-4'] = {
     'Indirect questions: "Er fragt, ob ..."',
     'If Konjunktiv I = Indikativ, use Konjunktiv II ("sie hätten").'
   ],
-  tip:'Memory tip: in news German, look for "sei, habe, werde, könne" — those small forms are the signal for reported speech. When you see them, someone is quoting someone else.',
+  tip:'in news German, look for "sei, habe, werde, könne" — those small forms are the signal for reported speech. When you see them, someone is quoting someone else.',
   extra:[
     {
       q:'Say "The minister says the number of skilled workers is rising."',
@@ -43391,7 +43391,7 @@ CHAPTERS['C1-5'] = {
     '"der Ausstieg aus ..." = the phase-out of ...',
     'Climate words: die Klimaneutralität, das Treibhausgas, die Energiewende.'
   ],
-  tip:'Memory tip: in formal German, turn the verb into a noun and add the genitive: "Wir reduzieren die Emissionen" → "die Reduzierung der Emissionen". It sounds instantly more academic.',
+  tip:'in formal German, turn the verb into a noun and add the genitive: "Wir reduzieren die Emissionen" → "die Reduzierung der Emissionen". It sounds instantly more academic.',
   extra:[
     {
       q:'Say "Reducing CO2 emissions is the goal."',
@@ -44195,7 +44195,7 @@ CHAPTERS['C1-6'] = {
     '"Einfach gesagt, ..." = simply put.',
     '"Zusammengefasst, ..." = in short.'
   ],
-  tip:'Memory tip: in the C1 exam, Mediation is a real task — you explain a text to someone in simpler words. Practise with these four phrases every day.',
+  tip:'in the C1 exam, Mediation is a real task — you explain a text to someone in simpler words. Practise with these four phrases every day.',
   extra:[
     {
       q:'Say "That means you can do the course from home."',
@@ -44999,7 +44999,7 @@ CHAPTERS['C1-7'] = {
     '"Zusammenfassend lässt sich sagen, dass ..." concludes.',
     'Ethics words: die Einwilligung, die Würde, die Autonomie, das Dilemma.'
   ],
-  tip:'Memory tip: every C1 argument has the same skeleton — These, Argument, Beispiel, Schlussfolgerung. Learn the four signpost phrases and you can argue about anything.',
+  tip:'every C1 argument has the same skeleton — These, Argument, Beispiel, Schlussfolgerung. Learn the four signpost phrases and you can argue about anything.',
   extra:[
     {
       q:'Say "First of all: the patient must consent."',
@@ -45803,7 +45803,7 @@ CHAPTERS['C1-8'] = {
     '"Im Vergleich zu ..." = compared with ...',
     '"Auffällig ist, dass ..." = striking is that ...'
   ],
-  tip:'Memory tip: in the C1 exam you will describe a chart. Learn these four sentence starters by heart — they open every chart description.',
+  tip:'in the C1 exam you will describe a chart. Learn these four sentence starters by heart — they open every chart description.',
   extra:[
     {
       q:'Say "The chart shows that 60 percent are dissatisfied."',
@@ -46602,7 +46602,7 @@ CHAPTERS['C1-9'] = {
     'zumal = especially since.',
     'geschweige denn = let alone.'
   ],
-  tip:'Memory tip: these five connectors are C1 fingerprints — use one in your exam essay and the examiner knows your level. Start with "wenngleich", it is the easiest.',
+  tip:'these five connectors are C1 fingerprints — use one in your exam essay and the examiner knows your level. Start with "wenngleich", it is the easiest.',
   extra:[
     {
       q:'Say "Although integration takes time, it is worth it."',
@@ -47401,7 +47401,7 @@ CHAPTERS['C1-10'] = {
     '"-bar" = can be done: machbar.',
     'Tech words: der Algorithmus, die Daten, der Sensor, die Cloud.'
   ],
-  tip:'Memory tip: when you meet a long German word, split it — prefix + root + suffix. "Un-möglich", "miss-verstehen", "mach-bar". Every long word is three small ones.',
+  tip:'when you meet a long German word, split it — prefix + root + suffix. "Un-möglich", "miss-verstehen", "mach-bar". Every long word is three small ones.',
   extra:[
     {
       q:'Say "The development of artificial intelligence is ground-breaking."',
@@ -48205,7 +48205,7 @@ CHAPTERS['C1-11'] = {
     'Literary inversion: "Kaum hatte er ... , da ..."',
     'Irony: saying the opposite of what you mean.'
   ],
-  tip:'Memory tip: in the C1 exam, switch register on purpose — one formal sentence, one neutral, one literary. The examiner hears your range.',
+  tip:'in the C1 exam, switch register on purpose — one formal sentence, one neutral, one literary. The examiner hears your range.',
   extra:[
     {
       q:'Say "I am of the opinion that the novel is a masterpiece."',
@@ -49014,7 +49014,7 @@ CHAPTERS['C1-12'] = {
     'Goethe C1: 4 modules, 100 points each, pass 60 per module.',
     'You did it — A1 to C1 complete!'
   ],
-  tip:'Memory tip: before the exam, say these four sentences out loud every day: "Die Ministerin sagt, die Zahl steige." "Die Behandlung des Patienten." "Die geplanten Reformen." "Ich bin der Ansicht, dass ..."',
+  tip:'before the exam, say these four sentences out loud every day: "Die Ministerin sagt, die Zahl steige." "Die Behandlung des Patienten." "Die geplanten Reformen." "Ich bin der Ansicht, dass ..."',
   extra:[
     {
       q:'Say "I learned a lot!"',

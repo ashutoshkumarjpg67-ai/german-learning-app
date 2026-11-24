@@ -86,7 +86,7 @@ const store = {
   data: null,
   fresh() {
     return { xp: 0, streak: 0, lastVisit: null, days: {}, completed: {}, read: {}, topicsDone: {},
-      quizBest: {}, cards: {}, speed: 'slow', podcastDone: false, mockBest: null, mockBests: {}, trainerBest: 0 };
+      quizBest: {}, cards: {}, speed: 'slow', podcastDone: false, mockBest: null, mockBests: {}, trainerBest: 0, voiceNoteDismissed: false };
   },
   load() {
     try { this.data = JSON.parse(localStorage.getItem(this.key)) || this.fresh(); }
@@ -134,6 +134,8 @@ const IC = {
   podcast: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>',
   nursing: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
   progress: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
+  check: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+  x: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
 };
 function speakBtn(text, cls) {
   return '<button class="speak-btn ' + (cls || '') + '" data-say="' + escAttr(text) + '" aria-label="Listen to pronunciation">' + IC.speaker + '</button>';
@@ -203,12 +205,20 @@ function nextBar(text, route, label) {
     '<button class="btn red" style="margin-top:8px" onclick="go(\'' + route + '\')">' + esc(label) + ' →</button></div>';
 }
 function voiceNote() {
-  if (!Speech.noVoice) return '';
-  return '<div class="voice-note"><b>German voice not found on this device.</b> The speaker buttons will try your default voice. To hear real German pronunciation, install a German voice in your system text-to-speech settings (Android: Settings → Language → Text-to-speech → German). <button class="btn small ghost" onclick="speakText(\'Guten Tag! Ich heiße Anna.\')">Test voice</button></div>';
+  if (!Speech.noVoice || store.data.voiceNoteDismissed) return '';
+  let h = '<div class="voice-note"><p><b>German voice not found.</b> Speaker buttons will use your default voice. <a href="javascript:void(0)" onclick="toggleVoiceNote()">Details</a></p>' +
+    '<button class="voice-close" aria-label="Dismiss this notice" onclick="dismissVoiceNote()">' + IC.x + '</button></div>';
+  if (state.voiceNoteOpen) {
+    h += '<div class="voice-note-details"><p>To hear real German pronunciation, install a German voice in your system text-to-speech settings (Android: Settings → Language → Text-to-speech → German). The app itself does not record your voice or send audio anywhere.</p>' +
+      '<button class="btn small ghost" onclick="speakText(\'Guten Tag! Ich heiße Anna.\')">Test voice</button></div>';
+  }
+  return h;
 }
+function dismissVoiceNote() { store.data.voiceNoteDismissed = true; store.save(); render(); }
+function toggleVoiceNote() { state.voiceNoteOpen = !state.voiceNoteOpen; render(); }
 
 /* ================= Router ================= */
-let state = { tab: 'listen', quiz: {}, quizDone: {}, trainer: null, mock: null, topicQuiz: null, cardFilter: 'due', cardIdx: 0, cardFlipped: false, cardQueue: [], cardSession: 0, searchQ: '', vocabFilter: 'all', vocabQ: '' };
+let state = { tab: 'listen', quiz: {}, quizDone: {}, trainer: null, mock: null, topicQuiz: null, cardFilter: 'due', cardIdx: 0, cardFlipped: false, cardQueue: [], cardSession: 0, searchQ: '', vocabFilter: 'all', vocabQ: '', voiceNoteOpen: false };
 let lastPage = '';
 let lastHash = '';
 const scrollPos = {}; // route -> scrollY, so Back returns to where you were instead of the top
@@ -246,6 +256,9 @@ function render() {
   else if (page === 'mocks') view.innerHTML = viewMocks();
   else if (page === 'search') view.innerHTML = viewSearch();
   else if (page === 'progress') view.innerHTML = viewProgress();
+  else if (page === 'privacy') view.innerHTML = viewPrivacy();
+  else if (page === 'terms') view.innerHTML = viewTerms();
+  else if (page === 'about') view.innerHTML = viewAbout();
   else view.innerHTML = viewHome();
   // Only move the scroll when the route actually changed. Same-screen
   // re-renders (answering a quiz, flipping a card, switching a tab) must
@@ -313,7 +326,6 @@ function viewHome() {
     sectionCard('progress', 'Progress', 'XP, streak and per-level progress.', store.data.xp + ' XP · ' + store.data.streak + '-day streak', 'progress') +
     '</div>';
   h += nextBar('Not sure where to start? Start at A1 Chapter 1 — it begins from absolute zero.', 'chapter/A1-1', 'Start A1 Chapter 1');
-  h += '<p class="app-footer">All 5 levels complete · 60 chapters · 360 tiny topics · Free forever — no login, no ads.</p>';
   return h;
 }
 function sectionCard(icon, title, desc, status, route) {
@@ -349,7 +361,7 @@ function viewLevel(levelId) {
   let h = '<p class="kicker">' + esc(lv.id) + ' · ' + esc(lv.book) + '</p><h1>' + esc(lv.name) + '</h1>' +
     '<p class="lead">' + esc(lv.desc) + '</p>' +
     '<div class="chip-row mb"><span class="chip">' + esc(lv.vocab) + '</span><span class="chip">' + esc(lv.hours) + '</span><span class="chip">' + esc(lv.goal) + '</span></div>';
-  h += '<div class="recap-box"><h3>' + esc(rev.title) + '</h3><p style="color:#d8d2c2">' + esc(rev.sub) + '</p><ul>' +
+  h += '<div class="recap-box"><h3>' + esc(rev.title) + '</h3><p>' + esc(rev.sub) + '</p><ul>' +
     rev.points.map(pt => '<li>' + esc(pt) + '</li>').join('') + '</ul></div>';
   h += '<h2>Chapters</h2>';
   chapterList(levelId).forEach(ch => {
@@ -558,7 +570,7 @@ function topicQuizHTML(ch, t) {
     h += '<button class="' + cls + '" ' + (picked !== null ? 'disabled' : '') + ' onclick="answerTopicQuiz(' + oi + ')">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
   });
   if (picked !== null) {
-    h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>' +
+    h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? IC.check + ' Correct!' : IC.x + ' Not quite.') + '</b> ' + esc(q.why) + '</div>' +
       '<button class="btn mt" onclick="nextTopicQuiz()">' + (qz.idx === total - 1 ? 'See result →' : 'Next →') + '</button>';
   }
   h += '</div></div>';
@@ -680,7 +692,7 @@ function tabQuiz(ch) {
       h += '<button class="' + cls + '" ' + (picked !== undefined ? 'disabled' : '') + ' onclick="answerQuiz(\'' + ch.id + '\',' + qi + ',' + oi + ',this)">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
     });
     if (picked !== undefined) {
-      h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>';
+      h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? IC.check + ' Correct!' : IC.x + ' Not quite.') + '</b> ' + esc(q.why) + '</div>';
     }
     h += '</div>';
   });
@@ -788,7 +800,7 @@ function viewCards() {
   const card = queue[state.cardIdx];
   const cs = store.data.cards[card.key];
   h += '<div class="flashcard" data-flip>' +
-    '<p class="small" style="color:var(--gold)">' + esc(card.level) + ' · ' + esc(card.title) + ' · Card ' + (state.cardIdx + 1) + ' of ' + queue.length + '</p>' +
+    '<p class="small" style="color:var(--muted)">' + esc(card.level) + ' · ' + esc(card.title) + ' · Card ' + (state.cardIdx + 1) + ' of ' + queue.length + ' in this session</p>' +
     '<div class="card-front"><div class="de big">' + (card.art ? '<span class="art">' + esc(card.art) + '</span> ' : '') + esc(card.de) + '</div>' +
     '<div class="ph">' + esc(card.ph) + '</div>' +
     '<div class="mt">' + speakBtn((card.art ? card.art + ' ' : '') + card.de) + '</div>' +
@@ -887,7 +899,7 @@ function viewTrainer() {
     h += '<button class="' + cls + '" ' + (t.picked !== null ? 'disabled' : '') + ' onclick="answerTrainer(' + oi + ')">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
   });
   if (t.picked !== null) {
-    h += '<div class="feedback ' + (t.picked === q.answer ? 'good' : 'bad') + '"><b>' + (t.picked === q.answer ? '✅ Correct!' : '❌ The answer is: ' + esc(q.options[q.answer])) + '</b> ' + esc(q.item.de) + ' — ' + esc(q.item.en) + ' (' + esc(q.item.ph) + ')</div>' +
+    h += '<div class="feedback ' + (t.picked === q.answer ? 'good' : 'bad') + '"><b>' + (t.picked === q.answer ? IC.check + ' Correct!' : IC.x + ' The answer is: ' + esc(q.options[q.answer])) + '</b> ' + esc(q.item.de) + ' — ' + esc(q.item.en) + ' (' + esc(q.item.ph) + ')</div>' +
       '<button class="btn mt" onclick="nextTrainer()">' + (t.idx === 9 ? 'See result →' : 'Next →') + '</button>';
   }
   h += '</div>';
@@ -1010,7 +1022,7 @@ function viewPodcast() {
       if (picked !== undefined) { if (oi === q.answer) cls += ' correct'; else if (oi === picked) cls += ' wrong'; else cls += ' dim'; }
       h += '<button class="' + cls + '" ' + (picked !== undefined ? 'disabled' : '') + ' onclick="answerPodcastQuiz(' + qi + ',' + oi + ')">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
     });
-    if (picked !== undefined) h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>';
+    if (picked !== undefined) h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? IC.check + ' Correct!' : IC.x + ' Not quite.') + '</b> ' + esc(q.why) + '</div>';
     h += '</div>';
   });
   h += '</div>';
@@ -1138,8 +1150,8 @@ function viewMock(level) {
       m.qs.map((q, i) => {
         const picked = m.answers[i];
         return '<div class="card tight"><p><b>' + (i + 1) + '.</b> ' + esc(q.q) + '</p>' +
-          '<p class="' + (picked === q.answer ? 'ok' : 'bad-text') + '">' + (picked === q.answer ? '✅ You answered: ' : '❌ You answered: ') + esc(q.options[picked] !== undefined ? q.options[picked] : '—') + '</p>' +
-          (picked !== q.answer ? '<p class="ok">✅ Correct answer: ' + esc(q.options[q.answer]) + '</p>' : '') +
+          '<p class="' + (picked === q.answer ? 'ok' : 'bad-text') + '">' + (picked === q.answer ? IC.check + ' You answered: ' : IC.x + ' You answered: ') + esc(q.options[picked] !== undefined ? q.options[picked] : '—') + '</p>' +
+          (picked !== q.answer ? '<p class="ok">' + IC.check + ' Correct answer: ' + esc(q.options[q.answer]) + '</p>' : '') +
           (q.why ? '<p class="small">' + esc(q.why) + '</p>' : '') + '</div>';
       }).join('') +
       '<button class="btn mt" onclick="startMock(\'' + m.level + '\')">Try again →</button>' +
@@ -1220,6 +1232,42 @@ function viewProgress() {
     '<button class="btn small ghost" onclick="toggleSpeed()">Speed: ' + (d.speed === 'normal' ? 'normal (1×)' : 'slow (0.7×)') + '</button></div></div>';
   h += nextBar('What to do next: keep your streak alive — finish one lesson today.', 'home', 'Back to Home');
   return h;
+}
+/* ================= About & legal ================= */
+function viewPrivacy() {
+  return '<div class="legal"><p class="kicker">Legal</p><h1>Privacy Policy</h1>' +
+    '<p class="lead">Short version: this app collects nothing about you. There is no account, no sign-in, no analytics, no ads and no tracking.</p>' +
+    '<p class="updated">Last updated: 24 November 2026</p>' +
+    '<h2>What we collect</h2><p>Nothing. We do not ask for your name, email address or any other personal information, and we do not run analytics or advertising trackers. The app sets no cookies.</p>' +
+    '<h2>Your progress stays on your device</h2><p>Your learning progress — XP, streak, completed lessons, quiz scores and flashcard state — is saved only in your own browser, using localStorage on your device. It is never sent to us or to anyone else. You can export it as a file from the Progress page, and delete it at any time with “Reset all progress” or by clearing this site’s browser data.</p>' +
+    '<h2>Pronunciation</h2><p>Spoken German uses your device’s built-in text-to-speech. The app does not record your voice and does not send any audio anywhere. How your device handles speech is governed by your own device settings.</p>' +
+    '<h2>Hosting</h2><p>This site is hosted on GitHub Pages. GitHub may collect standard server logs (such as an IP address) when you visit, as described in <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener">GitHub’s privacy statement</a>.</p>' +
+    '<h2>Children</h2><p>The app does not knowingly collect personal information from anyone, including children, because it collects no personal information at all.</p>' +
+    '<h2>Changes</h2><p>If this policy changes, the new version will be posted here with a new date.</p>' +
+    '<h2>Questions</h2><p>There is no contact form in the app. Questions can be raised on the <a href="https://github.com/ashutoshkumarjpg67-ai/german-learning-app" target="_blank" rel="noopener">GitHub repository</a>.</p></div>' +
+    nextBar('Back to learning.', 'home', 'Back to Home');
+}
+function viewTerms() {
+  return '<div class="legal"><p class="kicker">Legal</p><h1>Terms of Use</h1>' +
+    '<p class="lead">The rules for using Deutsch Lernen — free German lessons from A1 to C1.</p>' +
+    '<p class="updated">Last updated: 24 November 2026</p>' +
+    '<h2>What this app is</h2><p>Deutsch Lernen is a free educational app for learning German. Use it for your own personal learning.</p>' +
+    '<h2>Not an official exam</h2><p>This app is not affiliated with, endorsed by, or connected to the Goethe-Institut or any other exam body. The mock tests are practice only: they are not official exams, they give no certificate, and they do not guarantee any exam result.</p>' +
+    '<h2>Content “as is”</h2><p>The lessons, words and explanations are provided as they are. They may contain mistakes, and they may change or be removed at any time. Pronunciation uses your device’s speech service, so quality varies by device.</p>' +
+    '<h2>Your responsibility</h2><p>Use the app at your own risk. We are not liable for exam results or for decisions you make based on the content. Please do not present the app’s content as your own work, and do not resell it.</p>' +
+    '<h2>Fair use</h2><p>Do not try to break the app or use it in a way that harms other learners. If you do not agree with these terms, please do not use the app.</p></div>' +
+    nextBar('Back to learning.', 'home', 'Back to Home');
+}
+function viewAbout() {
+  return '<div class="legal"><p class="kicker">About</p><h1>About Deutsch Lernen</h1>' +
+    '<p class="lead">A free German self-study app — from your first word to C1.</p>' +
+    '<p class="updated">Last updated: 24 November 2026</p>' +
+    '<h2>What it is</h2><p>Deutsch Lernen teaches German in tiny 2–4 minute topics: one concept at a time, in the right order, from zero — letters and sounds, numbers, greetings — all the way to C1.</p>' +
+    '<h2>What’s inside</h2><ul><li>60 chapters across A1, A2, B1, B2 and C1, each split into tiny topics</li><li>Vocabulary with pronunciation hints and a speaker button on every word</li><li>Grammar in plain English, with examples you can hear</li><li>Quizzes that explain <i>why</i> an answer is right</li><li>Flashcards with spaced repetition, and a vocabulary trainer</li><li>Goethe-style mock tests, one per level (practice only — not a certificate)</li><li>A Day 1 podcast and a Nursing section with hospital German for Pflege</li></ul>' +
+    '<h2>Free, forever</h2><p>No login, no account, no ads. Your progress is saved only on your own device.</p>' +
+    '<h2>Built by</h2><p>Built by Ashutosh Kumar. The source is public: <a href="https://github.com/ashutoshkumarjpg67-ai/german-learning-app" target="_blank" rel="noopener">github.com/ashutoshkumarjpg67-ai/german-learning-app</a>.</p>' +
+    '<h2>Not official</h2><p>This app is not affiliated with the Goethe-Institut or any exam body.</p></div>' +
+    nextBar('Start learning — it begins from zero.', 'chapter/A1-1', 'Start A1 Chapter 1');
 }
 function exportProgress() {
   const blob = new Blob([JSON.stringify(store.data, null, 2)], { type: 'application/json' });
