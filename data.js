@@ -3794,7 +3794,7 @@ CHAPTERS['A1-5'] = {
      why:'links = left, rechts = right. "Da links" = over there on the left.'},
     {q:'"Fünf Minuten zu Fuß" means...', options:['five minutes by car', 'five minutes on foot', 'five minutes by train', 'five minutes away'], answer:1,
      why:'"zu Fuß" = on foot. Fünf Minuten zu Fuß = five minutes on foot.'},
-    {q:'What is the plural of "der Park"?', options:['die Parks', 'die Parken', 'die Pärke', 'die Parke'], answer:0,
+    {q:'What is the plural of "der Park"?', options:['die Parks', 'die Parken', 'die Pärke', 'der Parks'], answer:0,
      why:'der Park → die Parks. Many short words just add -s in the plural.'}
   ],
   speak:{
@@ -4211,7 +4211,7 @@ CHAPTERS['A1-5'] = {
       questions:[
         {q:'"Fünf Minuten zu Fuß" means...', options:['five minutes by car', 'five minutes on foot', 'five minutes by train', 'five minutes away'], answer:1,
          why:'"zu Fuß" = on foot. Fünf Minuten zu Fuß = five minutes on foot.'},
-        {q:'What is the plural of "der Park"?', options:['die Parks', 'die Parken', 'die Pärke', 'die Parke'], answer:0,
+        {q:'What is the plural of "der Park"?', options:['die Parks', 'die Parken', 'die Pärke', 'der Parks'], answer:0,
          why:'der Park → die Parks. Many short words just add -s in the plural.'}
       ]
     }
@@ -7635,7 +7635,7 @@ CHAPTERS['A1-9'] = {
      why:'"im" = in dem. Der Tisch steht im Wohnzimmer = The table is in the living room.'},
     {q:'What does "Die Wohnung ist klein" mean?', options:['The flat is big', 'The flat is small', 'The flat is new', 'The flat is dark'], answer:1,
      why:'klein = small. groß = big, neu = new, dunkel = dark.'},
-    {q:'What is the plural of "der Stuhl"?', options:['die Stuhle', 'die Stühle', 'die Stuhls', 'die Stühler'], answer:1,
+    {q:'What is the plural of "der Stuhl"?', options:['der Stühle', 'die Stühle', 'die Stuhls', 'die Stühler'], answer:1,
      why:'der Stuhl → die Stühle. The vowel changes: u → ü.'},
     {q:'"Meine Wohnung hat zwei Zimmer." means...', options:['My flat is two rooms', 'My flat has two rooms', 'My flat is in two rooms', 'I have two flats'], answer:1,
      why:'"haben" = to have. Meine Wohnung hat zwei Zimmer = My flat has two rooms.'}
@@ -8047,7 +8047,7 @@ CHAPTERS['A1-9'] = {
       time:'2 min',
       kind:'quiz',
       questions:[
-        {q:'What is the plural of "der Stuhl"?', options:['die Stuhle', 'die Stühle', 'die Stuhls', 'die Stühler'], answer:1,
+        {q:'What is the plural of "der Stuhl"?', options:['der Stühle', 'die Stühle', 'die Stuhls', 'die Stühler'], answer:1,
          why:'der Stuhl → die Stühle. The vowel changes: u → ü.'},
         {q:'"Meine Wohnung hat zwei Zimmer." means...', options:['My flat is two rooms', 'My flat has two rooms', 'My flat is in two rooms', 'I have two flats'], answer:1,
          why:'"haben" = to have. Meine Wohnung hat zwei Zimmer = My flat has two rooms.'}

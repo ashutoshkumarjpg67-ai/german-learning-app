@@ -111,6 +111,7 @@ const store = {
   markRead(chId) { if (!this.data.read[chId]) { this.data.read[chId] = Date.now(); this.addXP(5); } },
 };
 
+function optLetter(i) { return 'ABCD'[i] || ''; }
 /* ================= Helpers ================= */
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function escAttr(s) { return esc(s).replace(/'/g, '&#39;'); }
@@ -272,9 +273,9 @@ function viewHome() {
     '</div>';
   h += '<div class="stat-row">' +
     '<div class="stat"><b>' + store.data.xp + '</b><span>XP</span></div>' +
-    '<div class="stat"><b>🔥 ' + store.data.streak + '</b><span>day streak</span></div>' +
-    '<div class="stat"><b>' + doneFull + '/' + totalFull + '</b><span>lessons done</span></div>' +
-    '<div class="stat"><b>' + wordsKnown + '</b><span>words in cards</span></div></div>';
+    '<div class="stat"><b>🔥 ' + store.data.streak + '</b><span>Streak</span></div>' +
+    '<div class="stat"><b>' + doneFull + '/' + totalFull + '</b><span>Lessons</span></div>' +
+    '<div class="stat"><b>' + wordsKnown + '</b><span>Cards</span></div></div>';
   h += '<div class="card tight"><div class="row"><div class="grow"><b>Your progress</b><div class="small">' + doneFull + ' of ' + totalFull + ' full lessons complete</div></div><b>' + Math.round(doneFull / totalFull * 100) + '%</b></div>' +
     '<div class="progress-track mt"><div class="progress-fill" style="width:' + Math.round(doneFull / totalFull * 100) + '%"></div></div></div>';
   h += '<h2>Your path — A1 to C1</h2>';
@@ -298,6 +299,7 @@ function viewHome() {
     sectionCard('📊', 'Progress', 'XP, streak and per-level progress.', store.data.xp + ' XP · 🔥 ' + store.data.streak + '-day streak', 'progress') +
     '</div>';
   h += nextBar('Not sure where to start? Start at A1 Chapter 1 — it begins from absolute zero.', 'chapter/A1-1', 'Start A1 Chapter 1');
+  h += '<p class="app-footer">All 5 levels complete · 60 chapters · 360 tiny topics · Free forever — no login, no ads.</p>';
   return h;
 }
 function sectionCard(icon, title, desc, status, route) {
@@ -310,7 +312,7 @@ function sectionCard(icon, title, desc, status, route) {
 /* ================= Learn (level list) ================= */
 function viewLearn() {
   let h = '<p class="kicker">Learn</p><h1>Choose your level</h1>' +
-    '<p class="lead">A1, A2, B1, B2 and C1 are fully complete. Honest progress is shown on every level.</p>';
+    '<p class="lead">All 5 levels are complete — 60 chapters in tiny 2–4 minute topics. Pick your level and start.</p>';
   LEVELS.forEach(lv => {
     const p = levelProgress(lv.id);
     h += '<div class="card level-card" onclick="go(\'level/' + lv.id + '\')" style="cursor:pointer">' +
@@ -539,7 +541,7 @@ function topicQuizHTML(ch, t) {
       else if (oi === picked) cls += ' wrong';
       else cls += ' dim';
     }
-    h += '<button class="' + cls + '" ' + (picked !== null ? 'disabled' : '') + ' onclick="answerTopicQuiz(' + oi + ')">' + esc(opt) + '</button>';
+    h += '<button class="' + cls + '" ' + (picked !== null ? 'disabled' : '') + ' onclick="answerTopicQuiz(' + oi + ')">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
   });
   if (picked !== null) {
     h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>' +
@@ -661,7 +663,7 @@ function tabQuiz(ch) {
         else if (oi === picked) cls += ' wrong';
         else cls += ' dim';
       }
-      h += '<button class="' + cls + '" ' + (picked !== undefined ? 'disabled' : '') + ' onclick="answerQuiz(\'' + ch.id + '\',' + qi + ',' + oi + ',this)">' + esc(opt) + '</button>';
+      h += '<button class="' + cls + '" ' + (picked !== undefined ? 'disabled' : '') + ' onclick="answerQuiz(\'' + ch.id + '\',' + qi + ',' + oi + ',this)">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
     });
     if (picked !== undefined) {
       h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>';
@@ -868,7 +870,7 @@ function viewTrainer() {
       else if (oi === t.picked) cls += ' wrong';
       else cls += ' dim';
     }
-    h += '<button class="' + cls + '" ' + (t.picked !== null ? 'disabled' : '') + ' onclick="answerTrainer(' + oi + ')">' + esc(opt) + '</button>';
+    h += '<button class="' + cls + '" ' + (t.picked !== null ? 'disabled' : '') + ' onclick="answerTrainer(' + oi + ')">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
   });
   if (t.picked !== null) {
     h += '<div class="feedback ' + (t.picked === q.answer ? 'good' : 'bad') + '"><b>' + (t.picked === q.answer ? '✅ Correct!' : '❌ The answer is: ' + esc(q.options[q.answer])) + '</b> ' + esc(q.item.de) + ' — ' + esc(q.item.en) + ' (' + esc(q.item.ph) + ')</div>' +
@@ -992,7 +994,7 @@ function viewPodcast() {
     q.options.forEach((opt, oi) => {
       let cls = 'opt';
       if (picked !== undefined) { if (oi === q.answer) cls += ' correct'; else if (oi === picked) cls += ' wrong'; else cls += ' dim'; }
-      h += '<button class="' + cls + '" ' + (picked !== undefined ? 'disabled' : '') + ' onclick="answerPodcastQuiz(' + qi + ',' + oi + ')">' + esc(opt) + '</button>';
+      h += '<button class="' + cls + '" ' + (picked !== undefined ? 'disabled' : '') + ' onclick="answerPodcastQuiz(' + qi + ',' + oi + ')">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
     });
     if (picked !== undefined) h += '<div class="feedback ' + (picked === q.answer ? 'good' : 'bad') + '"><b>' + (picked === q.answer ? '✅ Correct!' : '❌ Not quite.') + '</b> ' + esc(q.why) + '</div>';
     h += '</div>';
@@ -1136,7 +1138,7 @@ function viewMock(level) {
     '<div class="progress-track mb"><div class="progress-fill" style="width:' + (m.idx / m.qs.length * 100) + '%"></div></div>' +
     '<div class="card"><p class="big">' + esc(q.q) + ' ' + speakBtn(q.q) + '</p>';
   q.options.forEach((opt, oi) => {
-    h += '<button class="opt" onclick="answerMock(' + oi + ')">' + esc(opt) + '</button>';
+    h += '<button class="opt" onclick="answerMock(' + oi + ')">' + '<span class="opt-letter">' + optLetter(oi) + '</span>' + esc(opt) + '</button>';
   });
   h += '</div><p class="small">Tip: read the question slowly. Tap 🔊 to hear it in German.</p>';
   return h;
@@ -1184,9 +1186,9 @@ function viewProgress() {
   let h = '<p class="kicker">Progress</p><h1>Your progress</h1>' +
     '<div class="stat-row">' +
     '<div class="stat"><b>' + d.xp + '</b><span>XP</span></div>' +
-    '<div class="stat"><b>🔥 ' + d.streak + '</b><span>day streak</span></div>' +
-    '<div class="stat"><b>' + doneChs + '</b><span>lessons done</span></div>' +
-    '<div class="stat"><b>' + Object.keys(d.cards).length + '</b><span>flashcards</span></div></div>';
+    '<div class="stat"><b>🔥 ' + d.streak + '</b><span>Streak</span></div>' +
+    '<div class="stat"><b>' + doneChs + '</b><span>Lessons</span></div>' +
+    '<div class="stat"><b>' + Object.keys(d.cards).length + '</b><span>Cards</span></div></div>';
   h += '<div class="card"><h3 style="margin-top:0">Per level</h3>';
   LEVELS.forEach(lv => {
     const p = levelProgress(lv.id);

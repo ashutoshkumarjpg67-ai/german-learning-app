@@ -267,6 +267,10 @@ h2 + .chapter-row::before{content:"▶ START HERE";position:absolute;top:-11px;r
 .opt.correct{border-color:var(--green);background:var(--green-soft)}
 .opt.wrong{border-color:var(--red);background:#fdeaea}
 .opt.dim{opacity:.45}
+.opt-letter{width:28px;height:28px;border-radius:9px;background:#111;color:#fff;flex:none;
+  display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+.opt.correct .opt-letter{background:var(--green)}
+.opt.wrong .opt-letter{background:var(--red)}
 .feedback{border-radius:var(--radius);padding:14px 16px;margin:12px 0;font-size:16px}
 .feedback.good{background:var(--green-soft);border:1px solid #bfe3c8}
 .feedback.bad{background:#fdeaea;border:1px solid #f3b8b8}
@@ -325,10 +329,18 @@ h2 + .chapter-row::before{content:"▶ START HERE";position:absolute;top:-11px;r
   box-shadow:var(--shadow);min-height:118px;width:100%}
 .section-card:active{background:var(--soft)}
 .sections-grid .section-card:last-child{grid-column:1 / -1}
-.section-ic{font-size:26px;line-height:1.2}
+.section-ic{width:48px;height:48px;border-radius:14px;background:var(--soft);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:26px;line-height:1}
 .section-card b{font-size:16px;line-height:1.3}
 .section-card .section-desc{font-size:13px;color:var(--ink2);line-height:1.4}
 .section-card .section-status{font-size:12px;font-weight:700;color:var(--red);margin-top:2px}
+
+/* ---------- Home footer: honest status line, centred ---------- */
+.app-footer{text-align:center;margin:20px 4px 0;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+/* ---------- App feel: no grey tap flash, visible keyboard focus ---------- */
+body{-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 
 /* ---------- Bottom nav ---------- */
 #bottomnav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;z-index:50;
