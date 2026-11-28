@@ -1,11 +1,11 @@
-/* Deutsch Lernen — Network-first Service Worker (v14) */
-const CACHE = 'deutsch-lernen-v14';
+/* Deutsch Lernen — Network-first Service Worker (v15) */
+const CACHE = 'deutsch-lernen-v15';
 const CORE = [
   './',
   './index.html',
-  './styles.css?v=14',
-  './data.js?v=14',
-  './app.js?v=14',
+  './styles.css?v=15',
+  './data.js?v=15',
+  './app.js?v=15',
   './manifest.json'
 ];
 

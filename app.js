@@ -242,7 +242,7 @@ function allVocab() {
   return out;
 }
 function mockFor(lv) {
-  return { A1: MOCK_A1, A2: MOCK_A2, B1: MOCK_B1, B2: MOCK_B2, C1: MOCK_C1 }[lv] || MOCK_A1;
+  return { A0: typeof MOCK_A0 !== 'undefined' ? MOCK_A0 : null, A1: MOCK_A1, A2: MOCK_A2, B1: MOCK_B1, B2: MOCK_B2, C1: MOCK_C1 }[lv] || MOCK_A1;
 }
 function mockBest(lv) {
   if (store.data.mockBests && store.data.mockBests[lv] !== undefined) return store.data.mockBests[lv];
@@ -251,17 +251,17 @@ function mockBest(lv) {
 
 /* ================= State & Router ================= */
 const state = {
-  grammarLv: 'A1',
-  spokenLv: 'A1',
+  grammarLv: 'A0',
+  spokenLv: 'A0',
   practiceTab: 'cards', // cards | drill | mock
   lessonTopicIdx: 0,
-  spokenTab: 'dialogue', // dialogue | speak | sounds
+  spokenTab: 'dialogue', // dialogue | speak | extra
   pflegeTab: 'phrases',  // phrases | dialogues | words | quiz | podcast
   topicQuiz: null,
   nursingQuiz: { answers: {}, score: 0 },
   cardFilter: 'due', cardQueue: [], cardIdx: 0, cardFlipped: false, cardSession: 0,
   trainer: null,
-  mock: null, mockLv: 'A1',
+  mock: null, mockLv: 'A0',
   searchQ: '', searchLv: 'all', searchShown: 120
 };
 
@@ -333,7 +333,7 @@ function viewGrammar() {
   const nextCh = chs.find(c => { const p = grammarChProgress(c); return p.done < p.total; }) || chs[0];
 
   let h = '<p class="eyebrow">Section 1 · Structured Curriculum</p><h1>Grammar &amp; Vocabulary</h1>' +
-    '<p class="sub">Organized level-wise, chapter-wise, and topic-wise — A1 to C1.</p>';
+    '<p class="sub">From child-first basics (A0) to advanced (C1) — organized level-wise, chapter-wise, and topic-wise.</p>';
 
   // Level Switcher + 7-Day Streak Strip
   h += '<div class="seg" role="tablist">' + LEVELS.map(x =>
@@ -536,7 +536,7 @@ function nextTopicQuiz() {
 function setSpokenLevel(lv) { state.spokenLv = lv; render(); }
 
 function viewSpoken() {
-  const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'Pflege'];
+  const levels = ['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'Pflege'];
   let h = '<p class="eyebrow">Section 2 · Listening &amp; Speaking</p><h1>Spoken German</h1>' +
     '<p class="sub">Real-life dialogues, pronunciation audio, and live microphone voice checks — organized level-wise.</p>' +
     '<div class="seg" role="tablist">' + levels.map(lv =>
@@ -714,7 +714,7 @@ function buildCardQueue(filter) {
 }
 function setCardFilter(f) { state.cardFilter = f; state.cardIdx = 0; state.cardFlipped = false; state.cardQueue = buildCardQueue(f); render(); }
 function viewCardsInner() {
-  const filters = [['due', 'Due (' + dueCards().length + ')'], ['weak', 'Weak'], ['A1', 'A1'], ['A2', 'A2'], ['B1', 'B1'], ['B2', 'B2'], ['C1', 'C1'], ['Pflege', 'Pflege']];
+  const filters = [['due', 'Due (' + dueCards().length + ')'], ['weak', 'Weak'], ['A0', 'A0'], ['A1', 'A1'], ['A2', 'A2'], ['B1', 'B1'], ['B2', 'B2'], ['C1', 'C1'], ['Pflege', 'Pflege']];
   let h = '<div class="chips">' + filters.map(([id, lbl]) => '<button class="chip ' + (state.cardFilter === id ? 'active' : '') + '" onclick="setCardFilter(\'' + id + '\')">' + lbl + '</button>').join('') + '</div>';
   const q = state.cardQueue;
   if (!q.length) {
@@ -847,14 +847,17 @@ function viewMockInner() {
   let h = '<div class="chips">' + LEVELS.map(lv => '<button class="chip ' + (state.mockLv === lv.id ? 'active' : '') + '" onclick="selectMockLv(\'' + lv.id + '\')">' + lv.id + '</button>').join('') + '</div>';
   const m = state.mock;
   if (!m || m.level !== state.mockLv) {
+    const src = mockFor(state.mockLv);
     const best = mockBest(state.mockLv);
+    const qCount = src.questions.length;
+    const mins = Math.round((src.time || 1200) / 60);
     return h + '<div class="card"><h3>' + state.mockLv + ' Practice Mock Exam</h3>' +
-      '<p class="sub">20 questions · 20 minutes · Pass at 60% (12/20). You can go back and change answers before submitting.</p>' +
+      '<p class="sub">' + qCount + ' questions · ' + mins + ' minutes · Pass at 60%. You can go back and change answers before submitting.</p>' +
       '<p class="muted mb">Best score: <b>' + (best !== null && best !== undefined ? best + '/100' : 'Not taken yet') + '</b></p>' +
       '<button class="btn primary" onclick="startMock(\'' + state.mockLv + '\')">Start ' + state.mockLv + ' Mock Exam →</button></div>';
   }
   if (m.finished) {
-    const pct = m.score * 5;
+    const pct = Math.round(m.score / m.qs.length * 100);
     h += '<div class="card"><div class="callout ' + (pct >= 60 ? 'ok' : '') + '"><b>' + m.level + ' Result: ' + pct + '/100 (' + m.score + '/' + m.qs.length + ')</b> — ' + (pct >= 60 ? 'Passed!' : 'Keep practising (60% to pass).') + '</div>' +
       '<button class="btn primary mb" onclick="startMock(\'' + m.level + '\')">Retake ' + m.level + ' Mock</button>';
     m.qs.forEach((q, i) => {
@@ -883,7 +886,7 @@ function finishMock() {
   clearInterval(startMockTimer._t); startMockTimer._t = null;
   m.running = false; m.finished = true;
   m.score = m.qs.reduce((a, q, i) => a + (m.answers[i] === q.answer ? 1 : 0), 0);
-  const pct = m.score * 5;
+  const pct = Math.round(m.score / m.qs.length * 100);
   store.data.mockBests[m.level] = Math.max(store.data.mockBests[m.level] || 0, pct);
   if (m.level === 'A1') store.data.mockBest = store.data.mockBests.A1;
   store.addXP(20); store.save();
@@ -903,7 +906,7 @@ function startMockTimer() {
 
 /* ================= Word Search & Profile/Progress ================= */
 function viewSearch() {
-  const levels = ['all', 'A1', 'A2', 'B1', 'B2', 'C1', 'Pflege'];
+  const levels = ['all', 'A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'Pflege'];
   return '<p class="eyebrow">Dictionary</p><h1>Word Search</h1>' +
     '<input class="input" placeholder="Search German or English word…" value="' + escAttr(state.searchQ) + '" oninput="state.searchQ=this.value;state.searchShown=120;renderSearchList()" autofocus>' +
     '<div class="chips">' + levels.map(lv => '<button class="chip ' + (state.searchLv === lv ? 'active' : '') + '" onclick="state.searchLv=\'' + lv + '\';state.searchShown=120;render()">' + (lv === 'all' ? 'All' : lv) + '</button>').join('') + '</div>' +
@@ -937,12 +940,13 @@ function viewProfile() {
   const d = store.data;
   const gDone = Object.keys(d.completed).length;
   const sDone = Object.keys(d.spokenDone).length;
+  const totalChs = Object.keys(CHAPTERS).length;
   let h = '<p class="eyebrow">Overview</p><h1>Progress &amp; Backup</h1>' +
     '<div class="stats-grid">' +
     '<div class="stat-box"><b>' + d.xp + '</b><span>XP</span></div>' +
     '<div class="stat-box"><b>' + d.streak + '</b><span>Streak</span></div>' +
-    '<div class="stat-box"><b>' + gDone + '/60</b><span>Grammar</span></div>' +
-    '<div class="stat-box"><b>' + sDone + '/60</b><span>Spoken</span></div></div>' + weekStripHTML();
+    '<div class="stat-box"><b>' + gDone + '/' + totalChs + '</b><span>Grammar</span></div>' +
+    '<div class="stat-box"><b>' + sDone + '/' + totalChs + '</b><span>Spoken</span></div></div>' + weekStripHTML();
 
   h += '<div class="card"><h3>Level Progress &amp; Mock Scores</h3>';
   LEVELS.forEach(lv => {
