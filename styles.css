@@ -390,3 +390,77 @@ audio{width:100%;margin-top:8px}
   #view{padding:28px 32px 60px}
   #toast{bottom:24px}
 }
+
+/* ---------- v14 UI Polish: Gender Badges, Visual Grammar Grid, 3D Flashcards, Streak Bar, Confetti ---------- */
+.seg,.step-pills{scrollbar-width:none;-ms-overflow-style:none}
+.seg::-webkit-scrollbar,.step-pills::-webkit-scrollbar{display:none}
+
+/* 1. Color-coded Gender Badges (der = blue, die = rose, das = emerald) */
+.art-badge{
+  display:inline-block;padding:1px 7px;border-radius:6px;font-size:12.5px;font-weight:800;
+  letter-spacing:.02em;vertical-align:1px;margin-right:4px;
+}
+.art-der{background:rgba(59,130,246,.16);color:#60a5fa}
+.art-die{background:rgba(244,63,94,.16);color:#fb7185}
+.art-das{background:rgba(16,185,129,.16);color:#34d399}
+[data-theme="light"] .art-der{background:rgba(37,99,235,.12);color:#1d4ed8}
+[data-theme="light"] .art-die{background:rgba(225,29,72,.11);color:#be123c}
+[data-theme="light"] .art-das{background:rgba(5,150,105,.12);color:#047857}
+
+/* 2. Visual Grammar Pattern Grid */
+.rule-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin:12px 0 16px}
+.rule-pill{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:11px;
+  padding:10px 12px;font-size:14px;line-height:1.35;color:var(--ink-2);
+}
+.rule-pill b{color:var(--ink);font-weight:700}
+
+/* 3. True 3D Flip Flashcard */
+.fc-stage{perspective:1100px;margin-bottom:16px;touch-action:pan-y}
+.fc-inner{
+  position:relative;width:100%;min-height:260px;cursor:pointer;
+  transform-style:preserve-3d;transition:transform .48s cubic-bezier(.22,1,.36,1);
+}
+.fc-inner.flipped{transform:rotateY(180deg)}
+.fc-face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  padding:28px 20px;border-radius:20px;text-align:center;
+  background:var(--surface);border:1.5px solid var(--line-2);box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+}
+.fc-face:hover{border-color:var(--brand)}
+.fc-back{transform:rotateY(180deg);border-color:var(--brand)}
+.fc-back-word{font-size:26px;font-weight:800;color:var(--brand);line-height:1.25}
+
+/* 4. 7-Day Streak Strip */
+.week-strip{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:6px;
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:10px 12px;margin-bottom:16px;
+}
+.w-day{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--muted)}
+.w-dot{
+  width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:var(--surface-2);color:var(--muted);font-size:12px;font-weight:800;
+}
+.w-day.on .w-dot{background:var(--cta);color:#fff}
+.w-day.today{color:var(--ink)}
+.w-day.today .w-dot{box-shadow:0 0 0 2px var(--brand)}
+
+/* 5. Large German Text Readability Mode */
+[data-text="large"] .v-de{font-size:21px;line-height:1.42}
+[data-text="large"] .v-ph{font-size:15px}
+[data-text="large"] .v-en{font-size:16px}
+[data-text="large"] .fc-word{font-size:38px}
+[data-text="large"] .rule-pill{font-size:16px}
+
+/* Micro-Celebration Confetti */
+.confetti-box{position:fixed;inset:0;pointer-events:none;z-index:120;overflow:hidden}
+.confetti-p{
+  position:absolute;top:40%;left:50%;width:9px;height:9px;border-radius:2px;
+  animation:cf-burst 1s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes cf-burst{
+  0%{opacity:1;transform:translate(0,0) rotate(0deg) scale(1)}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(.5)}
+}

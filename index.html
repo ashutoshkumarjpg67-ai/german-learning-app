@@ -8,7 +8,7 @@
 <title>Deutsch Lernen — Grammar & Spoken German (A1–C1)</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2311151f'/%3E%3Crect x='12' y='15' width='40' height='10' rx='3' fill='%23000'/%3E%3Crect x='12' y='27' width='40' height='10' rx='3' fill='%23e11d48'/%3E%3Crect x='12' y='39' width='40' height='10' rx='3' fill='%23facc15'/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=13">
+<link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body>
 <div id="shell">
@@ -58,6 +58,7 @@
           <span id="streakTop">0</span>
         </button>
         <button class="pill-btn" id="speedBtn" onclick="toggleSpeed()" aria-label="Speech speed">0.7×</button>
+        <button class="pill-btn" id="textSizeBtn" onclick="toggleTextSize()" aria-label="Toggle German text size">Aa</button>
         <button class="pill-btn icon-only" id="themeBtn" onclick="cycleTheme()" aria-label="Switch theme">
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
         </button>
@@ -71,7 +72,7 @@
 <div id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importProgressFile(this)">
 
-<script src="data.js?v=13"></script>
-<script src="app.js?v=13"></script>
+<script src="data.js?v=14"></script>
+<script src="app.js?v=14"></script>
 </body>
 </html>

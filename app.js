@@ -22,7 +22,7 @@ const store = {
     return {
       xp: 0, streak: 0, lastVisit: null, days: {},
       completed: {}, topicsDone: {}, spokenDone: {},
-      cards: {}, speed: 'slow', theme: 'dark',
+      cards: {}, speed: 'slow', theme: 'dark', largeText: false,
       mockBests: {}, mockBest: null, trainerBest: 0
     };
   },
@@ -168,6 +168,54 @@ function toggleSpeed() {
 function updateTopBar() {
   const sb = document.getElementById('speedBtn'); if (sb) sb.textContent = store.data.speed === 'normal' ? '1×' : '0.7×';
   const st = document.getElementById('streakTop'); if (st) st.textContent = store.data.streak;
+  const tb = document.getElementById('textSizeBtn'); if (tb) tb.textContent = store.data.largeText ? 'Aa+' : 'Aa';
+}
+function applyTextSize(large) {
+  if (document.documentElement) document.documentElement.setAttribute('data-text', large ? 'large' : 'normal');
+}
+function toggleTextSize() {
+  store.data.largeText = !store.data.largeText;
+  store.save(); applyTextSize(store.data.largeText); updateTopBar();
+  toast(store.data.largeText ? 'German text: Large' : 'German text: Normal');
+}
+function artBadge(art) {
+  if (!art) return '';
+  const a = String(art).trim().toLowerCase();
+  const cls = a === 'der' ? 'art-der' : (a === 'die' ? 'art-die' : (a === 'das' ? 'art-das' : 'art-die'));
+  return '<span class="art-badge ' + cls + '">' + esc(art) + '</span>';
+}
+function weekStripHTML() {
+  const labels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const today = new Date();
+  let h = '<div class="week-strip" aria-label="7-day activity streak">';
+  for (let i = 6; i >= 0; i--) {
+    const dt = new Date(today.getTime() - i * 864e5);
+    const key = dt.toDateString();
+    const on = !!(store.data.days && store.data.days[key]);
+    const isToday = i === 0;
+    h += '<div class="w-day ' + (on ? 'on' : '') + (isToday ? ' today' : '') + '">' +
+      '<span>' + labels[dt.getDay()] + '</span><div class="w-dot">' + (on ? '✓' : dt.getDate()) + '</div></div>';
+  }
+  return h + '</div>';
+}
+function celebrate() {
+  if (!document.body || typeof document.createElement !== 'function') return;
+  const box = document.createElement('div');
+  box.className = 'confetti-box';
+  const cols = ['#f43f5e', '#facc15', '#22c55e', '#3b82f6', '#f97316'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('span');
+    p.className = 'confetti-p';
+    const ang = (Math.PI * 2 * i) / 18;
+    const dist = 80 + Math.random() * 110;
+    p.style.background = cols[i % cols.length];
+    p.style.setProperty('--tx', Math.round(Math.cos(ang) * dist) + 'px');
+    p.style.setProperty('--ty', Math.round(Math.sin(ang) * dist - 40) + 'px');
+    p.style.setProperty('--rot', Math.round((Math.random() - 0.5) * 540) + 'deg');
+    box.appendChild(p);
+  }
+  document.body.appendChild(box);
+  setTimeout(() => { if (box.parentNode) box.parentNode.removeChild(box); }, 1100);
 }
 function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function escAttr(s) { return esc(s).replace(/'/g, '&#39;'); }
@@ -251,6 +299,18 @@ document.addEventListener('click', e => {
   const mic = e.target.closest('[data-mic]'); if (mic) { Mic.check(mic.dataset.mic, mic.dataset.slot, mic); return; }
   const flip = e.target.closest('[data-flip]'); if (flip) { state.cardFlipped = !state.cardFlipped; render(); return; }
 });
+let touchX0 = null;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.fc-stage') && e.touches && e.touches[0]) touchX0 = e.touches[0].clientX;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (touchX0 === null || !e.changedTouches || !e.changedTouches[0]) return;
+  const dx = e.changedTouches[0].clientX - touchX0;
+  touchX0 = null;
+  if (Math.abs(dx) > 65 && state.practiceTab === 'cards' && state.cardQueue.length) {
+    gradeCard(dx > 0 ? 1 : 0);
+  }
+}, { passive: true });
 
 /* ================= 1. GRAMMAR SECTION (Level -> Chapter -> Topic) ================= */
 function grammarTopicsOf(ch) {
@@ -275,10 +335,10 @@ function viewGrammar() {
   let h = '<p class="eyebrow">Section 1 · Structured Curriculum</p><h1>Grammar &amp; Vocabulary</h1>' +
     '<p class="sub">Organized level-wise, chapter-wise, and topic-wise — A1 to C1.</p>';
 
-  // Level Switcher
+  // Level Switcher + 7-Day Streak Strip
   h += '<div class="seg" role="tablist">' + LEVELS.map(x =>
     '<button class="' + (x.id === lv.id ? 'active' : '') + '" onclick="setGrammarLevel(\'' + x.id + '\')">' + x.id + '</button>'
-  ).join('') + '</div>';
+  ).join('') + '</div>' + weekStripHTML();
 
   // Focused Continue Card
   h += '<div class="focus-card"><div class="focus-meta">' +
@@ -352,7 +412,7 @@ function viewGrammarChapter(chId, topicId) {
       '<button class="btn ghost sm" onclick="addChapterToCards(\'' + ch.id + '\')">+ Save to Cards</button></div>';
     t.vocab.forEach(v => {
       const say = (v.art ? v.art + ' ' : '') + v.de;
-      h += '<div class="v-row"><div class="grow"><div class="v-de">' + (v.art ? '<span class="v-art">' + esc(v.art) + '</span> ' : '') + esc(v.de) +
+      h += '<div class="v-row"><div class="grow"><div class="v-de">' + artBadge(v.art) + esc(v.de) +
         (v.pl ? ' <span class="muted">· die ' + esc(v.pl) + '</span>' : '') + '</div>' +
         '<div class="v-ph">' + esc(v.ph) + '</div><div class="v-en">' + esc(v.en) + '</div></div>' + speakBtn(say) + '</div>';
     });
@@ -382,10 +442,19 @@ function viewGrammarChapter(chId, topicId) {
   return h;
 }
 
+function renderRuleVisual(rule) {
+  const parts = String(rule || '').split(/\s*[·|]\s*/).map(s => s.trim()).filter(Boolean);
+  if (parts.length >= 2) {
+    return '<div class="rule-grid">' + parts.map(p => {
+      const m = p.match(/^([^=:→]+?)(\s*[=:→]\s*)(.+)$/);
+      return '<div class="rule-pill">' + (m ? '<b>' + esc(m[1]) + '</b>' + esc(m[2]) + esc(m[3]) : '<b>' + esc(p) + '</b>') + '</div>';
+    }).join('') + '</div>';
+  }
+  return '<div class="callout"><b>Pattern:</b> ' + esc(rule) + '</div>';
+}
 function renderGrammarBlock(g, tip) {
   let h = '<div class="card"><div class="eyebrow">Grammar Rule</div><h3>' + esc(g.title) + '</h3>' +
-    '<p class="sub">' + esc(g.plain) + '</p>' +
-    '<div class="callout"><b>Pattern:</b> ' + esc(g.rule) + '</div>';
+    '<p class="sub">' + esc(g.plain) + '</p>' + renderRuleVisual(g.rule);
   if (g.examples && g.examples.length) {
     h += '<h3>Examples</h3>';
     g.examples.forEach(ex => {
@@ -405,6 +474,7 @@ function completeGrammarTopic(chId, topicId, nextTopicId) {
   if (allDone && !store.data.completed[chId]) {
     store.data.completed[chId] = { score: 5, at: Date.now() };
     store.addXP(10);
+    celebrate();
     toast('Chapter complete! +10 XP');
   } else {
     toast('Topic complete! +5 XP');
@@ -581,7 +651,7 @@ function viewPflegeSpoken() {
     h += '<div class="card"><div class="row mb"><h3 class="grow" style="margin:0">Hospital Vocabulary</h3>' +
       '<button class="btn ghost sm" onclick="addNursingToCards()">+ Save All to Cards</button></div>';
     n.words.forEach(v => {
-      h += '<div class="v-row"><div class="grow"><div class="v-de"><span class="v-art">' + esc(v.art) + '</span> ' + esc(v.de) +
+      h += '<div class="v-row"><div class="grow"><div class="v-de">' + artBadge(v.art) + esc(v.de) +
         (v.pl ? ' <span class="muted">· die ' + esc(v.pl) + '</span>' : '') + '</div><div class="v-ph">' + esc(v.ph) + '</div><div class="v-en">' + esc(v.en) + '</div></div>' + speakBtn(v.art + ' ' + v.de) + '</div>';
     });
     h += '</div>';
@@ -652,11 +722,17 @@ function viewCardsInner() {
   }
   const card = q[state.cardIdx];
   const fullDe = (card.art ? card.art + ' ' : '') + card.de;
-  h += '<div class="fc" data-flip><div class="muted">' + esc(card.level) + ' · Card ' + (state.cardIdx + 1) + ' of ' + q.length + '</div>' +
-    '<div class="fc-word">' + (card.art ? '<span class="v-art">' + esc(card.art) + '</span> ' : '') + esc(card.de) + '</div>' +
+  h += '<div class="fc-stage"><div class="fc-inner ' + (state.cardFlipped ? 'flipped' : '') + '" data-flip>' +
+    '<div class="fc-face"><div class="muted">' + esc(card.level) + ' · Card ' + (state.cardIdx + 1) + ' of ' + q.length + '</div>' +
+    '<div class="fc-word">' + artBadge(card.art) + esc(card.de) + '</div>' +
     '<div class="v-ph">' + esc(card.ph) + '</div>' + speakBtn(fullDe) +
-    (state.cardFlipped ? '<div class="fc-ans">' + esc(card.en) + (card.pl ? '<div class="muted">plural: die ' + esc(card.pl) + '</div>' : '') + '</div>' : '<div class="muted mt">Tap card to reveal meaning</div>') +
-    '</div><div class="btn-row">' +
+    '<div class="muted mt">Tap to flip · Swipe ← Again / → Good</div></div>' +
+    '<div class="fc-face fc-back"><div class="muted">English Meaning</div>' +
+    '<div class="fc-back-word">' + esc(card.en) + '</div>' +
+    '<div class="v-de">' + artBadge(card.art) + esc(card.de) + '</div>' +
+    (card.pl ? '<div class="muted">plural: die ' + esc(card.pl) + '</div>' : '') +
+    speakBtn(fullDe) + '</div></div></div>' +
+    '<div class="btn-row">' +
     '<button class="btn soft-bad" onclick="gradeCard(0)">Again</button>' +
     '<button class="btn primary" onclick="gradeCard(1)">Good</button>' +
     '<button class="btn soft-ok" onclick="gradeCard(2)">Easy</button></div>';
@@ -811,6 +887,7 @@ function finishMock() {
   store.data.mockBests[m.level] = Math.max(store.data.mockBests[m.level] || 0, pct);
   if (m.level === 'A1') store.data.mockBest = store.data.mockBests.A1;
   store.addXP(20); store.save();
+  if (pct >= 60) celebrate();
   toast(pct >= 60 ? 'Mock passed! +20 XP' : 'Mock submitted. +20 XP');
 }
 function startMockTimer() {
@@ -843,7 +920,7 @@ function searchListHTML() {
   items.slice(0, shown).forEach(v => {
     const say = (v.art ? v.art + ' ' : '') + v.de;
     const saved = !!store.data.cards[v.key];
-    h += '<div class="v-row"><div class="grow"><div class="v-de">' + (v.art ? '<span class="v-art">' + esc(v.art) + '</span> ' : '') + esc(v.de) + '</div>' +
+    h += '<div class="v-row"><div class="grow"><div class="v-de">' + artBadge(v.art) + esc(v.de) + '</div>' +
       '<div class="v-en">' + esc(v.en) + ' · <span class="muted">' + esc(v.level) + '</span></div></div>' +
       '<div class="actions"><button class="act-btn" onclick="saveOneWord(\'' + escAttr(v.key) + '\')" aria-label="Save to flashcards">' + (saved ? IC.check : IC.plus) + '</button>' + speakBtn(say) + '</div></div>';
   });
@@ -865,7 +942,7 @@ function viewProfile() {
     '<div class="stat-box"><b>' + d.xp + '</b><span>XP</span></div>' +
     '<div class="stat-box"><b>' + d.streak + '</b><span>Streak</span></div>' +
     '<div class="stat-box"><b>' + gDone + '/60</b><span>Grammar</span></div>' +
-    '<div class="stat-box"><b>' + sDone + '/60</b><span>Spoken</span></div></div>';
+    '<div class="stat-box"><b>' + sDone + '/60</b><span>Spoken</span></div></div>' + weekStripHTML();
 
   h += '<div class="card"><h3>Level Progress &amp; Mock Scores</h3>';
   LEVELS.forEach(lv => {
@@ -908,6 +985,7 @@ function importProgressFile(input) {
 Speech.init();
 store.load();
 applyTheme(store.data.theme || 'dark');
+applyTextSize(!!store.data.largeText);
 state.cardQueue = buildCardQueue('due');
 if (!location.hash) location.hash = '#/grammar';
 render();
